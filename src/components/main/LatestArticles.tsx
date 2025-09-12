@@ -80,7 +80,6 @@ const LatestArticles = () => {
               </p>
             </div>
           </div>
-
           <div className="flex flex-col space-y-8">
             {sideArticles.map((article, index) => (
               <div key={article.id} className="flex gap-4 group cursor-pointer">
