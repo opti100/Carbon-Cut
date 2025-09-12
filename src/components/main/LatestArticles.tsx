@@ -62,7 +62,8 @@ const LatestArticles = () => {
               <Image
                 src={mainArticle.image}
                 alt={mainArticle.title}
-                fill
+                width={600}
+                height={400}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
@@ -87,7 +88,8 @@ const LatestArticles = () => {
                   <Image
                     src={article.image}
                     alt={article.title}
-                    
+                    width={112}
+                    height={112}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
