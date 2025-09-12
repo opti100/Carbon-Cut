@@ -142,7 +142,7 @@ const LatestArticlesGrid = () => {
                   className={`w-10 h-10 rounded-lg font-medium transition-colors ${
                     currentPage === page
                       ? 'bg-cyan-400 text-black'
-                      : 'text-white hover:bg-gray-800'
+                      : 'text-white hover:bg-black'
                   }`}
                 >
                   {page}
