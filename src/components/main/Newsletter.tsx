@@ -47,6 +47,6 @@ const Newsletter = () => {
       </div>
     </section>
   )
-}
+} 
 
 export default Newsletter
