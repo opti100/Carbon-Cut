@@ -34,11 +34,11 @@ const Hero = () => {
           <Image
             src="/logo.svg"
             alt="CarbonCut Logo"
-            width={24}
-            height={24}
-            className="w-6 h-6"
+            width={196}
+            height={48}
+            className="w-48 h-48"
           />
-          <span className="text-white text-xl font-bold tracking-wide">CARBONCUT</span>
+        
         </div>
 
         <div className="hidden md:flex items-center space-x-8">
