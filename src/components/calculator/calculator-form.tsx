@@ -2,7 +2,7 @@
 
 import { CHANNELS, DEFAULT_SCOPE, FALLBACK_CALCULATION, loadCountriesFromScientificData } from '@/constants/data';
 import { ActivityData, CountryData, OrganizationData } from '@/types/types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import OrganizationForm from './organizationForm';
 import StatsOverview from './StatsOverview';
 import MarketingActivityForm from './MarketingActivityForm';
@@ -104,7 +104,7 @@ export default function MarketingCalculator() {
       setCalculatingEmissions(prev => ({ ...prev, [activityId]: false }));
     }
   };
-  useEffect(() => {
+  useCallback(() => {
     activities.forEach(activity => {
       const shouldRecalculate = 
         emissionResults[activity.id] === undefined || 

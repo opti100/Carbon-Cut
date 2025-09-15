@@ -277,164 +277,208 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
   };
 
   return (
-    <Card className="bg-[#1F4960] border-[#4F4F4F]">
-      <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div>
-          <h4 className="font-bold text-white">Want to neutralise your impact?</h4>
-          <p className="text-sm text-[#CDD7DC]">
-            Talk to us about insetting/offsetting options and how to reduce future emissions.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button 
-            variant="outline" 
-            onClick={exportCSV}
-            className="bg-transparent border-[#6A6A6A] text-[#CDD7DC] hover:bg-[#6A6A6A] hover:text-white"
-          >
-            Export CSV
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={downloadPDF}
-            className="bg-transparent border-[#6A6A6A] text-[#CDD7DC] hover:bg-[#6A6A6A] hover:text-white"
-          >
-            Download PDF
-          </Button>
-          
-          <Dialog open={offsetDialogOpen} onOpenChange={setOffsetDialogOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-[#33BBCF] hover:bg-[#33BBCF]/80 text-black font-medium">
-                Offset with CarbonCut
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-[#031B27] border-[#4F4F4F] text-white max-w-2xl">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-white mb-2">
-                  Choose Your Carbon Offset Market
-                </DialogTitle>
-                <DialogDescription className="text-[#CDD7DC] text-base">
-                  Select the carbon offset market that best fits your organization's needs and compliance requirements.
-                </DialogDescription>
-              </DialogHeader>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                {/* Compliance Market */}
-                <Card 
-                  className={`bg-[#1F4960] border-[#6A6A6A] hover:border-[#33BBCF] transition-all cursor-pointer group ${
-                    selectedMarket === 'compliance' ? 'border-[#33BBCF] ring-2 ring-[#33BBCF]/20' : ''
-                  }`}
-                  onClick={() => handleMarketSelection('compliance')}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-[#33BBCF]/20 rounded-lg">
-                        <Building2 className="h-6 w-6 text-[#33BBCF]" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-lg font-semibold text-white">Compliance Market</h3>
-                          <Badge className="bg-[#F87171]/20 text-[#F87171] border-[#F87171]/30">
-                            Regulated
-                          </Badge>
-                        </div>
-                        <p className="text-[#CDD7DC] text-sm mb-4 leading-relaxed">
-                          Government-regulated carbon credits for organizations with mandatory emission reduction targets. 
-                          Higher verification standards and regulatory oversight.
-                        </p>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 text-sm text-[#CDD7DC]">
-                            <CheckCircle className="h-4 w-4 text-[#33BBCF]" />
-                            <span>Regulatory compliance</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-[#CDD7DC]">
-                            <CheckCircle className="h-4 w-4 text-[#33BBCF]" />
-                            <span>Mandatory reporting</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-[#CDD7DC]">
-                            <CheckCircle className="h-4 w-4 text-[#33BBCF]" />
-                            <span>Strict verification</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {selectedMarket === 'compliance' && (
-                      <div className="mt-4 p-3 bg-[#33BBCF]/10 rounded-lg border border-[#33BBCF]/30">
-                        <p className="text-sm text-[#33BBCF] font-medium">
-                          ✓ Compliance Market Selected
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Voluntary Market */}
-                <Card 
-                  className={`bg-[#1F4960] border-[#6A6A6A] hover:border-[#33BBCF] transition-all cursor-pointer group ${
-                    selectedMarket === 'voluntary' ? 'border-[#33BBCF] ring-2 ring-[#33BBCF]/20' : ''
-                  }`}
-                  onClick={() => handleMarketSelection('voluntary')}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-[#33BBCF]/20 rounded-lg">
-                        <Leaf className="h-6 w-6 text-[#33BBCF]" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-lg font-semibold text-white">Voluntary Market</h3>
-                          <Badge className="bg-[#33BBCF]/20 text-[#33BBCF] border-[#33BBCF]/30">
-                            Flexible
-                          </Badge>
-                        </div>
-                        <p className="text-[#CDD7DC] text-sm mb-4 leading-relaxed">
-                          Market-driven carbon credits for voluntary sustainability commitments. 
-                          More flexibility in project selection and faster implementation.
-                        </p>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 text-sm text-[#CDD7DC]">
-                            <CheckCircle className="h-4 w-4 text-[#33BBCF]" />
-                            <span>Corporate sustainability</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-[#CDD7DC]">
-                            <CheckCircle className="h-4 w-4 text-[#33BBCF]" />
-                            <span>Project variety</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-[#CDD7DC]">
-                            <CheckCircle className="h-4 w-4 text-[#33BBCF]" />
-                            <span>Cost-effective</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {selectedMarket === 'voluntary' && (
-                      <div className="mt-4 p-3 bg-[#33BBCF]/10 rounded-lg border border-[#33BBCF]/30">
-                        <p className="text-sm text-[#33BBCF] font-medium">
-                          ✓ Voluntary Market Selected
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+    <Card className="shadow-sm border border-gray-200 bg-white">
+      <CardContent className="p-6">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <Leaf className="h-5 w-5 text-green-600" />
               </div>
+              <h4 className="text-xl font-semibold text-gray-900">Ready to take action?</h4>
+            </div>
+            <p className="text-gray-600 leading-relaxed">
+              Export your carbon footprint data or talk to us about offsetting options to neutralize your marketing impact.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button 
+              variant="outline" 
+              onClick={exportCSV}
+              className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+            >
+              Export CSV
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={downloadPDF}
+              className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+            > 
+              Download PDF
+            </Button>
+            
+         
+            <Dialog open={offsetDialogOpen} onOpenChange={setOffsetDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200">
+                  Offset with CarbonCut
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-white border border-gray-200 w-[95vw] max-w-2xl sm:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+                    Choose Your Carbon Offset Market
+                  </DialogTitle>
+                  <DialogDescription className="text-gray-600 text-sm sm:text-base">
+                    Select the carbon offset market that best fits your organization&apos;s needs and compliance requirements.
+                  </DialogDescription>
+                </DialogHeader>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
+                  {/* Compliance Market */}
+                  <Card 
+                    className={`bg-white border-2 transition-all cursor-pointer group hover:shadow-md ${
+                      selectedMarket === 'compliance' 
+                        ? 'border-blue-500 ring-4 ring-blue-500/20 shadow-lg' 
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                    onClick={() => handleMarketSelection('compliance')}
+                  >
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div className="p-2 sm:p-3 bg-blue-100 rounded-lg flex-shrink-0">
+                          <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Compliance Market</h3>
+                            <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 text-xs w-fit">
+                              Regulated
+                            </Badge>
+                          </div>
+                          <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
+                            Government-regulated carbon credits for organizations with mandatory emission reduction targets. 
+                            Higher verification standards and regulatory oversight.
+                          </p>
+                          <div className="space-y-1.5 sm:space-y-2">
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0" />
+                              <span>Regulatory compliance</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0" />
+                              <span>Mandatory reporting</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 flex-shrink-0" />
+                              <span>Strict verification</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {selectedMarket === 'compliance' && (
+                        <div className="mt-3 sm:mt-4 p-2.5 sm:p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <p className="text-xs sm:text-sm text-blue-700 font-medium">
+                            ✓ Compliance Market Selected
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
 
-              <div className="mt-6 p-4 bg-[#1F4960] rounded-lg border border-[#6A6A6A]">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-2 h-2 bg-[#33BBCF] rounded-full mt-2"></div>
-                  <div>
-                    <p className="text-sm text-[#CDD7DC] leading-relaxed">
-                      <strong className="text-white">Total emissions to offset:</strong> {totals.total.toFixed(2)} kg CO₂e
-                    </p>
-                    <p className="text-xs text-[#6A6A6A] mt-1">
-                      {selectedMarket 
-                        ? `You have selected the ${selectedMarket} market for your carbon offset strategy.`
-                        : 'Please select a market to proceed with your offset strategy.'
-                      }
-                    </p>
+                  {/* Voluntary Market */}
+                  <Card 
+                    className={`bg-white border-2 transition-all cursor-pointer group hover:shadow-md ${
+                      selectedMarket === 'voluntary' 
+                        ? 'border-green-500 ring-4 ring-green-500/20 shadow-lg' 
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                    onClick={() => handleMarketSelection('voluntary')}
+                  >
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div className="p-2 sm:p-3 bg-green-100 rounded-lg flex-shrink-0">
+                          <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-2">
+                            <h3 className="text-base sm:text-lg font-semibold text-gray-900">Voluntary Market</h3>
+                            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs w-fit">
+                              Flexible
+                            </Badge>
+                          </div>
+                          <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
+                            Market-driven carbon credits for voluntary sustainability commitments. 
+                            More flexibility in project selection and faster implementation.
+                          </p>
+                          <div className="space-y-1.5 sm:space-y-2">
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
+                              <span>Corporate sustainability</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
+                              <span>Project variety</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600">
+                              <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-600 flex-shrink-0" />
+                              <span>Cost-effective</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {selectedMarket === 'voluntary' && (
+                        <div className="mt-3 sm:mt-4 p-2.5 sm:p-3 bg-green-50 rounded-lg border border-green-200">
+                          <p className="text-xs sm:text-sm text-green-700 font-medium">
+                            ✓ Voluntary Market Selected
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-2 h-2 bg-green-500 rounded-full mt-1.5 sm:mt-2"></div>
+                    <div className="min-w-0">
+                      <p className="text-xs sm:text-sm text-gray-700 leading-relaxed">
+                        <strong className="text-gray-900">Total emissions to offset:</strong> {totals.total.toFixed(2)} kg CO₂e
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {selectedMarket 
+                          ? `You have selected the ${selectedMarket} market for your carbon offset strategy.`
+                          : 'Please select a market to proceed with your offset strategy.'
+                        }
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+
+                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4 sm:mt-6 pt-4 border-t border-gray-200">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setOffsetDialogOpen(false)}
+                    className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 w-full sm:w-auto"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      if (selectedMarket) {
+                        // Handle the offset action here
+                        const org = organization.name || "Brand";
+                        const period = organization.period || "";
+                        const total = totals.total;
+                        const body = encodeURIComponent(
+                          `Hi CarbonCut team,\n\nWe'd like help offsetting our marketing emissions using the ${selectedMarket} market.${period ? ` Reporting period: ${period}.` : ""}\nOrganisation: ${org}\nTotal estimated CO2e: ${total.toFixed(2)} kg.\n\nMarket preference: ${selectedMarket}\n\nThanks!`
+                        );
+                        window.location.href = `mailto:hello@optiminastic.com?subject=Offset with CarbonCut - ${selectedMarket} Market&body=${body}`;
+                        setOffsetDialogOpen(false);
+                      } else {
+                        alert('Please select a market first.');
+                      }
+                    }}
+                    disabled={!selectedMarket}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white w-full sm:w-auto"
+                  >
+                    Contact CarbonCut
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
+          </div>
         </div>
       </CardContent>
     </Card>
