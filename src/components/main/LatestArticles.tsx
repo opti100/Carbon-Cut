@@ -52,7 +52,7 @@ const LatestArticles = () => {
   ]
 
   return (
-    <section className="bg-black py-16 px-6">
+    <section className="bg-[#031B27] py-16 px-6">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-bold text-white mb-12 text-left">Popular Articles</h2>
         
@@ -81,7 +81,7 @@ const LatestArticles = () => {
             </div>
           </div>
           <div className="flex flex-col space-y-8">
-            {sideArticles.map((article, index) => (
+            {sideArticles.map((article) => (
               <div key={article.id} className="flex gap-4 group cursor-pointer">
                 <div className="relative w-28  h-28 rounded-sm overflow-hidden flex-shrink-0">
                   <Image

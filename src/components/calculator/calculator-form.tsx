@@ -49,7 +49,7 @@ export default function MarketingCalculator() {
         calcCO2AI(activity);
       }
     });
-  }, [activities]);
+  }, [activities, emissionResults, calculatingEmissions]);
 
   const calcCO2AI = async (activity: ActivityData): Promise<number> => {
     const activityId = activity.id;

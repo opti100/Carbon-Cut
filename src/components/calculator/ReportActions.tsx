@@ -77,7 +77,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
       doc.text('Activity Breakdown:', 14, 70);
       
       let yPos = 78;
-      activities.forEach((activity, index) => {
+      activities.forEach((activity) => {
         if (yPos > 270) {
           doc.addPage();
           yPos = 20;

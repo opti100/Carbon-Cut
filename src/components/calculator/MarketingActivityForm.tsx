@@ -114,8 +114,8 @@ export default function MarketingActivityForm({
             {loadingCountries ? (
               <option>Loading countries...</option>
             ) : (
-              countries.map((country) => (
-                <option key={country.code} value={country.name}>{country.name}</option>
+              countries.map((country,index) => (
+                <option key={index} value={country.name}>{country.name}</option>
               ))
             )}
           </select>

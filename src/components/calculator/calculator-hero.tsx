@@ -4,16 +4,15 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Book, BookOpen, Calculator, Library, User } from 'lucide-react'
+import { BookOpen, Calculator, User } from 'lucide-react'
 
 const CalculatorHero = () => {
-    const [searchQuery, setSearchQuery] = useState('')
+    // const [searchQuery, setSearchQuery] = useState('')
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault()
-        console.log('Search:', searchQuery)
-    }
+    // const handleSearch = (e: React.FormEvent) => {
+    //     e.preventDefault()
+    //     // console.log('Search:', searchQuery)
+    // }
 
     return (
         <div className="relative min-h-screen bg-gray-900 overflow-hidden">
@@ -78,7 +77,7 @@ const CalculatorHero = () => {
                     CarbonCut Marketing Calculator makes it simple to understand your carbon footprint. Instantly convert any CO₂e amount into relatable, real-world equivalents
                 </p>
 
-                <form onSubmit={handleSearch} className="flex w-full max-w-lg gap-2">
+                <form  className="flex w-full max-w-lg gap-2">
                     <Button
                         type="submit"
                         className="flex-1 min-w-0 h-14 px-8 bg-[#1F4960] hover:bg-blue-800 border-0 rounded-none text-white flex items-center justify-center gap-2"
