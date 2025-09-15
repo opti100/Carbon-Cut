@@ -13,7 +13,7 @@ const Hero2 = () => {
   }
 
   return (
-    <section className="bg-black py-16 px-6">
+    <section className="bg-[#031B27] py-16 px-6">
       <div className="max-w-7xl mx-auto">
         <div
           className="relative rounded-3xl overflow-hidden"
