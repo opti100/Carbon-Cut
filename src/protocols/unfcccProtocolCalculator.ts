@@ -111,7 +111,7 @@ export default class UNFCCCProtocolCarbonCalculator {
 
   // UNFCCC AM00XX - Simplified Methodology for Digital Activities
   calculateDigitalActivity(dataGB: number, processingGB: number, deviceHours: number, gridIntensity: number, includeDeviceEnergy: boolean): CalculationResult {
-    const gridFactor = gridIntensity / 1000; // kgCO2e per kWh
+    // const gridFactor = gridIntensity / 1000; // kgCO2e per kWh
 
     // Scope 2: Energy from Data Centers (processing)
     const dataCenterEmissions = processingGB * this.ipccFactors.data_center_global_average;

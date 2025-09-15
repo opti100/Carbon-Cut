@@ -64,7 +64,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
       
       // Color scheme for professional look
       const primaryColor: [number, number, number] = [41, 128, 185]; // Professional blue
-      const accentColor: [number, number, number] = [52, 152, 219]; // Lighter blue
+      // const accentColor: [number, number, number] = [52, 152, 219]; // Lighter blue
       const textColor: [number, number, number] = [44, 62, 80]; // Dark blue-gray
       const lightGray: [number, number, number] = [236, 240, 241];
       

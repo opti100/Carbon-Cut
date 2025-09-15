@@ -38,20 +38,7 @@ export default function MarketingCalculator() {
     
     loadCountries();
   }, []);
-
-  useEffect(() => {
-    activities.forEach(activity => {
-      const shouldRecalculate = 
-        emissionResults[activity.id] === undefined || 
-        !calculatingEmissions[activity.id];
-      
-      if (shouldRecalculate) {
-        calcCO2AI(activity);
-      }
-    });
-  }, [activities, emissionResults, calculatingEmissions]);
-
-  const calcCO2AI = async (activity: ActivityData): Promise<number> => {
+ const calcCO2AI = async (activity: ActivityData): Promise<number> => {
     const activityId = activity.id;
     
     if (calculatingEmissions[activityId]) return 0;
@@ -117,6 +104,19 @@ export default function MarketingCalculator() {
       setCalculatingEmissions(prev => ({ ...prev, [activityId]: false }));
     }
   };
+  useEffect(() => {
+    activities.forEach(activity => {
+      const shouldRecalculate = 
+        emissionResults[activity.id] === undefined || 
+        !calculatingEmissions[activity.id];
+      
+      if (shouldRecalculate) {
+        calcCO2AI(activity);
+      }
+    });
+  }, [activities, emissionResults, calculatingEmissions ,calcCO2AI]);
+
+ 
 
   const getDisplayCO2 = (activity: ActivityData): number => {
     if (emissionResults[activity.id] !== undefined) {
@@ -189,32 +189,93 @@ export default function MarketingCalculator() {
   const totals = calculateTotals();
 
   return (
-    <div className="py-16 px-8 bg-black text-white min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">
-            <span className="text-blue-400">Organization and Reporting Details</span> 
-          </h1>
-          <p className="text-gray-400">Provide your company details and reporting preferences to set the foundation for accurate CO₂e calculations.</p>
-        </header>
+    <div className="min-h-screen bg-white">
+      {/* Hero Section - Patch.io inspired clean header */}
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="h-full w-full" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+          <div className="text-center">
+            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+              Rebalance your
+              <span className="block bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
+                marketing impact
+              </span>
+            </h1>
+            <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
+              Calculate and track your marketing activities&apos; carbon emissions with precision. 
+              Get insights into your environmental impact and build a sustainable marketing strategy.
+            </p>
+            <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Real-time calculations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span>GHG Protocol compliant</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <span>2025 emission factors</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <OrganizationForm 
-          organization={organization} 
-          onOrganizationChange={setOrganization} 
-        />
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Step Indicators */}
+        <div className="py-8 border-b border-gray-200">
+          <div className="flex items-center justify-center space-x-8">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
+              <span className="text-gray-700 font-medium">Organization Details</span>
+            </div>
+            <div className="w-8 h-0.5 bg-gray-300"></div>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">2</div>
+              <span className="text-gray-500">Add Activities</span>
+            </div>
+            <div className="w-8 h-0.5 bg-gray-300"></div>
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">3</div>
+              <span className="text-gray-500">Review & Export</span>
+            </div>
+          </div>
+        </div>
 
-        <StatsOverview totals={totals} />
+        {/* Stats Overview - Always visible at top */}
+        <div className="py-8">
+          <StatsOverview totals={totals} />
+        </div>
 
-        <MarketingActivityForm 
-          channels={CHANNELS}
-          defaultScope={DEFAULT_SCOPE}
-          countries={availableCountries}
-          loadingCountries={loadingCountries}
-          onAddActivity={addActivity}
-        />
+        {/* Organization Form */}
+        <div className="pb-8">
+          <OrganizationForm 
+            organization={organization} 
+            onOrganizationChange={setOrganization} 
+          />
+        </div>
 
-        {activities.length > 0 && (
-          <>
+        {/* Activity Form */}
+        <div className="pb-8">
+          <MarketingActivityForm 
+            channels={CHANNELS}
+            defaultScope={DEFAULT_SCOPE}
+            countries={availableCountries}
+            loadingCountries={loadingCountries}
+            onAddActivity={addActivity}
+          />
+        </div>
+
+        {/* Results Section */}
+        {activities.length > 0 ? (
+          <div className="space-y-8 pb-16">
             <ActivityLog 
               activities={activities}
               countries={availableCountries}
@@ -232,7 +293,24 @@ export default function MarketingCalculator() {
               getDisplayCO2={getDisplayCO2}
               totals={totals}
             />
-          </>
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="bg-gray-50 rounded-2xl p-12 border border-gray-200 max-w-lg mx-auto">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Ready to calculate your impact?</h3>
+              <p className="text-gray-600 mb-6">
+                Add your first marketing activity above to start calculating your carbon footprint.
+              </p>
+              <div className="text-sm text-gray-500">
+                Start by filling out your organization details and then add activities to track.
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>

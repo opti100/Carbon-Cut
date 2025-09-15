@@ -1,5 +1,11 @@
 import { ActivityData, ChannelUnits, CountryData } from '@/types/types';
 import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader2, Plus } from 'lucide-react';
 
 interface MarketingActivityFormProps {
   channels: ChannelUnits;
@@ -90,131 +96,182 @@ export default function MarketingActivityForm({
   };
 
   return (
-    <section className="mb-8 p-6 bg-black rounded-lg">
-      <h2 className="text-2xl font-semibold mb-4">Add Marketing Activity</h2>
+    <Card className="shadow-sm border border-gray-200 bg-white">
+      <CardHeader className="border-b border-gray-100 bg-gray-50/50">
+        <CardTitle className="text-2xl text-gray-900 font-semibold flex items-center gap-2">
+          <div className="p-2 bg-green-100 rounded-lg">
+            <Plus className="h-5 w-5 text-green-600" />
+          </div>
+          Add Marketing Activity
+        </CardTitle>
+        <p className="text-gray-600 mt-2">
+          Enter the details of your marketing activity to calculate its carbon footprint.
+        </p>
+      </CardHeader>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">Date</label>
-          <input
-            type="date"
-            value={formData.date}
-            onChange={(e) => handleChange('date', e.target.value)}
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2">Market</label>
-          <select
-            value={formData.market}
-            onChange={(e) => handleChange('market', e.target.value)}
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {loadingCountries ? (
-              <option>Loading countries...</option>
-            ) : (
-              countries.map((country,index) => (
-                <option key={index} value={country.name}>{country.name}</option>
-              ))
-            )}
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2">Channel</label>
-          <select
-            value={formData.channel}
-            onChange={(e) => handleChange('channel', e.target.value)}
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {Object.keys(channels).map(channel => (
-              <option key={channel} value={channel}>{channel}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">Activity type</label>
-          <select
-            value={formData.unit}
-            onChange={(e) => handleChange('unit', e.target.value)}
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            {availableUnits.map(([label, key]) => (
-              <option key={key} value={key}>{label}</option>
-            ))}
-          </select>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2">Quantity</label>
-          <input
-            type="number"
-            step="0.000001"
-            value={formData.qty}
-            onChange={(e) => handleChange('qty', e.target.value)}
-            placeholder="e.g., 5000000"
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2">Scope</label>
-          <select
-            value={formData.scope}
-            onChange={(e) => handleChange('scope', parseInt(e.target.value))}
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value={1}>1</option>
-            <option value={2}>2</option>
-            <option value={3}>3</option>
-          </select>
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Campaign name <span className="text-gray-500">(optional)</span>
-          </label>
-          <input
-            type="text"
-            value={formData.campaign}
-            onChange={(e) => handleChange('campaign', e.target.value)}
-            placeholder="Spring Sale"
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Notes <span className="text-gray-500">(optional)</span>
-          </label>
-          <input
-            type="text"
-            value={formData.notes}
-            onChange={(e) => handleChange('notes', e.target.value)}
-            placeholder="Any context"
-            className="w-full p-3 bg-black border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-        </div>
-      </div>
-      
-      <div className="flex justify-end">
-        <button>
+      <CardContent className="pt-6 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="activity-date" className="text-gray-700 font-medium">Date</Label>
+            <Input
+              id="activity-date"
+              type="date"
+              value={formData.date}
+              onChange={(e) => handleChange('date', e.target.value)}
+              className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500/20"
+            />
+          </div>
           
-        </button>
-        <button
-          onClick={handleSubmit}
-          disabled={addingActivity}
-          className="px-6 py-3 bg-[#1F4960] text-white rounded-none hover:bg-blue-700 transition-colors disabled:opacity-70"
-        >
-          {addingActivity ? 'Adding...' : '+ Add to log'}
-        </button>
-      </div>
-    </section>
+          <div className="space-y-2">
+            <Label htmlFor="market" className="text-gray-700 font-medium">Market</Label>
+            <Select
+              value={formData.market}
+              onValueChange={(value) => handleChange('market', value)}
+            >
+              <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500">
+                <SelectValue placeholder="Select market" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-gray-200">
+                {loadingCountries ? (
+                  <SelectItem value="loading" disabled>
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                      <span className="text-gray-600">Loading countries...</span>
+                    </div>
+                  </SelectItem>
+                ) : (
+                  countries.map((country, index) => (
+                    <SelectItem key={index} value={country.name} className="text-gray-900">
+                      {country.name}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="channel" className="text-gray-700 font-medium">Channel</Label>
+            <Select
+              value={formData.channel}
+              onValueChange={(value) => handleChange('channel', value)}
+            >
+              <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500">
+                <SelectValue placeholder="Select channel" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-gray-200">
+                {Object.keys(channels).map(channel => (
+                  <SelectItem key={channel} value={channel} className="text-gray-900">
+                    {channel}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="activity-type" className="text-gray-700 font-medium">Activity type</Label>
+            <Select
+              value={formData.unit}
+              onValueChange={(value) => handleChange('unit', value)}
+            >
+              <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500">
+                <SelectValue placeholder="Select activity type" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-gray-200">
+                {availableUnits.map(([label, key]) => (
+                  <SelectItem key={key} value={key} className="text-gray-900">
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="quantity" className="text-gray-700 font-medium">Quantity</Label>
+            <Input
+              id="quantity"
+              type="number"
+              step="0.000001"
+              value={formData.qty}
+              onChange={(e) => handleChange('qty', e.target.value)}
+              placeholder="e.g., 5000000"
+              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="scope" className="text-gray-700 font-medium">Scope</Label>
+            <Select
+              value={formData.scope.toString()}
+              onValueChange={(value) => handleChange('scope', parseInt(value))}
+            >
+              <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500">
+                <SelectValue placeholder="Select scope" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border-gray-200">
+                <SelectItem value="1" className="text-gray-900">Scope 1</SelectItem>
+                <SelectItem value="2" className="text-gray-900">Scope 2</SelectItem>
+                <SelectItem value="3" className="text-gray-900">Scope 3</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="campaign" className="text-gray-700 font-medium">
+              Campaign name <span className="text-gray-500">(optional)</span>
+            </Label>
+            <Input
+              id="campaign"
+              type="text"
+              value={formData.campaign}
+              onChange={(e) => handleChange('campaign', e.target.value)}
+              placeholder="Spring Sale"
+              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="notes" className="text-gray-700 font-medium">
+              Notes <span className="text-gray-500">(optional)</span>
+            </Label>
+            <Input
+              id="notes"
+              type="text"
+              value={formData.notes}
+              onChange={(e) => handleChange('notes', e.target.value)}
+              placeholder="Any context"
+              className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
+            />
+          </div>
+        </div>
+        
+        <div className="flex justify-end pt-4 border-t border-gray-100">
+          <Button
+            onClick={handleSubmit}
+            disabled={addingActivity || !formData.qty}
+            size="lg"
+            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+          >
+            {addingActivity ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Adding...
+              </>
+            ) : (
+              <>
+                <Plus className="h-4 w-4 mr-2" />
+                Add to log
+              </>
+            )}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
