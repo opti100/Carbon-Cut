@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import GHGProtocolCarbonCalculator from '../../../lib/ghgProtocolCalculator';
+import GHGProtocolCarbonCalculator from '../../../protocols/ghgProtocolCalculator';
 
-// Initialize the calculator once
+
 const calculator = new GHGProtocolCarbonCalculator();
 
 export async function POST(request: Request) {
