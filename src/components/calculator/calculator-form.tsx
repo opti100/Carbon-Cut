@@ -16,7 +16,7 @@ export default function MarketingCalculator() {
     period: '',
     offsets: ''
   });
-  
+
   const [activities, setActivities] = useState<ActivityData[]>([]);
   const [calculatingEmissions, setCalculatingEmissions] = useState<Record<number, boolean>>({});
   const [emissionResults, setEmissionResults] = useState<Record<number, number>>({});
@@ -35,12 +35,12 @@ export default function MarketingCalculator() {
         setLoadingCountries(false);
       }
     };
-    
+
     loadCountries();
   }, []);
- const calcCO2AI = async (activity: ActivityData): Promise<number> => {
+  const calcCO2AI = async (activity: ActivityData): Promise<number> => {
     const activityId = activity.id;
-    
+
     if (calculatingEmissions[activityId]) return 0;
     if (emissionResults[activityId] !== undefined) return emissionResults[activityId];
 
@@ -87,12 +87,12 @@ export default function MarketingCalculator() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
       });
-      
+
       if (!response.ok) throw new Error('API response not OK');
 
       const result = await response.json();
       const emissions = result.success ? result.data.totalEmissions : 0;
-      
+
       setEmissionResults(prev => ({ ...prev, [activityId]: emissions }));
       return emissions;
     } catch (error) {
@@ -106,32 +106,32 @@ export default function MarketingCalculator() {
   };
   useCallback(() => {
     activities.forEach(activity => {
-      const shouldRecalculate = 
-        emissionResults[activity.id] === undefined || 
+      const shouldRecalculate =
+        emissionResults[activity.id] === undefined ||
         !calculatingEmissions[activity.id];
-      
+
       if (shouldRecalculate) {
         calcCO2AI(activity);
       }
     });
-  }, [activities, emissionResults, calculatingEmissions ,calcCO2AI]);
+  }, [activities, emissionResults, calculatingEmissions, calcCO2AI]);
 
- 
+
 
   const getDisplayCO2 = (activity: ActivityData): number => {
     if (emissionResults[activity.id] !== undefined) {
       return emissionResults[activity.id];
     }
-    
+
     if (calculatingEmissions[activity.id]) {
       return FALLBACK_CALCULATION.getBasicEmission(activity);
     }
-    
+
     if (emissionResults[activity.id] === undefined) {
       calcCO2AI(activity);
       return FALLBACK_CALCULATION.getBasicEmission(activity);
     }
-    
+
     return 0;
   };
 
@@ -139,13 +139,13 @@ export default function MarketingCalculator() {
     setActivities(prev => prev.map(activity => {
       if (activity.id === activityId) {
         const updatedActivity = { ...activity, ...updates };
-        
+
         setEmissionResults(prevResults => {
           const newResults = { ...prevResults };
           delete newResults[activityId];
           return newResults;
         });
-        
+
         setTimeout(() => calcCO2AI(updatedActivity), 200);
         return updatedActivity;
       }
@@ -172,7 +172,7 @@ export default function MarketingCalculator() {
     activities.forEach(activity => {
       const co2 = getDisplayCO2(activity);
       total += co2;
-      
+
       byChannel[activity.channel] = (byChannel[activity.channel] || 0) + co2;
       byMarket[activity.market] = (byMarket[activity.market] || 0) + co2;
       byScope[activity.scope as keyof typeof byScope] = (byScope[activity.scope as keyof typeof byScope] || 0) + co2;
@@ -206,7 +206,7 @@ export default function MarketingCalculator() {
               </span>
             </h1>
             <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
-              Calculate and track your marketing activities&apos; carbon emissions with precision. 
+              Calculate and track your marketing activities&apos; carbon emissions with precision.
               Get insights into your environmental impact and build a sustainable marketing strategy.
             </p>
             <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
@@ -256,15 +256,15 @@ export default function MarketingCalculator() {
 
         {/* Organization Form */}
         <div className="pb-8">
-          <OrganizationForm 
-            organization={organization} 
-            onOrganizationChange={setOrganization} 
+          <OrganizationForm
+            organization={organization}
+            onOrganizationChange={setOrganization}
           />
         </div>
 
         {/* Activity Form */}
         <div className="pb-8">
-          <MarketingActivityForm 
+          <MarketingActivityForm
             channels={CHANNELS}
             defaultScope={DEFAULT_SCOPE}
             countries={availableCountries}
@@ -273,45 +273,25 @@ export default function MarketingCalculator() {
           />
         </div>
 
-        {/* Results Section */}
-        {activities.length > 0 ? (
-          <div className="space-y-8 pb-16">
-            <ActivityLog 
-              activities={activities}
-              countries={availableCountries}
-              channels={CHANNELS}
-              calculatingEmissions={calculatingEmissions}
-              getDisplayCO2={getDisplayCO2}
-              onUpdateActivity={updateActivity}
-            />
+        <div className="space-y-8 pb-16">
+          <ActivityLog
+            activities={activities}
+            countries={availableCountries}
+            channels={CHANNELS}
+            calculatingEmissions={calculatingEmissions}
+            getDisplayCO2={getDisplayCO2}
+            onUpdateActivity={updateActivity}
+          />
 
-            <EmissionsBreakdown totals={totals} />
+          <EmissionsBreakdown totals={totals} />
 
-            <ReportActions 
-              organization={organization}
-              activities={activities}
-              getDisplayCO2={getDisplayCO2}
-              totals={totals}
-            />
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <div className="bg-gray-50 rounded-2xl p-12 border border-gray-200 max-w-lg mx-auto">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Ready to calculate your impact?</h3>
-              <p className="text-gray-600 mb-6">
-                Add your first marketing activity above to start calculating your carbon footprint.
-              </p>
-              <div className="text-sm text-gray-500">
-                Start by filling out your organization details and then add activities to track.
-              </div>
-            </div>
-          </div>
-        )}
+          <ReportActions
+            organization={organization}
+            activities={activities}
+            getDisplayCO2={getDisplayCO2}
+            totals={totals}
+          />
+        </div>
       </div>
     </div>
   );
