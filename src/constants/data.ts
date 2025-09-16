@@ -9,19 +9,33 @@ export const CHANNELS: Record<string, Array<[string, string]>> = {
   "Events/Experiential": [["Venue energy (kWh)", "hosting_kWh"]],
   "Travel": [["Road km", "road_km"], ["Rail km", "rail_km"], ["Short‑haul air km", "shorthaul_air_km"], ["Long‑haul air km", "longhaul_air_km"]],
   "Cloud/Martech": [["Cloud/hosting (kWh)", "hosting_kWh"]],
-  "Merch/Swag": [["Materials (kg)", "material_merch_kg"]]
+  "Merch/Swag": [["Materials (kg)", "material_merch_kg"]],
+  "Ad Production": [["Production hours", "production_hour"], ["Materials (kg)", "material_kg"]],
+  "Search & Social Ads": [["Impressions", "social_impression"], ["Click-throughs", "click_through"]],
+  "Owned Social Posts": [["Posts", "social_post"], ["Engagement", "social_engagement"]],
+  "Out-of-Home (OOH)": [["Board weeks", "ooh_board_week"], ["Installations", "ooh_installation"]],
+  "Influencer Marketing": [["Collaborations", "influencer_collab"], ["Content pieces", "content_piece"]],
+  "PR & Press": [["Press releases", "press_release"], ["Media events", "media_event"]],
+  "Office Energy Allocation": [["Energy (kWh)", "office_energy_kWh"]]
 };
 
 export const DEFAULT_SCOPE: Record<string, number> = {
-  "Digital Ads": 3,
-  "Email": 3,
-  "Website": 3,
-  "DOOH (Digital billboards)": 3,
-  "Print": 3,
-  "Events/Experiential": 3,
-  "Travel": 3,
-  "Cloud/Martech": 2,
-  "Merch/Swag": 3
+  "Ad Production": 3,                   
+  "Digital Ads": 3,                     
+  "Search & Social Ads": 3,              
+  "Owned Social Posts": 3,               
+  "Email": 3,                            
+  "Website": 3,                          
+  "Print": 3,                            
+  "Out-of-Home (OOH)": 3,               
+  "DOOH (Digital billboards)": 3,      
+  "Events/Experiential": 3,            
+  "Influencer Marketing": 3,           
+  "PR & Press": 3,                      
+  "Merch/Swag": 3,                      
+  "Cloud/Martech": 3,                   
+  "Travel": 3,                          
+  "Office Energy Allocation": 2         
 };
 
 export const FALLBACK_CALCULATION = {
