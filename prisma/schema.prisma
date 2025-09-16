@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PdfReport {
+  id                  String            @id @default(cuid())
+  
+  userName            String
+  email               String
+  companyName         String
+  phoneNumber         String
+  
+  disclosureFormat    DisclosureFormat
+  
+  isCertified         Boolean           @default(false)
+  certificationId     String?           @unique
+  certificationDate   DateTime?
+  
+  pdfUrl              String?
+  cloudinaryPublicId  String?
+  
+  totalEmissions      Float
+  activityCount       Int
+  reportPeriod        String?
+  
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  
+  paymentStatus       PaymentStatus     @default(PENDING)
+  paymentAmount       Float?
+  paymentDate         DateTime?
+  stripePaymentId     String?
+  
+  activities          ReportActivity[]  @relation("PdfReportActivities")
+
+  @@map("pdf_reports")
+}
+
+enum DisclosureFormat {
+  SECR  @map("SECR") // Streamlined Energy & Carbon Reporting
+  CSRD  @map("CSRD") // Corporate Sustainability Reporting Directive
+  SEC   @map("SEC")  // Securities and Exchange Commission
+}
+
+enum PaymentStatus {
+  PENDING    @map("PENDING")
+  COMPLETED  @map("COMPLETED")
+  FAILED     @map("FAILED")
+  REFUNDED   @map("REFUNDED")
+}
+
+model ReportActivity {
+  id            String    @id @default(cuid())
+  pdfReportId    String
+  pdfReport      PdfReport @relation("PdfReportActivities", fields: [pdfReportId], references: [id], onDelete: Cascade)
+  
+  date           String
+  market         String
+  channel        String
+  activityLabel  String
+  quantity       Float
+  co2Emissions   Float
+  scope          Int
+  campaign       String?
+  notes          String?
+  
+  createdAt      DateTime  @default(now())
+  
+  @@map("report_activities")
+}
