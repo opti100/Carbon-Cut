@@ -35,7 +35,7 @@ export const DEFAULT_SCOPE: Record<string, number> = {
   "Merch/Swag": 3,                      
   "Cloud/Martech": 3,                   
   "Travel": 3,                          
-  "Office Energy Allocation": 2         
+  // "Office Energy Allocation": 2         
 };
 
 export const FALLBACK_CALCULATION = {
