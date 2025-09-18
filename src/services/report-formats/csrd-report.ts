@@ -1,447 +1,653 @@
-import { jsPDF } from "jspdf";
 import { ActivityData, OrganizationData } from "@/types/types";
+import puppeteer from 'puppeteer';
+import { PDFFormData, PDFGenerationData } from './secr-report';
 
-export interface PDFFormData {
-  name: string;
-  email: string;
-  companyName: string;
-  phoneNumber: string;
-  disclosureFormat: 'SECR' | 'CSRD' | 'SEC';
-}
-
-export interface PDFGenerationData {
-  organization: OrganizationData;
-  activities: ActivityData[];
-  getDisplayCO2: (activity: ActivityData) => number;
-  totals: {
-    total: number;
-    byChannel: Record<string, number>;
-    byMarket: Record<string, number>;
-    byScope: Record<string, number>;
-  };
-  formData: PDFFormData;
-}
-
-const generateCSRDReport = (data: PDFGenerationData): void => {
+const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
   const { organization, activities, getDisplayCO2, totals, formData } = data;
-  const doc = new jsPDF();
   const totalEmissions = totals.total;
   const now = new Date();
-  const reportDate = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
-  
-  const margin = 20;
-  const pageWidth = doc.internal.pageSize.width;
-  const pageHeight = doc.internal.pageSize.height;
-  let yPos = 20;
-  let pageNumber = 1;
+  const reportDate = now.toLocaleDateString('en-GB', { 
+    day: '2-digit', 
+    month: 'long', 
+    year: 'numeric' 
+  });
 
-  // Helper Functions
-  const addPageNumber = () => {
-    doc.setTextColor(128, 128, 128);
-    doc.setFontSize(8);
-    doc.text(`Page ${pageNumber}`, pageWidth - margin - 20, pageHeight - 10);
-    pageNumber++;
-  };
-
-  const checkPageBreak = (requiredSpace: number = 30) => {
-    if (yPos + requiredSpace > pageHeight - 30) {
-      addPageNumber();
-      doc.addPage();
-      yPos = 20;
-      return true;
+  // Calculate scope data
+  const scopeData = [
+    {
+      scope: '1',
+      description: 'Direct GHG emissions',
+      emissions: totals.byScope['1'] || 0,
+      category: 'Own operations'
+    },
+    {
+      scope: '2', 
+      description: 'Indirect GHG emissions from energy consumption',
+      emissions: totals.byScope['2'] || 0,
+      category: 'Energy consumption'
+    },
+    {
+      scope: '3',
+      description: 'Other indirect GHG emissions',
+      emissions: totals.byScope['3'] || 0,
+      category: 'Value chain'
     }
-    return false;
-  };
-
-  const addSectionHeader = (title: string, level: number = 1) => {
-    checkPageBreak(25);
-    
-    if (level === 1) {
-      doc.setFillColor(51, 187, 207);
-      doc.rect(margin - 5, yPos - 5, pageWidth - (2 * margin) + 10, 20, 'F');
-      doc.setTextColor(255, 255, 255);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
-    } else {
-      doc.setTextColor(3, 27, 39);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
-    }
-    
-    doc.text(title, margin, yPos + 8);
-    yPos += 25;
-    doc.setTextColor(3, 27, 39); // Reset color
-  };
-
-  const addTable = (headers: string[], rows: string[][], options: { 
-    headerColor?: [number, number, number], 
-    alternateRows?: boolean,
-    columnWidths?: number[]
-  } = {}) => {
-    const tableWidth = pageWidth - (2 * margin);
-    const rowHeight = 12;
-    const colWidths = options.columnWidths || headers.map(() => tableWidth / headers.length);
-    
-    checkPageBreak(rowHeight * (rows.length + 2));
-    
-    // Header
-    doc.setFillColor(...(options.headerColor || [230, 230, 230]));
-    doc.rect(margin, yPos, tableWidth, rowHeight, 'F');
-    doc.setDrawColor(128, 128, 128);
-    doc.rect(margin, yPos, tableWidth, rowHeight);
-    
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0);
-    
-    let xPos = margin + 5;
-    headers.forEach((header, i) => {
-      doc.text(header, xPos, yPos + 8);
-      xPos += colWidths[i];
-    });
-    
-    yPos += rowHeight;
-    
-    // Data rows
-    doc.setFont('helvetica', 'normal');
-    rows.forEach((row, rowIndex) => {
-      if (options.alternateRows && rowIndex % 2 === 1) {
-        doc.setFillColor(248, 248, 248);
-        doc.rect(margin, yPos, tableWidth, rowHeight, 'F');
-      }
-      
-      doc.setDrawColor(200, 200, 200);
-      doc.rect(margin, yPos, tableWidth, rowHeight);
-      
-      xPos = margin + 5;
-      row.forEach((cell, colIndex) => {
-        const cellText = doc.splitTextToSize(cell, colWidths[colIndex] - 10);
-        doc.text(cellText, xPos, yPos + 8);
-        xPos += colWidths[colIndex];
-      });
-      
-      yPos += rowHeight;
-    });
-    
-    yPos += 10;
-  };
-
-  // COVER PAGE
-  doc.setFillColor(3, 27, 39);
-  doc.rect(0, 0, pageWidth, pageHeight, 'F');
-  
-  // Company Logo Area (placeholder)
-  doc.setFillColor(255, 255, 255);
-  doc.rect(margin, 30, 60, 30, 'F');
-  doc.setTextColor(128, 128, 128);
-  doc.setFontSize(8);
-  doc.text('COMPANY LOGO', margin + 15, 48);
-  
-  // Title
-  doc.setTextColor(51, 187, 207);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(32);
-  doc.text('CSRD', margin, 100);
-  
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(28);
-  doc.text('SUSTAINABILITY', margin, 120);
-  doc.text('REPORT', margin, 140);
-  
-  // Subtitle
-  doc.setFontSize(14);
-  doc.setFont('helvetica', 'normal');
-  doc.text('Corporate Sustainability Reporting Directive', margin, 160);
-  doc.text('Marketing Carbon Emissions Disclosure', margin, 175);
-  
-  // Company Details Box
-  doc.setFillColor(51, 187, 207);
-  doc.rect(margin, 200, pageWidth - (2 * margin), 60, 'F');
-  
-  doc.setTextColor(255, 255, 255);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(16);
-  doc.text(formData.companyName, margin + 10, 220);
-  
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(12);
-  doc.text(`Report Period: ${organization.period || '2024'}`, margin + 10, 235);
-  doc.text(`Report Date: ${reportDate}`, margin + 10, 248);
-  
-  // Footer
-  doc.setTextColor(128, 128, 128);
-  doc.setFontSize(10);
-  doc.text('Generated by CarbonCut Platform', margin, pageHeight - 20);
-
-  addPageNumber();
-  doc.addPage();
-  yPos = 20;
-
-  // TABLE OF CONTENTS
-  addSectionHeader('TABLE OF CONTENTS');
-  
-  const tocItems = [
-    'Executive Summary',
-    'CSRD Compliance Statement',
-    'Double Materiality Assessment',
-    'Environmental Metrics Overview',
-    'Marketing Emissions Breakdown',
-    'Methodology & Calculation Framework',
-    'ESRS E1 Alignment',
-    'Data Quality & Assurance',
-    'Forward-Looking Statements',
-    'Appendices'
-  ];
-  
-  tocItems.forEach((item, index) => {
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.text(`${index + 1}. ${item}`, margin + 10, yPos);
-    doc.text(`${index + 3}`, pageWidth - margin - 20, yPos);
-    yPos += 12;
-  });
-
-  // EXECUTIVE SUMMARY
-  doc.addPage();
-  yPos = 20;
-  addSectionHeader('EXECUTIVE SUMMARY');
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(11);
-  const executiveSummary = [
-    `${formData.companyName} presents this CSRD-compliant sustainability report focusing on marketing-related carbon emissions for the reporting period ${organization.period || '2024'}.`,
-    '',
-    `Our comprehensive assessment reveals total marketing emissions of ${totalEmissions.toFixed(2)} tCO₂e across ${activities.length} distinct marketing activities. This represents our commitment to transparency and environmental accountability as required under the Corporate Sustainability Reporting Directive.`,
-    '',
-    'Key Highlights:',
-    `• Total Marketing Emissions: ${totalEmissions.toFixed(2)} tCO₂e`,
-    `• Activities Assessed: ${activities.length}`,
-    `• Primary Emission Sources: ${Object.keys(totals.byChannel).slice(0, 3).join(', ')}`,
-    `• Data Quality Level: High Confidence`,
-    '',
-    'This report demonstrates our alignment with ESRS E1 requirements and our commitment to double materiality assessment in sustainability reporting.'
   ];
 
-  executiveSummary.forEach(line => {
-    if (line.startsWith('•')) {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      doc.text(line, margin + 10, yPos);
-    } else if (line === 'Key Highlights:') {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.text(line, margin, yPos);
-    } else {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      if (line.trim()) {
-        const splitText = doc.splitTextToSize(line, pageWidth - (2 * margin));
-        doc.text(splitText, margin, yPos);
-        yPos += splitText.length * 5;
-      }
-    }
-    yPos += 8;
-    checkPageBreak();
-  });
+  // Top marketing channels
+  const topChannels = Object.entries(totals.byChannel)
+    .sort(([,a], [,b]) => b - a)
+    .slice(0, 10);
 
-  // CSRD COMPLIANCE STATEMENT
-  checkPageBreak(50);
-  addSectionHeader('CSRD COMPLIANCE STATEMENT');
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSRD Sustainability Report - ${formData.companyName}</title>
+    <style>
+        /* CSS Variables for CSRD theming */
+        :root {
+            --eu-blue: #003399;
+            --eu-yellow: #FFCC00;
+            --white: #FFFFFF;
+            --dark-text: #1a1a1a;
+            --light-gray: #F7F7F7;
+            --medium-gray: #CCCCCC;
+            --light-blue: #E6F3FF;
+            --subtitle-gray: #555555;
+            --green: #00AA44;
+        }
 
-  const complianceText = [
-    'This report has been prepared in accordance with the Corporate Sustainability Reporting Directive (CSRD) and European Sustainability Reporting Standards (ESRS), specifically addressing:',
-    '',
-    '• ESRS E1 - Climate Change reporting requirements',
-    '• Double materiality assessment principles',
-    '• Value chain emissions disclosure (Scope 1, 2, and 3)',
-    '• Quantitative environmental impact metrics',
-    '',
-    'The methodologies employed follow recognized international standards including the GHG Protocol Corporate Value Chain Standard and ISO 14064 guidelines.'
-  ];
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  complianceText.forEach(line => {
-    checkPageBreak();
-    if (line.startsWith('•')) {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      doc.text(line, margin + 10, yPos);
-    } else {
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      if (line.trim()) {
-        const splitText = doc.splitTextToSize(line, pageWidth - (2 * margin));
-        doc.text(splitText, margin, yPos);
-        yPos += splitText.length * 5;
-      }
-    }
-    yPos += 8;
-  });
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: var(--dark-text);
+            background: white;
+        }
 
-  // DOUBLE MATERIALITY ASSESSMENT
-  checkPageBreak(60);
-  addSectionHeader('DOUBLE MATERIALITY ASSESSMENT');
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.text('Impact Materiality', margin, yPos);
-  yPos += 12;
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .page-break { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+        }
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  const impactMateriality = `Marketing activities contribute to climate change through energy consumption, material usage, and transportation. Our assessment identifies digital marketing, print materials, and event management as material impact areas requiring disclosure.`;
-  const splitImpact = doc.splitTextToSize(impactMateriality, pageWidth - (2 * margin));
-  doc.text(splitImpact, margin, yPos);
-  yPos += splitImpact.length * 5 + 15;
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 0;
+        }
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.text('Financial Materiality', margin, yPos);
-  yPos += 12;
+        .content-section {
+            margin-bottom: 25px;
+        }
 
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  const financialMateriality = `Climate-related risks in marketing include regulatory costs, carbon pricing impacts, and transition risks affecting campaign delivery costs. Physical risks may impact event planning and material supply chains.`;
-  const splitFinancial = doc.splitTextToSize(financialMateriality, pageWidth - (2 * margin));
-  doc.text(splitFinancial, margin, yPos);
-  yPos += splitFinancial.length * 5 + 20;
+        /* Header styles */
+        .cover-header {
+            background: linear-gradient(135deg, var(--eu-blue) 0%, #0066CC 100%);
+            color: var(--white);
+            padding: 40px 30px;
+            position: relative;
+            margin: -20px -20px 30px -20px;
+        }
 
-  // ENVIRONMENTAL METRICS OVERVIEW
-  checkPageBreak(80);
-  addSectionHeader('ENVIRONMENTAL METRICS OVERVIEW');
+        .eu-stars {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: var(--eu-yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8pt;
+            font-weight: bold;
+            color: var(--eu-blue);
+        }
 
-  // Main metrics table
-  const metricsHeaders = ['Environmental Indicator', 'Value', 'Unit', 'Scope'];
-  const metricsRows = [
-    ['Total GHG Emissions', totalEmissions.toFixed(2), 'tCO₂e', 'All Scopes'],
-    ['Scope 1 Emissions', (totals.byScope['Scope 1'] || 0).toFixed(2), 'tCO₂e', 'Direct'],
-    ['Scope 2 Emissions', (totals.byScope['Scope 2'] || 0).toFixed(2), 'tCO₂e', 'Indirect'],
-    ['Scope 3 Emissions', (totals.byScope['Scope 3'] || 0).toFixed(2), 'tCO₂e', 'Value Chain'],
-    ['Marketing Activities', activities.length.toString(), 'Count', 'All'],
-    ['Reporting Period', organization.period || '2024', 'Year', 'N/A']
-  ];
+        .main-title {
+            font-size: 32pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-  addTable(metricsHeaders, metricsRows, { 
-    headerColor: [51, 187, 207],
-    alternateRows: true,
-    columnWidths: [80, 40, 30, 40]
-  });
+        .sub-title {
+            font-size: 18pt;
+            font-weight: normal;
+            opacity: 0.9;
+        }
 
-  // Channel breakdown
-  if (Object.keys(totals.byChannel).length > 0) {
-    checkPageBreak(50);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.text('Emissions by Marketing Channel', margin, yPos);
-    yPos += 15;
+        /* Section headers */
+        .section-header {
+            background: var(--eu-blue);
+            color: var(--white);
+            padding: 15px 20px;
+            font-size: 14pt;
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+            position: relative;
+        }
 
-    const channelHeaders = ['Channel', 'Emissions (tCO₂e)', 'Percentage'];
-    const channelRows = Object.entries(totals.byChannel)
-      .sort(([,a], [,b]) => b - a)
-      .map(([channel, emissions]) => [
-        channel,
-        emissions.toFixed(2),
-        `${((emissions / totalEmissions) * 100).toFixed(1)}%`
-      ]);
+        .section-header::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 5px;
+            background: var(--eu-yellow);
+        }
 
-    addTable(channelHeaders, channelRows, {
-      headerColor: [230, 230, 230],
-      alternateRows: true,
-      columnWidths: [90, 50, 50]
-    });
-  }
+        .subsection-header {
+            color: var(--eu-blue);
+            font-size: 12pt;
+            font-weight: bold;
+            margin: 20px 0 10px 0;
+            border-left: 4px solid var(--eu-yellow);
+            padding-left: 15px;
+        }
 
-  // METHODOLOGY SECTION
-  checkPageBreak(100);
-  addSectionHeader('METHODOLOGY & CALCULATION FRAMEWORK');
+        /* CSRD specific elements */
+        .csrd-badge {
+            background: var(--green);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
 
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.text('CarbonCut Master Equation', margin, yPos);
-  yPos += 15;
+        .sustainability-metric {
+            background: var(--light-blue);
+            border: 2px solid var(--eu-blue);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
 
-  // Equation box
-  doc.setFillColor(248, 249, 250);
-  doc.rect(margin, yPos, pageWidth - (2 * margin), 25, 'F');
-  doc.setDrawColor(200, 200, 200);
-  doc.rect(margin, yPos, pageWidth - (2 * margin), 25);
-  
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(12);
-  doc.setTextColor(51, 51, 51);
-  const equation = "CO₂e_marketing = Σ_c Σ_i (Q_c,i × EF_c,i) + Σ_a (A_a × EF_a)";
-  doc.text(equation, margin + 10, yPos + 15);
-  yPos += 35;
+        .metric-title {
+            color: var(--eu-blue);
+            font-size: 12pt;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-  doc.setTextColor(3, 27, 39);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  
-  const methodologyPoints = [
-    'Q_c,i = Activity data for channel c, item i (kWh, km, kg, GB, hours, impressions)',
-    'EF_c,i = Emission factor (kg CO₂e per unit) from DEFRA, EPA, IEA databases',
-    'A_a = Allocated overhead/embodied components',
-    'EF_a = Corresponding emission factor for overhead activities',
-    '',
-    'All calculations follow conservative principles to avoid under-reporting.',
-    'Emission factors updated annually from latest available sources.',
-    'Uncertainty analysis conducted for material emission sources.'
-  ];
+        .metric-value {
+            font-size: 28pt;
+            font-weight: bold;
+            color: var(--dark-text);
+        }
 
-  methodologyPoints.forEach(point => {
-    checkPageBreak();
-    if (point.trim()) {
-      if (point.includes('=')) {
-        doc.text(`• ${point}`, margin + 5, yPos);
-      } else {
-        doc.text(point, margin, yPos);
-      }
-    }
-    yPos += 10;
-  });
+        .metric-unit {
+            font-size: 14pt;
+            color: var(--subtitle-gray);
+            margin-left: 8px;
+        }
 
-  // ESRS E1 ALIGNMENT
-  checkPageBreak(60);
-  addSectionHeader('ESRS E1 - CLIMATE CHANGE ALIGNMENT');
+        .metric-description {
+            font-size: 9pt;
+            color: var(--subtitle-gray);
+            margin-top: 10px;
+        }
 
-  const esrsRequirements = [
-    ['E1-1', 'Transition plan for climate change mitigation', '✓ Partially Addressed'],
-    ['E1-5', 'GHG emissions (Gross)', '✓ Fully Addressed'],
-    ['E1-6', 'GHG removals and carbon credits', '○ Not Applicable'],
-    ['E1-8', 'Energy consumption and mix', '✓ Partially Addressed'],
-    ['E1-9', 'Energy intensity', '○ Future Reporting']
-  ];
+        /* Tables */
+        .csrd-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 9pt;
+        }
 
-  const esrsHeaders = ['ESRS Code', 'Requirement', 'Status'];
-  addTable(esrsHeaders, esrsRequirements, {
-    headerColor: [51, 187, 207],
-    alternateRows: true,
-    columnWidths: [40, 100, 50]
-  });
+        .csrd-table th {
+            background: var(--eu-blue);
+            color: var(--white);
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid var(--medium-gray);
+        }
 
-  // DATA QUALITY & ASSURANCE
-  checkPageBreak(50);
-  addSectionHeader('DATA QUALITY & ASSURANCE');
+        .csrd-table td {
+            padding: 10px;
+            border: 1px solid var(--medium-gray);
+            vertical-align: top;
+        }
 
-  const qualityMetrics = [
-    ['Completeness', '95%', 'High confidence in activity data coverage'],
-    ['Accuracy', '90%', 'Primary data where available, industry averages used'],
-    ['Consistency', '100%', 'Standardized methodology across all channels'],
-    ['Transparency', '100%', 'Full methodology disclosure provided']
-  ];
+        .csrd-table tr:nth-child(even) {
+            background: var(--light-gray);
+        }
 
-  const qualityHeaders = ['Quality Dimension', 'Score', 'Description'];
-  addTable(qualityHeaders, qualityMetrics, {
-    headerColor: [230, 230, 230],
-    alternateRows: true,
-    columnWidths: [50, 30, 110]
-  });
+        .paragraph {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.6;
+        }
 
-  // Add final page number
-  addPageNumber();
+        .double-materiality-box {
+            background: linear-gradient(90deg, var(--light-blue) 0%, #FFF9E6 100%);
+            border: 3px solid var(--eu-blue);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
 
-  // Save the document
-  const fileName = `CSRD_Sustainability_Report_${formData.companyName.replace(/[^a-zA-Z0-9]/g, '_')}_${now.toISOString().slice(0, 10)}.pdf`;
-  doc.save(fileName);
+        .materiality-title {
+            color: var(--eu-blue);
+            font-size: 14pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .company-info-csrd {
+            background: var(--eu-blue);
+            color: var(--white);
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .company-name-csrd {
+            font-size: 24pt;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .company-detail-csrd {
+            font-size: 12pt;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .esrs-reference {
+            background: #F0F8FF;
+            border-left: 5px solid var(--green);
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 9pt;
+        }
+
+        .esrs-title {
+            font-weight: bold;
+            color: var(--green);
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- COVER PAGE -->
+        <div class="cover-header">
+            <div class="eu-stars">EU</div>
+            <div class="main-title">CSRD SUSTAINABILITY REPORT</div>
+            <div class="sub-title">Corporate Sustainability Reporting Directive</div>
+            <div class="csrd-badge">ESRS E1 - Climate Change</div>
+        </div>
+
+        <div class="company-info-csrd">
+            <div class="company-name-csrd">${formData.companyName}</div>
+            <div class="company-detail-csrd">Reporting Period: ${organization.period || '2024'}</div>
+            <div class="company-detail-csrd">Report Date: ${reportDate}</div>
+            <div class="company-detail-csrd">Prepared by: ${formData.name}</div>
+            <div class="company-detail-csrd">CSRD Article 19a & 29a Compliance</div>
+        </div>
+
+        <!-- PAGE BREAK -->
+        <div class="page-break"></div>
+
+        <!-- EXECUTIVE SUMMARY -->
+        <div class="section-header">EXECUTIVE SUMMARY</div>
+        
+        <div class="content-section">
+            <div class="paragraph">
+                This report presents ${formData.companyName}'s sustainability disclosures for marketing activities 
+                in accordance with the Corporate Sustainability Reporting Directive (CSRD) and European Sustainability 
+                Reporting Standards (ESRS), specifically ESRS E1 on Climate Change.
+            </div>
+            
+            <div class="paragraph">
+                Our assessment demonstrates our commitment to the EU's sustainable finance framework and contributes 
+                to the transition towards a more sustainable economy as outlined in the European Green Deal.
+            </div>
+        </div>
+
+        <!-- DOUBLE MATERIALITY -->
+        <div class="section-header">DOUBLE MATERIALITY ASSESSMENT</div>
+
+        <div class="double-materiality-box">
+            <div class="materiality-title">Climate Change - Marketing Operations</div>
+            <div class="paragraph">
+                <strong>Impact Materiality:</strong> Marketing activities contribute to climate change through 
+                greenhouse gas emissions across the value chain, affecting global temperature rise and 
+                environmental sustainability.
+            </div>
+            <div class="paragraph">
+                <strong>Financial Materiality:</strong> Climate-related risks and opportunities affect our 
+                business model, including transition risks from carbon pricing and physical risks from 
+                climate change impacts.
+            </div>
+        </div>
+
+        <!-- KEY METRICS -->
+        <div class="section-header">KEY SUSTAINABILITY METRICS</div>
+
+        <div class="sustainability-metric">
+            <div class="metric-title">Total GHG Emissions from Marketing</div>
+            <div>
+                <span class="metric-value">${totalEmissions.toFixed(2)}</span>
+                <span class="metric-unit">tCO₂e</span>
+            </div>
+            <div class="metric-description">
+                Scope 1, 2 & 3 emissions from ${activities.length} marketing activities
+            </div>
+        </div>
+
+        <!-- ESRS E1 DISCLOSURES -->
+        <div class="section-header">ESRS E1 - CLIMATE CHANGE DISCLOSURES</div>
+
+        <div class="esrs-reference">
+            <div class="esrs-title">ESRS E1-1: Transition Plan for Climate Change Mitigation</div>
+            Marketing operations transition plan includes decarbonization targets, sustainable 
+            technology adoption, and value chain engagement strategies.
+        </div>
+
+        <table class="csrd-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">ESRS Disclosure Requirement</th>
+                    <th style="width: 20%;">Reference</th>
+                    <th style="width: 50%;">Marketing Context</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>E1-1 Transition Plan</strong></td>
+                    <td>ESRS E1</td>
+                    <td>Marketing decarbonization strategy and implementation roadmap</td>
+                </tr>
+                <tr>
+                    <td><strong>E1-4 GHG Emissions Targets</strong></td>
+                    <td>ESRS E1</td>
+                    <td>Science-based targets for marketing emission reductions</td>
+                </tr>
+                <tr>
+                    <td><strong>E1-6 GHG Emissions</strong></td>
+                    <td>ESRS E1</td>
+                    <td>Scope 1, 2 & 3 emissions from marketing activities: ${totalEmissions.toFixed(2)} tCO₂e</td>
+                </tr>
+                <tr>
+                    <td><strong>E1-7 GHG Removals</strong></td>
+                    <td>ESRS E1</td>
+                    <td>Carbon removal initiatives and offset projects (planned)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- SCOPE BREAKDOWN -->
+        <div class="section-header">GREENHOUSE GAS EMISSIONS BY SCOPE</div>
+
+        <table class="csrd-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Scope</th>
+                    <th style="width: 40%;">Description</th>
+                    <th style="width: 20%;">Emissions (tCO₂e)</th>
+                    <th style="width: 25%;">ESRS Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${scopeData.map(scope => `
+                <tr>
+                    <td><strong>Scope ${scope.scope}</strong></td>
+                    <td>${scope.description}</td>
+                    <td>${scope.emissions.toFixed(2)}</td>
+                    <td>${scope.category}</td>
+                </tr>
+                `).join('')}
+                <tr style="background: var(--light-blue); font-weight: bold;">
+                    <td><strong>TOTAL</strong></td>
+                    <td><strong>All Marketing Emissions</strong></td>
+                    <td><strong>${totalEmissions.toFixed(2)}</strong></td>
+                    <td><strong>Combined</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- VALUE CHAIN ANALYSIS -->
+        <div class="section-header">VALUE CHAIN IMPACT ANALYSIS</div>
+
+        <div class="paragraph">
+            As required by ESRS E1-6, we assess the impact of our marketing activities across the value chain:
+        </div>
+
+        ${topChannels.length > 0 ? `
+        <table class="csrd-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Marketing Channel</th>
+                    <th style="width: 20%;">Emissions (tCO₂e)</th>
+                    <th style="width: 15%;">Value Chain Stage</th>
+                    <th style="width: 40%;">Sustainability Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${topChannels.map(([channel, emissions]) => `
+                <tr>
+                    <td>${channel}</td>
+                    <td>${emissions.toFixed(3)}</td>
+                    <td>Downstream</td>
+                    <td>Consumer engagement and behavioral influence</td>
+                </tr>
+                `).join('')}
+            </tbody>
+        </table>
+        ` : ''}
+
+        <!-- GOVERNANCE -->
+        <div class="section-header">SUSTAINABILITY GOVERNANCE</div>
+
+        <div class="esrs-reference">
+            <div class="esrs-title">ESRS 2-GOV-1: Role of Administrative, Management and Supervisory Bodies</div>
+            Oversight of sustainability matters including climate-related risks and opportunities in marketing operations.
+        </div>
+
+        <table class="csrd-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Governance Level</th>
+                    <th style="width: 45%;">Responsibility</th>
+                    <th style="width: 30%;">ESRS Reference</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Board Level</strong></td>
+                    <td>Strategic oversight of sustainability and climate risks</td>
+                    <td>ESRS 2-GOV-1</td>
+                </tr>
+                <tr>
+                    <td><strong>Executive Level</strong></td>
+                    <td>Implementation of sustainability policies</td>
+                    <td>ESRS 2-GOV-2</td>
+                </tr>
+                <tr>
+                    <td><strong>Operational Level</strong></td>
+                    <td>Day-to-day sustainability management</td>
+                    <td>ESRS 2-GOV-3</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- TARGETS AND COMMITMENTS -->
+        <div class="section-header">TARGETS AND COMMITMENTS</div>
+
+        <div class="esrs-reference">
+            <div class="esrs-title">ESRS E1-4: Targets Related to Climate Change Mitigation</div>
+            Science-based targets for reducing marketing-related greenhouse gas emissions aligned with 1.5°C pathway.
+        </div>
+
+        <div class="paragraph">
+            ${formData.companyName} commits to the following climate targets for marketing operations:
+        </div>
+
+        <ul style="margin: 15px 0; padding-left: 20px;">
+            <li style="margin: 8px 0;">Achieve net-zero marketing emissions by 2050</li>
+            <li style="margin: 8px 0;">Reduce Scope 1 & 2 emissions by 50% by 2030 (vs. 2024 baseline)</li>
+            <li style="margin: 8px 0;">Reduce Scope 3 emissions by 30% by 2030 (vs. 2024 baseline)</li>
+            <li style="margin: 8px 0;">100% renewable energy for marketing operations by 2028</li>
+            <li style="margin: 8px 0;">Science-based targets validation by SBTi by 2025</li>
+        </ul>
+
+        <!-- FORWARD-LOOKING INFORMATION -->
+        <div class="section-header">FORWARD-LOOKING INFORMATION</div>
+
+        <div class="esrs-reference">
+            <div class="esrs-title">ESRS 2-BP-1: General Basis for Preparation</div>
+            Forward-looking information based on reasonable assumptions about future developments.
+        </div>
+
+        <div class="paragraph">
+            Our projections for marketing sustainability improvements include:
+        </div>
+
+        <table class="csrd-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Time Horizon</th>
+                    <th style="width: 40%;">Planned Actions</th>
+                    <th style="width: 20%;">Expected Impact</th>
+                    <th style="width: 20%;">Risk Factors</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>2025-2027</strong></td>
+                    <td>Digital transformation and efficiency improvements</td>
+                    <td>15% emission reduction</td>
+                    <td>Technology availability</td>
+                </tr>
+                <tr>
+                    <td><strong>2028-2030</strong></td>
+                    <td>Renewable energy transition and supplier engagement</td>
+                    <td>35% emission reduction</td>
+                    <td>Supply chain cooperation</td>
+                </tr>
+                <tr>
+                    <td><strong>2031-2050</strong></td>
+                    <td>Carbon neutrality and regenerative practices</td>
+                    <td>Net-zero achievement</td>
+                    <td>Regulatory changes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- COMPLIANCE STATEMENT -->
+        <div class="section-header">CSRD COMPLIANCE STATEMENT</div>
+
+        <div class="double-materiality-box">
+            <div class="materiality-title">DECLARATION OF COMPLIANCE</div>
+            <div class="paragraph">
+                This sustainability report has been prepared in accordance with the Corporate Sustainability 
+                Reporting Directive (EU) 2022/2464 and the European Sustainability Reporting Standards (ESRS). 
+                The information presented provides a true and fair view of ${formData.companyName}'s sustainability 
+                performance for marketing operations during the reporting period ${organization.period || '2024'}.
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <div style="display: inline-block; margin-right: 50px;"><strong>Prepared by:</strong> ${formData.name}</div>
+                <div style="display: inline-block;"><strong>Date:</strong> ${reportDate}</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
+  `;
 };
 
+// CSRD PDF generation function using Puppeteer
+const generateCSRDPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array> => {
+  let browser;
+  
+  try {
+    const htmlContent = generateCSRDHTMLTemplate(data);
+    
+    browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process',
+        '--disable-gpu'
+      ]
+    });
+
+    const page = await browser.newPage();
+    
+    await page.setContent(htmlContent, {
+      waitUntil: ['networkidle0', 'domcontentloaded']
+    });
+
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+      margin: {
+        top: '20mm',
+        right: '20mm',
+        bottom: '20mm',
+        left: '20mm'
+      },
+      displayHeaderFooter: true,
+      headerTemplate: `
+        <div style="font-size: 9px; color: #666; margin: 0 20mm; width: 100%;">
+          <div style="text-align: center;">CSRD Sustainability Report - ${data.formData.companyName}</div>
+        </div>
+      `,
+      footerTemplate: `
+        <div style="font-size: 9px; color: #666; margin: 0 20mm; width: 100%; display: flex; justify-content: space-between;">
+          <span>Generated by CarbonCut Platform</span>
+          <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
+        </div>
+      `,
+    });
+
+    return new Uint8Array(pdfBuffer);
+
+  } catch (error) {
+    console.error('Error generating CSRD PDF with Puppeteer:', error);
+    throw new Error(`CSRD PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  } finally {
+    if (browser) {
+      await browser.close();
+    }
+  }
+};
+
+export const generateCSRDReport = async (data: PDFGenerationData): Promise<Uint8Array> => {
+  return await generateCSRDPDFFromHTML(data);
+};
+
+export { generateCSRDHTMLTemplate, generateCSRDPDFFromHTML };
 export default generateCSRDReport;

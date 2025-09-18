@@ -22,7 +22,7 @@ export interface PDFGenerationData {
   formData: PDFFormData;
 }
 
-const generateSECReport = (data: PDFGenerationData): void => {
+const generateSECReport = (data: PDFGenerationData): Promise<Uint8Array> => {
   const { organization, activities, getDisplayCO2, totals, formData } = data;
   const doc = new jsPDF();
   const totalEmissions = totals.total;
@@ -480,6 +480,7 @@ const generateSECReport = (data: PDFGenerationData): void => {
   // Save the document
   const fileName = `SEC_Climate_Disclosure_${formData.companyName.replace(/[^a-zA-Z0-9]/g, '_')}_FY${organization.period || '2024'}.pdf`;
   doc.save(fileName);
+  return Promise.resolve(new Uint8Array(doc.output('arraybuffer')));
 };
 
 export default generateSECReport;
