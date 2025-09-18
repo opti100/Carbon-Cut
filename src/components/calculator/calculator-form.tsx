@@ -197,7 +197,7 @@ export default function MarketingCalculator() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }}></div>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        {/* <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="text-center">
             <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
               Rebalance your
@@ -224,13 +224,13 @@ export default function MarketingCalculator() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Step Indicators */}
-        <div className="py-8 border-b border-gray-200">
+        {/* <div className="py-8 border-b border-gray-200">
           <div className="flex items-center justify-center space-x-8">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
@@ -247,7 +247,7 @@ export default function MarketingCalculator() {
               <span className="text-gray-500">Review & Export</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Stats Overview - Always visible at top */}
         <div className="py-8">

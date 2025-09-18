@@ -1,5 +1,9 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { TrendingUp, Factory, Zap, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, Factory, Zap, Globe, LogIn, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface StatsOverviewProps {
   totals: {
@@ -9,6 +13,8 @@ interface StatsOverviewProps {
 }
 
 export default function StatsOverview({ totals }: StatsOverviewProps) {
+  const router = useRouter();
+
   const stats = [
     {
       label: "Total CO₂e",
@@ -44,10 +50,39 @@ export default function StatsOverview({ totals }: StatsOverviewProps) {
     }
   ];
 
+  const handleLogin = () => {
+    router.push('/login');
+  };
+
+  const handleDashboard = () => {
+    router.push('/dashboard');
+  };
+
   return (
     <section className="mb-8">
-      <div className="mb-6 text-center">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Carbon Footprint Overview</h2>
+      <div className="mb-6 text-center relative">
+        {/* Login/Dashboard Button - Positioned absolutely on the right */}
+        <div className="absolute right-0 top-0 flex items-center gap-2">
+          <Button
+            onClick={handleLogin}
+            variant="outline"
+            size="sm"
+            className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
+          >
+            <LogIn className="h-4 w-4 mr-2" />
+            Login
+          </Button>
+          <Button
+            onClick={handleDashboard}
+            variant="ghost"
+            size="sm"
+            className="text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition-all duration-200"
+          >
+            <User className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <h2 className="text-2xl font-semibold text-gray-900 mb-2">Carbon Footprint Calculator</h2>
         <p className="text-gray-600">Real-time calculations based on your marketing activities</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

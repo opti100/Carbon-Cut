@@ -35,6 +35,11 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     return total > 0 ? Math.round((value / total) * 100) : 0;
   };
 
+  // Format emissions with up to 5 decimal places
+  const formatEmissions = (value: number) => {
+    return value.toFixed(5);
+  };
+
   return (
     <Card className="shadow-sm border border-gray-200 bg-white">
       <CardHeader className="border-b border-gray-100 bg-gray-50/50">
@@ -69,7 +74,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
                         <span className="text-sm font-medium text-gray-700 truncate">{channel}</span>
                         <div className="text-right">
                           <span className="text-sm font-semibold text-gray-900">
-                            {Math.round(co2 * 100) / 100} kg
+                            {formatEmissions(co2)} kg
                           </span>
                           <div className="text-xs text-gray-500">
                             {getPercentage(co2, totals.total)}%
@@ -108,7 +113,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
                         <span className="text-sm font-medium text-gray-700 truncate">{market}</span>
                         <div className="text-right">
                           <span className="text-sm font-semibold text-gray-900">
-                            {Math.round(co2 * 100) / 100} kg
+                            {formatEmissions(co2)} kg
                           </span>
                           <div className="text-xs text-gray-500">
                             {getPercentage(co2, totals.total)}%
@@ -158,7 +163,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
                         </div>
                         <div className="text-right">
                           <span className="text-sm font-semibold text-gray-900">
-                            {Math.round(co2 * 100) / 100} kg
+                            {formatEmissions(co2)} kg
                           </span>
                           <div className="text-xs text-gray-500">
                             {getPercentage(co2, totals.total)}%
