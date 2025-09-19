@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { ActivityData, OrganizationData } from '@/types/types';
-import { ClientPdfService } from '@/services/client-pdf-service';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -700,7 +699,13 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
                   </>
                 ) : wantsCertification ? (
                   <>
+                  
                     <CreditCard className="mr-2 h-4 w-4" />
+                    <a href="https://buy.stripe.com/3cIeVdc8ObEpeMqgDH08g00" 
+   target="_blank" 
+   rel="noopener noreferrer">
+   Get Certified PDF - $200
+</a>
                     Download & Pay (${CERTIFICATION_PRICE})
                   </>
                 ) : (
