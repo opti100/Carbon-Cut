@@ -5,27 +5,26 @@ import { Instagram, Facebook, Twitter, Linkedin } from 'lucide-react'
 
 const Footer = () => {
   return (
-    <footer className="bg-[#1F4960] border-t border-gray-800 py-16 px-6 lg:px-12">
+    <footer className="bg-black border-t border-gray-800 py-16 px-6 lg:px-12">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <Image
+              {/* <Image
                 src="/logo.svg"
                 alt="CarbonCut Logo"
                 width={32}
                 height={32}
                 className="w-8 h-8"
-              />
-              <span className="text-white text-xl font-bold">CARBONCUT</span>
+              /> */}
+              {/* <span className="text-white text-xl font-bold">CARBONCUT</span> */}
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
               A new way to make the payments easy, reliable and secure.
             </p>
           </div>
 
-          {/* Useful Links */}
           <div>
             <h3 className="text-white font-semibold mb-4">Useful Links</h3>
             <div className="space-y-3">
