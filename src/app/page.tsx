@@ -1,16 +1,16 @@
+import WhatCarbonCutProvides from "@/components/features-section-demo-1";
+import HowItWorksDemo from "@/components/HowItWorksDemo";
+import BrandsSection from "@/components/main/BrandsSection";
 import Footer from "@/components/main/Footer";
 import Hero from "@/components/main/Hero";
-import Hero2 from "@/components/main/Hero2";
-import LatestArticles from "@/components/main/LatestArticles";
-import LatestArticlesGrid from "@/components/main/LatestArticlesGrid";
 
 export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero/>
-      <LatestArticles />
-      <LatestArticlesGrid/>
-      <Hero2 />
+      <HowItWorksDemo/>
+      <BrandsSection/>
+      <WhatCarbonCutProvides/>
       <Footer />
     </main>
   );

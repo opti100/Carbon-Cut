@@ -1,12 +1,23 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Montserrat } from 'next/font/google'
+import { Geist, Geist_Mono, Montserrat } from 'next/font/google'
 import Providers from "@/providers/providers";
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-})
+// const montserrat = Montserrat({
+//   subsets: ['latin'],
+//   weight: ['400', '500', '600', '700'],
+// })
+
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Carbon Cut",
@@ -24,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${montserrat.className} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-satoshi`}
       >
         <Providers>
           {children}
