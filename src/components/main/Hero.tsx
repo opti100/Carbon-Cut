@@ -16,11 +16,11 @@ import Image from 'next/image'
 const Hero = () => {
 
   const AURORA_COLORS = [
-    "#00CC33", 
-    "#00AA2B", 
-    "#00EE3B", 
-    "#009928", 
-    "#00FF40", 
+    "#00CC33",
+    "#00AA2B",
+    "#00EE3B",
+    "#009928",
+    "#00FF40",
   ]
 
   const color = useMotionValue(AURORA_COLORS[0])
@@ -37,20 +37,20 @@ const Hero = () => {
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 90%, #ffffff 50%, ${color})`
 
   const verificationBadges = [
-    { name: "Verra", code: "VCS", logo: "/certified/verra.png",link:"https://verra.org/" },
-    { name: "Gold Standard", code: "GS", logo: "/certified/GA.png",link:"https://www.goldstandard.org/" },
-    { name: "American Carbon Registry", code: "ACR", logo: "/certified/ACR.svg",link:"https://www.americancarbonregistry.org/" },
-    { name: "Climate Action Reserve", code: "CAR", logo: "/certified/CAR.png",link:"https://www.climateactionreserve.org/" }
+    { name: "Verra", code: "VCS", logo: "/certified/verra.png", link: "https://verra.org/" },
+    { name: "Gold Standard", code: "GS", logo: "/certified/GA.png", link: "https://www.goldstandard.org/" },
+    { name: "American Carbon Registry", code: "ACR", logo: "/certified/ACR.svg", link: "https://www.americancarbonregistry.org/" },
+    { name: "Climate Action Reserve", code: "CAR", logo: "/certified/CAR.png", link: "https://www.climateactionreserve.org/" }
   ]
 
   return (
-    <motion.div 
+    <motion.div
       style={{
         backgroundImage,
       }}
       className="relative min-h-screen overflow-hidden"
     >
-      <header 
+      <header
         className={`
            top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
          
@@ -68,10 +68,10 @@ const Hero = () => {
             </Image>
           </div>
           <div className="flex items-center space-x-4">
-            <Button 
+            <Button
               variant="ghost"
-              size={"sm"}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 text-sm font-medium rounded-md h-8 transition-colors duration-200"
+              size={"lg"}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 text-sm font-medium hover:text-white rounded-xl h-8 transition-colors duration-200"
             >
               Login
             </Button>
@@ -87,26 +87,41 @@ const Hero = () => {
               animationDuration={300}
               textClassName=''
               className="inline-block text-tertiary bg-"
-              words={["Calculate","Report","Offset"]}
+              words={["Calculate", "Report", "Offset"]}
             />
             <span className="text-black"> marketing</span>
             <br />
             <span className="text-black">emissions</span>
           </h1>
-          
+
           <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Explore the latest trends, metrics, and technologies to accurately calculate and minimize 
+            Explore the latest trends, metrics, and technologies to accurately calculate and minimize
             your marketing emissions from digital campaigns to physical collateral.
           </p>
 
-          <div className="mb-8">
-            <div className="flex items-center justify-center mb-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+            <Button
+              asChild
+              size={"lg"}
+              className="bg-tertiary hover:bg-tertiary/90 text-white py-2 text-lg font-semibold rounded-lg h-auto shadow-lg hover:shadow-xl transition-all duration-200 group relative overflow-hidden"
+            >
+              <Link href="/calculator" className="flex items-center space-x-3">
+                <Calculator className="w-5 h-5" />
+                <span>Calculate Carbon</span>
+                <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mx-10">
+            <div className="flex items-center justify-center mx-4 mb-4">
               <Shield className="w-4 h-4 text-orange-500 mr-2" />
               <span className="text-sm text-gray-600 font-medium">
                 Verified by <span className="text-orange-500 font-semibold">leading carbon standards</span>
               </span>
             </div>
-            
+
+
             <div className="flex flex-wrap items-center justify-center gap-6 mb-8">
               {verificationBadges.map((badge, index) => (
                 <motion.div
@@ -117,11 +132,11 @@ const Hero = () => {
                   className="group relative"
                 >
                   <Link href={badge.link} className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 w-20 h-16">
-                    <Image 
-                      src={badge.logo} 
-                      alt={badge.name} 
-                      width={60} 
-                      height={40} 
+                    <Image
+                      src={badge.logo}
+                      alt={badge.name}
+                      width={60}
+                      height={40}
                       className="object-contain max-w-full max-h-full filter grayscale hover:grayscale-0 transition-all duration-200"
                     />
                   </Link>
@@ -134,20 +149,6 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              asChild 
-              size={"lg"}
-              className="bg-tertiary hover:bg-tertiary/90 text-white py-2 text-lg font-semibold rounded-lg h-auto shadow-lg hover:shadow-xl transition-all duration-200 group relative overflow-hidden"
-            >
-              <Link href="/calculator" className="flex items-center space-x-3">
-                <Calculator className="w-5 h-5" />
-                <span>Calculate Carbon Emission</span>
-                <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                {/* <div className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div> */}
-              </Link>
-            </Button>
-          </div>
         </div>
       </div>
     </motion.div>

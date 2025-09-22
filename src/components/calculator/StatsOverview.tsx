@@ -85,7 +85,7 @@ export default function StatsOverview({ totals }: StatsOverviewProps) {
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">Carbon Footprint Calculator</h2>
         <p className="text-gray-600">Real-time calculations based on your marketing activities</p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => {
           const IconComponent = stat.icon;
           return (
@@ -110,7 +110,7 @@ export default function StatsOverview({ totals }: StatsOverviewProps) {
             </Card>
           );
         })}
-      </div>
+      </div> */}
     </section>
   );
 }

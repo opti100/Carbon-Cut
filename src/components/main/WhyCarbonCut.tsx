@@ -1,6 +1,7 @@
 import { Calculator, ClipboardList, TreePine } from 'lucide-react';
 import React from 'react'
 import { HeroHighlight, Highlight } from '../ui/hero-highlight';
+import { BlurFade } from '../ui/blur-fade';
 
 const WhyCarbonCut = () => {
     const reasons = [
@@ -20,33 +21,31 @@ const WhyCarbonCut = () => {
             description: "Support certified projects that deliver real climate impact.",
         },
     ];
+
     return (
-        <div className="relative z-20 py-10  max-w-7xl mx-auto ">
-            <div className="px-12">
-                <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
+        <div className="relative z-20 pt-20 max-w-7xl mx-auto">
+            <div className="px-8">
+
+                <BlurFade delay={0.1} inView>
+                    <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
                     Why <span className="text-tertiary">CarbonCut?</span>
                 </h4>
+                </BlurFade>
+                <BlurFade delay={0.5} inView>
+                <div className="mb-16 h-auto py-12 px-6 lg:px-12 bg-[#FFD02F] rounded-3xl mt-12">
+                    <div className="text-center">
+                        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-bold text-black mb-6">
+                            <Highlight className="text-black">
+                                Security, Reliability, Simplicity
+                            </Highlight>
+                        </h2>
+                        <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
+                            A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
+                        </p>
+                    </div>
+                </div>
+                </BlurFade>
             </div>
-            <HeroHighlight className="text-center mb-16">
-                <h2 className="text-3xl lg:text-7xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-bold text-orange-500 mb-6">
-                    Security, Reliability, Simplicity
-                </h2>
-                {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-                    {reasons.map((reason, index) => (
-                        <div key={reason.title} className="flex flex-col items-start text-left">
-                            <div className="mb-6 flex items-center justify-center w-16 h-16 rounded-full bg-tertiary">
-                                <reason.icon className="w-8 h-8 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold text-black mb-3 leading-tight">
-                                {reason.title}
-                            </h3>
-                            <p className="text-gray-600 leading-relaxed">
-                                {reason.description}
-                            </p>
-                        </div>
-                    ))}
-                </div> */}
-            </HeroHighlight>
         </div>
     )
 }

@@ -3,12 +3,13 @@
 import React from "react";
 import { useId } from "react";
 import { Calculator, BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap } from "lucide-react";
+import { BlurFade } from "./ui/blur-fade";
 
 export default function WhatCarbonCutProvides() {
   return (
     <div className="py-20  bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <BlurFade delay={0.1} inView className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
             Powerful Features for
             <span className="text-tertiary block">Carbon Reduction</span>
@@ -16,13 +17,16 @@ export default function WhatCarbonCutProvides() {
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Everything you need to <span className="text-orange-500 font-semibold">measure, analyze</span>, and <span className="text-orange-500 font-semibold">reduce</span> your marketing emissions with precision and confidence.
           </p>
-        </div>
+        </BlurFade>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4">
           {grid.map((feature, index) => (
-            <div
+            <BlurFade
               key={feature.title}
+              delay={index * 0.2} // Delay increases per card
+              inView
               className="group relative bg-gradient-to-b from-white to-green-50/50 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-orange-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10"
+              // className="h-full"
             >
               <Grid size={20} />
               
@@ -71,7 +75,7 @@ export default function WhatCarbonCutProvides() {
                   ? 'bg-gradient-to-r from-orange-500/5 to-orange-400/5'
                   : 'bg-gradient-to-r from-tertiary/5 to-green-500/5'
               }`}></div>
-            </div>
+            </BlurFade>
           ))}
         </div>
       </div>
@@ -188,7 +192,7 @@ export function GridPattern({ width, height, x, y, squares, ...props }: any) {
           {squares.map(([x, y]: any) => (
             <rect
               strokeWidth="0"
-              key={`${x}-${y}`}
+              key={Math.random()}
               width={width + 1}
               height={height + 1}
               x={x * width}

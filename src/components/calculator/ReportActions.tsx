@@ -346,7 +346,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
   };
 
   return (
-   <Card className="shadow-sm border border-gray-200 bg-white">
+   <Card className=" bg-white">
   <CardContent className="p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
     <div className="text-center md:text-left mb-4 md:mb-0">
       <h4 className="font-bold text-gray-900 text-base md:text-lg">Want to neutralise your impact?</h4>

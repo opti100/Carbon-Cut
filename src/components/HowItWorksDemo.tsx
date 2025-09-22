@@ -19,7 +19,7 @@ export default function HowItWorks() {
     },
     {
       step: 2,
-      title: "Analyze", 
+      title: "Report", 
       subtitle: "Find what matters most",
       description: "Discover which campaigns drive the highest emissions and identify quick wins. Our AI-powered insights reveal hidden patterns and suggest immediate optimization opportunities.",
       metrics: { value: "47%", label: "avg. reduction" },
@@ -28,7 +28,7 @@ export default function HowItWorks() {
     },
     {
       step: 3,
-      title: "Optimize",
+      title: "Offset",
       subtitle: "Cut where it counts",
       description: "Implement targeted strategies to reduce your marketing footprint without compromising performance. Get personalized recommendations based on your industry and campaign types.",
       metrics: { value: "15 days", label: "to see results" },
@@ -37,7 +37,7 @@ export default function HowItWorks() {
     },
     {
       step: 4,
-      title: "Certify",
+      title: "Certification",
       subtitle: "Show your commitment", 
       description: "Earn verified sustainability credentials that resonate with eco-conscious customers. Build trust through transparent reporting and industry-recognized certifications.",
       metrics: { value: "98%", label: "client satisfaction" },

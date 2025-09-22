@@ -250,9 +250,9 @@ export default function MarketingCalculator() {
         </div> */}
 
         {/* Stats Overview - Always visible at top */}
-        <div className="py-8">
+        {/* <div className="py-8">
           <StatsOverview totals={totals} />
-        </div>
+        </div> */}
 
         {/* Organization Form */}
         <div className="pb-8">
