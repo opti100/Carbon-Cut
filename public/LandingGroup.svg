@@ -1,0 +1,14 @@
+<svg width="1440" height="402" viewBox="0 0 1440 402" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M199 2H0V201H199V2Z" stroke="white" stroke-width="0.833319"/>
+<path d="M799 201H600V400H799V201Z" stroke="white" stroke-width="0.833319"/>
+<path d="M999 1H800V200H999V1Z" stroke="white" stroke-width="0.833319"/>
+<path d="M399 201H201L399 2V201Z" stroke="white" stroke-width="0.833319"/>
+<path d="M600 201H799L600 2V201Z" stroke="white" stroke-width="0.833319"/>
+<path d="M1399 200H1200L1399 399V200Z" stroke="white" stroke-width="0.833319"/>
+<path d="M1199 100.5V200H1000V100.5C1000 45.5477 1044.55 1 1099.5 1C1154.45 1 1199 45.5477 1199 100.5Z" stroke="white" stroke-width="0.833319"/>
+<path d="M566.111 2H599V201H400V168.111C400 76.3702 474.37 2 566.111 2Z" stroke="white" stroke-width="0.833319"/>
+<path d="M1166.11 202H1199V401H1000V368.111C1000 276.37 1074.37 202 1166.11 202Z" stroke="white" stroke-width="0.833319"/>
+<path d="M599 367.111V400H400V201H432.889C524.63 201 599 275.37 599 367.111Z" stroke="white" stroke-width="0.833319"/>
+<path d="M1200 201L1315.67 2L1399 201H1200Z" stroke="white" stroke-width="0.833319"/>
+<path d="M1599 1H1400V200H1599V1Z" stroke="white" stroke-width="0.833319"/>
+</svg>
