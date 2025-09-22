@@ -159,7 +159,7 @@ export const SkeletonOne = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.1 }}
                 >
-                  <div className={`h-2 ${item.width} bg-orange-400 rounded-full`}></div>
+                  <div className={`h-2 ${item.width} bg-orange-500 rounded-full`}></div>
                   <span className="text-sm text-gray-600 flex-1">{item.channel}</span>
                   <span className="text-sm font-bold text-tertiary">{item.emissions} CO₂</span>
                 </motion.div>

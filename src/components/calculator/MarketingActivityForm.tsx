@@ -128,7 +128,6 @@ export default function MarketingActivityForm({
 
   return (
     <div className="bg-white px-6  space-y-6">
-      {/* Header */}
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
           Add Marketing Activity

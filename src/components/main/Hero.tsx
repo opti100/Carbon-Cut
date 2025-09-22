@@ -71,7 +71,7 @@ const Hero = () => {
             <Button
               variant="ghost"
               size={"lg"}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 text-sm font-medium hover:text-white rounded-xl h-8 transition-colors duration-200"
+              className="bg-black text-white px-4 py-1 text-sm font-medium hover:bg-black hover:text-white rounded-lg h-8 transition-colors duration-200"
             >
               Login
             </Button>

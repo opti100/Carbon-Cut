@@ -189,9 +189,8 @@ export default function MarketingCalculator() {
   const totals = calculateTotals();
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section - Patch.io inspired clean header */}
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+    <div className="min-h-screen bg-white" >
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" >
         <div className="absolute inset-0 opacity-20">
           <div className="h-full w-full" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -227,9 +226,7 @@ export default function MarketingCalculator() {
         </div> */}
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Step Indicators */}
         {/* <div className="py-8 border-b border-gray-200">
           <div className="flex items-center justify-center space-x-8">
             <div className="flex items-center space-x-2">
@@ -249,7 +246,6 @@ export default function MarketingCalculator() {
           </div>
         </div> */}
 
-        {/* Stats Overview - Always visible at top */}
         {/* <div className="py-8">
           <StatsOverview totals={totals} />
         </div> */}
@@ -262,7 +258,6 @@ export default function MarketingCalculator() {
           />
         </div>
 
-        {/* Activity Form */}
         <div className="pb-8">
           <MarketingActivityForm
             channels={CHANNELS}
