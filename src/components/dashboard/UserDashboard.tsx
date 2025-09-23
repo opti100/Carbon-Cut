@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Download, FileText, Award, Building2, Mail, Search, LogOut, User, Loader2, TrendingUp, Activity } from 'lucide-react';
+import { Download, FileText, Award, Building2, Mail, Search, LogOut, User, Loader2, TrendingUp, Activity, CheckCircle, AlertCircle } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -46,8 +46,11 @@ export default function UserDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [emailInput, setEmailInput] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const [paymentVerifying, setPaymentVerifying] = useState(false);
+  const [paymentMessage, setPaymentMessage] = useState('');
 
-  const fetchUserData = async (email?: string) => {
+  // Memoized fetch function to prevent infinite re-renders
+  const fetchUserData = useCallback(async (email?: string) => {
     const emailToUse = email || emailInput;
     
     if (!emailToUse || !emailToUse.trim()) {
@@ -95,29 +98,10 @@ export default function UserDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [emailInput, isAuthenticated]);
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      setUserData({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        phoneNumber: user.phoneNumber,
-        companyName: user.companyName,
-        createdAt: new Date().toISOString()
-      });
-      fetchUserReports(user.email);
-    } else if (!authLoading) {
-      const emailFromUrl = searchParams.get('email');
-      if (emailFromUrl) {
-        setEmailInput(emailFromUrl);
-        fetchUserData(emailFromUrl);
-      }
-    }
-  }, [isAuthenticated, user, authLoading, searchParams, fetchUserData]);
-
-  const fetchUserReports = async (email: string) => {
+  // Memoized fetch function for authenticated users
+  const fetchUserReports = useCallback(async (email: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -145,9 +129,91 @@ export default function UserDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  
+  // Verify payment status
+  const verifyPayment = useCallback(async (sessionId: string) => {
+    if (!sessionId) return;
+
+    setPaymentVerifying(true);
+    setPaymentMessage('Verifying your payment...');
+
+    try {
+      const response = await fetch('/api/payments/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sessionId }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setPaymentMessage('✅ Payment verified successfully! Your certified report will be emailed to you shortly.');
+        
+        // Refresh reports to show updated status
+        if (isAuthenticated && user?.email) {
+          setTimeout(() => {
+            fetchUserReports(user.email);
+          }, 2000);
+        } else {
+          const emailFromUrl = searchParams.get('email');
+          if (emailFromUrl) {
+            setTimeout(() => {
+              fetchUserData(emailFromUrl);
+            }, 2000);
+          }
+        }
+      } else {
+        setPaymentMessage(`❌ Payment verification failed: ${result.message || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error verifying payment:', error);
+      setPaymentMessage('❌ Failed to verify payment. Please contact support.');
+    } finally {
+      setPaymentVerifying(false);
+      
+      // Clear message after 10 seconds
+      setTimeout(() => {
+        setPaymentMessage('');
+      }, 10000);
+    }
+  }, [fetchUserReports, fetchUserData, isAuthenticated, user, searchParams]);
+
+  // Effect to handle initial data loading and payment verification
+  useEffect(() => {
+    // Check for payment success
+    const paymentStatus = searchParams.get('payment');
+    const sessionId = searchParams.get('session_id');
+    
+    if (paymentStatus === 'success' && sessionId) {
+      console.log('Payment success detected, verifying...', sessionId);
+      verifyPayment(sessionId);
+    } else if (paymentStatus === 'cancelled') {
+      setPaymentMessage('⚠️ Payment was cancelled. You can try again from your report.');
+      setTimeout(() => setPaymentMessage(''), 5000);
+    }
+
+    // Load user data
+    if (isAuthenticated && user?.email) {
+      setUserData({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+        companyName: user.companyName,
+        createdAt: new Date().toISOString()
+      });
+      fetchUserReports(user.email);
+    } else if (!authLoading && !isAuthenticated) {
+      const emailFromUrl = searchParams.get('email');
+      if (emailFromUrl && emailFromUrl !== emailInput) {
+        setEmailInput(emailFromUrl);
+        fetchUserData(emailFromUrl);
+      }
+    }
+  }, [isAuthenticated, user, authLoading, searchParams, fetchUserReports, verifyPayment]);
 
   const downloadReport = async (reportId: string) => {
     try {
@@ -195,7 +261,11 @@ export default function UserDashboard() {
           link.click();
           document.body.removeChild(link);
         } else {
-          alert(result.error || 'Unable to download report. Please try again.');
+          if (result.requiresPayment) {
+            alert('This certified report requires payment completion before download. Please complete your payment first.');
+          } else {
+            alert(result.error || 'Unable to download report. Please try again.');
+          }
         }
       }
     } catch (error) {
@@ -220,49 +290,41 @@ export default function UserDashboard() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-10 w-10 animate-spin mx-auto mb-4 text-orange-500" />
-          <p className="text-gray-600 font-medium">Loading dashboard...</p>
+          <p className="text-gray-600">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-4">
-              <Image
-                src="/logo.png"
-                alt="Carbon Cut Logo"
-                width={40}
-                height={40}
-                className="w-8 h-8 sm:w-10 sm:h-10"
-              />
+    <div className="min-h-screen bg-gray-50">
+      {/* Simple Header */}
+      <div className="bg-white border-b shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">CC</span>
+              </div>
               <div>
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900">Carbon Dashboard</h1>
-                <p className="text-xs sm:text-sm text-gray-500 hidden sm:block">Track and manage your carbon footprint</p>
+                <h1 className="text-xl font-bold text-gray-900">Carbon Dashboard</h1>
               </div>
             </div>
             
             {isAuthenticated ? (
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-full">
-                  <User className="h-4 w-4 text-gray-400" />
-                  <span className="text-sm text-gray-600 font-medium">{user?.email}</span>
-                </div>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-600">{user?.email}</span>
                 <Button 
                   variant="outline" 
                   size="sm" 
                   onClick={handleLogout}
-                  className="flex items-center gap-2 text-gray-600 border-gray-300 hover:bg-gray-50"
+                  className="text-gray-600"
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
                 </Button>
               </div>
             ) : (
@@ -276,41 +338,65 @@ export default function UserDashboard() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Payment Status Message */}
+        {(paymentVerifying || paymentMessage) && (
+          <div className={`mb-6 p-4 rounded-lg border ${
+            paymentMessage.includes('✅') ? 'bg-green-50 border-green-200' :
+            paymentMessage.includes('❌') ? 'bg-red-50 border-red-200' :
+            paymentMessage.includes('⚠️') ? 'bg-yellow-50 border-yellow-200' :
+            'bg-blue-50 border-blue-200'
+          }`}>
+            <div className="flex items-center gap-3">
+              {paymentVerifying ? (
+                <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+              ) : paymentMessage.includes('✅') ? (
+                <CheckCircle className="h-5 w-5 text-green-600" />
+              ) : paymentMessage.includes('❌') || paymentMessage.includes('⚠️') ? (
+                <AlertCircle className="h-5 w-5 text-red-600" />
+              ) : null}
+              <span className={`font-medium ${
+                paymentMessage.includes('✅') ? 'text-green-800' :
+                paymentMessage.includes('❌') ? 'text-red-800' :
+                paymentMessage.includes('⚠️') ? 'text-yellow-800' :
+                'text-blue-800'
+              }`}>
+                {paymentVerifying ? 'Verifying payment...' : paymentMessage}
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Email Search for Non-Authenticated Users */}
         {!isAuthenticated && (
-          <Card className="mb-6 sm:mb-8 border-0 shadow-lg bg-white">
-            <CardContent className="p-6 sm:p-8">
+          <Card className="mb-8">
+            <CardContent className="p-6">
               <div className="text-center mb-6">
-                <Mail className="h-12 w-12 text-orange-500 mx-auto mb-4" />
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Access Your Reports</h2>
-                <p className="text-gray-600">Enter your email to view your carbon footprint reports</p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Your Reports</h2>
+                <p className="text-gray-600">Enter your email to view your carbon Offset reports</p>
               </div>
               
               <form onSubmit={handleEmailSubmit} className="max-w-md mx-auto">
                 <div className="space-y-4">
-                  <div className="space-y-2">
+                  <div>
                     <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                       Email Address
                     </Label>
-                    <div className="relative">
-                      <Input
-                        id="email"
-                        type="email"
-                        value={emailInput}
-                        onChange={(e) => setEmailInput(e.target.value)}
-                        placeholder="your.email@company.com"
-                        className="w-full h-11 pl-10 border-gray-300 focus:border-orange-500 focus:ring-orange-500"
-                        required
-                      />
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    </div>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      placeholder="your.email@company.com"
+                      className="mt-1"
+                      required
+                    />
                   </div>
                   
                   <Button 
                     type="submit" 
                     disabled={loading || !emailInput.trim()}
-                    className="w-full h-11 bg-orange-500 hover:bg-orange-600 text-white font-medium"
+                    className="w-full bg-orange-500 hover:bg-orange-600 text-white"
                   >
                     {loading ? (
                       <>
@@ -327,8 +413,8 @@ export default function UserDashboard() {
                 </div>
                 
                 {error && (
-                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-700 text-sm font-medium">{error}</p>
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+                    {error}
                   </div>
                 )}
               </form>
@@ -338,44 +424,31 @@ export default function UserDashboard() {
 
         {/* Welcome Section */}
         {userData && (
-          <div className="mb-6 sm:mb-8">
-            <Card className="border-0 shadow-lg bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-              <CardContent className="p-6 sm:p-8">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                  <div>
-                    <h2 className="text-2xl sm:text-3xl font-bold mb-2">
-                      {isAuthenticated ? `Welcome back, ${userData.name}!` : `Hello, ${userData.name}`}
-                    </h2>
-                    <p className="text-orange-100 text-sm sm:text-base">
-                      Managing sustainability for <span className="font-semibold">{userData.companyName}</span>
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                    <div className="bg-white/10 rounded-lg p-3 text-center min-w-[120px]">
-                      <div className="text-2xl font-bold">{reports.length}</div>
-                      <div className="text-xs text-orange-100">Total Reports</div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-3 text-center min-w-[120px]">
-                      <div className="text-2xl font-bold">
-                        {reports.reduce((sum, report) => sum + report.totalEmissions, 0).toFixed(0)}
-                      </div>
-                      <div className="text-xs text-orange-100">kg CO₂e Tracked</div>
-                    </div>
-                  </div>
+          <Card className="mb-8 bg-orange-500 text-white">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">
+                    Welcome, {userData.name}
+                  </h2>
+                  <p className="text-orange-100">
+                    {userData.companyName}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold">{reports.length}</div>
+                  <div className="text-sm text-orange-100">Reports</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
-        {/* Reports Grid */}
+        {/* Reports Section */}
         {(isAuthenticated || hasSearched) && (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                <FileText className="h-6 w-6 text-orange-500" />
-                Your Carbon Reports
-              </h3>
+              <h3 className="text-xl font-bold text-gray-900">Your Reports</h3>
               {reports.length > 0 && (
                 <Link href="/">
                   <Button className="bg-orange-500 hover:bg-orange-600 text-white">
@@ -386,14 +459,14 @@ export default function UserDashboard() {
             </div>
 
             {loading ? (
-              <Card className="border-0 shadow-lg">
+              <Card>
                 <CardContent className="p-12 text-center">
                   <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-orange-500" />
-                  <p className="text-gray-600 font-medium">Loading your reports...</p>
+                  <p className="text-gray-600">Loading your reports...</p>
                 </CardContent>
               </Card>
             ) : !userData ? (
-              <Card className="border-0 shadow-lg">
+              <Card>
                 <CardContent className="p-12 text-center">
                   <Mail className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                   <h4 className="text-lg font-semibold text-gray-900 mb-2">No Account Found</h4>
@@ -408,12 +481,12 @@ export default function UserDashboard() {
                 </CardContent>
               </Card>
             ) : reports.length === 0 ? (
-              <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50">
+              <Card>
                 <CardContent className="p-12 text-center">
-                  <TrendingUp className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                  <h4 className="text-lg font-semibold text-gray-900 mb-2">Ready to Get Started?</h4>
+                  <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">No Reports Yet</h4>
                   <p className="text-gray-600 mb-6">
-                    Create your first carbon footprint report and start tracking your environmental impact.
+                    Create your first carbon footprint report to get started.
                   </p>
                   <Link href="/">
                     <Button className="bg-orange-500 hover:bg-orange-600 text-white">
@@ -425,78 +498,71 @@ export default function UserDashboard() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {reports.map((report) => (
-                  <Card key={report.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-200 bg-white">
+                  <Card key={report.id} className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
                       <div className="space-y-4">
                         {/* Header */}
                         <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h4 className="font-semibold text-gray-900 text-base mb-1">{report.companyName}</h4>
+                          <div>
+                            <h4 className="font-semibold text-gray-900">{report.companyName}</h4>
                             <p className="text-sm text-gray-500">
-                              {new Date(report.createdAt).toLocaleDateString('en-US', { 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                              })}
+                              {new Date(report.createdAt).toLocaleDateString()}
                             </p>
                           </div>
-                          <Badge variant="outline" className="ml-2 text-xs font-medium border-orange-200 text-orange-700">
+                          <Badge variant="outline" className="text-xs">
                             {report.disclosureFormat}
                           </Badge>
                         </div>
 
                         {/* Stats */}
-                        <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <TrendingUp className="h-4 w-4 text-orange-500" />
-                              <span className="text-sm font-medium text-gray-700">Total Emissions</span>
-                            </div>
-                            <span className="font-bold text-gray-900">{report.totalEmissions.toFixed(2)} kg CO₂e</span>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Emissions:</span>
+                            <span className="font-medium">{report.totalEmissions.toFixed(2)} kg CO₂e</span>
                           </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Activity className="h-4 w-4 text-blue-500" />
-                              <span className="text-sm font-medium text-gray-700">Activities</span>
-                            </div>
-                            <span className="font-bold text-gray-900">{report.activitiesCount}</span>
+                          <div className="flex justify-between">
+                            <span className="text-gray-600">Activities:</span>
+                            <span className="font-medium">{report.activitiesCount}</span>
                           </div>
                         </div>
 
                         {/* Certification Status */}
                         {report.isCertified && (
-                          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                            <div className="flex items-start gap-2">
-                              <Award className="h-4 w-4 text-amber-600 mt-0.5" />
-                              <div className="flex-1">
-                                <p className="text-sm font-semibold text-amber-800">Certified Report</p>
-                                {report.certificationId && (
-                                  <p className="text-xs text-amber-600 font-mono">
-                                    ID: {report.certificationId}
-                                  </p>
-                                )}
-                              </div>
+                          <div className="bg-amber-50 border border-amber-200 rounded p-3">
+                            <div className="flex items-center gap-2">
+                              <Award className="h-4 w-4 text-amber-600" />
+                              <span className="text-sm font-medium text-amber-800">Certified</span>
                               <Badge 
-                                className={`text-xs ${
+                                variant="outline"
+                                className={`text-xs ml-auto ${
                                   report.paymentStatus === 'COMPLETED' 
-                                    ? 'bg-green-100 text-green-800 border-green-200' 
-                                    : 'bg-amber-100 text-amber-800 border-amber-200'
+                                    ? 'border-green-500 text-green-700 bg-green-50' 
+                                    : report.paymentStatus === 'PENDING'
+                                    ? 'border-amber-500 text-amber-700 bg-amber-50'
+                                    : 'border-red-500 text-red-700 bg-red-50'
                                 }`}
                               >
                                 {report.paymentStatus}
                               </Badge>
                             </div>
+                            {report.certificationId && (
+                              <p className="text-xs text-amber-600 mt-1 font-mono">
+                                ID: {report.certificationId}
+                              </p>
+                            )}
                           </div>
                         )}
 
                         {/* Download Button */}
                         <Button
                           onClick={() => downloadReport(report.id)}
-                          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium"
-                          disabled={!report.pdfUrl}
+                          className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                          disabled={!report.pdfUrl || (report.isCertified && report.paymentStatus !== 'COMPLETED')}
                         >
                           <Download className="h-4 w-4 mr-2" />
-                          {report.pdfUrl ? 'Download Report' : 'PDF Not Available'}
+                          {!report.pdfUrl ? 'PDF Not Available' : 
+                           (report.isCertified && report.paymentStatus !== 'COMPLETED') ? 'Payment Required' : 
+                           'Download Report'}
                         </Button>
                       </div>
                     </CardContent>
@@ -507,25 +573,24 @@ export default function UserDashboard() {
           </div>
         )}
 
-        {/* Help Section - Only show for non-authenticated users who haven't searched */}
         {!isAuthenticated && !hasSearched && (
-          <Card className="border-0 shadow-lg bg-gradient-to-br from-orange-50 to-orange-100 mt-8">
+          <Card className="bg-orange-50 border-orange-200">
             <CardContent className="p-8 text-center">
               <Building2 className="h-16 w-16 text-orange-500 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 Welcome to Carbon Dashboard
               </h3>
-              <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                Track, analyze, and reduce your company&apos;s carbon footprint with our comprehensive reporting tools.
+              <p className="text-gray-600 mb-6">
+                Track and Offset your company&apos;s carbon footprint
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link href="/login">
-                  <Button className="bg-orange-500 hover:bg-orange-600 text-white font-medium w-full sm:w-auto">
+                  <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                     Login to Your Account
                   </Button>
                 </Link>
                 <Link href="/">
-                  <Button variant="outline" className="border-orange-300 text-orange-700 hover:bg-orange-50 w-full sm:w-auto">
+                  <Button variant="outline" className="border-orange-300 text-orange-700 hover:bg-orange-50">
                     Start Your First Report
                   </Button>
                 </Link>

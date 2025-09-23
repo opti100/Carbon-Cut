@@ -5,7 +5,7 @@ export const CHANNELS: Record<string, Array<[string, string]>> = {
     ["Travel (km)", "travel_km"], 
     ["Electricity (kWh)", "electricity_kWh"], 
     ["Materials (kg)", "materials_kg"], 
-    ["Cloud storage (GB-months)", "cloud_storage_gb_months"]
+    ["Cloud storage (GB/month)", "cloud_storage_gb_months"]
   ],
   "Digital / Programmatic Media": [
     ["Impressions", "adtech_impression"], 

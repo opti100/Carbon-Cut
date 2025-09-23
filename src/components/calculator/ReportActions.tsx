@@ -240,22 +240,80 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
       }
 
       setUploadProgress('PDF generated successfully!');
+
+      // Handle certification payment flow
       if (wantsCertification) {
-        setUploadProgress('Processing certification request...');
+        setUploadProgress('Preparing certification payment...');
         
-        window.open('https://buy.stripe.com/3cIeVdc8ObEpeMqgDH08g00', '_blank', 'noopener,noreferrer');
-        
-        alert(`Certification payment link opened! Please complete payment of $${CERTIFICATION_PRICE} USD. Your certified report will be Mailed directly to you.`);
+        try {
+          // Create Stripe checkout session
+          const checkoutResponse = await fetch('/api/stripe/create-checkout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              reportId: result.report.id,
+              email: pdfFormData.email,
+              companyName: pdfFormData.companyName,
+              amount: CERTIFICATION_PRICE * 100 // Convert to cents
+            }),
+          });
+
+          const checkoutResult = await checkoutResponse.json();
+
+          if (checkoutResult.success && checkoutResult.url) {
+            setUploadProgress('Redirecting to payment...');
+            
+            // Show message before redirect
+            alert(`Your report has been generated! You will now be redirected to complete the certification payment of $${CERTIFICATION_PRICE}. After payment, the certified PDF will be emailed to you.`);
+            
+            // Redirect to Stripe checkout
+            window.location.href = checkoutResult.url;
+            return;
+          } else {
+            console.error('Checkout session creation failed:', checkoutResult);
+            throw new Error(checkoutResult.error || checkoutResult.details || 'Failed to create payment session');
+          }
+        } catch (paymentError) {
+          console.error('Payment setup failed:', paymentError);
+          setUploadProgress('Payment setup failed, but regular report is available');
+          
+          // Show detailed error message
+          const errorMessage = paymentError instanceof Error ? paymentError.message : 'Unknown payment error';
+          alert(`Payment setup failed: ${errorMessage}\n\nYour regular report has been generated and you can download it below. You can try certification later from your dashboard.`);
+          
+          // Continue with regular PDF flow
+        }
       }
+
+      // Handle regular PDF (non-certified) or fallback
       if (result.pdfUrl) {
         setUploadProgress('Report saved to cloud storage!');
 
-        const message = wantsCertification 
-          ? 'PDF report generated and saved to your account! Certification payment link has been opened in a new tab.'
-          : 'PDF report generated and saved to your account! You can access it anytime from your dashboard.';
-          
+        // Send regular PDF via email
+        try {
+          setUploadProgress('Sending PDF to your email...');
+          await fetch('/api/reports/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              reportId: result.report.id,
+              email: pdfFormData.email
+            }),
+          });
+          setUploadProgress('PDF sent to your email!');
+        } catch (emailError) {
+          console.error('Failed to send email:', emailError);
+          setUploadProgress('Report saved! Email sending failed.');
+        }
+
+        const message = 'PDF report generated and saved to your account! A copy has been sent to your email.';
         alert(message);
 
+        // Try automatic download
         try {
           setUploadProgress('Preparing download...');
           const downloadSuccess = await downloadReport(result.report.id);

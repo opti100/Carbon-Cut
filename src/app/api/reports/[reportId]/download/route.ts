@@ -27,9 +27,11 @@ export async function GET(
         userId = decoded.userId;
       }
     } catch (error) {
+      // Token validation failed, but that's okay - we'll proceed without user context
       console.log('No valid auth token found');
     }
 
+    // Get the report
     const report = await PdfReportService.getReportById(reportId);
 
     if (!report) {
@@ -39,10 +41,24 @@ export async function GET(
       );
     }
 
+    // If user is authenticated, check if they own this report
     if (userId && report.userId !== userId) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized access to this report' },
         { status: 403 }
+      );
+    }
+
+    // **NEW: Check if this is a certified report that requires payment**
+    if (report.isCertified && report.paymentStatus !== 'COMPLETED') {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'This certified report requires payment completion before download',
+          requiresPayment: true,
+          paymentStatus: report.paymentStatus
+        },
+        { status: 402 } // Payment Required
       );
     }
 
@@ -54,9 +70,11 @@ export async function GET(
         // Generate proper filename
         const sanitizedCompanyName = report.companyName.replace(/[^a-zA-Z0-9]/g, '_');
         const timestamp = new Date(report.createdAt).toISOString().split('T')[0]; // YYYY-MM-DD format
-        const filename = `${sanitizedCompanyName}_${report.disclosureFormat}_Report_${timestamp}.pdf`;
+        const certifiedPrefix = report.isCertified ? 'Certified_' : '';
+        const filename = `${certifiedPrefix}${sanitizedCompanyName}_${report.disclosureFormat}_Report_${timestamp}.pdf`;
 
-        // @ts-expect-error - will fix this later
+        // Return PDF with proper headers
+        // @ts-expect-error - will fix it later
         return new NextResponse(pdfBuffer, {
           headers: {
             'Content-Type': 'application/pdf',
@@ -80,7 +98,9 @@ export async function GET(
           id: report.id,
           companyName: report.companyName,
           disclosureFormat: report.disclosureFormat,
-          createdAt: report.createdAt
+          createdAt: report.createdAt,
+          isCertified: report.isCertified,
+          paymentStatus: report.paymentStatus
         }
       });
     }

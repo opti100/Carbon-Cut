@@ -94,7 +94,7 @@ const LoginPage = () => {
                     <div className="text-white">
                         <h1 className="text-xl lg:text-2xl xl:text-4xl font-bold mb-2 lg:mb-4 leading-tight">
                             CarbonCut has made it simple to track and
-                            offset our carbon footprint.
+                            offset our carbon Emissions.
                         </h1>
                         <p className="text-sm lg:text-base xl:text-lg opacity-90">
                             Driving real-world sustainability outcomes.
