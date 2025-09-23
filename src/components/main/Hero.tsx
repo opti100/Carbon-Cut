@@ -112,7 +112,7 @@ const Hero = () => {
             >
               <Link href="/calculator" className="flex items-center space-x-3">
                 <Calculator className="w-5 h-5" />
-                <span>Calculate Carbon</span>
+                <span>CarbonCalculator</span>
                 <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </Link>
             </Button>
@@ -135,25 +135,14 @@ const Hero = () => {
                   transition={{ delay: index * 0.1 + 0.5 }}
                   className="group relative"
                 >
-                  <Link 
-                    href={badge.link} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 w-full h-16 sm:h-20 overflow-hidden"
-                  >
-                    <div className="relative w-full h-full flex items-center justify-center">
-                      <Image
-                        src={badge.logo}
-                        alt={badge.name}
-                        width={120}
-                        height={60}
-                        className="object-contain object-center filter grayscale hover:grayscale-0 transition-all duration-200 max-w-[100px] sm:max-w-[120px] max-h-[40px] sm:max-h-[60px]"
-                        style={{
-                          width: 'auto',
-                          height: 'auto',
-                        }}
-                      />
-                    </div>
+                  <Link href={badge.link} className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 w-32 h-28">
+                    <Image
+                      src={badge.logo}
+                      alt={badge.name}
+                      width={60}
+                      height={40}
+                      className="object-contain max-w-full max-h-full filter grayscale hover:grayscale-0 transition-all duration-200"
+                    />
                   </Link>
 
                   {/* Tooltip */}
