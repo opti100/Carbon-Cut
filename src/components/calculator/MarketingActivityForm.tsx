@@ -203,7 +203,6 @@ export default function MarketingActivityForm({
           </Select>
         </div>
 
-        {/* Channel */}
         <div className="space-y-2">
           <Label htmlFor="channel" className="text-gray-700 font-medium">Channel</Label>
           <Select
