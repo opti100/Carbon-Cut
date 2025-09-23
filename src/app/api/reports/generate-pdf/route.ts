@@ -2,23 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PdfReportService } from '@/services/pdf-report-service';
 import { generateSECRReport } from '@/services/report-formats/secr-report';
 import { generateCSRDReport } from '@/services/report-formats/csrd-report';
-import jwt from 'jsonwebtoken';
-import generateSECReport from '@/services/report-formats/sec-report';
+import { generateSECReport } from '@/services/report-formats/sec-report';
 
 export async function POST(request: NextRequest) {
   try {
-    // Get user from token
-    const token = request.cookies.get('auth-token')?.value;
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      );
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as any;
-    const userId = decoded.userId;
-
     const {
       organization,
       activities,
@@ -27,20 +14,35 @@ export async function POST(request: NextRequest) {
       displayCO2Data
     } = await request.json();
 
-    console.log('Creating report for user:', userId, 'email:', formData.email);
+    console.log('Creating report for email:', formData.email);
 
-    // Create report in database with better error handling
+    // Validate required fields
+    if (!formData.email || !formData.name || !formData.companyName) {
+      return NextResponse.json(
+        { error: 'Missing required fields: email, name, and companyName are required' },
+        { status: 400 }
+      );
+    }
+
+    if (!activities || activities.length === 0) {
+      return NextResponse.json(
+        { error: 'No activities provided for report generation' },
+        { status: 400 }
+      );
+    }
+
+    // Create report data - using email instead of userId
     const reportData = {
       userName: formData.name,
       email: formData.email,
       companyName: formData.companyName,
       phoneNumber: formData.phoneNumber,
-      disclosureFormat: formData.disclosureFormat,
+      disclosureFormat: formData.disclosureFormat as 'SECR' | 'CSRD' | 'SEC',
       isCertified: formData.wantsCertification || false,
       totalEmissions: totals.total,
       activityCount: activities.length,
       reportPeriod: organization.period || new Date().getFullYear().toString(),
-      paymentAmount: formData.wantsCertification ? 89.99 : undefined,
+      paymentAmount: formData.wantsCertification ? 199 : undefined,
       activities: activities.map((activity: any) => ({
         date: activity.date,
         market: activity.market,
@@ -49,16 +51,26 @@ export async function POST(request: NextRequest) {
         quantity: activity.qty,
         co2Emissions: displayCO2Data[activity.id] || 0,
         scope: activity.scope,
-        campaign: activity.campaign,
-        notes: activity.notes,
+        campaign: activity.campaign || '',
+        notes: activity.notes || '',
       })),
-      userId,
-      userEmail: formData.email // Provide email as fallback
+      userEmail: formData.email // Use email for user lookup/creation
     };
 
+    console.log('Creating report with data:', {
+      email: reportData.email,
+      activitiesCount: reportData.activities.length,
+      isCertified: reportData.isCertified
+    });
+
+    // Create report in database (this will also create/find user)
     const report = await PdfReportService.createReport(reportData);
 
-    console.log('Report created successfully:', report.id);
+    console.log('Report created successfully:', {
+      reportId: report.id,
+      // userId: report.userId,
+      // activitiesCount: report.activities?.length || 0
+    });
 
     // Generate PDF based on format
     let pdfBytes: Uint8Array;
@@ -67,9 +79,12 @@ export async function POST(request: NextRequest) {
     const generateOptions = {
       organization,
       activities,
-      getDisplayCO2: (activity: any) => displayCO2Data[activity.id] || 0,
       totals,
-      formData
+      formData,
+      displayCO2Data,
+      userId: report.userId,
+      reportId: report.id,
+      getDisplayCO2: (activity: any) => displayCO2Data[activity.id] || 0
     };
 
     console.log('Generating PDF with format:', formData.disclosureFormat);
@@ -88,12 +103,14 @@ export async function POST(request: NextRequest) {
         fileName = `${formData.companyName.replace(/[^a-zA-Z0-9]/g, '_')}_SEC_Report.pdf`;
         break;
       default:
-        throw new Error('Unsupported disclosure format');
+        console.log('Using default SECR format');
+        pdfBytes = await generateSECRReport(generateOptions);
+        fileName = `${formData.companyName.replace(/[^a-zA-Z0-9]/g, '_')}_SECR_Report.pdf`;
     }
 
     console.log('PDF generated successfully, size:', pdfBytes.length);
 
-    // Try to upload to Cloudinary, but don't fail if it doesn't work
+    // Try to upload to Cloudinary and update database
     try {
       const buffer = Buffer.from(pdfBytes);
       const updatedReport = await PdfReportService.uploadAndSavePDF(
@@ -102,13 +119,25 @@ export async function POST(request: NextRequest) {
         fileName
       );
 
-      console.log('PDF uploaded to Cloudinary successfully');
+      console.log('PDF uploaded to Cloudinary and database updated successfully');
 
       return NextResponse.json({
         success: true,
-        report: updatedReport,
+        report: {
+          id: updatedReport.id,
+          userId: updatedReport.userId,
+          companyName: updatedReport.companyName,
+          disclosureFormat: updatedReport.disclosureFormat,
+          totalEmissions: updatedReport.totalEmissions,
+          activityCount: updatedReport.activityCount,
+          isCertified: updatedReport.isCertified,
+          certificationId: updatedReport.certificationId,
+          paymentStatus: updatedReport.paymentStatus,
+          createdAt: updatedReport.createdAt,
+          pdfUrl: updatedReport.pdfUrl
+        },
         pdfUrl: updatedReport.pdfUrl,
-        message: 'PDF generated and uploaded successfully'
+        message: 'PDF generated, uploaded to cloud, and saved to database successfully'
       });
     } catch (cloudinaryError) {
       console.error('Cloudinary upload failed, but report was created:', cloudinaryError);
@@ -116,7 +145,19 @@ export async function POST(request: NextRequest) {
       // Return success but note that PDF wasn't uploaded to Cloudinary
       return NextResponse.json({
         success: true,
-        report,
+        report: {
+          id: report.id,
+          userId: report.userId,
+          companyName: report.companyName,
+          disclosureFormat: report.disclosureFormat,
+          totalEmissions: report.totalEmissions,
+          activityCount: report.activityCount,
+          isCertified: report.isCertified,
+          certificationId: report.certificationId,
+          paymentStatus: report.paymentStatus,
+          createdAt: report.createdAt,
+          pdfUrl: null
+        },
         pdfUrl: null,
         pdfSize: pdfBytes.length,
         message: 'PDF generated successfully but cloud upload failed. You can download it directly.',
@@ -127,7 +168,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error generating PDF:', error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { 
+        success: false,
+        error: error instanceof Error ? error.message : 'Internal server error' 
+      },
       { status: 500 }
     );
   }

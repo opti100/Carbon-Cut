@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const response = NextResponse.json({
       success: true,
-      message: 'Logout successful'
+      message: 'Logged out successfully'
     });
 
     // Clear the auth cookie
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 0
+      maxAge: 0 // Expire immediately
     });
 
     return response;
