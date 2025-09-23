@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +25,9 @@ interface ProvidersProps {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <AuthProvider>
+        {children}
+      </AuthProvider>
       {/* {process.env.NODE_ENV === 'development' && (
         <ReactQueryDevtools initialIsOpen={false} />
       )} */}

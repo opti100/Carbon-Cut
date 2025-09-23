@@ -154,7 +154,7 @@ export default class GHGProtocolCarbonCalculator {
   private emissionFactors: EmissionFactors;
 
   constructor() {
-    console.log('GHG Protocol Calculator initialized - Optiminastic | CarbonCut Official Framework');
+    // console.log('GHG Protocol Calculator initialized - Optiminastic | CarbonCut Official Framework');
     
     this.emissionFactors = {
       // Digital/Network factors (IEA 2025, Nature Climate Change latest studies)
@@ -244,27 +244,22 @@ export default class GHGProtocolCarbonCalculator {
       
       // Regional grid intensity factors (gCO2/kWh) - IEA 2025 latest data
       grid_intensity: {
-        // Europe (Continued renewable expansion)
         'Norway': 14, 'Iceland': 21, 'France': 52, 'Switzerland': 61, 'Sweden': 68,
         'Austria': 76, 'Denmark': 89, 'Finland': 103, 'Belgium': 118, 'United Kingdom': 162,
         'Spain': 178, 'Italy': 208, 'Netherlands': 234, 'Germany': 298, 'Czech Republic': 367,
         'Greece': 398, 'Poland': 432,
         
-        // Americas (Clean energy growth)
         'Costa Rica': 18, 'Uruguay': 38, 'Brazil': 76, 'Canada': 98, 'Chile': 267,
         'Argentina': 289, 'United States': 342, 'Mexico': 378,
         
-        // Asia Pacific (Mixed progress - renewables vs coal dependency)
         'New Zealand': 74, 'Japan': 287, 'Thailand': 345, 'Singapore': 356, 'Malaysia': 441,
         'South Korea': 389, 'China': 498, 'Vietnam': 523, 'Indonesia': 567, 'Taiwan': 456,
         'India': 589, 'Australia': 398,
-        
-        // Middle East & Africa (Solar expansion but mixed progress)
+
         'Morocco': 534, 'Egypt': 398, 'UAE': 376, 'Saudi Arabia': 342, 'South Africa': 634,
         'Nigeria': 567,
-        
-        // Default fallback
-        'default': 387 // Global weighted average 2025 (renewable energy growth)
+      
+        'default': 387 
       }
     };
   }
