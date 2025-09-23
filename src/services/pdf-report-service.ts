@@ -5,48 +5,123 @@ import { CreatePdfReportInput, PdfReportData } from '@/types/database';
 const prisma = new PrismaClient();
 
 export class PdfReportService {
-  // Create a new PDF report record linked to user
-  static async createReport(data: CreatePdfReportInput & { userId: string }): Promise<PdfReportData> {
-    const { activities, userId, ...reportData } = data;
-    
-    // First ensure the user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId }
-    });
+  // Ensure user exists or create them
+  static async ensureUserExists(email: string, userData?: {
+    name?: string;
+    phoneNumber?: string;
+    companyName?: string;
+  }) {
+    try {
+      // First try to find existing user
+      let user = await prisma.user.findUnique({
+        where: { email }
+      });
 
-    if (!user) {
-      throw new Error(`User with ID ${userId} not found`);
-    }
-
-    // Generate format-specific certification ID
-    const formatPrefix = {
-      'SECR': 'SECR',
-      'CSRD': 'CSRD', 
-      'SEC': 'SEC'
-    };
-    
-    const certificationId = data.isCertified 
-      ? `${formatPrefix[data.disclosureFormat]}-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
-      : undefined;
-
-    const report = await prisma.pdfReport.create({
-      data: {
-        ...reportData,
-        userId,
-        certificationId,
-        certificationDate: data.isCertified ? new Date() : undefined,
-        paymentStatus: data.isCertified ? 'PENDING' : 'COMPLETED',
-        activities: {
-          create: activities
+      if (user) {
+        // Update existing user with new data if provided
+        if (userData) {
+          user = await prisma.user.update({
+            where: { email },
+            data: {
+              ...userData,
+              otpVerified: true // Ensure they're verified
+            }
+          });
         }
-      },
-      include: {
-        activities: true,
-        user: true
+        return user;
       }
-    });
 
-    return report as PdfReportData;
+      // Create new user if not found
+      user = await prisma.user.create({
+        data: {
+          email,
+          name: userData?.name || '',
+          phoneNumber: userData?.phoneNumber || '',
+          companyName: userData?.companyName || '',
+          otpVerified: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      });
+
+      return user;
+    } catch (error) {
+      console.error('Error ensuring user exists:', error);
+      throw new Error(`Failed to create/update user: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  // Create a new PDF report record linked to user
+  static async createReport(data: CreatePdfReportInput & { userId?: string; userEmail?: string }): Promise<PdfReportData> {
+    try {
+      const { activities, userId, userEmail, ...reportData } = data;
+      
+      let finalUserId = userId;
+      let user;
+
+      // If no userId provided but we have email, find/create user
+      if (!finalUserId && userEmail) {
+        user = await this.ensureUserExists(userEmail, {
+          name: reportData.userName,
+          phoneNumber: reportData.phoneNumber,
+          companyName: reportData.companyName
+        });
+        finalUserId = user.id;
+      } else if (finalUserId) {
+        // Verify user exists if userId is provided
+        user = await prisma.user.findUnique({
+          where: { id: finalUserId }
+        });
+        
+        if (!user) {
+          throw new Error(`User with ID ${finalUserId} not found`);
+        }
+      }
+
+      if (!finalUserId) {
+        throw new Error('Cannot create report without valid user ID or email');
+      }
+
+      // Generate format-specific certification ID
+      const formatPrefix = {
+        'SECR': 'SECR',
+        'CSRD': 'CSRD', 
+        'SEC': 'SEC'
+      };
+      
+      const certificationId = data.isCertified 
+        ? `${formatPrefix[data.disclosureFormat]}-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+        : undefined;
+
+      // Create the report with activities
+      const report = await prisma.pdfReport.create({
+        data: {
+          ...reportData,
+          userId: finalUserId,
+          certificationId,
+          certificationDate: data.isCertified ? new Date() : undefined,
+          paymentStatus: data.isCertified ? 'PENDING' : 'COMPLETED',
+          activities: {
+            create: activities
+          }
+        },
+        include: {
+          activities: true,
+          user: true
+        }
+      });
+
+      console.log('Report created successfully with activities:', {
+        reportId: report.id,
+        activitiesCount: report.activities.length,
+        userId: finalUserId
+      });
+
+      return report as PdfReportData;
+    } catch (error) {
+      console.error('Error creating report:', error);
+      throw new Error(`Failed to create report: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   // Upload PDF to Cloudinary and update database
@@ -56,6 +131,8 @@ export class PdfReportService {
     fileName: string
   ): Promise<PdfReportData> {
     try {
+      console.log('Starting PDF upload for report:', reportId);
+      
       // Get report details first
       const report = await prisma.pdfReport.findUnique({
         where: { id: reportId },
@@ -69,6 +146,8 @@ export class PdfReportService {
         throw new Error('Report not found');
       }
 
+      console.log('Report found, uploading to Cloudinary...');
+
       // Generate filename with company name and format
       const sanitizedCompanyName = report.companyName.replace(/[^a-zA-Z0-9]/g, '_');
       const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
@@ -81,6 +160,8 @@ export class PdfReportService {
         userEmail: report.email,
         publicId: `${report.id}_${finalFileName.replace('.pdf', '')}`
       });
+
+      console.log('PDF uploaded to Cloudinary successfully:', cloudinaryResult.secureUrl);
 
       // Update database with Cloudinary URLs
       const updatedReport = await prisma.pdfReport.update({
@@ -96,6 +177,12 @@ export class PdfReportService {
         }
       });
 
+      console.log('Database updated with PDF URL:', {
+        reportId: updatedReport.id,
+        pdfUrl: updatedReport.pdfUrl,
+        activitiesCount: updatedReport.activities.length
+      });
+
       return updatedReport as PdfReportData;
     } catch (error) {
       console.error('Error uploading PDF and updating database:', error);
@@ -104,22 +191,22 @@ export class PdfReportService {
   }
 
   // Get user by email and create if not exists
-  static async ensureUserExists(email: string, userData?: {
-    name?: string;
-    phoneNumber?: string;
-    companyName?: string;
-  }) {
-    const user = await prisma.user.upsert({
-      where: { email },
-      update: userData || {},
-      create: {
-        email,
-        ...userData,
-        otpVerified: true // Since they completed OTP verification
-      }
-    });
-    return user;
-  }
+  // static async ensureUserExists(email: string, userData?: {
+  //   name?: string;
+  //   phoneNumber?: string;
+  //   companyName?: string;
+  // }) {
+  //   const user = await prisma.user.upsert({
+  //     where: { email },
+  //     update: userData || {},
+  //     create: {
+  //       email,
+  //       ...userData,
+  //       otpVerified: true // Since they completed OTP verification
+  //     }
+  //   });
+  //   return user;
+  // }
 
   // Get secure PDF URL
   static async getSecurePDFUrl(reportId: string, userId?: string): Promise<string | null> {
@@ -149,7 +236,7 @@ export class PdfReportService {
 
       return signedUrl;
     } catch (error) {
-      console.error('Error generating secure PDF URL:', error);
+      console.error('Error getting secure PDF URL:', error);
       return null;
     }
   }
@@ -209,9 +296,14 @@ export class PdfReportService {
     phoneNumber?: string;
     companyName?: string;
   }) {
-    return await prisma.user.update({
+    return await prisma.user.upsert({
       where: { email },
-      data,
+      update: data,
+      create: {
+        email,
+        ...data,
+        otpVerified: true
+      }
     });
   }
 
@@ -235,18 +327,14 @@ export class PdfReportService {
     paymentStatus: 'COMPLETED' | 'FAILED' | 'REFUNDED',
     stripePaymentId?: string
   ): Promise<PdfReportData> {
-    const updateData: any = {
-      paymentStatus,
-      stripePaymentId
-    };
-
-    if (paymentStatus === 'COMPLETED') {
-      updateData.paymentDate = new Date();
-    }
-
     const report = await prisma.pdfReport.update({
       where: { id: reportId },
-      data: updateData,
+      data: {
+        paymentStatus,
+        paymentDate: paymentStatus === 'COMPLETED' ? new Date() : undefined,
+        stripePaymentId,
+        updatedAt: new Date()
+      },
       include: {
         activities: true,
         user: true

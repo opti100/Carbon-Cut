@@ -1,6 +1,7 @@
 export interface PdfReportData {
   id: string;
   userName: string;
+  userId:string
   email: string;
   companyName: string;
   phoneNumber: string;

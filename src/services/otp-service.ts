@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import ejs from 'ejs';
+import path from 'path';
 import { PrismaClient } from '@/generated/prisma';
 
 const prisma = new PrismaClient();
@@ -19,11 +21,46 @@ export class OTPService {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
+  // Render email template
+  private static async renderTemplate(templateName: string, data: any): Promise<string> {
+    const templatePath = path.join(process.cwd(), 'src', 'services','templates', 'emails', `${templateName}.ejs`);
+    return await ejs.renderFile(templatePath, data);
+  }
+
+  // Send welcome email (only for new users)
+  private static async sendWelcomeEmail(email: string, name: string): Promise<void> {
+    try {
+      const html = await this.renderTemplate('welcome', {
+        name: name || 'there',
+        email,
+      });
+
+      const mailOptions = {
+        from: process.env.SMTP_FROM || 'noreply@carboncut.com',
+        to: email,
+        subject: 'Welcome to CarbonCut - Start Your Carbon Journey!',
+        html,
+      };
+
+      await this.transporter.sendMail(mailOptions);
+    } catch (error) {
+      console.error('Error sending welcome email:', error);
+      // Don't throw error for welcome email failure
+    }
+  }
+
   // Send OTP email for login or registration
   static async sendOTP(email: string, name: string = '', isLogin: boolean = false): Promise<{ success: boolean; message: string }> {
     try {
       const otp = this.generateOTP();
       const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+      // Check if user exists
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      const isNewUser = !existingUser;
 
       // Create or update user with OTP
       const user = await prisma.user.upsert({
@@ -43,53 +80,30 @@ export class OTPService {
         },
       });
 
-      const emailSubject = isLogin ? 'Your CarbonCut Login Code' : 'Your CarbonCut Verification Code';
-      const emailTitle = isLogin ? 'Login Code' : 'Verification Code';
-      const emailMessage = isLogin 
-        ? 'Your login code for accessing your CarbonCut dashboard is:'
-        : 'Your verification code for downloading the PDF report is:';
+      // // Send welcome email for new users
+      // if (isNewUser && name) {
+      //   await this.sendWelcomeEmail(email, name);
+      //   // Mark welcome email as sent
+      //   await prisma.user.update({
+      //     where: { email },
+      //     data: { welcomeEmailSent: true },
+      //   });
+      // }
 
-      // Send email
+      const html = await this.renderTemplate('otp', {
+        name: name || 'there',
+        otp,
+        isLogin,
+        email,
+      });
+
+      const emailSubject = isLogin ? 'Your CarbonCut Login Code' : 'Your CarbonCut Verification Code';
+
       const mailOptions = {
         from: process.env.SMTP_FROM || 'noreply@carboncut.com',
         to: email,
         subject: emailSubject,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <div style="background: linear-gradient(135deg, #1F4960 0%, #33BBCF 100%); padding: 20px; text-align: center;">
-              <h1 style="color: white; margin: 0;">CarbonCut</h1>
-              <p style="color: white; margin: 5px 0;">Carbon Emissions Calculator</p>
-            </div>
-            <div style="padding: 30px; background: #f9f9f9;">
-              <h2 style="color: #1F4960; margin-bottom: 20px;">${emailTitle}</h2>
-              <p style="color: #333; font-size: 16px; line-height: 1.5;">
-                ${name ? `Hi ${name},` : 'Hello,'}
-              </p>
-              <p style="color: #333; font-size: 16px; line-height: 1.5;">
-                ${emailMessage}
-              </p>
-              <div style="background: white; border: 2px solid #33BBCF; border-radius: 8px; padding: 20px; text-align: center; margin: 20px 0;">
-                <span style="font-size: 32px; font-weight: bold; color: #1F4960; letter-spacing: 3px;">${otp}</span>
-              </div>
-              <p style="color: #666; font-size: 14px; margin-top: 20px;">
-                This code will expire in 10 minutes. If you didn't request this code, please ignore this email.
-              </p>
-              ${isLogin ? `
-                <div style="margin-top: 25px; padding: 15px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
-                  <p style="color: #1565c0; font-size: 14px; margin: 0;">
-                    <strong>Security Tip:</strong> Never share this code with anyone. CarbonCut will never ask for your login code via phone or email.
-                  </p>
-                </div>
-              ` : ''}
-              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
-                <p style="color: #999; font-size: 12px; text-align: center;">
-                  Powered by Optiminastic | CarbonCut<br>
-                  For support, contact: akshae@optiminastic.com
-                </p>
-              </div>
-            </div>
-          </div>
-        `,
+        html,
       };
 
       await this.transporter.sendMail(mailOptions);
@@ -109,7 +123,6 @@ export class OTPService {
     }
   }
 
-  // Verify OTP
   static async verifyOTP(email: string, otp: string): Promise<{ success: boolean; message: string; userId?: string }> {
     try {
       const user = await prisma.user.findUnique({

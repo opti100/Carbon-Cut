@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to CarbonCut</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #00CC33;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .header p {
+            margin: 10px 0 0;
+            color: white;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .welcome-badge {
+            background-color: white;
+            color: #00CC33;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .content {
+            padding: 40px 30px;
+            background-color: white;
+        }
+        .greeting {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+        }
+        .message {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .features {
+            margin: 35px 0;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #00CC33;
+        }
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #00CC33;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            flex: 1;
+        }
+        .feature-title {
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 5px;
+        }
+        .feature-desc {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+        .cta-section {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+            border: 2px solid #e9ecef;
+        }
+        .cta-title {
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 10px;
+        }
+        .cta-text {
+            color: #666;
+            font-size: 14px;
+            margin: 0 0 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #00CC33;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .tip-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #FFA500;
+            padding: 15px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .tip-title {
+            color: #856404;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0 0 8px;
+        }
+        .tip-text {
+            color: #856404;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer p {
+            color: #6c757d;
+            font-size: 12px;
+            margin: 0 0 10px;
+            line-height: 1.4;
+        }
+        .footer .social {
+            margin-top: 15px;
+        }
+        .social-text {
+            color: #6c757d;
+            font-size: 12px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to CarbonCut! 🌱</h1>
+            <p>Your Carbon Emissions Calculator</p>
+            <div class="welcome-badge">New Member</div>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">Hello <%= name %>!</div>
+            
+            <div class="message">
+                Thank you for joining CarbonCut! We're excited to help you on your journey towards a more sustainable future. 
+                Our platform makes it easy to calculate, track, and reduce your carbon footprint.
+            </div>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Calculate Your Carbon Footprint</div>
+                        <div class="feature-desc">Get detailed insights into your daily carbon emissions across transportation, energy, and lifestyle choices.</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Track Your Progress</div>
+                        <div class="feature-desc">Monitor your carbon reduction journey with easy-to-understand charts and progress reports.</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Download PDF Reports</div>
+                        <div class="feature-desc">Get comprehensive PDF reports of your carbon footprint analysis to share or keep for your records.</div>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Actionable Recommendations</div>
+                        <div class="feature-desc">Receive personalized suggestions on how to reduce your carbon footprint effectively.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <div class="cta-title">Ready to Get Started?</div>
+                <div class="cta-text">Begin your carbon footprint calculation today and take the first step towards a greener future.</div>
+                <a href="#" class="cta-button">Start Calculating</a>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-title">💡 Pro Tip</div>
+                <div class="tip-text">
+                    For the most accurate results, have your utility bills and transportation data handy when using our calculator. 
+                    This will help us provide more precise carbon footprint calculations.
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>
+                <strong>Need Help?</strong><br>
+                If you have any questions or need assistance, feel free to reach out to our support team.
+            </p>
+            <p>
+                Powered by Optiminastic | CarbonCut<br>
+                Support: <a href="mailto:akshae@optiminastic.com" style="color: #00CC33;">akshae@optiminastic.com</a>
+            </p>
+            <div class="social">
+                <p class="social-text">Follow us for the latest updates on sustainability and carbon reduction tips!</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
