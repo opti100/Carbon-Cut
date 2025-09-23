@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PdfReportService } from '@/services/pdf-report-service';
+import { EmailService } from '@/services/email-service';
 import { generateSECRReport } from '@/services/report-formats/secr-report';
 import { generateCSRDReport } from '@/services/report-formats/csrd-report';
 import { generateSECReport } from '@/services/report-formats/sec-report';
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
         campaign: activity.campaign || '',
         notes: activity.notes || '',
       })),
-      userEmail: formData.email // Use email for user lookup/creation
+      userEmail: formData.email
     };
 
     console.log('Creating report with data:', {
@@ -68,8 +69,8 @@ export async function POST(request: NextRequest) {
 
     console.log('Report created successfully:', {
       reportId: report.id,
-      // userId: report.userId,
-      // activitiesCount: report.activities?.length || 0
+      userId: report.userId,
+      activitiesCount: report.activities?.length || 0
     });
 
     // Generate PDF based on format
@@ -121,6 +122,18 @@ export async function POST(request: NextRequest) {
 
       console.log('PDF uploaded to Cloudinary and database updated successfully');
 
+      if (!updatedReport.isCertified) {
+        try {
+          console.log('Sending regular PDF email to:', formData.email);
+          await EmailService.sendRegularPDF(formData.email, updatedReport);
+          console.log('Email sent successfully');
+        } catch (emailError) {
+          console.error('Failed to send email (non-blocking):', emailError);
+        }
+      } else {
+        console.log('Certified report created, email will be sent after payment completion');
+      }
+
       return NextResponse.json({
         success: true,
         report: {
@@ -137,7 +150,9 @@ export async function POST(request: NextRequest) {
           pdfUrl: updatedReport.pdfUrl
         },
         pdfUrl: updatedReport.pdfUrl,
-        message: 'PDF generated, uploaded to cloud, and saved to database successfully'
+        message: updatedReport.isCertified 
+          ? 'PDF generated and saved. Complete payment to receive certified report via email.'
+          : 'PDF generated, uploaded to cloud, and sent to your email successfully'
       });
     } catch (cloudinaryError) {
       console.error('Cloudinary upload failed, but report was created:', cloudinaryError);
