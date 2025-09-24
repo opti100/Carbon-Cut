@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     console.log('API received userInput:', userInput);
 
-    const result = calculator.calculateWithGHGProtocol(userInput);
+    const result = await calculator.calculateWithGHGProtocol(userInput);
 
     return NextResponse.json(result);
 
