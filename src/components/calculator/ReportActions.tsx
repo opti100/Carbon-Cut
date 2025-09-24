@@ -663,8 +663,8 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-600">
                   <div>• Professional certification seal</div>
-                  <div>• Third-party verification</div>
-                  <div>• 2-3 business days delivery</div>
+                  {/* <div>• Third-party verification</div> */}
+                  {/* <div>• 2-3 business days delivery</div> */}
                   <div>• Compliance-ready documentation</div>
                 </div>
               </div>

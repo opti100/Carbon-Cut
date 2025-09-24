@@ -34,10 +34,10 @@ const WhyCarbonCut = () => {
                 <BlurFade delay={0.5} inView>
                 <div className="mb-16 h-auto py-12 px-6 lg:px-12 bg-[#FFD02F] rounded-3xl mt-12">
                     <div className="text-center">
-                        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-bold text-black mb-6">
-                            <Highlight className="text-black">
+                        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-bold text-orange-500 mb-6">
+                            {/* <Highlight className="text-black"> */}
                                 Security, Reliability, Simplicity
-                            </Highlight>
+                            {/* </Highlight> */}
                         </h2>
                         <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
                             A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.

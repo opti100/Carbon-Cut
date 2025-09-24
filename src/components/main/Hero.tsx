@@ -118,7 +118,7 @@ const Hero = () => {
             </Button>
           </div>
 
-          <div className="mx-4 sm:mx-10">
+          <div className="mx-14 sm:mx-10">
             <div className="flex items-center justify-center mb-4 px-2">
               <Shield className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" />
               <span className="text-sm text-gray-600 font-medium text-center">
