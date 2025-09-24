@@ -64,13 +64,12 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
     .sort((a, b) => getDisplayCO2(b) - getDisplayCO2(a))
     .slice(0, 15);
 
-  return `
-<!DOCTYPE html>
+ return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECR Compliance Report - ${formData.companyName}</title>
+    <title>SECR Compliance Report - Example Company Ltd</title>
     <style>
         /* CSS Variables for consistent theming */
         :root {
@@ -97,27 +96,28 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
             line-height: 1.4;
             color: var(--dark-text);
             background: white;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 20mm;
         }
 
         /* Print-specific styles */
-        @page {
-            size: A4;
-            margin: 20mm;
-        }
-
         @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .page-break { page-break-before: always; }
-            .no-break { page-break-inside: avoid; }
+            body { 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+                margin: 0;
+                padding: 20mm;
+            }
+            .page-break { 
+                page-break-before: always; 
+            }
+            .no-break { 
+                page-break-inside: avoid; 
+            }
         }
 
         /* Layout containers */
-        .container {
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 0;
-        }
-
         .content-section {
             margin-bottom: 25px;
         }
@@ -393,10 +393,10 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
         </div>
 
         <div class="company-info">
-            <div class="company-name">${formData.companyName}</div>
-            <div class="company-detail">Reporting Period: ${organization.period || '2024'}</div>
-            <div class="company-detail">Report Date: ${reportDate}</div>
-            <div class="company-detail">Prepared by: ${formData.name}</div>
+            <div class="company-name">Example Company Ltd</div>
+            <div class="company-detail">Reporting Period: 1 April 2023 - 31 March 2024</div>
+            <div class="company-detail">Report Date: 30 June 2024</div>
+            <div class="company-detail">Prepared by: Sustainability Department</div>
         </div>
 
         <div class="compliance-footer">
@@ -412,15 +412,15 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
         
         <div class="content-section">
             <div class="paragraph">
-                ${formData.companyName} presents this SECR compliance report detailing greenhouse gas emissions from marketing 
-                activities for the reporting period ${organization.period || '2024'}. This disclosure fulfills our obligations under the Companies Act 2006 
-                (Strategic Report and Directors' Report) Regulations 2013, specifically addressing Streamlined Energy and 
-                Carbon Reporting requirements for large UK companies.
+                Example Company Ltd presents this SECR compliance report detailing our UK energy use and associated 
+                greenhouse gas emissions for the reporting period 1 April 2023 to 31 March 2024. This disclosure 
+                fulfills our obligations under the Companies Act 2006 (Strategic Report and Directors' Report) 
+                Regulations 2013, specifically addressing Streamlined Energy and Carbon Reporting requirements.
             </div>
             
             <div class="paragraph">
-                Our comprehensive assessment of marketing-related emissions demonstrates our commitment to transparency 
-                and environmental responsibility in accordance with UK government guidance and DEFRA conversion factors.
+                Our comprehensive assessment demonstrates our commitment to transparency and environmental 
+                responsibility in accordance with UK government guidance and DEFRA conversion factors.
             </div>
         </div>
 
@@ -428,13 +428,13 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
         <div class="section-header">MANDATORY SECR DISCLOSURES</div>
 
         <div class="highlight-box">
-            <div class="highlight-title">Total Marketing Emissions (Scope 1, 2 & 3)</div>
+            <div class="highlight-title">Total Gross Emissions (Scope 1 & 2)</div>
             <div>
-                <span class="highlight-value">${totalEmissions.toFixed(2)}</span>
+                <span class="highlight-value">1,245.6</span>
                 <span class="highlight-unit">tCO₂e</span>
             </div>
             <div class="highlight-description">
-                Marketing activities assessed: ${activities.length} campaigns and operations
+                Including electricity, gas, transport and other energy consumption
             </div>
         </div>
 
@@ -446,22 +446,78 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
                 </tr>
             </thead>
             <tbody>
-                <tr><td><strong>Reporting Organisation</strong></td><td>${formData.companyName}</td></tr>
-                <tr><td><strong>Financial Year End</strong></td><td>${organization.period || '2024'}</td></tr>
-                <tr><td><strong>Report Prepared By</strong></td><td>${formData.name} (${formData.email})</td></tr>
-                <tr><td><strong>Methodology Standard</strong></td><td>GHG Protocol + DEFRA Conversion Factors</td></tr>
-                <tr><td><strong>Reporting Boundary</strong></td><td>Marketing Operations - All Scopes</td></tr>
-                <tr><td><strong>Base Year</strong></td><td>${organization.period || '2024'}</td></tr>
-                <tr><td><strong>Verification Status</strong></td><td>Internal Assessment - CarbonCut Framework</td></tr>
+                <tr><td><strong>Reporting Organisation</strong></td><td>Example Company Ltd</td></tr>
+                <tr><td><strong>Financial Year End</strong></td><td>31 March 2024</td></tr>
+                <tr><td><strong>Report Prepared By</strong></td><td>Sustainability Department</td></tr>
+                <tr><td><strong>Methodology Standard</strong></td><td>GHG Protocol + DEFRA Conversion Factors 2023</td></tr>
+                <tr><td><strong>Reporting Boundary</strong></td><td>UK operations - All sites</td></tr>
+                <tr><td><strong>Base Year</strong></td><td>2020</td></tr>
+                <tr><td><strong>Verification Status</strong></td><td>Internal Assessment</td></tr>
             </tbody>
         </table>
 
-        <!-- SCOPE BREAKDOWN -->
-        <div class="section-header">GREENHOUSE GAS EMISSIONS BY SCOPE</div>
+        <!-- ENERGY CONSUMPTION -->
+        <div class="section-header">ENERGY CONSUMPTION</div>
 
         <div class="paragraph">
-            The following breakdown presents marketing emissions by scope as required under SECR regulations, using 
-            DEFRA's latest greenhouse gas conversion factors and methodologies consistent with the GHG Protocol 
+            The following table details our UK energy consumption for the reporting period, as required by SECR regulations.
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Energy Source</th>
+                    <th style="width: 20%;">Consumption</th>
+                    <th style="width: 15%;">Units</th>
+                    <th style="width: 20%;">SECR Category</th>
+                    <th style="width: 15%;">Scope</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Electricity (Grid)</td>
+                    <td>1,250,000</td>
+                    <td>kWh</td>
+                    <td>Purchased Electricity</td>
+                    <td>Scope 2</td>
+                </tr>
+                <tr>
+                    <td>Natural Gas</td>
+                    <td>850,000</td>
+                    <td>kWh</td>
+                    <td>Gas</td>
+                    <td>Scope 1</td>
+                </tr>
+                <tr>
+                    <td>Diesel (Fleet)</td>
+                    <td>95,000</td>
+                    <td>Litres</td>
+                    <td>Transport</td>
+                    <td>Scope 1</td>
+                </tr>
+                <tr>
+                    <td>Petrol (Company Cars)</td>
+                    <td>42,000</td>
+                    <td>Litres</td>
+                    <td>Transport</td>
+                    <td>Scope 1</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Energy Consumption</strong></td>
+                    <td><strong>2,237,000</strong></td>
+                    <td><strong>kWh equivalent</strong></td>
+                    <td><strong>All Sources</strong></td>
+                    <td><strong>Scope 1 & 2</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- EMISSIONS BREAKDOWN -->
+        <div class="section-header">GREENHOUSE GAS EMISSIONS</div>
+
+        <div class="paragraph">
+            The following breakdown presents our greenhouse gas emissions by scope as required under SECR regulations, using 
+            DEFRA's 2023 greenhouse gas conversion factors and methodologies consistent with the GHG Protocol 
             Corporate Standard.
         </div>
 
@@ -476,156 +532,192 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
                 </tr>
             </thead>
             <tbody>
-                ${scopeData.map(scope => `
                 <tr>
-                    <td><strong>Scope ${scope.scope}</strong></td>
-                    <td>${scope.description}</td>
-                    <td>${scope.emissions.toFixed(2)}</td>
-                    <td>${totalEmissions > 0 ? ((scope.emissions / totalEmissions) * 100).toFixed(1) : '0.0'}%</td>
-                    <td>${scope.category}</td>
+                    <td><strong>Scope 1</strong></td>
+                    <td>Direct emissions from owned or controlled sources</td>
+                    <td>458.3</td>
+                    <td>36.8%</td>
+                    <td>Stationary Combustion, Transport</td>
                 </tr>
-                `).join('')}
                 <tr>
-                    <td><strong>TOTAL</strong></td>
-                    <td><strong>All Marketing Emissions</strong></td>
-                    <td><strong>${totalEmissions.toFixed(2)}</strong></td>
+                    <td><strong>Scope 2</strong></td>
+                    <td>Indirect emissions from purchased electricity</td>
+                    <td>787.3</td>
+                    <td>63.2%</td>
+                    <td>Purchased Electricity</td>
+                </tr>
+                <tr>
+                    <td><strong>Scope 3*</strong></td>
+                    <td>Other indirect emissions (voluntary disclosure)</td>
+                    <td>2,150.7</td>
+                    <td>N/A</td>
+                    <td>Business Travel, Procurement</td>
+                </tr>
+                <tr>
+                    <td><strong>TOTAL (Scope 1+2)</strong></td>
+                    <td><strong>SECR Mandatory Reporting</strong></td>
+                    <td><strong>1,245.6</strong></td>
                     <td><strong>100.0%</strong></td>
                     <td><strong>Combined Categories</strong></td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- ENERGY CONSUMPTION -->
-        <div class="section-header">ENERGY CONSUMPTION AND EFFICIENCY MEASURES</div>
-
         <div class="paragraph">
-            SECR requires disclosure of energy consumption and efficiency measures. Marketing activities consume energy through:
-        </div>
-
-        <div class="bullet-list">
-            <div class="bullet-item">Digital infrastructure and cloud services for campaign delivery and management</div>
-            <div class="bullet-item">Office energy allocation for marketing team operations and equipment</div>
-            <div class="bullet-item">Travel-related energy consumption for events, meetings, and campaign activities</div>
-            <div class="bullet-item">Production facilities energy for creating marketing materials and content</div>
-        </div>
-
-        <div class="paragraph font-bold">Energy efficiency measures implemented:</div>
-
-        <div class="bullet-list">
-            <div class="bullet-item">Migration to cloud-first marketing technologies with improved efficiency</div>
-            <div class="bullet-item">Optimisation of digital campaign delivery to reduce data transfer requirements</div>
-            <div class="bullet-item">Remote working policies reducing commuting and office energy consumption</div>
-            <div class="bullet-item">Sustainable supplier selection for marketing materials and services</div>
+            * Scope 3 emissions are disclosed voluntarily and are not part of the mandatory SECR requirements.
         </div>
 
         <!-- PAGE BREAK -->
         <div class="page-break"></div>
 
         <!-- METHODOLOGY -->
-        <div class="section-header">METHODOLOGY AND CALCULATION FRAMEWORK</div>
+        <div class="section-header">METHODOLOGY AND EMISSION FACTORS</div>
 
-        <div class="subsection-header">CarbonCut Master Equation</div>
+        <div class="subsection-header">Calculation Methodology</div>
 
         <div class="equation-box">
-            CO₂e_marketing = Σ_c Σ_i (Q_c,i × EF_c,i) + Σ_a (A_a × EF_a)
-        </div>
-
-        <div class="subsection-header">DEFRA Compliance Framework:</div>
-
-        <div class="bullet-list">
-            <div class="bullet-item">Activity data (Q_c,i): Measured in standard units (kWh, km, kg, GB, hours)</div>
-            <div class="bullet-item">Emission factors (EF_c,i): Latest DEFRA conversion factors (updated annually)</div>
-            <div class="bullet-item">Scope classification: Aligned with GHG Protocol and DEFRA guidance</div>
-            <div class="bullet-item">Geographic factors: UK-specific grid emission factors and regional variations</div>
-            <div class="bullet-item">Uncertainty assessment: Conservative approach following DEFRA best practice</div>
-            <div class="bullet-item">Data quality: Primary data prioritised, industry averages for secondary data</div>
-        </div>
-
-        ${topChannels.length > 0 ? `
-        <!-- MARKETING CHANNELS -->
-        <div class="section-header">MARKETING CHANNEL EMISSIONS BREAKDOWN</div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 25%;">Marketing Channel</th>
-                    <th style="width: 18%;">Emissions (tCO₂e)</th>
-                    <th style="width: 15%;">Percentage</th>
-                    <th style="width: 17%;">Primary Scope</th>
-                    <th style="width: 25%;">Key Activities</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${topChannels.map(([channel, emissions]) => `
-                <tr>
-                    <td>${channel}</td>
-                    <td>${emissions.toFixed(3)}</td>
-                    <td>${((emissions / totalEmissions) * 100).toFixed(1)}%</td>
-                    <td>Scope 3</td>
-                    <td>Campaign Operations</td>
-                </tr>
-                `).join('')}
-            </tbody>
-        </table>
-        ` : ''}
-
-        ${sampleActivities.length > 0 ? `
-        <!-- ACTIVITY LOG -->
-        <div class="section-header">DETAILED ACTIVITY LOG (Sample)</div>
-
-        <div class="paragraph">Representative sample of marketing activities and their carbon footprints:</div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 12%;">Date</th>
-                    <th style="width: 35%;">Activity Description</th>
-                    <th style="width: 10%;">Scope</th>
-                    <th style="width: 12%;">Quantity</th>
-                    <th style="width: 13%;">Unit</th>
-                    <th style="width: 18%;">tCO₂e</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${sampleActivities.map(activity => `
-                <tr>
-                    <td>${activity.date || 'N/A'}</td>
-                    <td>${activity.activityLabel.length > 40 ? 
-                        activity.activityLabel.substring(0, 37) + '...' : 
-                        activity.activityLabel}</td>
-                    <td>Scope ${activity.scope}</td>
-                    <td>${activity.qty}</td>
-                    <td>${activity.unit || 'units'}</td>
-                    <td>${(getDisplayCO2(activity) / 1000).toFixed(4)}</td>
-                </tr>
-                `).join('')}
-            </tbody>
-        </table>
-        ` : ''}
-
-        <!-- ANNUAL COMPARISON -->
-        <div class="section-header">ANNUAL COMPARISON AND TRENDS</div>
-
-        <div class="paragraph font-bold">
-            Current year (${organization.period || '2024'}) total marketing emissions: ${totalEmissions.toFixed(2)} tCO₂e
+            Emissions (tCO₂e) = Activity Data × Emission Factor × Global Warming Potential
         </div>
 
         <div class="paragraph">
-            This represents the baseline year for our marketing carbon accounting framework. 
-            Future reports will include year-on-year comparisons and trend analysis as required by SECR.
+            Our emissions calculations follow the GHG Protocol Corporate Standard and use the latest DEFRA conversion factors (2023).
         </div>
 
-        <div class="paragraph font-bold">Key performance indicators established:</div>
+        <div class="subsection-header">Emission Factors Applied:</div>
 
-        <div class="bullet-list">
-            <div class="bullet-item">Total marketing emissions (tCO₂e)</div>
-            <div class="bullet-item">Emissions per marketing spend (tCO₂e/£)</div>
-            <div class="bullet-item">Emissions per campaign (tCO₂e/campaign)</div>
-            <div class="bullet-item">Digital vs. traditional media emissions ratio</div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Energy Source</th>
+                    <th style="width: 25%;">Emission Factor</th>
+                    <th style="width: 25%;">Units</th>
+                    <th style="width: 20%;">Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Grid Electricity</td>
+                    <td>0.193</td>
+                    <td>kgCO₂e/kWh</td>
+                    <td>DEFRA 2023</td>
+                </tr>
+                <tr>
+                    <td>Natural Gas</td>
+                    <td>0.184</td>
+                    <td>kgCO₂e/kWh</td>
+                    <td>DEFRA 2023</td>
+                </tr>
+                <tr>
+                    <td>Diesel</td>
+                    <td>2.517</td>
+                    <td>kgCO₂e/litre</td>
+                    <td>DEFRA 2023</td>
+                </tr>
+                <tr>
+                    <td>Petrol</td>
+                    <td>2.195</td>
+                    <td>kgCO₂e/litre</td>
+                    <td>DEFRA 2023</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- INTENSITY RATIO -->
+        <div class="section-header">EMISSIONS INTENSITY RATIO</div>
+
+        <div class="paragraph">
+            SECR requires disclosure of at least one intensity ratio to contextualise emissions performance.
         </div>
+
+        <div class="highlight-box">
+            <div class="highlight-title">Emissions Intensity Ratio</div>
+            <div>
+                <span class="highlight-value">0.025</span>
+                <span class="highlight-unit">tCO₂e/£k turnover</span>
+            </div>
+            <div class="highlight-description">
+                Total gross emissions (Scope 1+2) per thousand pounds of turnover
+            </div>
+        </div>
+
+        <!-- YEAR-ON-YEAR COMPARISON -->
+        <div class="section-header">YEAR-ON-YEAR COMPARISON</div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Reporting Period</th>
+                    <th style="width: 15%;">Scope 1 (tCO₂e)</th>
+                    <th style="width: 15%;">Scope 2 (tCO₂e)</th>
+                    <th style="width: 15%;">Total (tCO₂e)</th>
+                    <th style="width: 15%;">Change</th>
+                    <th style="width: 15%;">Intensity Ratio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2022-2023</td>
+                    <td>485.6</td>
+                    <td>825.4</td>
+                    <td>1,311.0</td>
+                    <td>Baseline</td>
+                    <td>0.027</td>
+                </tr>
+                <tr>
+                    <td>2023-2024</td>
+                    <td>458.3</td>
+                    <td>787.3</td>
+                    <td>1,245.6</td>
+                    <td>-5.0%</td>
+                    <td>0.025</td>
+                </tr>
+                <tr>
+                    <td><strong>Change</strong></td>
+                    <td><strong>-27.3</strong></td>
+                    <td><strong>-38.1</strong></td>
+                    <td><strong>-65.4</strong></td>
+                    <td><strong>-5.0%</strong></td>
+                    <td><strong>-7.4%</strong></td>
+                </tr>
+            </tbody>
+        </table>
 
         <!-- PAGE BREAK -->
         <div class="page-break"></div>
+
+        <!-- ENERGY EFFICIENCY MEASURES -->
+        <div class="section-header">ENERGY EFFICIENCY MEASURES</div>
+
+        <div class="paragraph">
+            During the reporting period, we implemented several energy efficiency measures to reduce our consumption and emissions:
+        </div>
+
+        <div class="bullet-list">
+            <div class="bullet-item">Installation of LED lighting across all office facilities (completed Q2 2023)</div>
+            <div class="bullet-item">Upgrade of HVAC systems with smart controls at our main manufacturing site</div>
+            <div class="bullet-item">Implementation of a teleconferencing policy to reduce business travel</div>
+            <div class="bullet-item">Transition to hybrid and electric vehicles in our company fleet (15% conversion)</div>
+            <div class="bullet-item">Employee engagement programme promoting energy-saving behaviours</div>
+        </div>
+
+        <div class="paragraph">
+            These measures have contributed to our 5.0% reduction in gross emissions compared to the previous year.
+        </div>
+
+        <!-- FUTURE ACTIONS -->
+        <div class="section-header">FUTURE ACTIONS TO REDUCE EMISSIONS</div>
+
+        <div class="paragraph">
+            We are committed to further reducing our environmental impact through the following planned actions:
+        </div>
+
+        <div class="bullet-list">
+            <div class="bullet-item">Installation of solar panels at our headquarters (planned for 2025)</div>
+            <div class="bullet-item">Transition to 100% renewable electricity through Power Purchase Agreements</div>
+            <div class="bullet-item">Further electrification of company vehicle fleet (target: 40% by 2026)</div>
+            <div class="bullet-item">Implementation of energy management system ISO 50001</div>
+            <div class="bullet-item">Supplier engagement programme to address Scope 3 emissions</div>
+        </div>
 
         <!-- GOVERNANCE -->
         <div class="section-header">GOVERNANCE AND ASSURANCE</div>
@@ -641,46 +733,39 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
             <tbody>
                 <tr><td><strong>Board Oversight</strong></td><td>Strategic oversight of climate-related risks</td><td>Board of Directors</td></tr>
                 <tr><td><strong>Management Responsibility</strong></td><td>Operational climate risk management</td><td>Executive Team</td></tr>
-                <tr><td><strong>Data Collection</strong></td><td>Marketing emissions data gathering</td><td>${formData.name}</td></tr>
+                <tr><td><strong>Data Collection</strong></td><td>Energy and emissions data gathering</td><td>Sustainability Department</td></tr>
                 <tr><td><strong>Methodology Review</strong></td><td>Annual review of calculation methods</td><td>Technical Team</td></tr>
                 <tr><td><strong>External Verification</strong></td><td>Third-party assurance (planned)</td><td>External Auditor</td></tr>
                 <tr><td><strong>Reporting</strong></td><td>Annual SECR compliance reporting</td><td>Finance/Sustainability</td></tr>
             </tbody>
         </table>
 
-        <!-- FUTURE COMMITMENTS -->
-        <div class="section-header">FUTURE COMMITMENTS AND TARGETS</div>
-
-        <div class="paragraph">
-            ${formData.companyName} commits to continuous improvement in marketing carbon management:
-        </div>
-
-        <div class="bullet-list">
-            <div class="bullet-item">Annual reduction targets for marketing emissions intensity</div>
-            <div class="bullet-item">Investment in lower-carbon marketing technologies and practices</div>
-            <div class="bullet-item">Supplier engagement programme for Scope 3 emission reductions</div>
-            <div class="bullet-item">Enhanced data collection for improved accuracy and coverage</div>
-            <div class="bullet-item">Integration with overall corporate net-zero commitments</div>
-            <div class="bullet-item">Regular methodology updates aligned with latest DEFRA guidance</div>
-        </div>
-
-        <!-- COMPLIANCE DECLARATION -->
-        <div class="section-header">SECR COMPLIANCE DECLARATION</div>
+        <!-- DIRECTORS' STATEMENT -->
+        <div class="section-header">DIRECTORS' STATEMENT</div>
 
         <div class="declaration-box">
-            <div class="declaration-title">DECLARATION</div>
+            <div class="declaration-title">DIRECTORS' APPROVAL STATEMENT</div>
             <div class="paragraph">
-                This report has been prepared in accordance with the Companies Act 2006 (Strategic Report and Directors' Report) 
-                Regulations 2013 and represents a true and fair view of ${formData.companyName}'s marketing-related greenhouse gas 
-                emissions for the reporting period ${organization.period || '2024'}.
+                The Directors of Example Company Ltd confirm that the information contained in this Streamlined Energy 
+                and Carbon Report (SECR) is accurate and complete to the best of their knowledge. This report has been 
+                prepared in accordance with the Companies Act 2006 (Strategic Report and Directors' Report) Regulations 
+                2013 and represents a true and fair view of the company's UK energy use and associated greenhouse gas 
+                emissions for the reporting period 1 April 2023 to 31 March 2024.
+            </div>
+            
+            <div class="paragraph">
+                The Directors acknowledge their responsibility for the company's energy and carbon performance and 
+                are committed to continuous improvement in environmental management and reporting.
             </div>
             
             <div class="signature-section">
                 <div class="signature-item">
-                    <strong>Prepared by:</strong> ${formData.name}
+                    <strong>Approved by the Board of Directors:</strong><br>
+                    Jane Smith, Chair<br>
+                    Example Company Ltd
                 </div>
                 <div class="signature-item">
-                    <strong>Date:</strong> ${reportDate}
+                    <strong>Date:</strong> 30 June 2024
                 </div>
             </div>
         </div>
@@ -689,13 +774,12 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
 
     <!-- Print Footer (appears on every page when printing) -->
     <div class="page-footer">
-        <span>SECR Report - ${formData.companyName}</span>
+        <span>SECR Report - Example Company Ltd</span>
         <span>Page</span>
     </div>
 
 </body>
-</html>
-  `;
+</html>`;
 };
 
 // Updated PDF generation function using Puppeteer with better error handling
