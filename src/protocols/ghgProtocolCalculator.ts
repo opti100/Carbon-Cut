@@ -3,6 +3,8 @@
 // Implements the complete Optiminastic | CarbonCut methodology with all 15 channel formulas
 // Uses latest 2025 emission factors and GHG Protocol formulas
 
+import { GridIntensityService } from "@/services/grid-intensity-service";
+
 // --- Type Definitions ---
 
 interface GridIntensityFactors {
@@ -265,10 +267,33 @@ export default class GHGProtocolCarbonCalculator {
   }
 
   // Get electricity carbon intensity using hardcoded, precise scientific data
-  getGridIntensity(country: string): number {
-    const intensity = this.emissionFactors.grid_intensity[country] || this.emissionFactors.grid_intensity['default'];
-    console.log(`Grid intensity for ${country}: ${intensity} gCO2/kWh (2025 IEA data)`);
-    return intensity;
+  async getGridIntensity(country: string): Promise<{ intensity: number; source: 'IEA_API' | 'FALLBACK'; updated: string }> {
+    try {
+      console.log(`Fetching dynamic grid intensity for ${country}...`);
+      
+      const result = await GridIntensityService.getGridIntensity(country);
+      
+      console.log(`✅ Grid intensity for ${country}: ${result.averageIntensity} gCO2/kWh (${result.dataSource}, updated: ${result.lastUpdated})`);
+      
+      return {
+        intensity: result.averageIntensity,
+        source: result.dataSource,
+        updated: result.lastUpdated
+      };
+      
+    } catch (error) {
+      console.error(`Error fetching dynamic grid intensity for ${country}:`, error);
+      
+      // Fallback to hardcoded values
+      const fallbackIntensity = this.emissionFactors.grid_intensity[country] || this.emissionFactors.grid_intensity['default'];
+      console.log(`Using fallback grid intensity for ${country}: ${fallbackIntensity} gCO2/kWh`);
+      
+      return {
+        intensity: fallbackIntensity,
+        source: 'FALLBACK',
+        updated: new Date().toISOString()
+      };
+    }
   }
 
   // 1) Ad Production (film/photo/audio shoots)
@@ -743,7 +768,7 @@ export default class GHGProtocolCarbonCalculator {
   }
 
   // Main calculation method following GHG Protocol framework
-  calculateWithGHGProtocol(userInput: GHGUserInput): GHGProtocolResult {
+  async calculateWithGHGProtocol(userInput: GHGUserInput): Promise<GHGProtocolResult> {
     try {
       console.log('GHG Protocol calculation starting for:', userInput);
       
@@ -754,7 +779,7 @@ export default class GHGProtocolCarbonCalculator {
       const includeDeviceEnergy = userInput.includeDeviceEnergy || false;
       
       // Get hardcoded electricity carbon intensity (scientific data)
-      const gridIntensity = this.getGridIntensity(country);
+      const { intensity: gridIntensity } = await this.getGridIntensity(country);
       console.log(`Grid intensity for ${country}: ${gridIntensity} gCO2/kWh`);
       
       let calculation: CalculationResult;
@@ -960,8 +985,8 @@ export default class GHGProtocolCarbonCalculator {
     return 'Poor - High Carbon Impact - Consider Optimization';
   }
 
-  // Legacy compatibility method
-  calculateWithAI(userInput: GHGUserInput): GHGProtocolResult {
-    return this.calculateWithGHGProtocol(userInput);
+  async calculateWithAI(userInput: GHGUserInput): Promise<GHGProtocolResult> {
+    return await this.calculateWithGHGProtocol(userInput);
   }
+  
 }
