@@ -1,4 +1,3 @@
-import { ActivityData, OrganizationData } from "@/types/types";
 import puppeteer from 'puppeteer';
 import { PDFFormData, PDFGenerationData } from './secr-report';
 
@@ -12,7 +11,6 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
     year: 'numeric' 
   });
 
-  // Calculate scope data
   const scopeData = [
     {
       scope: '1',
@@ -34,7 +32,6 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
     }
   ];
 
-  // Top marketing channels
   const topChannels = Object.entries(totals.byChannel)
     .sort(([,a], [,b]) => b - a)
     .slice(0, 10);
@@ -47,17 +44,19 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSRD Sustainability Report - ${formData.companyName}</title>
     <style>
-        /* CSS Variables for CSRD theming */
+        /* CSS Variables for CSRD theming - Gray White Green */
         :root {
-            --eu-blue: #003399;
-            --eu-yellow: #FFCC00;
+            --primary-dark: #2d2d2d;
+            --primary-green: #22c55e;
             --white: #FFFFFF;
             --dark-text: #1a1a1a;
             --light-gray: #F7F7F7;
             --medium-gray: #CCCCCC;
-            --light-blue: #E6F3FF;
+            --dark-gray: #666666;
+            --light-green: #dcfce7;
             --subtitle-gray: #555555;
-            --green: #00AA44;
+            --green: #22c55e;
+            --dark-green: #16a34a;
         }
 
         * {
@@ -67,7 +66,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: 10pt;
             line-height: 1.5;
             color: var(--dark-text);
@@ -97,7 +96,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
 
         /* Header styles */
         .cover-header {
-            background: linear-gradient(135deg, var(--eu-blue) 0%, #0066CC 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--dark-gray) 100%);
             color: var(--white);
             padding: 40px 30px;
             position: relative;
@@ -110,14 +109,14 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
             right: 30px;
             width: 40px;
             height: 40px;
-            background: var(--eu-yellow);
+            background: var(--green);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 8pt;
             font-weight: bold;
-            color: var(--eu-blue);
+            color: var(--white);
         }
 
         .main-title {
@@ -134,7 +133,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
 
         /* Section headers */
         .section-header {
-            background: var(--eu-blue);
+            background: var(--primary-dark);
             color: var(--white);
             padding: 15px 20px;
             font-size: 14pt;
@@ -150,15 +149,15 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
             bottom: -5px;
             width: 100%;
             height: 5px;
-            background: var(--eu-yellow);
+            background: var(--green);
         }
 
         .subsection-header {
-            color: var(--eu-blue);
+            color: var(--primary-dark);
             font-size: 12pt;
             font-weight: bold;
             margin: 20px 0 10px 0;
-            border-left: 4px solid var(--eu-yellow);
+            border-left: 4px solid var(--green);
             padding-left: 15px;
         }
 
@@ -175,8 +174,8 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         .sustainability-metric {
-            background: var(--light-blue);
-            border: 2px solid var(--eu-blue);
+            background: var(--light-green);
+            border: 2px solid var(--green);
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -184,7 +183,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         .metric-title {
-            color: var(--eu-blue);
+            color: var(--dark-green);
             font-size: 12pt;
             font-weight: bold;
             margin-bottom: 10px;
@@ -217,7 +216,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         .csrd-table th {
-            background: var(--eu-blue);
+            background: var(--primary-dark);
             color: var(--white);
             padding: 12px 10px;
             text-align: left;
@@ -242,22 +241,22 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         .double-materiality-box {
-            background: linear-gradient(90deg, var(--light-blue) 0%, #FFF9E6 100%);
-            border: 3px solid var(--eu-blue);
+            background: linear-gradient(90deg, var(--light-green) 0%, var(--light-gray) 100%);
+            border: 3px solid var(--green);
             padding: 25px;
             margin: 25px 0;
             border-radius: 10px;
         }
 
         .materiality-title {
-            color: var(--eu-blue);
+            color: var(--dark-green);
             font-size: 14pt;
             font-weight: bold;
             margin-bottom: 15px;
         }
 
         .company-info-csrd {
-            background: var(--eu-blue);
+            background: var(--primary-dark);
             color: var(--white);
             padding: 30px;
             margin: 20px 0;
@@ -277,7 +276,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         .esrs-reference {
-            background: #F0F8FF;
+            background: var(--light-gray);
             border-left: 5px solid var(--green);
             padding: 15px;
             margin: 15px 0;
@@ -286,7 +285,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
 
         .esrs-title {
             font-weight: bold;
-            color: var(--green);
+            color: var(--dark-green);
             margin-bottom: 5px;
         }
     </style>
@@ -422,7 +421,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
                     <td>${scope.category}</td>
                 </tr>
                 `).join('')}
-                <tr style="background: var(--light-blue); font-weight: bold;">
+                <tr style="background: var(--light-green); font-weight: bold;">
                     <td><strong>TOTAL</strong></td>
                     <td><strong>All Marketing Emissions</strong></td>
                     <td><strong>${totalEmissions.toFixed(2)}</strong></td>
@@ -579,8 +578,7 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
 
     </div>
 </body>
-</html>
-  `;
+</html>`
 };
 
 // CSRD PDF generation function using Puppeteer
