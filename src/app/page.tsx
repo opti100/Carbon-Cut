@@ -6,6 +6,7 @@ import Footer from "@/components/main/Footer";
 import Hero from "@/components/main/Hero";
 import PreFooter from "@/components/main/PreFooter";
 import WhyCarbonCut from "@/components/main/WhyCarbonCut";
+import { MarqueeDemo } from "@/components/marqueeDemo";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <BrandsSection/>
       <WhyCarbonCut/>
       <WhatCarbonCutProvides/>
+      <MarqueeDemo/>
       <PreFooter/>
       <Footer />
     </main>

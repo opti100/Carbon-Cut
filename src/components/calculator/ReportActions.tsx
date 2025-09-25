@@ -10,8 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle, Leaf, Building2, Download, Loader2, Award, CreditCard, Mail, Shield, X, Cloud, Database } from "lucide-react";
+import { CheckCircle, Leaf, Building2, Download, Loader2, Award, CreditCard, Mail, Shield, X, Cloud, Database, Component } from "lucide-react";
 import { PDFFormData } from "@/services/report-formats/secr-report";
+import PhoneInputDemo, { PhoneInput } from '../comp-46';
 
 // --- Helper Components (Moved Outside) ---
 
@@ -167,13 +168,16 @@ const FormStep = ({
         <Label htmlFor="pdf-phone" className="text-sm font-medium text-gray-900">
           Phone Number <span className="text-red-500">*</span>
         </Label>
-        <Input
-          id="pdf-phone"
-          type="tel"
-          value={pdfFormData.phoneNumber}
-          onChange={(e) => handlePdfFormChange('phoneNumber', e.target.value)}
-          placeholder="Enter phone number"
-          className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500"
+        <PhoneInputDemo
+          inpValue={pdfFormData.phoneNumber}
+          onChange={(value) => handlePdfFormChange('phoneNumber', value)}
+
+          // id="pdf-phone"
+          // type="tel"
+          // value={pdfFormData.phoneNumber}
+          // onChange={(e) => handlePdfFormChange('phoneNumber', e.target.value)}
+          // placeholder="Enter phone number"
+          // className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500"
         />
       </div>
     </div>

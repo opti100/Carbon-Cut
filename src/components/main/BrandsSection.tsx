@@ -107,6 +107,8 @@ const BrandsSection = () => {
               </motion.div>
             </motion.div>
 
+            
+
             <motion.div 
               className="grid grid-cols-2 gap-8 lg:gap-12"
               variants={containerVariants}
@@ -136,12 +138,13 @@ const BrandsSection = () => {
                   )}
                 </motion.div>
               ))}
-            </motion.div>
+            </motion.div> 
+            {/* <Globe data={[]} globeConfig={}/> */}
           </div>
         </div>
       </div>
 
-      {/* Gradient overlay at bottom */}
+    
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
     </section>
   )

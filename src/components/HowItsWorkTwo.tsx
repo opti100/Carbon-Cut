@@ -55,8 +55,8 @@ export default function EmissionsTracker() {
                 </div>
 
                 {/* Step 2 - Analyze */}
-                <div className="flex flex-col lg:flex-row-reverse items-center mb-12 lg:mb-16">
-                    <div className="w-full lg:w-1/5 mb-6 lg:mb-0 lg:pl-8 text-center lg:text-left">
+                <div className="flex flex-col lg:flex-row items-center mb-12 lg:mb-16">
+                    <div className="w-full lg:w-1/5 mb-6 lg:mb-0  text-center lg:text-left">
                         <div className="text-sm text-black mb-2">Step 2</div>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 flex justify-center lg:justify-start items-center">
                             Analyze
@@ -103,8 +103,8 @@ export default function EmissionsTracker() {
                 </div>
 
                 {/* Step 4 - Certify */}
-                <div className="flex flex-col lg:flex-row-reverse items-center">
-                    <div className="w-full lg:w-1/5 mb-6 lg:mb-0 lg:pl-8 text-center lg:text-left">
+                <div className="flex flex-col lg:flex-row items-center">
+                    <div className="w-full lg:w-1/5 mb-6 lg:mb-0  text-center lg:text-left">
                         <div className="text-sm text-black mb-2">Step 4</div>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 flex justify-center lg:justify-start items-center">
                             Certify
