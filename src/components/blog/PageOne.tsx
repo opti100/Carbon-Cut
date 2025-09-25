@@ -198,7 +198,7 @@ const styles = {
   blogNav: {
     display: 'flex',
     gap: '30px',
-    flexWrap: 'wrap' as 'wrap',
+    flexWrap: 'wrap',
   },
   navLink: {
     textDecoration: 'none',
