@@ -4,8 +4,7 @@ import { motion } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Leaf, Zap, Battery, Users } from "lucide-react";
 import Image from "next/image";
-import { PixelImage } from "../ui/pixel-Image";
-// import { PixelImage } from "../ui/pixel-image";
+import { PixelImage } from "../ui/pixel-image";
 
 const solutions = [
     {
@@ -61,8 +60,8 @@ export default function OurSolutions() {
                                     Our Solutions
                                 </h2>
                                 <p className="text-gray-600 text-lg leading-relaxed">
-                                    Climate change isn&apos;t coming—it&apos;s here. Transitioning to sustainable
-                                    energy isn&apos;t just a choice; it&apos;s a necessity. We believe in:
+                                    Climate change isn't coming—it's here. Transitioning to sustainable
+                                    energy isn't just a choice; it's a necessity. We believe in:
                                 </p>
                             </div>
                         </BlurFade>

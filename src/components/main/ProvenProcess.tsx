@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { PixelImage } from "../ui/pixel-Image";
+import { PixelImage } from "../ui/pixel-image";
 
 const processSteps = [
     {

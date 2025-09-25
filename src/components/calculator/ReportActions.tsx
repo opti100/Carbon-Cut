@@ -168,16 +168,16 @@ const FormStep = ({
         <Label htmlFor="pdf-phone" className="text-sm font-medium text-gray-900">
           Phone Number <span className="text-red-500">*</span>
         </Label>
-        <PhoneInputDemo
+        {/* <PhoneInputDemo
           inpValue={pdfFormData.phoneNumber}
-          onChange={(value) => handlePdfFormChange('phoneNumber', value)}
-
-          // id="pdf-phone"
-          // type="tel"
-          // value={pdfFormData.phoneNumber}
-          // onChange={(e) => handlePdfFormChange('phoneNumber', e.target.value)}
-          // placeholder="Enter phone number"
-          // className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500"
+          onChange={(value) => handlePdfFormChange('phoneNumber', value)} */}
+          <Input
+           id="pdf-phone"
+           type="tel"
+           value={pdfFormData.phoneNumber}
+           onChange={(e) => handlePdfFormChange('phoneNumber', e.target.value)}
+           placeholder="Enter phone number"
+          className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500"
         />
       </div>
     </div>

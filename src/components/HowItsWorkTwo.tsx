@@ -10,19 +10,19 @@ export default function EmissionsTracker() {
             <div className="text-center py-12 px-4 sm:px-6 lg:px-8">
                 <div className="inline-block bg-white px-4 py-2 mb-6 sm:mb-8">
                     <BlurFade delay={0.1} inView>
-                        <h4 className="text-2xl sm:text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
+                        <h4 className="text-2xl sm:text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto  tracking-tight font-medium text-black">
                             How it <span className="text-tertiary">works</span>
                         </h4>
                     </BlurFade>
                 </div>
 
-                <BlurFade delay={0.1} inView>
-                    <h4 className="text-2xl sm:text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black mb-4">
+                {/* <BlurFade delay={0.1} inView>
+                    <h4 className="text-2xl sm:text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-left tracking-tight font-medium text-black mb-4">
                         Track, Cut, <span className="text-tertiary">and</span> Offset <span className="text-tertiary">Emissions</span>
                     </h4>
-                </BlurFade>
+                </BlurFade> */}
 
-                <p className="text-black text-base sm:text-lg max-w-2xl mx-auto leading-relaxed px-2">
+                <p className="text-black text-base sm:text-lg max-w-2xl mx-auto text-center leading-relaxed px-2 ">
                     Take control of your environmental impact with clear, reliable tools. From calculating your footprint to offsetting
                     with verified projects, we help you build a transparent, measurable, and sustainable future.
                 </p>

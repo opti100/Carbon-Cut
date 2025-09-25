@@ -223,11 +223,11 @@ const styles = {
     background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
     borderRadius: '12px',
     padding: '40px',
-    position: 'relative' as 'relative',
+    position: 'relative' ,
     borderLeft: '4px solid #f97316',
   },
   featuredBadge: {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     top: '20px',
     right: '20px',
     backgroundColor: '#f97316',
@@ -247,7 +247,7 @@ const styles = {
     marginBottom: '15px',
   },
   postContent: {
-    textAlign: 'left' as 'left',
+    textAlign: 'left',
   },
   postTitle: {
     fontSize: '2rem',
@@ -372,7 +372,7 @@ const styles = {
     background: 'linear-gradient(135deg, #f0fdf4 0%, #fffbeb 100%)',
   },
   newsletterCard: {
-    textAlign: 'center' as 'center',
+    textAlign: 'center' as const,
     maxWidth: '500px',
     margin: '0 auto',
   },
@@ -413,7 +413,7 @@ const styles = {
   blogFooter: {
     padding: '30px 0',
     borderTop: '1px solid #e5e5e5',
-    textAlign: 'center' as 'center',
+    textAlign: 'center' as const,
   },
   footerText: {
     color: '#666',

@@ -112,7 +112,7 @@ const Hero = () => {
             >
               <Link href="/calculator" className="flex items-center space-x-3">
                 <Calculator className="w-5 h-5" />
-                <span>CarbonCalculator</span>
+                <span>Carbon Calculator</span>
                 <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </Link>
             </Button>

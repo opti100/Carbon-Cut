@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button'
 const PreFooter = () => {
   return (
     <div
-      className='py-12 px-6 lg:px-28'
+      className='py-12 px-6 lg:px-28 bg-gray-50'
       style={{
-        backgroundColor: '#FFD02F',
+        // backgroundColor: '#FFD02F',
         backgroundImage: 'url("/LandingGroup.svg")',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'right bottom',
