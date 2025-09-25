@@ -93,7 +93,7 @@ export default function EmissionsTracker() {
                     <div className="w-full lg:w-4/5">
                         <div className="relative bg-gradient-to-r from-gray-400 to-gray-300 rounded-lg lg:rounded-full p-4 sm:p-6 lg:p-8 h-48 sm:h-56 lg:h-64 flex items-center justify-center overflow-hidden">
                             <Image
-                                src="/abstract-gray.jpg"
+                                src="/nature-carbon.jpg"
                                 alt="Description"
                                 fill
                                 className="object-cover"
@@ -117,7 +117,7 @@ export default function EmissionsTracker() {
                     <div className="w-full lg:w-4/5">
                         <div className="relative bg-gradient-to-r from-gray-400 to-gray-300 rounded-lg lg:rounded-full p-4 sm:p-6 lg:p-8 h-48 sm:h-56 lg:h-64 flex items-center justify-center overflow-hidden">
                             <Image
-                                src="/abstract-gray.jpg"
+                               src="/carbon-certify.jpg"
                                 alt="Description"
                                 fill
                                 className="object-cover"
