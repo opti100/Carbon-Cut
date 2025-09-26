@@ -59,24 +59,31 @@ const Hero = () => {
         <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 h-16">
           <div className="flex items-center">
             <Image
-              src="/logo.svg"
+              src="/carboncutlogo26-9.svg"
               alt="CarbonCut Logo"
-              width={32}
-              height={32}
-              className="w-36 h-36"
+              width={128}
+              height={128}
+              className="w-48 h-48"
             >
             </Image>
           </div>
+
+          <div className='flex items-center space-x-4'>
+
+           
+
+
           <div className="flex items-center space-x-4">
             <Link href="/login">
               <Button
                 variant="ghost"
                 size={"lg"}
-                className="bg-black text-white px-4 py-1 text-sm font-medium hover:bg-black hover:text-white rounded-lg h-8 transition-colors duration-200"
-              >
+                className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-black hover:text-white rounded-lg h-8 transition-colors duration-200"
+                >
                 Login
               </Button>
             </Link>
+                </div>
           </div>
         </nav>
       </header>
@@ -112,7 +119,7 @@ const Hero = () => {
             >
               <Link href="/calculator" className="flex items-center space-x-3">
                 <Calculator className="w-5 h-5" />
-                <span>Carbon Calculator</span>
+                <span>CarbonCalculator</span>
                 <ArrowUpRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </Link>
             </Button>
@@ -135,12 +142,12 @@ const Hero = () => {
                   transition={{ delay: index * 0.1 + 0.5 }}
                   className="group relative"
                 >
-                  <Link href={badge.link} className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 w-32 h-28">
+                  <Link href={badge.link} className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 w-34 h-30">
                     <Image
                       src={badge.logo}
                       alt={badge.name}
-                      width={60}
-                      height={40}
+                      width={1020}
+                      height={1000}
                       className="object-contain max-w-full max-h-full filter grayscale hover:grayscale-0 transition-all duration-200"
                     />
                   </Link>

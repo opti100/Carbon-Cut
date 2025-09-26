@@ -15,14 +15,14 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero/>
-      <BackgroundPaths title="How it Works"/>
+      {/* <BackgroundPaths title="How it Works"/> */}
       <HowItsWorkTwo/>
       <BrandsSection/>
+      <MarqueeDemo/>
       <WhyCarbonCut/>
       <ProvenProcess/>
       <OurSolutions/>
       <WhatCarbonCutProvides/>
-      <MarqueeDemo/>
       <PreFooter/>
       <Footer />
     </main>

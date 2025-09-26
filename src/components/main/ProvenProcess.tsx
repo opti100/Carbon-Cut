@@ -12,14 +12,14 @@ const processSteps = [
         position: "top-left"
     },
     {
-        number: "02", 
+        number: "02",
         title: "Site Evaluation",
         description: "Our team conducts a detailed assessment of your property to determine its solar potential and ideal system.",
         position: "top-right"
     },
     {
         number: "03",
-        title: "Custom System Design", 
+        title: "Custom System Design",
         description: "We develop a tailored solar solution, providing you with a comprehensive proposal that outlines technical.",
         position: "bottom-left"
     },
@@ -51,8 +51,8 @@ export default function ProvenProcess() {
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 z-10">
                             <BlurFade delay={0.2}>
                                 <div className="relative w-full h-full">
-                                    <PixelImage
-                                        src="/process/process-hero.jpg"
+                                    {/* <PixelImage
+                                        src="/clean-energy.jpg"
                                         alt="Solar consultants discussing project outdoors"
                                         grid="6x4"
                                         className="w-full h-full rounded-full overflow-hidden"
@@ -60,7 +60,12 @@ export default function ProvenProcess() {
                                         maxAnimationDelay={1000}
                                         colorRevealDelay={1200}
                                         inViewMargin="-100px"
-                                    />
+                                    /> */}
+                                    <div
+                                        className="w-[350px] h-[350px] rounded-full bg-center bg-cover pt-28"
+                                        style={{ backgroundImage: "url('/clean-energy.jpg')" }}
+                                    ></div>
+
                                 </div>
                             </BlurFade>
                         </div>
@@ -70,7 +75,7 @@ export default function ProvenProcess() {
                             {processSteps.map((step, index) => {
                                 const isLeft = step.position.includes('left');
                                 const isTop = step.position.includes('top');
-                                
+
                                 return (
                                     <BlurFade key={step.number} delay={0.3 + index * 0.1}>
                                         <motion.div
@@ -84,7 +89,7 @@ export default function ProvenProcess() {
                                                     {step.number}
                                                 </div>
                                             </div>
-                                            
+
                                             {/* Content */}
                                             <div className={`${isTop ? 'pt-20' : 'pb-20'}`}>
                                                 <h3 className="text-xl md:text-2xl font-bold text-black mb-4">
@@ -134,7 +139,7 @@ export default function ProvenProcess() {
                                         <div className="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
                                             {step.number}
                                         </div>
-                                        
+
                                         {/* Content */}
                                         <div className="flex-1">
                                             <h3 className="text-lg md:text-xl font-bold text-black mb-2">

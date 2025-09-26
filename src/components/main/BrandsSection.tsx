@@ -3,9 +3,10 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 
+
 const BrandsSection = () => {
   const brands = [
-    { name: 'Adobe', logo: 'Adobe' },
+    { name: 'Adobe', logoPath: "/companies/Adobe_Corporate_logo.svg" },
     { name: 'Checkr', logo: 'Checkr' },
     { name: 'Square', logo: 'Square' },
     { name: 'Twilio', logo: 'twilio' },
@@ -116,7 +117,7 @@ const BrandsSection = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
             >
-              {brands.map((brand, index) => (
+              {/* {brands.map((brand, index) => (
                 <motion.div
                   key={brand.name}
                   className="flex flex-col items-center justify-center p-4 lg:p-6 rounded-lg bg-gray-900/30 backdrop-blur-sm border border-gray-800 hover:border-tertiary/30 transition-all duration-300 group"
@@ -137,9 +138,42 @@ const BrandsSection = () => {
                     </div>
                   )}
                 </motion.div>
-              ))}
-            </motion.div> 
-            {/* <Globe data={[]} globeConfig={}/> */}
+              ))} */}
+
+              {brands.map((brand) => (
+  <motion.div
+    key={brand.name}
+    className="flex flex-col items-center justify-center p-4 lg:p-6 rounded-lg bg-gray-900/30 backdrop-blur-sm border border-gray-800 hover:border-tertiary/30 transition-all duration-300 group"
+    // @ts-expect-error - ignore
+    variants={logoVariants}
+    whileHover={{ 
+      scale: 1.05,
+      backgroundColor: "rgba(0, 204, 51, 0.05)"
+    }}
+    transition={{ duration: 0.2 }}
+  >
+    {brand.logoPath ? (
+      <img
+        src={brand.logoPath}
+        alt={`${brand.name} logo`}
+        className="h-8 lg:h-10 object-contain"
+      />
+    ) : (
+      <div className="text-xl lg:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors duration-300 text-center">
+        {brand.logo}
+      </div>
+    )}
+
+    {brand.subtitle && (
+      <div className="text-xs text-gray-500 mt-1 text-center">
+        {brand.subtitle}
+      </div>
+    )}
+  </motion.div>
+))}
+
+            </motion.div>
+        
           </div>
         </div>
       </div>

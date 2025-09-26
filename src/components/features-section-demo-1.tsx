@@ -7,17 +7,21 @@ import { BlurFade } from "./ui/blur-fade";
 
 export default function WhatCarbonCutProvides() {
   return (
-    <div className="py-20  bg-white">
+    <div className="py-20  bg-gray-100 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <BlurFade delay={0.1} inView className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
-            Powerful Features for
-            <span className="text-tertiary block">Carbon Reduction</span>
+            Powerful Features for{" "}
+            <span className="text-tertiary">Carbon Reduction</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Everything you need to <span className="text-orange-500 font-semibold">measure, analyze</span>, and <span className="text-orange-500 font-semibold">reduce</span> your marketing emissions with precision and confidence.
+            Everything you need to{" "}
+            <span className="text-orange-500 font-semibold">measure, analyze</span>, and{" "}
+            <span className="text-orange-500 font-semibold">reduce</span> your marketing
+            emissions with precision and confidence.
           </p>
         </BlurFade>
+
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-4">
           {grid.map((feature, index) => (
@@ -25,18 +29,18 @@ export default function WhatCarbonCutProvides() {
               key={feature.title}
               delay={index * 0.2}
               inView
-              className="group relative bg-gradient-to-b from-white to-green-50/50 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-orange-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10"
+              className="group relative bg-gradient-to-b from-gray-100 to-gray-200 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-orange-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10"
             >
               <Grid size={20} />
 
               <div className="relative z-20 mb-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${index === 2 || index === 7 // Automated Carbon Calculations & Optimization Recommendations
-                    ? 'bg-orange-500/10 group-hover:bg-orange-500/20'
-                    : 'bg-tertiary/10 group-hover:bg-tertiary/20'
+                  ? 'bg-orange-500/10 group-hover:bg-orange-500/20'
+                  : 'bg-tertiary/10 group-hover:bg-tertiary/20'
                   }`}>
                   <feature.icon className={`w-6 h-6 ${index === 2 || index === 7
-                      ? 'text-orange-500'
-                      : 'text-tertiary'
+                    ? 'text-orange-500'
+                    : 'text-tertiary'
                     }`} />
                 </div>
               </div>
@@ -49,20 +53,20 @@ export default function WhatCarbonCutProvides() {
               </p>
               {feature.metric && (
                 <div className={`relative z-20 mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${index === 2 || index === 7
-                    ? 'bg-orange-500/10 text-orange-500'
-                    : 'bg-tertiary/10 text-tertiary'
+                  ? 'bg-orange-500/10 text-orange-500'
+                  : 'bg-tertiary/10 text-tertiary'
                   }`}>
                   <div className={`w-2 h-2 rounded-full animate-pulse ${index === 2 || index === 7
-                      ? 'bg-orange-500'
-                      : 'bg-tertiary'
+                    ? 'bg-orange-500'
+                    : 'bg-tertiary'
                     }`}></div>
                   {feature.metric}
                 </div>
               )}
 
               <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl ${index === 2 || index === 7
-                  ? 'bg-gradient-to-r from-orange-500/5 to-orange-400/5'
-                  : 'bg-gradient-to-r from-tertiary/5 to-green-500/5'
+                ? 'bg-gradient-to-r from-orange-500/5 to-orange-400/5'
+                : 'bg-gradient-to-r from-tertiary/5 to-green-500/5'
                 }`}></div>
             </BlurFade>
           ))}
@@ -127,7 +131,7 @@ export const Grid = ({
   ];
   return (
     <div className="pointer-events-none absolute left-1/2 top-0 -ml-20 -mt-2 h-full w-full [mask-image:linear-gradient(white,transparent)]">
-      <div className="absolute inset-0 bg-gradient-to-r [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] from-green-100/30 to-green-300/30 opacity-100">
+      <div className="absolute inset-0 bg-gradient-to-r [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] from-gray-100/30 to-gray-300/30 opacity-100">
         <GridPattern
           width={size ?? 20}
           height={size ?? 20}

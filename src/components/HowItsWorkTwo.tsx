@@ -5,10 +5,10 @@ import { BlurFade } from '../components/ui/blur-fade';
 
 export default function EmissionsTracker() {
     return (
-        <div className="min-h-screen bg-white text-black">
+        <div className="min-h-screen bg-gray-50 text-black">
             {/* Header */}
             <div className="text-center py-12 px-4 sm:px-6 lg:px-8">
-                <div className="inline-block bg-white px-4 py-2 mb-6 sm:mb-8">
+                <div className="inline-block bg-gray-50 px-4 py-2 mb-6 sm:mb-8">
                     <BlurFade delay={0.1} inView>
                         <h4 className="text-2xl sm:text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto  tracking-tight font-medium text-black">
                             How it <span className="text-tertiary">works</span>
