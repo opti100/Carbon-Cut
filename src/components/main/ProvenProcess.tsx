@@ -51,16 +51,6 @@ export default function ProvenProcess() {
                         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 z-10">
                             <BlurFade delay={0.2}>
                                 <div className="relative w-full h-full">
-                                    {/* <PixelImage
-                                        src="/clean-energy.jpg"
-                                        alt="Solar consultants discussing project outdoors"
-                                        grid="6x4"
-                                        className="w-full h-full rounded-full overflow-hidden"
-                                        pixelFadeInDuration={800}
-                                        maxAnimationDelay={1000}
-                                        colorRevealDelay={1200}
-                                        inViewMargin="-100px"
-                                    /> */}
                                     <div
                                         className="w-[350px] h-[350px] rounded-full bg-center bg-cover pt-28"
                                         style={{ backgroundImage: "url('/clean-energy.jpg')" }}

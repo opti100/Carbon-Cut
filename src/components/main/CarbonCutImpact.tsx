@@ -1,0 +1,102 @@
+import React from 'react';
+import { BlurFade } from '../ui/blur-fade';
+
+const CarbonCutImpact = () => {
+  return (
+    <div className="max-w-6xl mx-auto px-6 py-16 bg-white">
+      <div className="text-center mb-16">
+        <div className="flex items-center justify-center gap-4 mb-6">
+
+        </div>
+         <BlurFade delay={0.1} inView className="text-center mb-16">
+        <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
+          Our Impact & Expertise at a Glance
+        </h2>
+        
+        <p className="text-gray-600 text-lg max-w-4xl mx-auto leading-relaxed">
+          A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally 
+          verified projects that drive real climate impact.
+        </p>
+         </BlurFade>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
+        <div className="text-center">
+          <div className="bg-gradient-to-br from-emerald-400 to-emerald-300 rounded-lg p-8 mb-4 shadow-sm">
+            <div className="text-4xl font-bold text-gray-900 mb-2">500K+</div>
+            <div className="text-gray-700 text-sm font-medium">
+              Tons of CO2e emissions<br />calculated to date
+            </div>
+          </div>
+        </div>
+
+        {/* Stat 2 */}
+        <div className="text-center">
+          <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
+            <div className="text-4xl font-bold text-gray-900 mb-2">$5 Million</div>
+            <div className="text-gray-600 text-sm font-medium">
+              In verified carbon credits<br />transacted
+            </div>
+          </div>
+        </div>
+
+        {/* Stat 3 */}
+        <div className="text-center">
+          <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
+            <div className="text-4xl font-bold text-gray-900 mb-2">150+</div>
+            <div className="text-gray-600 text-sm font-medium">
+              Globally verified offset<br />projects supported
+            </div>
+          </div>
+        </div>
+
+        {/* Stat 4 */}
+        <div className="text-center">
+          <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
+            <div className="text-4xl font-bold text-gray-900 mb-2">50+</div>
+            <div className="text-gray-600 text-sm font-medium">
+              Globally verified offset<br />projects supported
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Stats Row */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+        {/* Bottom Stat 1 */}
+        <div className="text-center">
+          <div className="text-4xl font-bold text-gray-900 mb-2">~15%</div>
+          <div className="text-gray-600 text-sm font-medium">
+            Average emission reduction<br />achieved by our users
+          </div>
+        </div>
+
+        {/* Bottom Stat 2 */}
+        <div className="text-center">
+          <div className="text-4xl font-bold text-gray-900 mb-2">10+ Years</div>
+          <div className="text-gray-600 text-sm font-medium">
+            Average team experience in<br />climate tech & sustainability
+          </div>
+        </div>
+
+        {/* Bottom Stat 3 */}
+        <div className="text-center">
+          <div className="text-4xl font-bold text-gray-900 mb-2">Minutes</div>
+          <div className="text-gray-600 text-sm font-medium">
+            To calculate a comprehensive<br />carbon footprint
+          </div>
+        </div>
+
+        {/* Bottom Stat 4 */}
+        <div className="text-center">
+          <div className="text-4xl font-bold text-gray-900 mb-2">ESG-Ready</div>
+          <div className="text-gray-600 text-sm font-medium">
+            Reports compliant with<br />leading sustainability<br />standards
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CarbonCutImpact;

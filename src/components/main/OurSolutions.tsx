@@ -56,12 +56,12 @@ export default function OurSolutions() {
                     <div className="h-[calc(100vh-95px)] flex flex-col justify-between space-y-8">
                         <BlurFade delay={0.2}>
                             <div>
-                                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4">
+                                <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
                                     Our Solutions
                                 </h2>
                                 <p className="text-gray-600 text-lg leading-relaxed">
-                                    Climate change isn't coming—it's here. Transitioning to sustainable
-                                    energy isn't just a choice; it's a necessity. We believe in:
+                                    Climate change isn&apos;t coming—it&apos;s here. Transitioning to sustainable
+                                    energy isn&apos;t just a choice; it&apos;s a necessity. We believe in:
                                 </p>
                             </div>
                         </BlurFade>

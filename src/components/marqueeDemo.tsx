@@ -81,7 +81,7 @@ const ReviewCard = ({
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{username}</p>
           <blockquote className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-            "{body}"
+            &quot;{body}&quot;
           </blockquote>
         </div>
       </div>
@@ -93,7 +93,7 @@ export function MarqueeDemo() {
   return (
     <div className="relative flex max-w-7xl mx-auto px-6 lg:px-8 flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900 py-16 rounded-2xl my-20">
       <div className="mb-8 text-center">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h3 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
           Trusted by professionals
         </h3>
         <p className="text-gray-600 dark:text-gray-400">
