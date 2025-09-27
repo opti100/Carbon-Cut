@@ -3,6 +3,7 @@ import HowItsWorkTwo from "@/components/HowItsWorkTwo";
 import HowItWorksDemo from "@/components/HowItWorksDemo";
 import { BackgroundPaths } from "@/components/main/background-paths";
 import BrandsSection from "@/components/main/BrandsSection";
+import CarbonCutImpact from "@/components/main/CarbonCutImpact";
 import Footer from "@/components/main/Footer";
 import Hero from "@/components/main/Hero";
 import OurSolutions from "@/components/main/OurSolutions";
@@ -21,7 +22,7 @@ export default function Home() {
       <MarqueeDemo/>
       <WhyCarbonCut/>
       <ProvenProcess/>
-      <OurSolutions/>
+      <CarbonCutImpact/>
       <WhatCarbonCutProvides/>
       <PreFooter/>
       <Footer />
