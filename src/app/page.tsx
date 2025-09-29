@@ -5,7 +5,6 @@ import CarbonCutImpact from "@/components/main/CarbonCutImpact";
 import Footer from "@/components/main/Footer";
 import Hero from "@/components/main/Hero";
 import PreFooter from "@/components/main/PreFooter";
-import ProvenProcess from "@/components/main/ProvenProcess";
 import WhyCarbonCut from "@/components/main/WhyCarbonCut";
 import { MarqueeDemo } from "@/components/marqueeDemo";
 
@@ -17,7 +16,6 @@ export default function Home() {
       <BrandsSection/>
       <MarqueeDemo/>
       <WhyCarbonCut/>
-      <ProvenProcess/>
       <CarbonCutImpact/>
       <WhatCarbonCutProvides/>
       <PreFooter/>
