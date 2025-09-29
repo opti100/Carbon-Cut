@@ -1,5 +1,6 @@
 import WhatCarbonCutProvides from "@/components/features-section-demo-1";
 import HowItsWorkTwo from "@/components/HowItsWorkTwo";
+import HowItWorks from "@/components/HowItWorksDemo";
 import BrandsSection from "@/components/main/BrandsSection";
 import CarbonCutImpact from "@/components/main/CarbonCutImpact";
 import Footer from "@/components/main/Footer";
@@ -12,7 +13,8 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Hero/>
-      <HowItsWorkTwo/>
+      {/* <HowItsWorkTwo/> */}
+      <HowItWorks/>
       <BrandsSection/>
       <MarqueeDemo/>
       <WhyCarbonCut/>
