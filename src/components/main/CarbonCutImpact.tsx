@@ -10,7 +10,7 @@ const CarbonCutImpact = () => {
         </div>
          <BlurFade delay={0.1} inView className="text-center mb-16">
         <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
-          Our Impact & Expertise at a Glance
+          Our Impact & Expertise at a  <span className='text-tertiary'> Glance  </span> 
         </h2>
         
         <p className="text-gray-600 text-lg max-w-4xl mx-auto leading-relaxed">
@@ -22,7 +22,7 @@ const CarbonCutImpact = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
         <div className="text-center">
-          <div className="bg-gradient-to-br from-emerald-400 to-emerald-300 rounded-lg p-8 mb-4 shadow-sm">
+          <div className="bg-tertiary rounded-lg p-8 mb-4 shadow-sm">
             <div className="text-4xl font-bold text-gray-900 mb-2">500K+</div>
             <div className="text-gray-700 text-sm font-medium">
               Tons of CO2e emissions<br />calculated to date

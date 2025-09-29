@@ -27,8 +27,8 @@ const WhyCarbonCut = () => {
       <div className="px-8">
         {/* Title */}
         <BlurFade delay={0.1} inView>
-          <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
-            Security, Reliability, Simplicity
+          <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
+            Security, Reliability,<span className='text-tertiary'> Simplicity </span> 
           </h2>
           <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
             A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
