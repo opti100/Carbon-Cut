@@ -16,7 +16,7 @@ export default function OrganizationForm({ organization, onOrganizationChange }:
   };
 
   return (
-    <div className="bg-white px-6 py-8 space-y-6 ">
+    <div className="bg-gray-50 px-6 py-8 space-y-6 ">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
           Organization & Reporting Details

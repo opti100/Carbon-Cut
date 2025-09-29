@@ -37,7 +37,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
   const formatEmissions = (value: number) => value.toFixed(5);
 
   return (
-    <div className="bg-white px-6 py-8 space-y-6">
+    <div className="bg-gray-50 px-6 py-8 space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">Emissions Breakdown</h2>

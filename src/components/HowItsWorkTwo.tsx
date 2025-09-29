@@ -60,7 +60,7 @@ export default function EmissionsTracker() {
                         <div className="text-sm text-black mb-2">Step 2</div>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 flex justify-center lg:justify-start items-center">
                             Analyze
-                            <ArrowUpLeft className="ml-2 text-green-400" size={28} />
+                            <ArrowUpRight className="ml-2 text-green-400" size={28} />
                         </h2>
                         <p className="text-base sm:text-lg">
                             See emissions by channel and campaign, and spot the biggest impact areas.
@@ -108,7 +108,7 @@ export default function EmissionsTracker() {
                         <div className="text-sm text-black mb-2">Step 4</div>
                         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 flex justify-center lg:justify-start items-center">
                             Certify
-                            <ArrowUpLeft className="ml-2 text-green-400" size={28} />
+                            <ArrowUpRight className="ml-2 text-green-400" size={28} />
                         </h2>
                         <p className="text-base sm:text-lg">
                             Earn verified certification and showcase your progress with clients and partners.
