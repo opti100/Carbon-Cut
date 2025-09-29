@@ -64,24 +64,27 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
     .sort((a, b) => getDisplayCO2(b) - getDisplayCO2(a))
     .slice(0, 15);
 
-  return `
-<!DOCTYPE html>
+ return `
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SECR Compliance Report - ${formData.companyName}</title>
+    <title>SECR Compliance Report - Example Company Ltd</title>
     <style>
         /* CSS Variables for consistent theming */
         :root {
-            --primary-blue: #1F4960;
+            --primary-navy: #003366;
+            --secondary-blue: #0066CC;
+            --accent-blue: #E6F3FF;
             --white: #FFFFFF;
-            --dark-text: #031B27;
-            --light-gray: #F8F8F8;
-            --medium-gray: #C8C8C8;
-            --light-blue: #F0F8FF;
-            --subtitle-gray: #646464;
-            --border-color: #E0E0E0;
+            --text-dark: #1A1A1A;
+            --text-medium: #4A4A4A;
+            --text-light: #666666;
+            --border-light: #E0E0E0;
+            --border-medium: #CCCCCC;
+            --background-light: #F8F9FA;
+            --background-accent: #F5F7FA;
         }
 
         /* Reset and base styles */
@@ -92,610 +95,745 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
         }
 
         body {
-            font-family: 'Helvetica', Arial, sans-serif;
-            font-size: 10pt;
-            line-height: 1.4;
-            color: var(--dark-text);
-            background: white;
+            font-family: 'Times New Roman', serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--white);
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 25mm;
         }
 
         /* Print-specific styles */
-        @page {
-            size: A4;
-            margin: 20mm;
-        }
-
         @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .page-break { page-break-before: always; }
-            .no-break { page-break-inside: avoid; }
+            body { 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact; 
+                margin: 0;
+                padding: 20mm;
+                font-size: 10pt;
+            }
+            .page-break { 
+                page-break-before: always; 
+            }
+            .no-break { 
+                page-break-inside: avoid; 
+            }
         }
 
-        /* Layout containers */
-        .container {
-            max-width: 210mm;
-            margin: 0 auto;
-            padding: 0;
+        /* Document header */
+        .document-header {
+            text-align: center;
+            border-bottom: 3px solid var(--primary-navy);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        .content-section {
-            margin-bottom: 25px;
-        }
-
-        /* Header styles */
-        .cover-header {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 30px 20px;
-            position: relative;
-            margin: -20px -20px 30px -20px;
-        }
-
-        .uk-gov-badge {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            width: 35px;
-            height: 35px;
-            background: var(--white);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7pt;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
-
-        .main-title {
-            font-size: 36pt;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .sub-title {
-            font-size: 26pt;
-            font-weight: bold;
-        }
-
-        /* Section headers */
-        .section-header {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 12px 15px;
-            font-size: 14pt;
-            font-weight: bold;
-            margin: 25px 0 15px 0;
-        }
-
-        .subsection-header {
-            color: var(--primary-blue);
-            font-size: 12pt;
-            font-weight: bold;
-            margin: 20px 0 10px 0;
-        }
-
-        /* Highlight boxes */
-        .highlight-box {
-            background: var(--light-blue);
-            border: 2px solid var(--primary-blue);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .highlight-title {
-            color: var(--primary-blue);
-            font-size: 12pt;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        .highlight-value {
-            font-size: 24pt;
-            font-weight: bold;
-            color: var(--dark-text);
-            display: inline;
-        }
-
-        .highlight-unit {
-            font-size: 14pt;
-            font-weight: normal;
-            color: var(--dark-text);
-            margin-left: 8px;
-        }
-
-        .highlight-description {
+        .gov-identifier {
             font-size: 10pt;
-            color: var(--dark-text);
-            margin-top: 8px;
-        }
-
-        /* Tables */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 9pt;
-        }
-
-        .data-table th {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 12px 8px;
-            text-align: center;
-            font-weight: bold;
-            border: 1px solid var(--medium-gray);
-        }
-
-        .data-table td {
-            padding: 10px 8px;
-            border: 1px solid var(--medium-gray);
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .data-table tr:nth-child(even) {
-            background: var(--light-gray);
-        }
-
-        .data-table tr:last-child td {
-            font-weight: bold;
-            background: #E8F4F8;
-        }
-
-        /* Text styles */
-        .paragraph {
-            margin-bottom: 12px;
-            text-align: justify;
-            line-height: 1.5;
-        }
-
-        .bullet-list {
-            margin: 10px 0;
-            padding-left: 0;
-        }
-
-        .bullet-item {
-            margin: 5px 0;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .bullet-item::before {
-            content: "•";
-            position: absolute;
-            left: 8px;
-            font-weight: bold;
-        }
-
-        /* Info boxes */
-        .info-section {
-            background: #F5F5F5;
-            border: 3px solid var(--primary-blue);
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .info-title {
-            color: var(--primary-blue);
-            font-size: 16pt;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .company-info {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 25px;
-            margin: 20px 0;
-        }
-
-        .company-name {
-            font-size: 20pt;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .company-detail {
-            font-size: 12pt;
-            margin-bottom: 8px;
-        }
-
-        /* Equation box */
-        .equation-box {
-            background: #F8F9FA;
-            border: 1px solid var(--primary-blue);
-            border-radius: 5px;
-            padding: 15px;
-            text-align: center;
-            font-size: 12pt;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-        }
-
-        /* Declaration box */
-        .declaration-box {
-            background: var(--light-blue);
-            border: 2px solid var(--primary-blue);
-            padding: 25px;
-            margin: 25px 0;
-        }
-
-        .declaration-title {
-            color: var(--primary-blue);
-            font-size: 12pt;
-            font-weight: bold;
+            color: var(--text-medium);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 10px;
         }
 
-        .signature-section {
-            margin-top: 20px;
-            display: flex;
-            gap: 30px;
+        .main-title {
+            font-size: 28pt;
+            font-weight: bold;
+            color: var(--primary-navy);
+            margin-bottom: 8px;
         }
 
-        .signature-item {
+        .report-subtitle {
+            font-size: 16pt;
+            color: var(--text-medium);
+            font-weight: normal;
+        }
+
+        /* Company information box */
+        .company-info-box {
+            background: var(--background-accent);
+            border: 1px solid var(--border-medium);
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .company-name {
+            font-size: 18pt;
+            font-weight: bold;
+            color: var(--primary-navy);
+            margin-bottom: 15px;
+        }
+
+        .report-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            font-size: 10pt;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: var(--text-medium);
+        }
+
+        /* Section headers */
+        .section-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: var(--primary-navy);
+            border-bottom: 2px solid var(--primary-navy);
+            padding-bottom: 8px;
+            margin: 35px 0 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subsection-title {
+            font-size: 12pt;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin: 25px 0 12px 0;
+        }
+
+        /* Content styling */
+        .paragraph {
+            margin-bottom: 15px;
+            text-align: justify;
+            line-height: 1.7;
+        }
+
+        /* Key metrics highlight */
+        .key-metrics {
+            background: var(--white);
+            border: 2px solid var(--primary-navy);
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .metric-title {
+            font-size: 12pt;
+            color: var(--text-medium);
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 36pt;
+            font-weight: bold;
+            color: var(--primary-navy);
+        }
+
+        .metric-unit {
+            font-size: 14pt;
+            color: var(--text-medium);
+            margin-left: 8px;
+        }
+
+        .metric-description {
+            font-size: 10pt;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        /* Professional tables */
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 10pt;
+            border: 1px solid var(--border-medium);
+        }
+
+        .report-table th {
+            background: var(--primary-navy);
+            color: var(--white);
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 9pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .report-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-light);
+            vertical-align: top;
+        }
+
+        .report-table tr:nth-child(even) {
+            background: var(--background-light);
+        }
+
+        .report-table .total-row {
+            background: var(--accent-blue);
+            font-weight: bold;
+            border-top: 2px solid var(--primary-navy);
+        }
+
+        .report-table .numeric {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Lists */
+        .compliance-list {
+            margin: 15px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .compliance-item {
+            margin: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .compliance-item::before {
+            content: "▪";
+            position: absolute;
+            left: 8px;
+            color: var(--primary-navy);
             font-weight: bold;
         }
 
-        /* Footer */
-        .page-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 20px;
-            font-size: 8pt;
-            color: var(--subtitle-gray);
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20mm;
+        /* Methodology box */
+        .methodology-box {
+            background: var(--background-light);
+            border-left: 4px solid var(--secondary-blue);
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 10pt;
         }
 
-        /* Compliance footer */
-        .compliance-footer {
-            position: absolute;
-            bottom: 30px;
-            left: 20px;
-            right: 20px;
+        /* Declaration section */
+        .declaration-section {
+            background: var(--accent-blue);
+            border: 2px solid var(--primary-navy);
+            padding: 30px;
+            margin: 40px 0;
+        }
+
+        .declaration-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: var(--primary-navy);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .signature-area {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .signature-block {
+            border-top: 1px solid var(--text-medium);
+            padding-top: 10px;
+        }
+
+        .signature-label {
             font-size: 9pt;
-            color: var(--subtitle-gray);
+            color: var(--text-medium);
+            text-transform: uppercase;
+        }
+
+        .signature-name {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        .document-footer {
+            position: fixed;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            font-size: 8pt;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-light);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
         }
 
         /* Utility classes */
         .text-center { text-align: center; }
         .text-right { text-align: right; }
         .font-bold { font-weight: bold; }
-        .mb-10 { margin-bottom: 10px; }
-        .mb-15 { margin-bottom: 15px; }
-        .mb-20 { margin-bottom: 20px; }
-        .mt-20 { margin-top: 20px; }
+        .no-break { page-break-inside: avoid; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="document">
         
-        <!-- COVER PAGE -->
-        <div class="cover-header">
-            <div class="uk-gov-badge">UK GOV</div>
-            <div class="main-title">SECR</div>
-            <div class="sub-title">COMPLIANCE REPORT</div>
+        <!-- DOCUMENT HEADER -->
+        <div class="document-header">
+            <div class="gov-identifier">UK Government • Department for Business, Energy & Industrial Strategy</div>
+            <div class="main-title">STREAMLINED ENERGY AND CARBON REPORTING</div>
+            <div class="report-subtitle">Companies Act 2006 Compliance Report</div>
         </div>
 
-        <div class="info-section">
-            <div class="info-title">STREAMLINED ENERGY & CARBON REPORTING</div>
-            <div class="paragraph">
-                Companies Act 2006 (Strategic Report and Directors' Report)<br>
-                Regulations 2013 - Marketing Emissions Disclosure
+        <!-- COMPANY INFORMATION -->
+        <div class="company-info-box no-break">
+            <div class="company-name">Example Company Ltd</div>
+            <div class="report-details">
+                <div class="detail-item">
+                    <span class="detail-label">Company Registration:</span>
+                    <span>12345678</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Reporting Period:</span>
+                    <span>1 April 2023 - 31 March 2024</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Financial Year End:</span>
+                    <span>31 March 2024</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Report Date:</span>
+                    <span>30 June 2024</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Prepared by:</span>
+                    <span>Sustainability Department</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Methodology:</span>
+                    <span>GHG Protocol + DEFRA 2023</span>
+                </div>
             </div>
         </div>
-
-        <div class="company-info">
-            <div class="company-name">${formData.companyName}</div>
-            <div class="company-detail">Reporting Period: ${organization.period || '2024'}</div>
-            <div class="company-detail">Report Date: ${reportDate}</div>
-            <div class="company-detail">Prepared by: ${formData.name}</div>
-        </div>
-
-        <div class="compliance-footer">
-            <div>This report complies with UK SECR regulations for large companies</div>
-            <div>Generated by CarbonCut Platform - Marketing Carbon Assessment</div>
-        </div>
-
-        <!-- PAGE BREAK -->
-        <div class="page-break"></div>
 
         <!-- EXECUTIVE SUMMARY -->
-        <div class="section-header">EXECUTIVE SUMMARY</div>
+        <div class="section-title">Executive Summary</div>
         
-        <div class="content-section">
-            <div class="paragraph">
-                ${formData.companyName} presents this SECR compliance report detailing greenhouse gas emissions from marketing 
-                activities for the reporting period ${organization.period || '2024'}. This disclosure fulfills our obligations under the Companies Act 2006 
-                (Strategic Report and Directors' Report) Regulations 2013, specifically addressing Streamlined Energy and 
-                Carbon Reporting requirements for large UK companies.
-            </div>
-            
-            <div class="paragraph">
-                Our comprehensive assessment of marketing-related emissions demonstrates our commitment to transparency 
-                and environmental responsibility in accordance with UK government guidance and DEFRA conversion factors.
-            </div>
-        </div>
-
-        <!-- MANDATORY SECR DISCLOSURES -->
-        <div class="section-header">MANDATORY SECR DISCLOSURES</div>
-
-        <div class="highlight-box">
-            <div class="highlight-title">Total Marketing Emissions (Scope 1, 2 & 3)</div>
-            <div>
-                <span class="highlight-value">${totalEmissions.toFixed(2)}</span>
-                <span class="highlight-unit">tCO₂e</span>
-            </div>
-            <div class="highlight-description">
-                Marketing activities assessed: ${activities.length} campaigns and operations
-            </div>
-        </div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 40%;">SECR Requirement</th>
-                    <th style="width: 60%;">Disclosure</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td><strong>Reporting Organisation</strong></td><td>${formData.companyName}</td></tr>
-                <tr><td><strong>Financial Year End</strong></td><td>${organization.period || '2024'}</td></tr>
-                <tr><td><strong>Report Prepared By</strong></td><td>${formData.name} (${formData.email})</td></tr>
-                <tr><td><strong>Methodology Standard</strong></td><td>GHG Protocol + DEFRA Conversion Factors</td></tr>
-                <tr><td><strong>Reporting Boundary</strong></td><td>Marketing Operations - All Scopes</td></tr>
-                <tr><td><strong>Base Year</strong></td><td>${organization.period || '2024'}</td></tr>
-                <tr><td><strong>Verification Status</strong></td><td>Internal Assessment - CarbonCut Framework</td></tr>
-            </tbody>
-        </table>
-
-        <!-- SCOPE BREAKDOWN -->
-        <div class="section-header">GREENHOUSE GAS EMISSIONS BY SCOPE</div>
-
         <div class="paragraph">
-            The following breakdown presents marketing emissions by scope as required under SECR regulations, using 
-            DEFRA's latest greenhouse gas conversion factors and methodologies consistent with the GHG Protocol 
-            Corporate Standard.
+            This report presents Example Company Ltd's energy consumption and associated greenhouse gas emissions for the financial year ending 31 March 2024, prepared in accordance with the Streamlined Energy and Carbon Reporting (SECR) requirements under the Companies Act 2006 (Strategic Report and Directors' Report) Regulations 2013.
+        </div>
+        
+        <div class="paragraph">
+            The company has assessed its UK energy use and emissions using methodologies consistent with the GHG Protocol Corporate Standard and the latest DEFRA greenhouse gas conversion factors. This disclosure demonstrates our commitment to transparency and environmental stewardship in line with UK regulatory requirements.
         </div>
 
-        <table class="data-table">
+        <!-- KEY PERFORMANCE INDICATOR -->
+        <div class="key-metrics no-break">
+            <div class="metric-title">Total Gross Emissions (Scope 1 & 2)</div>
+            <div>
+                <span class="metric-value">1,245.6</span>
+                <span class="metric-unit">tCO₂e</span>
+            </div>
+            <div class="metric-description">
+                Mandatory SECR disclosure covering all UK operations
+            </div>
+        </div>
+
+        <!-- MANDATORY DISCLOSURES -->
+        <div class="section-title">Mandatory SECR Disclosures</div>
+
+        <table class="report-table no-break">
             <thead>
                 <tr>
-                    <th style="width: 15%;">Emission Scope</th>
-                    <th style="width: 35%;">Description</th>
-                    <th style="width: 15%;">Emissions (tCO₂e)</th>
-                    <th style="width: 12%;">Percentage</th>
-                    <th style="width: 23%;">DEFRA Category</th>
+                    <th style="width: 35%;">Disclosure Requirement</th>
+                    <th style="width: 65%;">Company Response</th>
                 </tr>
             </thead>
             <tbody>
-                ${scopeData.map(scope => `
                 <tr>
-                    <td><strong>Scope ${scope.scope}</strong></td>
-                    <td>${scope.description}</td>
-                    <td>${scope.emissions.toFixed(2)}</td>
-                    <td>${totalEmissions > 0 ? ((scope.emissions / totalEmissions) * 100).toFixed(1) : '0.0'}%</td>
-                    <td>${scope.category}</td>
+                    <td>Reporting Organisation</td>
+                    <td>Example Company Ltd (Company No. 12345678)</td>
                 </tr>
-                `).join('')}
                 <tr>
-                    <td><strong>TOTAL</strong></td>
-                    <td><strong>All Marketing Emissions</strong></td>
-                    <td><strong>${totalEmissions.toFixed(2)}</strong></td>
-                    <td><strong>100.0%</strong></td>
-                    <td><strong>Combined Categories</strong></td>
+                    <td>Reporting Boundary</td>
+                    <td>UK operations - All facilities under operational control</td>
+                </tr>
+                <tr>
+                    <td>Methodology Applied</td>
+                    <td>GHG Protocol Corporate Standard with DEFRA 2023 conversion factors</td>
+                </tr>
+                <tr>
+                    <td>Base Year Established</td>
+                    <td>Financial Year 2019-2020</td>
+                </tr>
+                <tr>
+                    <td>Organisational Boundary</td>
+                    <td>Operational control approach</td>
+                </tr>
+                <tr>
+                    <td>Data Quality Assessment</td>
+                    <td>Internal verification with documented procedures</td>
+                </tr>
+                <tr>
+                    <td>External Assurance</td>
+                    <td>Limited assurance planned for FY 2024-25</td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- PAGE BREAK -->
+        <div class="page-break"></div>
 
         <!-- ENERGY CONSUMPTION -->
-        <div class="section-header">ENERGY CONSUMPTION AND EFFICIENCY MEASURES</div>
+        <div class="section-title">UK Energy Consumption</div>
 
         <div class="paragraph">
-            SECR requires disclosure of energy consumption and efficiency measures. Marketing activities consume energy through:
+            The following table details energy consumption across our UK operations during the reporting period, categorised according to SECR requirements.
         </div>
 
-        <div class="bullet-list">
-            <div class="bullet-item">Digital infrastructure and cloud services for campaign delivery and management</div>
-            <div class="bullet-item">Office energy allocation for marketing team operations and equipment</div>
-            <div class="bullet-item">Travel-related energy consumption for events, meetings, and campaign activities</div>
-            <div class="bullet-item">Production facilities energy for creating marketing materials and content</div>
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Energy Type</th>
+                    <th style="width: 20%;">Consumption</th>
+                    <th style="width: 15%;">Units</th>
+                    <th style="width: 20%;">SECR Category</th>
+                    <th style="width: 20%;">GHG Protocol Scope</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Grid Electricity</td>
+                    <td class="numeric">1,250,000</td>
+                    <td>kWh</td>
+                    <td>Purchased Electricity</td>
+                    <td>Scope 2</td>
+                </tr>
+                <tr>
+                    <td>Natural Gas</td>
+                    <td class="numeric">850,000</td>
+                    <td>kWh</td>
+                    <td>Combustion</td>
+                    <td>Scope 1</td>
+                </tr>
+                <tr>
+                    <td>Transport Fuel - Diesel</td>
+                    <td class="numeric">95,000</td>
+                    <td>Litres</td>
+                    <td>Transport</td>
+                    <td>Scope 1</td>
+                </tr>
+                <tr>
+                    <td>Transport Fuel - Petrol</td>
+                    <td class="numeric">42,000</td>
+                    <td>Litres</td>
+                    <td>Transport</td>
+                    <td>Scope 1</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Total Energy Use</strong></td>
+                    <td class="numeric"><strong>2,237,000</strong></td>
+                    <td><strong>kWh (equiv.)</strong></td>
+                    <td><strong>All Categories</strong></td>
+                    <td><strong>Scopes 1 & 2</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- GREENHOUSE GAS EMISSIONS -->
+        <div class="section-title">Greenhouse Gas Emissions</div>
+
+        <div class="paragraph">
+            Emissions calculations follow the GHG Protocol Corporate Standard methodology, using DEFRA's 2023 greenhouse gas conversion factors. The table below presents our mandatory Scope 1 and Scope 2 emissions.
         </div>
 
-        <div class="paragraph font-bold">Energy efficiency measures implemented:</div>
-
-        <div class="bullet-list">
-            <div class="bullet-item">Migration to cloud-first marketing technologies with improved efficiency</div>
-            <div class="bullet-item">Optimisation of digital campaign delivery to reduce data transfer requirements</div>
-            <div class="bullet-item">Remote working policies reducing commuting and office energy consumption</div>
-            <div class="bullet-item">Sustainable supplier selection for marketing materials and services</div>
-        </div>
-
-        <!-- PAGE BREAK -->
-        <div class="page-break"></div>
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Scope</th>
+                    <th style="width: 40%;">Emission Source Description</th>
+                    <th style="width: 20%;">Emissions (tCO₂e)</th>
+                    <th style="width: 15%;">Percentage</th>
+                    <th style="width: 10%;">Methodology</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Scope 1</strong></td>
+                    <td>Direct emissions from owned/controlled sources:<br>
+                        • Natural gas combustion<br>
+                        • Company vehicle fleet<br>
+                        • Process emissions</td>
+                    <td class="numeric">458.3</td>
+                    <td class="numeric">36.8%</td>
+                    <td>DEFRA factors</td>
+                </tr>
+                <tr>
+                    <td><strong>Scope 2</strong></td>
+                    <td>Indirect emissions from purchased electricity:<br>
+                        • Grid electricity consumption<br>
+                        • Location-based method</td>
+                    <td class="numeric">787.3</td>
+                    <td class="numeric">63.2%</td>
+                    <td>DEFRA factors</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Total</strong></td>
+                    <td><strong>SECR Mandatory Reporting Scope</strong></td>
+                    <td class="numeric"><strong>1,245.6</strong></td>
+                    <td class="numeric"><strong>100.0%</strong></td>
+                    <td><strong>Combined</strong></td>
+                </tr>
+            </tbody>
+        </table>
 
         <!-- METHODOLOGY -->
-        <div class="section-header">METHODOLOGY AND CALCULATION FRAMEWORK</div>
+        <div class="section-title">Calculation Methodology</div>
 
-        <div class="subsection-header">CarbonCut Master Equation</div>
+        <div class="subsection-title">Emission Calculation Formula</div>
 
-        <div class="equation-box">
-            CO₂e_marketing = Σ_c Σ_i (Q_c,i × EF_c,i) + Σ_a (A_a × EF_a)
+        <div class="methodology-box">
+            GHG Emissions (tCO₂e) = Activity Data × Emission Factor × (1/1000)
+            
+            Where:
+            - Activity Data = Measured energy consumption
+            - Emission Factor = DEFRA 2023 conversion factor
+            - Result converted from kg to tonnes
         </div>
 
-        <div class="subsection-header">DEFRA Compliance Framework:</div>
+        <div class="subsection-title">Applied Emission Factors</div>
 
-        <div class="bullet-list">
-            <div class="bullet-item">Activity data (Q_c,i): Measured in standard units (kWh, km, kg, GB, hours)</div>
-            <div class="bullet-item">Emission factors (EF_c,i): Latest DEFRA conversion factors (updated annually)</div>
-            <div class="bullet-item">Scope classification: Aligned with GHG Protocol and DEFRA guidance</div>
-            <div class="bullet-item">Geographic factors: UK-specific grid emission factors and regional variations</div>
-            <div class="bullet-item">Uncertainty assessment: Conservative approach following DEFRA best practice</div>
-            <div class="bullet-item">Data quality: Primary data prioritised, industry averages for secondary data</div>
-        </div>
-
-        ${topChannels.length > 0 ? `
-        <!-- MARKETING CHANNELS -->
-        <div class="section-header">MARKETING CHANNEL EMISSIONS BREAKDOWN</div>
-
-        <table class="data-table">
+        <table class="report-table">
             <thead>
                 <tr>
-                    <th style="width: 25%;">Marketing Channel</th>
-                    <th style="width: 18%;">Emissions (tCO₂e)</th>
-                    <th style="width: 15%;">Percentage</th>
-                    <th style="width: 17%;">Primary Scope</th>
-                    <th style="width: 25%;">Key Activities</th>
+                    <th style="width: 30%;">Energy Source</th>
+                    <th style="width: 25%;">Emission Factor</th>
+                    <th style="width: 20%;">Units</th>
+                    <th style="width: 25%;">Reference Source</th>
                 </tr>
             </thead>
             <tbody>
-                ${topChannels.map(([channel, emissions]) => `
                 <tr>
-                    <td>${channel}</td>
-                    <td>${emissions.toFixed(3)}</td>
-                    <td>${((emissions / totalEmissions) * 100).toFixed(1)}%</td>
-                    <td>Scope 3</td>
-                    <td>Campaign Operations</td>
+                    <td>UK Grid Electricity</td>
+                    <td class="numeric">0.193</td>
+                    <td>kgCO₂e/kWh</td>
+                    <td>DEFRA 2023 - Location-based</td>
                 </tr>
-                `).join('')}
+                <tr>
+                    <td>Natural Gas</td>
+                    <td class="numeric">0.184</td>
+                    <td>kgCO₂e/kWh</td>
+                    <td>DEFRA 2023 - Gross CV</td>
+                </tr>
+                <tr>
+                    <td>Diesel (Average biofuel blend)</td>
+                    <td class="numeric">2.517</td>
+                    <td>kgCO₂e/litre</td>
+                    <td>DEFRA 2023 - WTT included</td>
+                </tr>
+                <tr>
+                    <td>Petrol (Average biofuel blend)</td>
+                    <td class="numeric">2.195</td>
+                    <td>kgCO₂e/litre</td>
+                    <td>DEFRA 2023 - WTT included</td>
+                </tr>
             </tbody>
         </table>
-        ` : ''}
-
-        ${sampleActivities.length > 0 ? `
-        <!-- ACTIVITY LOG -->
-        <div class="section-header">DETAILED ACTIVITY LOG (Sample)</div>
-
-        <div class="paragraph">Representative sample of marketing activities and their carbon footprints:</div>
-
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th style="width: 12%;">Date</th>
-                    <th style="width: 35%;">Activity Description</th>
-                    <th style="width: 10%;">Scope</th>
-                    <th style="width: 12%;">Quantity</th>
-                    <th style="width: 13%;">Unit</th>
-                    <th style="width: 18%;">tCO₂e</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${sampleActivities.map(activity => `
-                <tr>
-                    <td>${activity.date || 'N/A'}</td>
-                    <td>${activity.activityLabel.length > 40 ? 
-                        activity.activityLabel.substring(0, 37) + '...' : 
-                        activity.activityLabel}</td>
-                    <td>Scope ${activity.scope}</td>
-                    <td>${activity.qty}</td>
-                    <td>${activity.unit || 'units'}</td>
-                    <td>${(getDisplayCO2(activity) / 1000).toFixed(4)}</td>
-                </tr>
-                `).join('')}
-            </tbody>
-        </table>
-        ` : ''}
-
-        <!-- ANNUAL COMPARISON -->
-        <div class="section-header">ANNUAL COMPARISON AND TRENDS</div>
-
-        <div class="paragraph font-bold">
-            Current year (${organization.period || '2024'}) total marketing emissions: ${totalEmissions.toFixed(2)} tCO₂e
-        </div>
-
-        <div class="paragraph">
-            This represents the baseline year for our marketing carbon accounting framework. 
-            Future reports will include year-on-year comparisons and trend analysis as required by SECR.
-        </div>
-
-        <div class="paragraph font-bold">Key performance indicators established:</div>
-
-        <div class="bullet-list">
-            <div class="bullet-item">Total marketing emissions (tCO₂e)</div>
-            <div class="bullet-item">Emissions per marketing spend (tCO₂e/£)</div>
-            <div class="bullet-item">Emissions per campaign (tCO₂e/campaign)</div>
-            <div class="bullet-item">Digital vs. traditional media emissions ratio</div>
-        </div>
 
         <!-- PAGE BREAK -->
         <div class="page-break"></div>
 
-        <!-- GOVERNANCE -->
-        <div class="section-header">GOVERNANCE AND ASSURANCE</div>
+        <!-- INTENSITY RATIO -->
+        <div class="section-title">Emissions Intensity Ratio</div>
 
-        <table class="data-table">
+        <div class="paragraph">
+            SECR regulations require disclosure of at least one emissions intensity ratio to provide context for emissions performance relative to a quantifiable factor associated with the company's activities.
+        </div>
+
+        <div class="key-metrics">
+            <div class="metric-title">Emissions Intensity Ratio</div>
+            <div>
+                <span class="metric-value">0.025</span>
+                <span class="metric-unit">tCO₂e per £1,000 turnover</span>
+            </div>
+            <div class="metric-description">
+                Total gross emissions (Scope 1 + 2) normalised by annual turnover
+            </div>
+        </div>
+
+        <!-- YEAR-ON-YEAR COMPARISON -->
+        <div class="section-title">Year-on-Year Performance</div>
+
+        <table class="report-table">
             <thead>
                 <tr>
-                    <th style="width: 25%;">Governance Element</th>
-                    <th style="width: 45%;">Description</th>
-                    <th style="width: 30%;">Responsible Party</th>
+                    <th style="width: 20%;">Financial Year</th>
+                    <th style="width: 15%;">Scope 1 (tCO₂e)</th>
+                    <th style="width: 15%;">Scope 2 (tCO₂e)</th>
+                    <th style="width: 15%;">Total (tCO₂e)</th>
+                    <th style="width: 15%;">Annual Change</th>
+                    <th style="width: 20%;">Intensity Ratio</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td><strong>Board Oversight</strong></td><td>Strategic oversight of climate-related risks</td><td>Board of Directors</td></tr>
-                <tr><td><strong>Management Responsibility</strong></td><td>Operational climate risk management</td><td>Executive Team</td></tr>
-                <tr><td><strong>Data Collection</strong></td><td>Marketing emissions data gathering</td><td>${formData.name}</td></tr>
-                <tr><td><strong>Methodology Review</strong></td><td>Annual review of calculation methods</td><td>Technical Team</td></tr>
-                <tr><td><strong>External Verification</strong></td><td>Third-party assurance (planned)</td><td>External Auditor</td></tr>
-                <tr><td><strong>Reporting</strong></td><td>Annual SECR compliance reporting</td><td>Finance/Sustainability</td></tr>
+                <tr>
+                    <td>2022-23</td>
+                    <td class="numeric">485.6</td>
+                    <td class="numeric">825.4</td>
+                    <td class="numeric">1,311.0</td>
+                    <td class="numeric">-</td>
+                    <td class="numeric">0.027</td>
+                </tr>
+                <tr>
+                    <td>2023-24</td>
+                    <td class="numeric">458.3</td>
+                    <td class="numeric">787.3</td>
+                    <td class="numeric">1,245.6</td>
+                    <td class="numeric">-5.0%</td>
+                    <td class="numeric">0.025</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Net Change</strong></td>
+                    <td class="numeric"><strong>-27.3</strong></td>
+                    <td class="numeric"><strong>-38.1</strong></td>
+                    <td class="numeric"><strong>-65.4</strong></td>
+                    <td class="numeric"><strong>-5.0%</strong></td>
+                    <td class="numeric"><strong>-7.4%</strong></td>
+                </tr>
             </tbody>
         </table>
 
-        <!-- FUTURE COMMITMENTS -->
-        <div class="section-header">FUTURE COMMITMENTS AND TARGETS</div>
+        <!-- ENERGY EFFICIENCY ACTIONS -->
+        <div class="section-title">Energy Efficiency Actions</div>
 
         <div class="paragraph">
-            ${formData.companyName} commits to continuous improvement in marketing carbon management:
+            During the reporting period, the company implemented the following energy efficiency measures:
         </div>
 
-        <div class="bullet-list">
-            <div class="bullet-item">Annual reduction targets for marketing emissions intensity</div>
-            <div class="bullet-item">Investment in lower-carbon marketing technologies and practices</div>
-            <div class="bullet-item">Supplier engagement programme for Scope 3 emission reductions</div>
-            <div class="bullet-item">Enhanced data collection for improved accuracy and coverage</div>
-            <div class="bullet-item">Integration with overall corporate net-zero commitments</div>
-            <div class="bullet-item">Regular methodology updates aligned with latest DEFRA guidance</div>
+        <ul class="compliance-list">
+            <li class="compliance-item">Comprehensive LED lighting retrofit across all UK facilities (completion: September 2023)</li>
+            <li class="compliance-item">Installation of intelligent HVAC control systems with occupancy-based operation</li>
+            <li class="compliance-item">Implementation of remote working policy reducing office energy demand by 12%</li>
+            <li class="compliance-item">Fleet modernisation programme with 15% conversion to hybrid/electric vehicles</li>
+            <li class="compliance-item">Employee engagement programme promoting energy conservation behaviours</li>
+            <li class="compliance-item">Equipment upgrade programme targeting high-efficiency alternatives</li>
+        </ul>
+
+        <!-- FUTURE COMMITMENTS -->
+        <div class="section-title">Future Energy Efficiency Commitments</div>
+
+        <div class="paragraph">
+            The company commits to the following actions to further reduce energy consumption and associated emissions:
         </div>
 
-        <!-- COMPLIANCE DECLARATION -->
-        <div class="section-header">SECR COMPLIANCE DECLARATION</div>
+        <ul class="compliance-list">
+            <li class="compliance-item">Installation of 500kW solar photovoltaic system at primary manufacturing facility (target: Q3 2025)</li>
+            <li class="compliance-item">Transition to renewable electricity supply through certified Power Purchase Agreement</li>
+            <li class="compliance-item">Implementation of ISO 50001 Energy Management System certification programme</li>
+            <li class="compliance-item">Fleet electrification programme targeting 50% zero-emission vehicles by 2027</li>
+            <li class="compliance-item">Building envelope improvements to reduce heating and cooling demand</li>
+            <li class="compliance-item">Supply chain engagement programme to address indirect emissions</li>
+        </ul>
 
-        <div class="declaration-box">
-            <div class="declaration-title">DECLARATION</div>
+        <!-- PAGE BREAK -->
+        <div class="page-break"></div>
+
+        <!-- GOVERNANCE AND OVERSIGHT -->
+        <div class="section-title">Governance and Oversight</div>
+
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Governance Level</th>
+                    <th style="width: 45%;">Responsibility</th>
+                    <th style="width: 30%;">Accountable Party</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Board Level</td>
+                    <td>Strategic oversight of climate-related risks and opportunities</td>
+                    <td>Board of Directors</td>
+                </tr>
+                <tr>
+                    <td>Executive Level</td>
+                    <td>Operational management of energy and carbon performance</td>
+                    <td>Chief Executive Officer</td>
+                </tr>
+                <tr>
+                    <td>Operational Level</td>
+                    <td>Data collection, analysis and performance monitoring</td>
+                    <td>Sustainability Manager</td>
+                </tr>
+                <tr>
+                    <td>Technical Level</td>
+                    <td>Methodology review and calculation verification</td>
+                    <td>Environmental Consultant</td>
+                </tr>
+                <tr>
+                    <td>Reporting Level</td>
+                    <td>Compliance reporting and regulatory submissions</td>
+                    <td>Company Secretary</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- DIRECTORS' STATEMENT -->
+        <div class="section-title">Directors' Statement</div>
+
+        <div class="declaration-section">
+            <div class="declaration-title">Statement of Directors' Responsibility</div>
+            
             <div class="paragraph">
-                This report has been prepared in accordance with the Companies Act 2006 (Strategic Report and Directors' Report) 
-                Regulations 2013 and represents a true and fair view of ${formData.companyName}'s marketing-related greenhouse gas 
-                emissions for the reporting period ${organization.period || '2024'}.
+                The Directors of Example Company Ltd acknowledge their responsibility for preparing this Streamlined Energy and Carbon Report in accordance with the Companies Act 2006 (Strategic Report and Directors' Report) Regulations 2013. The Directors confirm that, to the best of their knowledge:
+            </div>
+
+            <ul class="compliance-list">
+                <li class="compliance-item">The energy and emissions data presented in this report is accurate and complete</li>
+                <li class="compliance-item">The methodology applied is consistent with recognised standards and government guidance</li>
+                <li class="compliance-item">Appropriate internal controls and procedures have been established for data collection and verification</li>
+                <li class="compliance-item">This report provides a true and fair view of the company's UK energy use and associated greenhouse gas emissions</li>
+            </ul>
+
+            <div class="paragraph">
+                The Board is committed to continuous improvement in environmental performance and the enhancement of energy efficiency across all operations.
             </div>
             
-            <div class="signature-section">
-                <div class="signature-item">
-                    <strong>Prepared by:</strong> ${formData.name}
+            <div class="signature-area">
+                <div class="signature-block">
+                    <div class="signature-label">Approved by</div>
+                    <div class="signature-name">Jane Smith<br>Chair of the Board</div>
                 </div>
-                <div class="signature-item">
-                    <strong>Date:</strong> ${reportDate}
+                <div class="signature-block">
+                    <div class="signature-label">Date of Approval</div>
+                    <div class="signature-name">30 June 2024</div>
                 </div>
             </div>
+        </div>
+
+        <!-- REGULATORY COMPLIANCE STATEMENT -->
+        <div class="section-title">Regulatory Compliance Statement</div>
+
+        <div class="paragraph">
+            This report has been prepared to satisfy the disclosure requirements of Streamlined Energy and Carbon Reporting under the Companies Act 2006 (Strategic Report and Directors' Report) Regulations 2013. The report covers the period from 1 April 2023 to 31 March 2024 and includes all UK energy consumption and associated greenhouse gas emissions within the company's operational control boundary.
+        </div>
+
+        <div class="paragraph">
+            The information contained herein will be included in the company's Annual Report and Accounts filed with Companies House in accordance with statutory requirements.
         </div>
 
     </div>
 
-    <!-- Print Footer (appears on every page when printing) -->
-    <div class="page-footer">
-        <span>SECR Report - ${formData.companyName}</span>
-        <span>Page</span>
+    <!-- Document Footer -->
+    <div class="document-footer">
+        <span>SECR Compliance Report 2023-24 | Example Company Ltd</span>
+        <span>Confidential - UK Regulatory Filing</span>
     </div>
 
 </body>
 </html>
-  `;
+ `;
 };
 
 // Updated PDF generation function using Puppeteer with better error handling

@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
 
     console.log('Creating report for email:', formData.email);
 
-    // Validate required fields
     if (!formData.email || !formData.name || !formData.companyName) {
       return NextResponse.json(
         { error: 'Missing required fields: email, name, and companyName are required' },
@@ -73,7 +72,7 @@ export async function POST(request: NextRequest) {
       activitiesCount: report.activities?.length || 0
     });
 
-    // Generate PDF based on format
+    // Generate PDF based on format - FIX: Using functions, not classes
     let pdfBytes: Uint8Array;
     let fileName: string;
 
@@ -90,6 +89,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Generating PDF with format:', formData.disclosureFormat);
 
+    // FIX: Call functions directly instead of using new keyword
     switch (formData.disclosureFormat) {
       case 'SECR':
         pdfBytes = await generateSECRReport(generateOptions);
@@ -111,7 +111,6 @@ export async function POST(request: NextRequest) {
 
     console.log('PDF generated successfully, size:', pdfBytes.length);
 
-    // Try to upload to Cloudinary and update database
     try {
       const buffer = Buffer.from(pdfBytes);
       const updatedReport = await PdfReportService.uploadAndSavePDF(

@@ -2,79 +2,72 @@
 
 import React from "react";
 import { useId } from "react";
-import { Calculator, BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap } from "lucide-react";
+import { Calculator, BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap, Shield, TrendingDown, Users, Blocks } from "lucide-react";
 import { BlurFade } from "./ui/blur-fade";
 
 export default function WhatCarbonCutProvides() {
   return (
-    <div className="py-20  bg-white">
+    <div className="py-20  bg-gray-100 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <BlurFade delay={0.1} inView className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
-            Powerful Features for
-            <span className="text-tertiary block">Carbon Reduction</span>
+            Powerful Features for{" "}
+            <span className="text-tertiary">Carbon Reduction</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Everything you need to <span className="text-orange-500 font-semibold">measure, analyze</span>, and <span className="text-orange-500 font-semibold">reduce</span> your marketing emissions with precision and confidence.
+            Everything you need to{" "}
+            <span className="text-orange-500 font-semibold">measure, analyze</span>, and{" "}
+            <span className="text-orange-500 font-semibold">reduce</span> your marketing
+            emissions with precision and confidence.
           </p>
         </BlurFade>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-4">
           {grid.map((feature, index) => (
             <BlurFade
               key={feature.title}
-              delay={index * 0.2} // Delay increases per card
+              delay={index * 0.2}
               inView
-              className="group relative bg-gradient-to-b from-white to-green-50/50 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-orange-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10"
-              // className="h-full"
+              className="group relative bg-gradient-to-b from-gray-100 to-gray-200 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-orange-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/10"
             >
               <Grid size={20} />
-              
-              {/* Icon */}
+
               <div className="relative z-20 mb-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${
-                  // Add orange background to specific features
-                  index === 2 || index === 7 // Automated Carbon Calculations & Optimization Recommendations
-                    ? 'bg-orange-500/10 group-hover:bg-orange-500/20' 
-                    : 'bg-tertiary/10 group-hover:bg-tertiary/20'
-                }`}>
-                  <feature.icon className={`w-6 h-6 ${
-                    index === 2 || index === 7 
-                      ? 'text-orange-500' 
-                      : 'text-tertiary'
-                  }`} />
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors duration-300 ${index === 2 || index === 7 // Automated Carbon Calculations & Optimization Recommendations
+                  ? 'bg-orange-500/10 group-hover:bg-orange-500/20'
+                  : 'bg-tertiary/10 group-hover:bg-tertiary/20'
+                  }`}>
+                  <feature.icon className={`w-6 h-6 ${index === 2 || index === 7
+                    ? 'text-orange-500'
+                    : 'text-tertiary'
+                    }`} />
                 </div>
               </div>
 
-              {/* Content */}
               <h3 className="text-lg font-bold text-gray-900 relative z-20 mb-3 group-hover:text-black transition-colors">
                 {feature.title}
               </h3>
               <p className="text-gray-600 text-sm font-normal relative z-20 leading-relaxed group-hover:text-gray-700 transition-colors">
                 {feature.description}
               </p>
-
-              {/* Metric Badge */}
               {feature.metric && (
-                <div className={`relative z-20 mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
-                  index === 2 || index === 7
-                    ? 'bg-orange-500/10 text-orange-500'
-                    : 'bg-tertiary/10 text-tertiary'
-                }`}>
-                  <div className={`w-2 h-2 rounded-full animate-pulse ${
-                    index === 2 || index === 7
-                      ? 'bg-orange-500'
-                      : 'bg-tertiary'
-                  }`}></div>
+                <div className={`relative z-20 mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${index === 2 || index === 7
+                  ? 'bg-orange-500/10 text-orange-500'
+                  : 'bg-tertiary/10 text-tertiary'
+                  }`}>
+                  <div className={`w-2 h-2 rounded-full animate-pulse ${index === 2 || index === 7
+                    ? 'bg-orange-500'
+                    : 'bg-tertiary'
+                    }`}></div>
                   {feature.metric}
                 </div>
               )}
 
-              <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl ${
-                index === 2 || index === 7
-                  ? 'bg-gradient-to-r from-orange-500/5 to-orange-400/5'
-                  : 'bg-gradient-to-r from-tertiary/5 to-green-500/5'
-              }`}></div>
+              <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl ${index === 2 || index === 7
+                ? 'bg-gradient-to-r from-orange-500/5 to-orange-400/5'
+                : 'bg-gradient-to-r from-tertiary/5 to-green-500/5'
+                }`}></div>
             </BlurFade>
           ))}
         </div>
@@ -82,7 +75,6 @@ export default function WhatCarbonCutProvides() {
     </div>
   );
 }
-
 const grid = [
   {
     title: "Real-Time Carbon Tracking",
@@ -97,42 +89,31 @@ const grid = [
     metric: "47% Avg Reduction"
   },
   {
-    title: "Automated Carbon Calculations",
-    description: "Our AI-powered system automatically calculates emissions from digital ads, print materials, video production, and events.",
-    icon: Calculator,
-    metric: "2.3M kg CO₂ Tracked"
+    title: "Blockchain Carbon Credits",
+    description: "Tokenize and trade verified carbon credits on our secure blockchain platform with full transparency and immutable records.",
+    icon: Blocks,
+    metric: "Web3 Enabled"
   },
   {
     title: "Verified Offset Projects",
-    description: "Choose from a curated selection of verified carbon offset projects to balance your footprint and support climate action.",
+    description: "Choose from a curated selection of verified carbon offset projects to balance your footprint and support climate action worldwide.",
     icon: Leaf,
     metric: "500+ Projects"
   },
   {
     title: "Compliance Certification",
-    description: "Generate industry-standard reports and certifications to showcase your environmental commitment to stakeholders.",
+    description: "Generate industry-standard reports and certifications including SECR, CSRD, and SEC compliance for stakeholder transparency.",
     icon: Award,
     metric: "ISO 14064 Compliant"
   },
   {
     title: "Multi-Channel Integration",
-    description: "Seamlessly integrate with major advertising platforms, CMS systems, and marketing tools for comprehensive tracking.",
+    description: "Seamlessly integrate with major advertising platforms, CMS systems, and marketing tools for comprehensive emission tracking.",
     icon: Globe,
     metric: "50+ Integrations"
   },
-  {
-    title: "Sustainability Reporting",
-    description: "Create beautiful, comprehensive sustainability reports with actionable insights and progress tracking over time.",
-    icon: FileCheck,
-    metric: "Custom Reports"
-  },
-  {
-    title: "Optimization Recommendations",
-    description: "Receive AI-powered suggestions to reduce your marketing emissions without compromising campaign performance or reach.",
-    icon: Zap,
-    metric: "15 Days to Results"
-  },
 ];
+
 
 export const Grid = ({
   pattern,
@@ -150,7 +131,7 @@ export const Grid = ({
   ];
   return (
     <div className="pointer-events-none absolute left-1/2 top-0 -ml-20 -mt-2 h-full w-full [mask-image:linear-gradient(white,transparent)]">
-      <div className="absolute inset-0 bg-gradient-to-r [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] from-green-100/30 to-green-300/30 opacity-100">
+      <div className="absolute inset-0 bg-gradient-to-r [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] from-gray-100/30 to-gray-300/30 opacity-100">
         <GridPattern
           width={size ?? 20}
           height={size ?? 20}

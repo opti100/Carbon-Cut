@@ -277,7 +277,7 @@ const LoginPage = () => {
                                     <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                                         Don&apos;t have an account?{' '}
                                         <Link
-                                            href="/"
+                                            href="/calculator"
                                             className="font-medium text-primary hover:text-primary/80 transition-colors underline break-words"
                                         >
                                             Create your first report

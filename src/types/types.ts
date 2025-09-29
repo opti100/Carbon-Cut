@@ -26,3 +26,23 @@ export interface CountryData {
   name: string;
   gridIntensity?: number;
 }
+
+export interface ReportData {
+  organization: OrganizationData;
+  activities: ActivityData[];
+  totals: {
+    total: number;
+    byChannel: Record<string, number>;
+    byMarket: Record<string, number>;
+    byScope: Record<string, number>;
+  };
+  formData: {
+    name: string;
+    email: string;
+    companyName: string;
+    phoneNumber: string;
+    disclosureFormat: 'SECR' | 'CSRD' | 'SEC';
+    wantsCertification: boolean;
+  };
+  displayCO2Data: Record<number, number>;
+}

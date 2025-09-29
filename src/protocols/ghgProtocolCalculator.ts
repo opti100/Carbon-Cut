@@ -3,6 +3,8 @@
 // Implements the complete Optiminastic | CarbonCut methodology with all 15 channel formulas
 // Uses latest 2025 emission factors and GHG Protocol formulas
 
+import { GridIntensityService } from "@/services/grid-intensity-service";
+
 // --- Type Definitions ---
 
 interface GridIntensityFactors {
@@ -265,10 +267,33 @@ export default class GHGProtocolCarbonCalculator {
   }
 
   // Get electricity carbon intensity using hardcoded, precise scientific data
-  getGridIntensity(country: string): number {
-    const intensity = this.emissionFactors.grid_intensity[country] || this.emissionFactors.grid_intensity['default'];
-    console.log(`Grid intensity for ${country}: ${intensity} gCO2/kWh (2025 IEA data)`);
-    return intensity;
+  async getGridIntensity(country: string): Promise<{ intensity: number; source: 'IEA_API' | 'FALLBACK'; updated: string }> {
+    try {
+      console.log(`Fetching dynamic grid intensity for ${country}...`);
+      
+      const result = await GridIntensityService.getGridIntensity(country);
+      
+      console.log(`✅ Grid intensity for ${country}: ${result.averageIntensity} gCO2/kWh (${result.dataSource}, updated: ${result.lastUpdated})`);
+      
+      return {
+        intensity: result.averageIntensity,
+        source: result.dataSource,
+        updated: result.lastUpdated
+      };
+      
+    } catch (error) {
+      console.error(`Error fetching dynamic grid intensity for ${country}:`, error);
+      
+      // Fallback to hardcoded values
+      const fallbackIntensity = this.emissionFactors.grid_intensity[country] || this.emissionFactors.grid_intensity['default'];
+      console.log(`Using fallback grid intensity for ${country}: ${fallbackIntensity} gCO2/kWh`);
+      
+      return {
+        intensity: fallbackIntensity,
+        source: 'FALLBACK',
+        updated: new Date().toISOString()
+      };
+    }
   }
 
   // 1) Ad Production (film/photo/audio shoots)
@@ -743,7 +768,7 @@ export default class GHGProtocolCarbonCalculator {
   }
 
   // Main calculation method following GHG Protocol framework
-  calculateWithGHGProtocol(userInput: GHGUserInput): GHGProtocolResult {
+  async calculateWithGHGProtocol(userInput: GHGUserInput): Promise<GHGProtocolResult> {
     try {
       console.log('GHG Protocol calculation starting for:', userInput);
       
@@ -754,7 +779,7 @@ export default class GHGProtocolCarbonCalculator {
       const includeDeviceEnergy = userInput.includeDeviceEnergy || false;
       
       // Get hardcoded electricity carbon intensity (scientific data)
-      const gridIntensity = this.getGridIntensity(country);
+      const { intensity: gridIntensity, source: gridIntensitySource, updated: gridIntensityUpdated } = await this.getGridIntensity(country);
       console.log(`Grid intensity for ${country}: ${gridIntensity} gCO2/kWh`);
       
       let calculation: CalculationResult;
@@ -886,24 +911,35 @@ export default class GHGProtocolCarbonCalculator {
           calculation = this.calculateDigitalMedia(quantity, defaultDataGB, 0, gridIntensity, includeDeviceEnergy);
       }
       
+      // FIX: Re-structure the final breakdown and sum it for an accurate total.
+      const finalBreakdown = {
+        digital_processing: calculation.breakdown.ad_tech || calculation.breakdown.platform_energy || calculation.breakdown.creation || 0,
+        energy_consumption: calculation.breakdown.data_transfer || calculation.breakdown.power || calculation.breakdown.screen_power || calculation.breakdown.cdn_origin || calculation.breakdown.hosting || calculation.breakdown.printing_energy || calculation.breakdown.venue_energy || calculation.breakdown.cloud_services || calculation.breakdown.allocated_office_energy || 0,
+        device_energy: calculation.breakdown.device_energy || 0,
+        supply_chain: calculation.breakdown.freight || calculation.breakdown.parcel_freight || 0,
+        materials: calculation.breakdown.paper || calculation.breakdown.materials || calculation.breakdown.items || calculation.breakdown.booth_materials || calculation.breakdown.packaging || 0,
+        transport: calculation.breakdown.travel || calculation.breakdown.installation || calculation.breakdown.attendee_travel || 0,
+        waste: calculation.breakdown.disposal || 0,
+        catering: calculation.breakdown.catering || 0,
+        cloud_storage: calculation.breakdown.cloud || calculation.breakdown.cloud_editing || 0,
+        production: calculation.breakdown.production || 0,
+        other: calculation.breakdown.print || calculation.breakdown.events || calculation.breakdown.content_delivery || 0,
+      };
+
+      const totalFromBreakdown = Object.values(finalBreakdown).reduce((sum, value) => sum + value, 0);
+
       const result: GHGProtocolResult = {
         success: true,
         data: {
-          totalEmissions: Math.round(calculation.total * 100000) / 100000, // 5 decimal precision
-          breakdown: {
-            digital_processing: calculation.breakdown.ad_tech || calculation.breakdown.platform_energy || calculation.breakdown.creation || 0,
-            energy_consumption: calculation.breakdown.data_transfer || calculation.breakdown.power || calculation.breakdown.screen_power || 0,
-            device_energy: calculation.breakdown.device_energy || 0,
-            supply_chain: calculation.breakdown.freight || 0,
-            materials: calculation.breakdown.paper || calculation.breakdown.materials || calculation.breakdown.items || 0,
-            transport: calculation.breakdown.travel || calculation.breakdown.installation || 0,
-            waste: calculation.breakdown.disposal || 0
-          },
+          totalEmissions: Math.round(totalFromBreakdown * 100000) / 100000, // Use the sum of the final breakdown
+          breakdown: finalBreakdown,
           methodology: calculation.methodology,
           country: country,
           gridIntensity: gridIntensity,
-          recommendations: this.generateGHGRecommendations(calculation.total, activityType, channel),
-          sustainabilityRating: this.getGHGSustainabilityRating(calculation.total)
+          // gridIntensitySource: gridIntensitySource,
+          // gridIntensityUpdated: gridIntensityUpdated,
+          recommendations: this.generateGHGRecommendations(totalFromBreakdown, activityType, channel),
+          sustainabilityRating: this.getGHGSustainabilityRating(totalFromBreakdown)
         }
       };
 
@@ -960,8 +996,8 @@ export default class GHGProtocolCarbonCalculator {
     return 'Poor - High Carbon Impact - Consider Optimization';
   }
 
-  // Legacy compatibility method
-  calculateWithAI(userInput: GHGUserInput): GHGProtocolResult {
-    return this.calculateWithGHGProtocol(userInput);
+  async calculateWithAI(userInput: GHGUserInput): Promise<GHGProtocolResult> {
+    return await this.calculateWithGHGProtocol(userInput);
   }
+  
 }

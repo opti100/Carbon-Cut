@@ -2,10 +2,13 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
+import { Globe } from '../ui/globe'
+
 
 const BrandsSection = () => {
+
   const brands = [
-    { name: 'Adobe', logo: 'Adobe' },
+    { name: 'Adobe', logoPath: "/companies/Adobe_Corporate_logo.svg" },
     { name: 'Checkr', logo: 'Checkr' },
     { name: 'Square', logo: 'Square' },
     { name: 'Twilio', logo: 'twilio' },
@@ -54,7 +57,7 @@ const BrandsSection = () => {
   }
 
   return (
-    <section className="relative w-full h-auto bg-black text-white overflow-hidden">
+    <section className="relative w-full min-h-screen bg-black text-white overflow-hidden">
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 20% 50%, #00CC33 0%, transparent 50%),
@@ -63,15 +66,15 @@ const BrandsSection = () => {
         }} />
       </div>
 
-      <div className="relative z-10 h-full flex items-center">
+      <div className="relative z-10 min-h-screen flex items-center py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center h-full">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <motion.div 
               className="space-y-8"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+
             >
               <motion.h2 
                 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
@@ -108,40 +111,20 @@ const BrandsSection = () => {
             </motion.div>
 
             <motion.div 
-              className="grid grid-cols-2 gap-8 lg:gap-12"
+              className="relative flex items-center justify-center h-[500px] sm:h-[600px] lg:h-[650px] xl:h-[700px] order-1 lg:order-2"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
             >
-              {brands.map((brand, index) => (
-                <motion.div
-                  key={brand.name}
-                  className="flex flex-col items-center justify-center p-4 lg:p-6 rounded-lg bg-gray-900/30 backdrop-blur-sm border border-gray-800 hover:border-tertiary/30 transition-all duration-300 group"
-                   // @ts-expect-error - ignore
-                  variants={logoVariants}
-                  whileHover={{ 
-                    scale: 1.05,
-                    backgroundColor: "rgba(0, 204, 51, 0.05)"
-                  }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="text-xl lg:text-2xl font-bold text-gray-300 group-hover:text-white transition-colors duration-300 text-center">
-                    {brand.logo}
-                  </div>
-                  {brand.subtitle && (
-                    <div className="text-xs text-gray-500 mt-1 text-center">
-                      {brand.subtitle}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
+              <div className="relative w-full h-full max-w-[600px] max-h-[600px]">
+                <Globe className="relative w-full h-full" />
+              </div>
             </motion.div>
           </div>
         </div>
       </div>
 
-      {/* Gradient overlay at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
     </section>
   )

@@ -115,7 +115,6 @@ const Signup = () => {
                     <div className="w-full max-w-sm lg:max-w-md">
                         <Card className="border-0 shadow-none bg-transparent">
                             <CardContent className="space-y-4 lg:space-y-6 px-0">
-                                {/* Logo and Brand Section */}
                                 <div className="text-center mb-6 lg:mb-8">
                                     <div className="flex items-center justify-start space-x-3 mb-2">
                                         <Image
