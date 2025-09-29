@@ -19,17 +19,17 @@ interface MarketingActivityFormProps {
   onAddActivity: (activity: Omit<ActivityData, 'id'>) => void;
 }
 
-export default function MarketingActivityForm({ 
-  channels, 
-  defaultScope, 
-  countries, 
-  loadingCountries, 
-  onAddActivity 
+export default function MarketingActivityForm({
+  channels,
+  defaultScope,
+  countries,
+  loadingCountries,
+  onAddActivity
 }: MarketingActivityFormProps) {
   const [formData, setFormData] = useState({
     market: 'United Kingdom',
-    channel: 'Digital Ads',
-    unit: 'adtech_impression',
+    channel: 'Ad Production',
+    unit: 'Travel (km)',
     qty: '',
     scope: 3,
     campaign: '',
@@ -47,7 +47,7 @@ export default function MarketingActivityForm({
   const handleChange = (field: string, value: string | number) => {
     setFormData(prev => {
       const updated = { ...prev, [field]: value };
-      
+
       // Update scope and unit when channel changes
       if (field === 'channel') {
         const newUnits = channels[value as string];
@@ -57,7 +57,7 @@ export default function MarketingActivityForm({
           scope: defaultScope[value as string] || 3
         };
       }
-      
+
       return updated;
     });
   };
@@ -92,7 +92,7 @@ export default function MarketingActivityForm({
       };
 
       onAddActivity(activityData);
-      
+
       // Reset form fields
       setFormData(prev => ({
         ...prev,
@@ -127,13 +127,13 @@ export default function MarketingActivityForm({
   };
 
   return (
-    <div className="bg-white px-6  space-y-6">
+    <div className="bg-gray-50 px-6  space-y-6">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
           Add Marketing Activity
         </h2>
         <p className="text-gray-600 mt-2 max-w-3xl">
-          Enter the details of your marketing activity to calculate its carbon footprint. 
+          Enter the details of your marketing activity to calculate its carbon footprint.
           We use <strong className="text-orange-400">verified emission factors</strong> and real-time data for accurate calculations.
         </p>
       </div>

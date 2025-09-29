@@ -9,6 +9,7 @@ import MarketingActivityForm from './MarketingActivityForm';
 import ActivityLog from './ActivityLog';
 import EmissionsBreakdown from './EmissionsBreakdown';
 import ReportActions from './ReportActions';
+import { Card } from '../ui/card';
 
 export default function MarketingCalculator() {
   const [organization, setOrganization] = useState<OrganizationData>({
@@ -226,7 +227,7 @@ export default function MarketingCalculator() {
         </div> */}
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Card className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50 mt-4 mb-16 shadow-lg">
         {/* <div className="py-8 border-b border-gray-200">
           <div className="flex items-center justify-center space-x-8">
             <div className="flex items-center space-x-2">
@@ -287,7 +288,7 @@ export default function MarketingCalculator() {
             totals={totals}
           />
         </div>
-      </div>
+      </Card>
     </div>
   );
 }
