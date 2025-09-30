@@ -49,10 +49,10 @@ export default function HowItWorks() {
   return (
     <div className="relative z-20 py-10  max-w-7xl mx-auto ">
       <div className="px-8">
-        <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
-          How CarbonCut Works in{" "}
-          <span className="text-orange-500">4 Simple Steps</span>
-        </h4>
+        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
+         <span> How CarbonCut Works in{" "}
+          <span className="text-orange-500">4 Simple Steps</span> </span>
+        </h2>
 
         <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-gray-600 text-center font-normal">
           From calculating your carbon footprint to earning sustainability certifications, 
@@ -227,7 +227,7 @@ export const SkeletonTwo = () => {
 export const SkeletonThree = () => {
   return (
     <div className="relative flex gap-10 h-full group/image">
-      <div className="w-full mx-auto bg-gradient-to-br from-green-50 to-white group h-full rounded-lg border border-orange-500 p-6">
+      <div className="w-full mx-auto bg-gradient-to-br from-green-50 to-white group h-full rounded-lg border border-gray-200 p-6">
         <div className="flex flex-1 w-full h-full flex-col items-center justify-center space-y-6">
           {/* Optimization Center */}
           <div className="text-center space-y-4">

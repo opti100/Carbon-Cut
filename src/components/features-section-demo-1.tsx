@@ -7,7 +7,7 @@ import { BlurFade } from "./ui/blur-fade";
 
 export default function WhatCarbonCutProvides() {
   return (
-    <div className="py-20  bg-gray-100 relative overflow-hidden">
+    <div className="py-20  bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <BlurFade delay={0.1} inView className="text-center mb-16">
           <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">

@@ -124,7 +124,7 @@ export default function ActivityLog({
         {activities.map((activity, index) => (
           <AccordionItem
             key={activity.id}
-            value={"item-1"}
+            value={Math.random().toString()}
             className="border border-gray-200 rounded-lg bg-white overflow-hidden hover:border-tertiary/30 transition-colors duration-200"
           >
             <AccordionTrigger className="hover:no-underline px-6 py-4 bg-white border-b border-gray-200 [&[data-state=closed]]:border-b-0">
