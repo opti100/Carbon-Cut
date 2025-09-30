@@ -101,21 +101,21 @@ const Hero = () => {
           <div className="py-1">
             {/* Menu Item 1 */}
             <Link href="/calculator">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-tertiary transition-colors duration-150 cursor-pointer rounded-md">
                 CarbonCalculator
               </button>
             </Link>
             
             {/* Menu Item 2 */}
             <Link href="/">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-tertiary transition-colors duration-150 cursor-pointer rounded-md">
                 CarbonOffset
               </button>
             </Link>
             
             {/* Menu Item 3 */}
             <Link href="/">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-tertiary transition-colors duration-150 cursor-pointer rounded-md">
                 CarbonToken
               </button>
             </Link>

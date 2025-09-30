@@ -341,7 +341,7 @@ export default function MarketingActivityForm({
           onClick={handleSubmit}
           disabled={addingActivity || !formData.qty || !dateRange?.from}
           size="lg"
-          className="bg-tertiary text-white shadow-lg hover:shadow-xl rounded-xl hover:bg-green-600 transition-all duration-200"
+          className="bg-tertiary text-white shadow-lg hover:shadow-xl rounded-sm hover:bg-green-600 transition-all duration-200"
         >
           {addingActivity ? (
             <>

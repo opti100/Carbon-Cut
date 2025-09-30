@@ -1,5 +1,6 @@
 import React from 'react';
 import { BlurFade } from '../ui/blur-fade';
+import { HyperText } from '../ui/hyper-text';
 
 const CarbonCutImpact = () => {
   return (
@@ -20,40 +21,64 @@ const CarbonCutImpact = () => {
          </BlurFade>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="text-center">
           <div className="bg-tertiary rounded-lg p-8 mb-4 shadow-sm">
-            <div className="text-4xl font-bold text-gray-900 mb-2">500K+</div>
+            <HyperText 
+              inView 
+              animateOnHover={false}
+              className="text-4xl font-bold text-gray-900 mb-2"
+            >
+              500K+
+            </HyperText>
             <div className="text-gray-700 text-sm font-medium">
               Tons of CO2e emissions<br />calculated to date
             </div>
           </div>
         </div>
 
-        {/* Stat 2 */}
         <div className="text-center">
           <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
-            <div className="text-4xl font-bold text-gray-900 mb-2">$5 Million</div>
+            <HyperText 
+              inView 
+              delay={100}
+              animateOnHover={false}
+              className="text-4xl font-bold text-gray-900 mb-2"
+            >
+              $5 Million
+            </HyperText>
             <div className="text-gray-600 text-sm font-medium">
               In verified carbon credits<br />transacted
             </div>
           </div>
         </div>
 
-        {/* Stat 3 */}
         <div className="text-center">
           <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
-            <div className="text-4xl font-bold text-gray-900 mb-2">150+</div>
+            <HyperText 
+              inView 
+              delay={200}
+              animateOnHover={false}
+              className="text-4xl font-bold text-gray-900 mb-2"
+            >
+              150+
+            </HyperText>
             <div className="text-gray-600 text-sm font-medium">
               Globally verified offset<br />projects supported
             </div>
           </div>
         </div>
 
-        {/* Stat 4 */}
         <div className="text-center">
           <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
-            <div className="text-4xl font-bold text-gray-900 mb-2">50+</div>
+            <HyperText 
+              inView 
+              delay={300}
+              animateOnHover={false}
+              className="text-4xl font-bold text-gray-900 mb-2"
+            >
+              50+
+            </HyperText>
             <div className="text-gray-600 text-sm font-medium">
               Globally verified offset<br />projects supported
             </div>
@@ -61,9 +86,7 @@ const CarbonCutImpact = () => {
         </div>
       </div>
 
-      {/* Bottom Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-        {/* Bottom Stat 1 */}
         <div className="text-center">
           <div className="text-4xl font-bold text-gray-900 mb-2">~15%</div>
           <div className="text-gray-600 text-sm font-medium">
@@ -71,7 +94,6 @@ const CarbonCutImpact = () => {
           </div>
         </div>
 
-        {/* Bottom Stat 2 */}
         <div className="text-center">
           <div className="text-4xl font-bold text-gray-900 mb-2">10+ Years</div>
           <div className="text-gray-600 text-sm font-medium">
@@ -79,7 +101,6 @@ const CarbonCutImpact = () => {
           </div>
         </div>
 
-        {/* Bottom Stat 3 */}
         <div className="text-center">
           <div className="text-4xl font-bold text-gray-900 mb-2">Minutes</div>
           <div className="text-gray-600 text-sm font-medium">
@@ -87,7 +108,6 @@ const CarbonCutImpact = () => {
           </div>
         </div>
 
-        {/* Bottom Stat 4 */}
         <div className="text-center">
           <div className="text-4xl font-bold text-gray-900 mb-2">ESG-Ready</div>
           <div className="text-gray-600 text-sm font-medium">
