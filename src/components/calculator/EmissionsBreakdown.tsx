@@ -21,27 +21,27 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     return null
   }
 
-  // Orange-themed color palettes for all charts
+  // Color palettes for each chart type
   const channelPalette = [
-    "#FF6B35", // Bright Orange
-    "#FF8C42", // Light Orange
-    "#FFAA5C", // Peach
-    "#FFC679", // Light Peach
-    "#FFD89C", // Pale Orange
-    "#FFE4B5", // Moccasin
-    "#F4A261", // Sandy Orange
-    "#E76F51", // Burnt Orange
+    "#374151", // Gray 700 - Dark Gray
+    "#4B5563", // Gray 600 - Medium Dark Gray
+    "#6B7280", // Gray 500 - Medium Gray
+    "#9CA3AF", // Gray 400 - Light Gray
+    "#D1D5DB", // Gray 300 - Very Light Gray
+    "#E5E7EB", // Gray 200 - Pale Gray
+    "#F3F4F6", // Gray 100 - Very Pale Gray
+    "#111827", // Gray 900 - Very Dark Gray
   ]
 
   const marketPalette = [
-    "#F97316", // Orange 500
-    "#FB923C", // Orange 400
-    "#FDBA74", // Orange 300
-    "#FED7AA", // Orange 200
-    "#FF8C42", // Light Orange
-    "#FFAA5C", // Peach
-    "#FFC679", // Light Peach
-    "#F4A261", // Sandy Orange
+    "#059669", // Green 600 - Dark Green
+    "#10B981", // Green 500 - Medium Green
+    "#34D399", // Green 400 - Light Green
+    "#6EE7B7", // Green 300 - Very Light Green
+    "#A7F3D0", // Green 200 - Pale Green
+    "#D1FAE5", // Green 100 - Very Pale Green
+    "#047857", // Green 700 - Very Dark Green
+    "#065F46", // Green 800 - Darkest Green
   ]
 
   const scopePalette: Record<number, string> = {
@@ -99,7 +99,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
             title="By Channel"
             data={channelData}
             totalLabel="Total"
-            icon={<TrendingUp className="h-5 w-5 text-orange-600" />}
+            icon={<TrendingUp className="h-5 w-5 text-gray-600" />}
           />
         )}
 
@@ -109,7 +109,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
             title="By Market"
             data={marketData}
             totalLabel="Total"
-            icon={<Globe className="h-5 w-5 text-orange-600" />}
+            icon={<Globe className="h-5 w-5 text-green-600" />}
           />
         )}
 
