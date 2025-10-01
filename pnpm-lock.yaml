@@ -59,6 +59,9 @@ importers:
       aceternity-ui:
         specifier: ^0.2.2
         version: 0.2.2(typescript@5.9.2)
+      axios:
+        specifier: ^1.12.2
+        version: 1.12.2
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.2
