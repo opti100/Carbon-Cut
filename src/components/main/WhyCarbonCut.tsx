@@ -27,7 +27,7 @@ const WhyCarbonCut = () => {
       <div className="px-8">
         {/* Title */}
         <BlurFade delay={0.1} inView>
-          <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black">
+        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
             Security, Reliability,<span className='text-tertiary'> Simplicity </span> 
           </h2>
           <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
@@ -42,7 +42,7 @@ const WhyCarbonCut = () => {
               key={feature.title}
               delay={index * 0.2}
               inView
-              className="group relative bg-gray-100 p-6 rounded-3xl overflow-hidden border border-orange-200 hover:border-orange-300 transition-all duration-300 hover:shadow-md"
+              className="group relative bg-gray-100 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-orange-500/40 transition-all duration-300 hover:shadow-md"
             >
               <Grid size={20} />
 

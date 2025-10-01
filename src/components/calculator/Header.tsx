@@ -38,7 +38,7 @@ const Header = () => {
                                 <Button
                                     variant="ghost"
                                     size={"lg"}
-                                    className="bg-tertiary text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2"
+                                    className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2"
                                 >
                                     Products
 
@@ -88,7 +88,7 @@ const Header = () => {
                             <Button
                                 variant="ghost"
                                 size={"lg"}
-                                className="bg-tertiary text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
+                                className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
                                 <User />   Login
                             </Button>
                         </Link>
