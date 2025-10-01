@@ -1,10 +1,14 @@
-import PageOne from '@/components/blog/PageOne'
+import BlogDashboard from '@/components/blog/BlogDashboard'
+import Header from '@/components/calculator/Header'
+import Footer from '@/components/main/Footer'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-      <PageOne />
+      <Header />
+      <BlogDashboard />
+      <Footer />
     </div>
   )
 }
