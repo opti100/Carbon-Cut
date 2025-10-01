@@ -5,7 +5,9 @@ import CalculatorFooter from '@/components/calculator/CalculatorFooter';
 import CalculatorPreFooter from '@/components/calculator/CalculatorPreFooter';
 import Header from '@/components/calculator/Header';
 import HowItWorksDemo from "@/components/HowItWorksDemo";
+import Footer from '@/components/main/Footer';
 import Hero from '@/components/main/Hero';
+import PreFooter from '@/components/main/PreFooter';
 import React from 'react'
 
 const page = () => {
@@ -15,8 +17,10 @@ const page = () => {
       <Calculator/>
       {/* <HowItWorksDemo/> */}
       <CalculatorFAQ/>
-      <CalculatorPreFooter/>
-      <CalculatorFooter/>
+      {/* <CalculatorPreFooter/> */}
+      {/* <CalculatorFooter/> */}
+       <PreFooter/>
+      <Footer />
     </div>
   )
 }

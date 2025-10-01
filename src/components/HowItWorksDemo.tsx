@@ -5,6 +5,7 @@ import createGlobe from "cobe";
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import { Calculator, BarChart3, Zap, Award, TrendingDown, Target, CheckCircle } from "lucide-react";
+import { Ripple } from "./ui/ripple";
 
 export default function HowItWorks() {
   const steps = [
@@ -272,24 +273,45 @@ export const SkeletonThree = () => {
 
 export const SkeletonFour = () => {
   return (
-    <div className="h-60 md:h-60 flex flex-col items-center relative bg-transparent mt-10">
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="bg-tertiary/10 rounded-lg p-4 border-2 border-orange-500 text-center">
-          <Award className="w-8 h-8 text-tertiary mx-auto mb-2" />
-          <div className="text-sm font-semibold text-gray-800">Sustainability Certified</div>
-          <div className="text-xs text-gray-600">98% Client Satisfaction</div>
-          <div className="flex items-center justify-center gap-1 mt-2">
-            {[1,2,3,4,5].map((star, i) => (
-              <CheckCircle 
-                key={star} 
-                className={`w-3 h-3 ${i === 0 ? "text-orange-500" : "text-tertiary"}`} 
-              />
-            ))}
-          </div>
-        </div>
+ <div className="h-60 md:h-60 flex flex-col items-center justify-center relative bg-transparent mt-10">
+  <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-10">
+    <div className="bg-gradient-to-br from-white via-gray-50 to-white shadow-xl rounded-2xl px-6 py-5 border border-gray-200 text-center w-56 relative overflow-hidden">
+      
+      {/* Decorative background pattern */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <circle cx="50" cy="50" r="50" fill="url(#grad1)" />
+          <defs>
+            <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FDE68A" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="#F97316" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+        </svg>
       </div>
-      <Globe className="absolute -right-10 md:-right-10 -bottom-80 md:-bottom-72" />
+      {/* Icon */}
+      <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-50 mx-auto mb-3 shadow-inner">
+        <Award className="w-6 h-6 text-orange-500" />
+      </div>
+      {/* Title + Subtitle */}
+      <div className="text-base font-semibold text-gray-800 mb-1">
+        Sustainability Certified
+      </div>
+      <div className="text-xs text-gray-500 mb-3">98% Client Satisfaction</div>
+      {/* Rating */}
+      <div className="flex items-center justify-center gap-1 mt-1">
+        {[1, 2, 3, 4, 5].map((star, i) => (
+          <CheckCircle
+            key={star}
+            className={`w-4 h-4 ${i === 0 ? 'text-orange-500' : 'text-green-500'}`}
+          />
+        ))}
+      </div>
     </div>
+  </div>
+</div>
+
+
   );
 };
 

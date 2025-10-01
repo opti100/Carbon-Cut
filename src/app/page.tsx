@@ -1,4 +1,3 @@
-import {testimonialsData } from "@/components/data/testimonials";
 import WhatCarbonCutProvides from "@/components/features-section-demo-1";
 import HowItsWorkTwo from "@/components/HowItsWorkTwo";
 import HowItWorks from "@/components/HowItWorksDemo";
@@ -23,7 +22,7 @@ export default function Home() {
       <WhyCarbonCut/>
       <CarbonCutImpact/>
       <WhatCarbonCutProvides/>
-      <TestimonialCarousel testimonials={testimonialsData} autoAdvanceMs={4000}/>
+      <TestimonialCarousel/>
       <PreFooter/>
       <Footer />
     </main>

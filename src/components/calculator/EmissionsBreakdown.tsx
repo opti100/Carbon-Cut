@@ -11,6 +11,16 @@ interface EmissionsBreakdownProps {
 }
 
 export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) {
+  // Check if there's any data to display
+  const hasChannelData = Object.values(totals.byChannel).some(value => value > 0)
+  const hasMarketData = Object.values(totals.byMarket).some(value => value > 0)
+  const hasScopeData = Object.values(totals.byScope).some(value => value > 0)
+  
+  // If no data exists, render nothing
+  if (!hasChannelData && !hasMarketData && !hasScopeData) {
+    return null
+  }
+
   // Orange-themed color palettes for all charts
   const channelPalette = [
     "#FF6B35", // Bright Orange
@@ -40,8 +50,9 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     3: "#FB923C", // Light Orange (Scope 3 - Other Indirect)
   }
 
-  // Transform data for charts
+  // Transform data for charts - only include data with values > 0
   const channelData = Object.entries(totals.byChannel)
+    .filter(([, value]) => value > 0)
     .sort(([, a], [, b]) => b - a)
     .map(([name, value], index) => ({
       name,
@@ -50,6 +61,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     }))
 
   const marketData = Object.entries(totals.byMarket)
+    .filter(([, value]) => value > 0)
     .sort(([, a], [, b]) => b - a)
     .map(([name, value], index) => ({
       name,
@@ -58,6 +70,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     }))
 
   const scopeData = Object.entries(totals.byScope)
+    .filter(([, value]) => value > 0)
     .sort(([a], [b]) => parseInt(a) - parseInt(b))
     .map(([scope, value]) => ({
       name: `Scope ${scope}`,
@@ -78,48 +91,36 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
         </p>
       </div>
 
-      {/* Pie Charts Grid */}
+      {/* Pie Charts Grid - Only show charts that have data */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* By Channel */}
-        {channelData.length > 0 ? (
+        {/* By Channel - Only render if there's channel data */}
+        {hasChannelData && (
           <EmissionsPieChart
             title="By Channel"
             data={channelData}
             totalLabel="Total"
             icon={<TrendingUp className="h-5 w-5 text-orange-600" />}
           />
-        ) : (
-          <div className="flex items-center justify-center p-8 border rounded-lg bg-white">
-            <p className="text-sm text-gray-500">No channel data available.</p>
-          </div>
         )}
 
-        {/* By Market */}
-        {marketData.length > 0 ? (
+        {/* By Market - Only render if there's market data */}
+        {hasMarketData && (
           <EmissionsPieChart
             title="By Market"
             data={marketData}
             totalLabel="Total"
             icon={<Globe className="h-5 w-5 text-orange-600" />}
           />
-        ) : (
-          <div className="flex items-center justify-center p-8 border rounded-lg bg-white">
-            <p className="text-sm text-gray-500">No market data available.</p>
-          </div>
         )}
 
-        {/* By Scope */}
-        {scopeData.length > 0 ? (
+        {/* By Scope - Only render if there's scope data */}
+        {hasScopeData && (
           <EmissionsPieChart
             title="By Scope"
             data={scopeData}
             totalLabel="Total"
             icon={<Zap className="h-5 w-5 text-orange-600" />}
           />
-        ) : (
-          <div className="flex items-center justify-center p-8 border rounded-lg bg-white">
-            <p className="text-sm text-gray-500">No scope data available.</p>
-          </div>
         )}
       </div>
     </div>

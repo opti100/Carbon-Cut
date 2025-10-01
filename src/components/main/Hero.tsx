@@ -81,7 +81,7 @@ const Hero = () => {
         <Button
           variant="ghost"
           size={"lg"}
-          className="bg-tertiary text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2"
+          className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2"
         >
        Products
 
@@ -101,21 +101,21 @@ const Hero = () => {
           <div className="py-1">
             {/* Menu Item 1 */}
             <Link href="/calculator">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-tertiary transition-colors duration-150 cursor-pointer rounded-md">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md">
                 CarbonCalculator
               </button>
             </Link>
             
             {/* Menu Item 2 */}
             <Link href="/">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-tertiary transition-colors duration-150 cursor-pointer rounded-md">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md">
                 CarbonOffset
               </button>
             </Link>
             
             {/* Menu Item 3 */}
             <Link href="/">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-tertiary transition-colors duration-150 cursor-pointer rounded-md">
+              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md">
                 CarbonToken
               </button>
             </Link>
@@ -131,7 +131,7 @@ const Hero = () => {
               <Button
                 variant="ghost"
                 size={"lg"}
-                className="bg-tertiary text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
+                className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
                <User/>   Login
               </Button>
             </Link>
