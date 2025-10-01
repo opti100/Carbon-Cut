@@ -3,7 +3,7 @@ import React from 'react'
 
 const Testimonials = () => {
   return (
-    <div className='flex justify-center items-center mb-10 rounded-2xl '>  img
+    <div className='flex justify-center items-center mb-10 rounded-2xl '>  
       <Image src="/people/groupies.gif" alt='something' width={1000} height={500} ></Image>
     </div>
   )
