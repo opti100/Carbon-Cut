@@ -59,6 +59,9 @@ importers:
       aceternity-ui:
         specifier: ^0.2.2
         version: 0.2.2(typescript@5.9.2)
+      axios:
+        specifier: ^1.12.2
+        version: 1.12.2
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.2
@@ -152,6 +155,9 @@ importers:
       three-globe:
         specifier: ^2.44.0
         version: 2.44.0(three@0.180.0)
+      world-countries:
+        specifier: ^5.1.0
+        version: 5.1.0
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3
@@ -4841,6 +4847,9 @@ packages:
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
+
+  world-countries@5.1.0:
+    resolution: {integrity: sha512-CXR6EBvTbArDlDDIWU3gfKb7Qk0ck2WNZ234b/A0vuecPzIfzzxH+O6Ejnvg1sT8XuiZjVlzOH0h08ZtaO7g0w==}
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -10468,6 +10477,8 @@ snapshots:
       isexe: 2.0.0
 
   word-wrap@1.2.5: {}
+
+  world-countries@5.1.0: {}
 
   wrap-ansi@7.0.0:
     dependencies:
