@@ -49,17 +49,7 @@ export default function ActivityLog({
 
   if (activities.length === 0) {
     return (
-      <div className="bg-gray-50 px-6 py-8">
-        <div className="text-center py-16 px-6">
-          <div className="w-20 h-20 bg-gradient-to-br from-tertiary/20 to-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Database className="w-10 h-10 text-tertiary" />
-          </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">No activities yet</h3>
-          <p className="text-gray-500 max-w-md mx-auto leading-relaxed">
-            Add your first marketing activity using the form above to see it appear in this comprehensive activity log.
-          </p>
-        </div>
-      </div>
+      <div> </div>
     );
   }
 

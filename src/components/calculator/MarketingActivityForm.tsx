@@ -279,19 +279,19 @@ export default function MarketingActivityForm({
             <SelectContent>
               <SelectItem value="1">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{getScopeIcon(1)}</span>
+                  {/* <span className="text-lg">{getScopeIcon(1)}</span> */}
                   <span>Scope 1 - Direct emissions</span>
                 </div>
               </SelectItem>
               <SelectItem value="2">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{getScopeIcon(2)}</span>
+                  {/* <span className="text-lg">{getScopeIcon(2)}</span> */}
                   <span>Scope 2 - Indirect energy</span>
                 </div>
               </SelectItem>
               <SelectItem value="3">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{getScopeIcon(3)}</span>
+                  {/* <span className="text-lg">{getScopeIcon(3)}</span> */}
                   <span>Scope 3 - Value chain</span>
                 </div>
               </SelectItem>
@@ -299,7 +299,7 @@ export default function MarketingActivityForm({
           </Select>
           <div className="flex justify-start">
             <Badge variant="outline" className={getScopeColor(formData.scope)}>
-              <span className="mr-2">{getScopeIcon(formData.scope)}</span>
+              {/* <span className="mr-2">{getScopeIcon(formData.scope)}</span> */}
               Scope {formData.scope}
             </Badge>
           </div>
