@@ -273,45 +273,73 @@ export const SkeletonThree = () => {
 
 export const SkeletonFour = () => {
   return (
- <div className="h-60 md:h-60 flex flex-col items-center justify-center relative bg-transparent mt-10">
-  <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-10">
-    <div className="bg-gradient-to-br from-white via-gray-50 to-white shadow-xl rounded-2xl px-6 py-5 border border-gray-200 text-center w-56 relative overflow-hidden">
-      
-      {/* Decorative background pattern */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <circle cx="50" cy="50" r="50" fill="url(#grad1)" />
-          <defs>
-            <radialGradient id="grad1" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#FDE68A" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#F97316" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-        </svg>
+    <div className="relative flex py-8 px-2 gap-10 h-full">
+      <div className="w-full p-5 mx-auto bg-gradient-to-br from-green-50 to-white shadow-2xl group h-full rounded-lg border border-tertiary/20">
+        <div className="flex flex-1 w-full h-full flex-col space-y-4">
+          {/* Certification Dashboard */}
+          <div className="bg-tertiary/10 rounded-lg p-4 border border-tertiary/20">
+            <div className="flex items-center gap-2 mb-3">
+              <Award className="w-5 h-5 text-tertiary" />
+              <span className="font-semibold text-gray-800">Certification Progress</span>
+            </div>
+            
+            {/* Main Certificate Badge */}
+            <div className="text-center mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-50 border-4 border-orange-500 mb-2">
+                <Award className="w-8 h-8 text-orange-500" />
+              </div>
+              <div className="text-lg font-bold text-gray-800">Sustainability Certified</div>
+              <div className="text-sm text-gray-600">Level: Gold Standard</div>
+            </div>
+
+            {/* Certification Metrics */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {[
+                { label: "Trust Score", value: "98%", color: "text-tertiary" },
+                { label: "Verified Claims", value: "47", color: "text-tertiary" },
+                { label: "CO₂ Offset", value: "5.2T", color: "text-orange-500" },
+                { label: "Client Rating", value: "4.9★", color: "text-orange-500" },
+              ].map((metric, idx) => (
+                <motion.div 
+                  key={metric.label}
+                  className="bg-white rounded-lg p-2 text-center border border-tertiary/20"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <div className={`font-bold text-sm ${metric.color}`}>{metric.value}</div>
+                  <div className="text-xs text-gray-500">{metric.label}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Certification Badges */}
+            <div className="space-y-2">
+              <div className="text-sm font-medium text-gray-700 mb-2">Active Certifications:</div>
+              {[
+                { name: "Carbon Neutral Verified", status: "Active", color: "bg-green-100 text-green-800" },
+                { name: "ISO 14001 Compliant", status: "Active", color: "bg-green-100 text-green-800" },
+                { name: "B-Corp Certified", status: "Pending", color: "bg-yellow-100 text-yellow-800" },
+              ].map((cert, idx) => (
+                <motion.div 
+                  key={cert.name}
+                  className="flex items-center justify-between text-xs p-2 bg-white rounded border border-tertiary/20"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 + 0.3 }}
+                >
+                  <span className="text-gray-700">{cert.name}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${cert.color}`}>
+                    {cert.status}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      {/* Icon */}
-      <div className="flex items-center justify-center w-14 h-14 rounded-full bg-orange-50 mx-auto mb-3 shadow-inner">
-        <Award className="w-6 h-6 text-orange-500" />
-      </div>
-      {/* Title + Subtitle */}
-      <div className="text-base font-semibold text-gray-800 mb-1">
-        Sustainability Certified
-      </div>
-      <div className="text-xs text-gray-500 mb-3">98% Client Satisfaction</div>
-      {/* Rating */}
-      <div className="flex items-center justify-center gap-1 mt-1">
-        {[1, 2, 3, 4, 5].map((star, i) => (
-          <CheckCircle
-            key={star}
-            className={`w-4 h-4 ${i === 0 ? 'text-orange-500' : 'text-green-500'}`}
-          />
-        ))}
-      </div>
+      <div className="absolute bottom-0 z-40 inset-x-0 h-60 bg-gradient-to-t from-white to-transparent w-full pointer-events-none" />
     </div>
-  </div>
-</div>
-
-
   );
 };
 
