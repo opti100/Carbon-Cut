@@ -5,7 +5,6 @@ export interface BlogPost {
   category: string;
   title: string;
   excerpt: string;
-  content?: string; // Full content for individual pages
   date: string;
   author: {
     name: string;

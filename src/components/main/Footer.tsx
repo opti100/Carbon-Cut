@@ -20,9 +20,6 @@ const Footer = () => {
               /> */}
               {/* <span className="text-white text-xl font-bold">CARBONCUT</span> */}
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              A new way to make the payments easy, reliable and secure.
-            </p>
           </div>
 
           <div>
@@ -104,6 +101,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
+   
     </footer>
   )
 }
