@@ -2,52 +2,58 @@
 
 This guide explains how to add new blog posts to the CarbonCut blog system.
 
-## File Structure
+## Current File Structure
 
 ```
 src/constants/
-├── blogData.ts          # Main blog data file (imports all blogs)
+├── blogData.ts                    # Main blog data file (imports all blogs)
 └── blogs/
-    ├── blogone.ts       # First blog post
-    ├── blogtwo.ts       # Template for second blog post
-    └── ...              # Future blog posts
+    ├── blogone-data.tsx          # First blog post with React content
+    └── README.md                 # This guide
 ```
+
+## Current Blog System
+
+The current system uses only one blog post (`blogone-data.tsx`) which contains:
+- A React component (`BlogOneContent`) for rich content formatting
+- Blog metadata (`blogOneData`) exported as a `BlogPost` object
 
 ## How to Add a New Blog Post
 
 ### Step 1: Create the Blog File
 
-1. Create a new file in `src/constants/blogs/` named `blog[name].ts` (e.g., `blogthree.ts`)
-2. Copy the template from `blogtwo.ts` or use this structure:
+1. Create a new file in `src/constants/blogs/` named `blog[name]-data.tsx` (e.g., `blogtwo-data.tsx`)
+2. Use this structure following the current pattern:
 
 ```typescript
+import React from 'react';
 import { BlogPost } from '../blogData';
+import Link from 'next/link';
 
-export const blogThree: BlogPost = {
-  id: '3',
+export const BlogTwoContent = () => {
+  return (
+    <div className="prose prose-lg max-w-none text-gray-900">
+      <p className="text-xl leading-relaxed mb-6">
+        Your blog content here with proper React JSX formatting...
+      </p>
+      {/* Add more content with proper HTML structure */}
+    </div>
+  );
+};
+
+export const blogTwoData: BlogPost = {
+  id: '2',
   slug: 'your-blog-slug',
   category: 'Your Category',
   title: 'Your Blog Title',
   excerpt: 'Brief description of your blog post',
-  content: `
-# Your Blog Title
-
-Your full blog content here using markdown-style formatting.
-
-## Section 1
-Content here...
-
-## Section 2  
-More content...
-  `,
   date: '2025-10-01',
   author: {
     name: 'Author Name',
     avatar: '/people/person1.jpg'
   },
   readTime: '5 min read',
-  image: '/articles/article3.jpg',
-  tags: ['Tag1', 'Tag2', 'Tag3'],
+  image: '/blogs/yourImage.png',
   featured: false
 };
 ```
@@ -57,34 +63,28 @@ More content...
 1. Open `src/constants/blogData.ts`
 2. Add the import at the top:
    ```typescript
-   import { blogThree } from './blogs/blogthree';
+   import { blogTwoData } from './blogs/blogtwo-data';
    ```
 3. Add it to the blogPosts array:
    ```typescript
    export const blogPosts: BlogPost[] = [
-     blogOne,
-     blogTwo,
-     blogThree, // Add your new blog here
+     blogOneData,
+     blogTwoData, // Add your new blog here
    ];
    ```
 
-### Step 3: Add to Static Generation
+### Step 3: Update Blog Components
 
-1. Open `src/app/blog/[slug]/page.tsx`
-2. Add your slug to the `generateStaticParams` function:
+1. Open `src/components/blog/BlogPostPage.tsx`
+2. Import your new content component:
    ```typescript
-   export async function generateStaticParams() {
-     return [
-       { slug: 'one' },
-       { slug: 'two' },
-       { slug: 'your-blog-slug' }, // Add your slug here
-     ];
-   }
+   import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
    ```
+3. Add it to the content rendering logic where `BlogOneContent` is used
 
-### Step 4: Add Images (Optional)
+### Step 4: Add Images
 
-1. Add your blog image to `public/articles/`
+1. Add your blog image to `public/blogs/` (not `public/articles/`)
 2. Update the `image` field in your blog post to reference it
 
 ## Blog Post Properties
@@ -94,33 +94,30 @@ More content...
 - **category**: Blog category (creates filter tags)
 - **title**: Full blog post title
 - **excerpt**: Short description (shows on cards and social media)
-- **content**: Full blog content (supports markdown-style formatting)
 - **date**: Publication date (YYYY-MM-DD format)
 - **author**: Author information with name and optional avatar
 - **readTime**: Estimated reading time (e.g., '5 min read')
-- **image**: Blog post image path (optional)
-- **tags**: Array of relevant tags for filtering
+- **image**: Blog post image path (should be in `/blogs/` directory)
 - **featured**: Set to `true` to make it stand out (optional)
 
 ## Content Formatting
 
-The `content` field supports simple markdown-like formatting:
-- `# Title` → Large heading
-- `## Section` → Medium heading  
-- `### Subsection` → Small heading
-- `- Item` → Bullet point
-- Regular paragraphs are automatically formatted
+Content should be created as React components with proper JSX formatting:
+- Use semantic HTML elements (`<h2>`, `<p>`, `<div>`, etc.)
+- Apply Tailwind CSS classes for styling
+- Use the `prose` classes for consistent typography
+- Include proper accessibility attributes
 
-## Categories and Tags
+## Important Notes
 
-Choose appropriate categories and tags to help users find your content:
-- **Categories**: Broad topics (Digital Marketing, Analytics, etc.)
-- **Tags**: Specific keywords (SEO, Campaign Optimization, etc.)
-
-## Tips
-
-- Keep excerpts under 160 characters for better SEO
-- Use descriptive, SEO-friendly slugs
-- Estimate reading time: ~200 words per minute
-- Choose high-quality images that relate to your content
+- Images should be stored in `public/blogs/` directory
+- Content is rendered as React components, not markdown
+- The blog system currently supports one active blog post
+- All styling should use Tailwind CSS classes
 - Test your blog post by visiting `/blog/your-slug` after adding it
+
+## Current Active Blog
+
+- **Slug**: `marketing-carbon-emissions-missing-kpi`
+- **Title**: "How Marketing Is Killing the World One Ad at a Time (And What To Do About It)"
+- **Image**: `/blogs/blogsOne.png`

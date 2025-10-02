@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Calculator, ArrowUpRight, Shield, User } from 'lucide-react'
@@ -14,6 +14,7 @@ import {
 import Image from 'next/image'
 
 const Hero = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const AURORA_COLORS = [
     "#00CC33",
@@ -43,6 +44,18 @@ const Hero = () => {
     { name: "Climate Action Reserve", code: "CAR", logo: "/certified/CAR.png", link: "https://www.climateactionreserve.org/" }
   ]
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!(event.target as Element).closest('.dropdown-container')) {
+        setIsDropdownOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <motion.div
       style={{
@@ -64,25 +77,24 @@ const Hero = () => {
               width={128}
               height={128}
               className="w-48 h-48"
-            >
-            </Image>
+            />
           </div>
 
-          <div className='flex  items-center space-x-4'>
+          <div className='flex items-center space-x-4'>
             <div className="flex items-center space-x-4">
               {/* Dropdown Container */}
-              <div className="relative group">
+              <div className="relative dropdown-container">
                 {/* Dropdown Trigger */}
                 <Button
                   variant="ghost"
                   size={"lg"}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2 touch-manipulation"
                 >
                   Products
-
                   {/* Dropdown Arrow */}
                   <svg
-                    className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+                    className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -92,25 +104,36 @@ const Hero = () => {
                 </Button>
 
                 {/* Dropdown Menu */}
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-200 z-50 touch-manipulation">
+                <div className={`absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-50 touch-manipulation ${
+                  isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}>
                   <div className="py-1">
                     {/* Menu Item 1 */}
                     <Link href="/calculator">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                      <button 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none"
+                      >
                         CarbonCalculator
                       </button>
                     </Link>
 
                     {/* Menu Item 2 */}
-                    <Link href="/">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                    <Link href="/offset">
+                      <button 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none"
+                      >
                         CarbonOffset
                       </button>
                     </Link>
 
                     {/* Menu Item 3 */}
-                    <Link href="/">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                    <Link href="/token">
+                      <button 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none"
+                      >
                         CarbonToken
                       </button>
                     </Link>
@@ -119,10 +142,7 @@ const Hero = () => {
               </div>
             </div>
 
-
-
             <Link href="/login">
-
               <Button
                 variant="ghost"
                 size={"lg"}
@@ -130,7 +150,6 @@ const Hero = () => {
                 <User />   Login
               </Button>
             </Link>
-
           </div>
         </nav>
       </header>
@@ -207,7 +226,6 @@ const Hero = () => {
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </motion.div>

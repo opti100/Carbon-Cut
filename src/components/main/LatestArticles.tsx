@@ -6,7 +6,7 @@ const LatestArticles = () => {
     id: 1,
     title: "Simplify Your Sustainability Reporting",
     excerpt: "Our advanced calculator provides a detailed lifecycle analysis of your marketing emissions. Input data across digital campaigns (including ad spend, platform usage, and website traffic) and physical materials (from print production to shipping logistics) to receive a granular breakdown of your carbon footprint.",
-    image: "/articles/article1.jpg",
+    image: "/blogs/blogsOne.png",
     author: "Olivia Martinez",
     date: "September 9, 2024",
     category: "Sustainability"
@@ -17,7 +17,7 @@ const LatestArticles = () => {
       id: 2,
       title: "The Carbon Cost of Your Customer Acquisition",
       excerpt: "See the environmental impact of your marketing spend and learn how sustainable practices can improve your bottom line.",
-      image: "/articles/article2.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Nina Patel",
       date: "June 30, 2023",
       category: "Marketing"
@@ -26,7 +26,7 @@ const LatestArticles = () => {
       id: 3,
       title: "Calculate Your Brand's Climate Story", 
       excerpt: "Turn your emissions data into a powerful narrative of transparency and commitment to authentic sustainability.",
-      image: "/articles/article3.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Marcus Thorne",
       date: "June 12, 2024",
       category: "Strategy"
@@ -35,7 +35,7 @@ const LatestArticles = () => {
       id: 4,
       title: "Modeling Your Marketing Carbon Lifecycle",
       excerpt: "A technical overview of the calculation methodologies behind measuring emissions from digital advertising campaigns.",
-      image: "/articles/article4.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Sophia Kim",
       date: "July 18, 2024",
       category: "Analytics"
@@ -44,7 +44,7 @@ const LatestArticles = () => {
       id: 5,
       title: "Redefining Marketing Success with Carbon Metrics",
       excerpt: "Move beyond traditional KPIs. Learn how integrating carbon accounting creates a new paradigm for measuring campaign effectiveness.",
-      image: "/articles/article5.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Daniel Wright", 
       date: "June 30, 2023",
       category: "Metrics"
