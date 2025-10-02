@@ -51,89 +51,96 @@ const Hero = () => {
       className="relative min-h-screen overflow-hidden"
     >
       <header
-        className={`
-           top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
-         
-        `}
-      >
-        <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 h-16">
-          <div className="flex items-center">
-            <Image
-              src="/ccLogo.svg"
-              alt="CarbonCut Logo"
-              width={128}
-              height={128}
-              className="w-48 h-48"
-            >
-            </Image>
-          </div>
+  className={`
+     top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
+  `}
+>
+  <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-14 lg:h-16">
+    <div className="flex items-center">
+      <Image
+        src="/ccLogo.svg"
+        alt="CarbonCut Logo"
+        width={128}
+        height={128}
+        className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+      />
+    </div>
 
-          <div className='flex  items-center space-x-4'>
-            <div className="flex items-center space-x-4">
-              {/* Dropdown Container */}
-              <div className="relative group">
-                {/* Dropdown Trigger */}
-                <Button
-                  variant="ghost"
-                  size={"lg"}
-                  className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2 touch-manipulation"
-                >
-                  Products
+    <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
+      {/* Dropdown Container */}
+      <div className="relative group">
+        {/* Dropdown Trigger */}
+        <Button
+          variant="ghost"
+          size="lg"
+          className="
+            bg-black text-white 
+            px-3 py-2 text-xs 
+            sm:px-4 sm:py-2 sm:text-sm 
+            lg:px-6 lg:py-4 lg:text-sm
+            font-medium 
+            hover:bg-tertiary hover:text-white 
+            rounded-sm h-8 sm:h-9 lg:h-10 
+            transition-colors duration-200 cursor-pointer 
+            flex items-center gap-1 sm:gap-2 touch-manipulation
+          "
+        >
+          Products
+          <svg
+            className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:rotate-180"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </Button>
 
-                  {/* Dropdown Arrow */}
-                  <svg
-                    className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </Button>
-
-                {/* Dropdown Menu */}
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-200 z-50 touch-manipulation">
-                  <div className="py-1">
-                    {/* Menu Item 1 */}
-                    <Link href="/calculator">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
-                        CarbonCalculator
-                      </button>
-                    </Link>
-
-                    {/* Menu Item 2 */}
-                    <Link href="/">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
-                        CarbonOffset
-                      </button>
-                    </Link>
-
-                    {/* Menu Item 3 */}
-                    <Link href="/">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
-                        CarbonToken
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-            <Link href="/login">
-
-              <Button
-                variant="ghost"
-                size={"lg"}
-                className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
-                <User />   Login
-              </Button>
+        {/* Dropdown Menu */}
+        <div className="absolute right-0 top-full mt-2 w-40 sm:w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 touch-manipulation">
+          <div className="py-1">
+            <Link href="/calculator">
+              <button className="w-full text-left px-3 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                CarbonCalculator
+              </button>
             </Link>
-
+            <Link href="/">
+              <button className="w-full text-left px-3 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                CarbonOffset
+              </button>
+            </Link>
+            <Link href="/">
+              <button className="w-full text-left px-3 py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                CarbonToken
+              </button>
+            </Link>
           </div>
-        </nav>
-      </header>
+        </div>
+      </div>
+
+      <Link href="/login">
+        <Button
+          variant="ghost"
+          size="lg"
+          className="
+            bg-black text-white 
+            px-3 py-2 text-xs 
+            sm:px-4 sm:py-2 sm:text-sm 
+            lg:px-6 lg:py-4 lg:text-sm
+            font-medium 
+            hover:bg-tertiary hover:text-white 
+            rounded-sm h-8 sm:h-9 lg:h-10 
+            transition-colors duration-200 cursor-pointer flex items-center gap-1 sm:gap-2
+          "
+        >
+          <User className="w-3 h-3 sm:w-4 sm:h-4" />
+          Login
+        </Button>
+      </Link>
+    </div>
+  </nav>
+</header>
+
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center pt-16">
         <div className="max-w-6xl mx-auto">
