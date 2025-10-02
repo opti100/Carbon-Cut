@@ -5,50 +5,42 @@ import { Button } from '@/components/ui/button'
 const PreFooter = () => {
   return (
     <div
-      className='py-12 px-6 lg:px-28 bg-gray-50'
+      className='py-16 px-6 lg:px-28 bg-gray-50'
       style={{
-        // backgroundColor: '#FFD02F',
         backgroundImage: 'url("/LandingGroup.svg")',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'right bottom',
         backgroundSize: 'contain'
       }}
     >
-      <div className="text-center mb-16">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
-          <div className="flex-1">
-            <h2 className="text-3xl lg:text-5xl lg:leading-tight mx-auto text-left tracking-tight font-medium text-black">
-              Achieve Net Zero, Smarter <br />
-              with CarbonCut
-            </h2>
-            <p className="text-lg text-gray-600 max-w-3xl text-left py-8">
-              Turn climate action into a competitive advantage
-            </p>
+      <div className="max-w-4xl">
+        <div className="text-left">
+          <h2 className="text-4xl lg:text-5xl lg:leading-tight font-bold text-gray-900 mb-6">
+            Partner in <span className="text-tertiary">Climate Accountability</span>
+          </h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl">
+            Work with us to bring measurable climate action into marketing.
+          </p>
 
-            <div className='flex items-start text-left text-black font-semibold gap-2'>
-              <Check className="mt-1" />
-              <span>Accurate Flexible insights at scale</span>
+          <div className="space-y-4 mb-8">
+            <div className='flex items-center gap-3 text-gray-800'>
+              <div className="w-6 h-6  rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="w-4 h-4 text-black" />
+              </div>
+              <span className="font-semibold">Adopt CarbonCut for your campaigns</span>
             </div>
-            <div className='flex items-start text-left text-black font-semibold gap-2 mt-2'>
-              <Check className="mt-1" />
-              <span>Navigate internal and external demands</span>
+            <div className='flex items-center gap-3 text-gray-800'>
+              <div className="w-6 h-6  rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="w-4 h-4 text-black" />
+              </div>
+              <span className="font-semibold">Integrate as an agency or platform</span>
             </div>
-            <div className='flex items-start text-left text-black font-semibold gap-2 mt-2'>
-              <Check className="mt-1" />
-              <span>Automated, easy to use platform</span>
+            <div className='flex items-center gap-3 text-gray-800'>
+              <div className="w-6 h-6  rounded-full flex items-center justify-center flex-shrink-0">
+                <Check className="w-4 h-4 text-black" />
+              </div>
+              <span className="font-semibold">Collaborate on industry-wide solutions</span>
             </div>
-          </div>
-
-          <div className="mt-8 lg:mt-0 lg:ml-12">
-            <p className="text-lg text-gray-600 max-w-3xl text-left py-2">
-              Get a Free, personalized demo
-            </p>
-            <Button
-              className="bg-black text-white px-6 py-3 rounded-md text-lg hover:bg-gray-800 transition"
-              asChild
-            >
-              <a href="/demo">Book Free Demo</a>
-            </Button>
           </div>
         </div>
       </div>
