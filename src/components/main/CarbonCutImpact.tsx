@@ -4,99 +4,87 @@ import { HyperText } from '../ui/hyper-text';
 
 const CarbonCutImpact = () => {
   return (
-    <div className="w-full bg-gray-50 py-16">
-      {/* Centered container */}
+    <div className="w-full bg-gray-50 py-12">
       <div className="max-w-6xl mx-auto px-6">
-
-        <div className="text-center mb-16">
-          <BlurFade delay={0.1} inView className="text-center mb-16">
-            <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
-              Our Impact & Expertise at a <span className='text-tertiary'>Glance</span>
+        {/* Section Title */}
+        <div className="text-center mb-12">
+          <BlurFade delay={0.1} inView className="text-center">
+            <h2 className="text-3xl lg:text-5xl lg:leading-tight max-w-7xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
+              Our Impact & Expertise at a <span className="text-tertiary">Glance</span>
             </h2>
-             
             <p className="text-gray-600 text-lg max-w-4xl mx-auto leading-relaxed">
-              A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally 
-              verified projects that drive real climate impact.
+              A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
             </p>
           </BlurFade>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div className="text-center">
-            <div className="bg-tertiary rounded-lg p-8 mb-4 shadow-sm">
-              <HyperText inView animateOnHover={false} className="text-3xl font-bold text-gray-900 mb-2">
-                500K+
-              </HyperText>
-              <div className="text-gray-700 text-sm font-medium">
-                Tons of CO2e emissions<br />calculated to date
+        {/* Top 4 Feature Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              title: 'First of Its Kind',
+              desc: 'World’s first CliMarTech platform for marketing emissions',
+              bg: 'bg-tertiary',
+              text: 'text-black',
+              delay: 0,
+            },
+            {
+              title: 'Scope 3 Ready',
+              desc: 'Purpose-built to address the biggest blind spot in advertising carbon',
+              bg: 'bg-gray-50',
+              text: 'text-gray-900',
+              delay: 100,
+            },
+            {
+              title: 'Audit-Ready',
+              desc: 'Reports aligned with SECR (UK), SEC (US), CSRD (EU) disclosure frameworks',
+              bg: 'bg-gray-50',
+              text: 'text-gray-900',
+              delay: 200,
+            },
+            {
+              title: 'Verified Path',
+              desc: 'Every tonne tied to a certificate trail + smart-contract record',
+              bg: 'bg-gray-50',
+              text: 'text-gray-900',
+              delay: 300,
+            },
+          ].map((card, idx) => (
+            <div key={idx} className="text-center h-full">
+              <div
+                className={`${card.bg} rounded-lg p-6 mb-4 shadow-sm transform transition-transform hover:scale-105 flex flex-col h-full`}
+              >
+                <HyperText
+                  inView
+                  delay={card.delay}
+                  animateOnHover={false}
+                  className="font-sans text-3xl font-bold leading-tight tracking-tight mb-2 normal-case"
+                  style={{ textTransform: 'none' }}
+                >
+                  {card.title}
+                </HyperText>
+                <div className={`text-sm font-medium ${card.text} flex-1`}>
+                  {card.desc}
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="text-center">
-            <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
-              <HyperText inView delay={100} animateOnHover={false} className="text-3xl font-bold text-gray-900 mb-2">
-                $5 Million
-              </HyperText>
-              <div className="text-gray-600 text-sm font-medium">
-                In verified carbon credits<br />transacted
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
-              <HyperText inView delay={200} animateOnHover={false} className="text-4xl font-bold text-gray-900 mb-2">
-                150+
-              </HyperText>
-              <div className="text-gray-600 text-sm font-medium">
-                Globally verified offset<br />projects supported
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center">
-            <div className="bg-gray-50 rounded-lg p-8 mb-4 shadow-sm">
-              <HyperText inView delay={300} animateOnHover={false} className="text-4xl font-bold text-gray-900 mb-2">
-                50+
-              </HyperText>
-              <div className="text-gray-600 text-sm font-medium">
-                Globally verified offset<br />projects supported
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
-          <div className="text-center">
-            <div className="text-4xl font-bold text-gray-900 mb-2">~15%</div>
-            <div className="text-gray-600 text-sm font-medium">
-              Average emission reduction<br />achieved by our users
+        {/* Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+          {[
+            { label: '~Minutes, Not Months', desc: 'To calculate a campaign-level footprint' },
+            { label: '10+ Years', desc: 'Marketing and sustainability expertise behind the platform' },
+            { label: 'Built for Marketing', desc: 'Created by marketers, for marketing & advertising emissions' },
+            { label: 'Trusted', desc: 'Designed for transparency, compliance and climate integrity' },
+          ].map((metric, idx) => (
+            <div key={idx} className="text-center">
+              <div className="text-3xl font-bold text-gray-900 mb-1">{metric.label}</div>
+              <div className="text-gray-600 text-sm font-medium">{metric.desc}</div>
             </div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-4xl font-bold text-gray-900 mb-2">10+ Years</div>
-            <div className="text-gray-600 text-sm font-medium">
-              Average team experience in<br />climate tech & sustainability
-            </div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-4xl font-bold text-gray-900 mb-2">Minutes</div>
-            <div className="text-gray-600 text-sm font-medium">
-              To calculate a comprehensive<br />carbon footprint
-            </div>
-          </div>
-
-          <div className="text-center">
-            <div className="text-4xl font-bold text-gray-900 mb-2">ESG-Ready</div>
-            <div className="text-gray-600 text-sm font-medium">
-              Reports compliant with<br />leading sustainability<br />standards
-            </div>
-          </div>
+          ))}
         </div>
-
       </div>
     </div>
   );

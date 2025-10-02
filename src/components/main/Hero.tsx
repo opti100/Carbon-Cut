@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Calculator, ArrowUpRight, Shield,User } from 'lucide-react'
+import { Calculator, ArrowUpRight, Shield, User } from 'lucide-react'
 import { ContainerTextFlip } from '../ui/container-text-flip'
 import {
   useMotionTemplate,
@@ -59,7 +59,7 @@ const Hero = () => {
         <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 h-16">
           <div className="flex items-center">
             <Image
-              src="/carboncutlogo26-9.svg"
+              src="/ccLogo.svg"
               alt="CarbonCut Logo"
               width={128}
               height={128}
@@ -69,73 +69,68 @@ const Hero = () => {
           </div>
 
           <div className='flex  items-center space-x-4'>
+            <div className="flex items-center space-x-4">
+              {/* Dropdown Container */}
+              <div className="relative group">
+                {/* Dropdown Trigger */}
+                <Button
+                  variant="ghost"
+                  size={"lg"}
+                  className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2 touch-manipulation"
+                >
+                  Products
 
-          
-  
-   
+                  {/* Dropdown Arrow */}
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </Button>
 
-    <div className="flex items-center space-x-4">
-      {/* Dropdown Container */}
-      <div className="relative group">
-        {/* Dropdown Trigger */}
-        <Button
-          variant="ghost"
-          size={"lg"}
-          className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2"
-        >
-       Products
+                {/* Dropdown Menu */}
+                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-200 z-50 touch-manipulation">
+                  <div className="py-1">
+                    {/* Menu Item 1 */}
+                    <Link href="/calculator">
+                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                        CarbonCalculator
+                      </button>
+                    </Link>
 
-          {/* Dropdown Arrow */}
-          <svg 
-            className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </Button>
+                    {/* Menu Item 2 */}
+                    <Link href="/">
+                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                        CarbonOffset
+                      </button>
+                    </Link>
 
-        {/* Dropdown Menu */}
-        <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-          <div className="py-1">
-            {/* Menu Item 1 */}
-            <Link href="/calculator">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md">
-                CarbonCalculator
-              </button>
-            </Link>
-            
-            {/* Menu Item 2 */}
-            <Link href="/">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md">
-                CarbonOffset
-              </button>
-            </Link>
-            
-            {/* Menu Item 3 */}
-            <Link href="/">
-              <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md">
-                CarbonToken
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-      </div>
-   
+                    {/* Menu Item 3 */}
+                    <Link href="/">
+                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                        CarbonToken
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        
+
+
             <Link href="/login">
-          
+
               <Button
                 variant="ghost"
                 size={"lg"}
                 className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
-               <User/>   Login
+                <User />   Login
               </Button>
             </Link>
-              
+
           </div>
         </nav>
       </header>
@@ -159,8 +154,7 @@ const Hero = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Explore the latest trends, metrics, and technologies to accurately calculate and minimize
-            your marketing emissions from digital campaigns to physical collateral.
+            From digital impressions to printed collateral, we calculate campaign-level emissions with audit-ready CO₂e results and link every residual tonne to a verified offset, complete with a certificate trail.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
@@ -181,7 +175,7 @@ const Hero = () => {
             <div className="flex items-center justify-center mb-4 px-2">
               <Shield className="w-4 h-4 text-orange-500 mr-2 flex-shrink-0" />
               <span className="text-sm text-gray-600 font-medium text-center">
-                Verified by <span className="text-orange-500 font-semibold">leading carbon standards</span>
+                Verified by <span className="text-orange-500 font-semibold">Leading Carbon Standards</span>
               </span>
             </div>
 

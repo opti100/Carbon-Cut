@@ -3,6 +3,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Globe } from '../ui/globe'
+import { IconArrowMoveRight } from '@tabler/icons-react'
+import { MoveUpRight } from 'lucide-react'
 
 
 const BrandsSection = () => {
@@ -69,48 +71,67 @@ const BrandsSection = () => {
       <div className="relative z-10 min-h-screen flex items-center py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <motion.div 
+            <motion.div
               className="space-y-8"
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
 
             >
-              <motion.h2 
+              <motion.h2
                 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight"
                 // @ts-expect-error - ignore
                 variants={itemVariants}
               >
-                Leading brands<br />
-                are choosing<br />
+                Trusted by<br />
+                leading brands<br />
                 <span className="text-tertiary">CarbonCut</span>
               </motion.h2>
-              
-              <motion.p 
+
+              <motion.p
                 className="text-lg lg:text-xl text-gray-300 leading-relaxed max-w-lg"
-                 // @ts-expect-error - ignore
+                // @ts-expect-error - ignore
                 variants={itemVariants}
               >
-                Companies are moving beyond outdated carbon calculators with a platform built for accuracy, transparency, and impact.
+                CarbonCut delivers defensible CO₂e data that stands up to SECR, SEC, and CSRD disclosure.
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 className="space-y-4"
-                 // @ts-expect-error - ignore
+                // @ts-expect-error - ignore
                 variants={itemVariants}
               >
-                <div className="flex items-center space-x-3">
-                  <div className="text-tertiary text-2xl font-bold">↗</div>
-                  <div className="text-2xl lg:text-3xl font-bold text-tertiary">15%</div>
-                  <div className="text-lg text-gray-300">average emission reduction</div>
+                <div className="flex flex-col space-y-3">
+                  {/* Point 1 */}
+                  <div className="flex items-start gap-2">
+                    <MoveUpRight className="text-tertiary w-6 h-6 flex-shrink-0" />
+                    <p className="text-base texwhite">
+                      Clients report <span className="font-bold">up to 30% faster disclosure preparation</span> with audit-ready outputs.
+                    </p>
+                  </div>
+
+                  {/* Point 2 */}
+                  <div className="flex items-start gap-2">
+                    <MoveUpRight className="text-tertiary w-6 h-6 flex-shrink-0" />
+                    <p className="text-base text-white">
+                      Users report <span className="font-bold">up to 15% lower emissions per campaign</span> without sacrificing performance.
+                    </p>
+                  </div>
+
+                  {/* Point 3 */}
+                  <div className="flex items-start gap-2">
+                    <MoveUpRight className="text-tertiary w-6 h-6 flex-shrink-0" />
+                    <p className="text-base text-white">
+                      Every tonne neutralised tied to a verifiable on-chain retirement.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-400 pl-8">
-                  achieved by CarbonCut users across marketing and advertising campaigns.
-                </p>
+
+
               </motion.div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="relative flex items-center justify-center h-[500px] sm:h-[600px] lg:h-[650px] xl:h-[700px] order-1 lg:order-2"
               variants={containerVariants}
               initial="hidden"
