@@ -64,39 +64,33 @@ const Hero = () => {
       }}
       className="relative min-h-screen overflow-hidden"
     >
-      <header
-        className={`
-           top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out
-         
-        `}
-      >
-        <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 h-16">
+      <header className="top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
+        <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+          {/* Logo */}
           <div className="flex items-center">
             <Image
               src="/ccLogo.svg"
               alt="CarbonCut Logo"
               width={128}
               height={128}
-              className="w-48 h-48"
-            >
-            </Image>
+              className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+            />
           </div>
 
-          <div className='flex  items-center space-x-4'>
+          {/* Desktop Navigation */}
+          <div className='hidden md:flex items-center space-x-4'>
             <div className="flex items-center space-x-4">
               {/* Dropdown Container */}
-              <div className="relative group">
-                {/* Dropdown Trigger */}
+              <div className="relative dropdown-container">
                 <Button
                   variant="ghost"
                   size={"lg"}
-                  className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2 touch-manipulation"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="bg-black text-white px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer flex items-center gap-2"
                 >
                   Products
-
-                  {/* Dropdown Arrow */}
                   <svg
-                    className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+                    className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -106,25 +100,31 @@ const Hero = () => {
                 </Button>
 
                 {/* Dropdown Menu */}
-                <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible lg:group-hover:opacity-100 lg:group-hover:visible transition-all duration-200 z-50 touch-manipulation">
+                <div className={`absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-50 ${
+                  isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}>
                   <div className="py-1">
-                    {/* Menu Item 1 */}
                     <Link href="/calculator">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                      <button 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md"
+                      >
                         CarbonCalculator
                       </button>
                     </Link>
-
-                    {/* Menu Item 2 */}
-                    <Link href="/">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                    <Link href="/offset">
+                      <button 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md"
+                      >
                         CarbonOffset
                       </button>
                     </Link>
-
-                    {/* Menu Item 3 */}
-                    <Link href="/">
-                      <button className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-gray-200 transition-colors duration-150 cursor-pointer rounded-md touch-manipulation select-none">
+                    <Link href="/token">
+                      <button 
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150 cursor-pointer rounded-md"
+                      >
                         CarbonToken
                       </button>
                     </Link>
@@ -133,20 +133,106 @@ const Hero = () => {
               </div>
             </div>
 
-
-
             <Link href="/login">
-
               <Button
                 variant="ghost"
                 size={"lg"}
-                className="bg-black text-white px-6 py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer" >
-                <User />   Login
+                className="bg-black text-white px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium hover:bg-tertiary hover:text-white rounded-sm h-9 transition-colors duration-200 cursor-pointer"
+              >
+                <User className="w-4 h-4" />   
+                <span className="ml-2">Login</span>
               </Button>
             </Link>
+          </div>
 
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="bg-black text-white p-2 rounded-sm h-9 transition-colors duration-200 cursor-pointer"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
           </div>
         </nav>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50">
+            <div className="px-4 py-3 space-y-2">
+              {/* Mobile Products Dropdown */}
+              <div className="border-b border-gray-100 pb-2">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsDropdownOpen(!isDropdownOpen)
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 flex items-center justify-between"
+                >
+                  Products
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                <div className={`mt-2 ml-4 space-y-1 transition-all duration-200 ${
+                  isDropdownOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                }`}>
+                  <Link href="/calculator">
+                    <button 
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      CarbonCalculator
+                    </button>
+                  </Link>
+                  <Link href="/offset">
+                    <button 
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      CarbonOffset
+                    </button>
+                  </Link>
+                  <Link href="/token">
+                    <button 
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      CarbonToken
+                    </button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Mobile Login */}
+              <Link href="/login">
+                <button 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 flex items-center gap-2 hover:bg-gray-50 rounded-md transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  Login
+                </button>
+              </Link>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Content */}
@@ -154,7 +240,7 @@ const Hero = () => {
         <div className="max-w-6xl mx-auto w-full">
           {/* Main Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
-            <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
+            <div className="">
               <ContainerTextFlip
                 interval={1500}
                 animationDuration={300}
@@ -162,11 +248,10 @@ const Hero = () => {
                 className="inline-block text-tertiary"
                 words={["Calculate", "Report", "Offset"]}
               />
-              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">marketing</span>
+              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl pl-2 ">marketing </span>
             </div>
-            <div className="mt-1 sm:mt-0">
-              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">emissions</span>
-            </div>
+              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"> emissions</span>
+           
           </h1>
 
           {/* Description */}
@@ -199,7 +284,7 @@ const Hero = () => {
             </div>
 
             {/* Badges Grid */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-4 mb-8 max-w-2xl mx-auto">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4  max-w-2xl mx-auto">
               {verificationBadges.map((badge, index) => (
                 <motion.div
                   key={badge.code}
