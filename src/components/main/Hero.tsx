@@ -164,7 +164,10 @@ const Hero = () => {
               {/* Mobile Products Dropdown */}
               <div className="border-b border-gray-100 pb-2">
                 <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsDropdownOpen(!isDropdownOpen)
+                  }}
                   className="w-full text-left px-3 py-2 text-sm font-medium text-gray-700 flex items-center justify-between"
                 >
                   Products
@@ -178,43 +181,43 @@ const Hero = () => {
                   </svg>
                 </button>
                 
-                {isDropdownOpen && (
-                  <div className="mt-2 ml-4 space-y-1">
-                    <Link href="/calculator">
-                      <button 
-                        onClick={() => {
-                          setIsDropdownOpen(false)
-                          setIsMobileMenuOpen(false)
-                        }}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
-                      >
-                        CarbonCalculator
-                      </button>
-                    </Link>
-                    <Link href="/offset">
-                      <button 
-                        onClick={() => {
-                          setIsDropdownOpen(false)
-                          setIsMobileMenuOpen(false)
-                        }}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
-                      >
-                        CarbonOffset
-                      </button>
-                    </Link>
-                    <Link href="/token">
-                      <button 
-                        onClick={() => {
-                          setIsDropdownOpen(false)
-                          setIsMobileMenuOpen(false)
-                        }}
-                        className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
-                      >
-                        CarbonToken
-                      </button>
-                    </Link>
-                  </div>
-                )}
+                <div className={`mt-2 ml-4 space-y-1 transition-all duration-200 ${
+                  isDropdownOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+                }`}>
+                  <Link href="/calculator">
+                    <button 
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      CarbonCalculator
+                    </button>
+                  </Link>
+                  <Link href="/offset">
+                    <button 
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      CarbonOffset
+                    </button>
+                  </Link>
+                  <Link href="/token">
+                    <button 
+                      onClick={() => {
+                        setIsDropdownOpen(false)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                    >
+                      CarbonToken
+                    </button>
+                  </Link>
+                </div>
               </div>
 
               {/* Mobile Login */}
@@ -237,7 +240,7 @@ const Hero = () => {
         <div className="max-w-6xl mx-auto w-full">
           {/* Main Heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight">
-            <div className="flex flex-col items-center justify-center gap-1 sm:gap-2">
+            <div className="">
               <ContainerTextFlip
                 interval={1500}
                 animationDuration={300}
@@ -245,11 +248,10 @@ const Hero = () => {
                 className="inline-block text-tertiary"
                 words={["Calculate", "Report", "Offset"]}
               />
-              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">marketing</span>
+              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl pl-2 ">marketing </span>
             </div>
-            <div className="mt-1 sm:mt-0">
-              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">emissions</span>
-            </div>
+              <span className="text-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"> emissions</span>
+           
           </h1>
 
           {/* Description */}

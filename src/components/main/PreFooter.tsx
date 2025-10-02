@@ -12,11 +12,11 @@ const PreFooter = () => {
         backgroundPosition: 'right bottom',
         backgroundSize: 'contain'
       }}
-    >
+    > 
       <div className="text-center mb-16">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center">
           <div className="flex-1">
-            <h2 className="text-3xl lg:text-5xl lg:leading-tight mx-auto text-left tracking-tight font-medium text-black">
+            <h2 className="text-3xl lg:text-6xl lg:leading-tight mx-auto text-left tracking-tight font-bold text-black">
               Partner in <br />
               <span className='text-tertiary'>Climate Accountability</span>
             </h2>
