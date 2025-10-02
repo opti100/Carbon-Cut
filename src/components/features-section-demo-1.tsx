@@ -97,7 +97,7 @@ const grid = [
     title: "C3 Seal (CarbonCut Certified)",
     description: "Campaigns that complete a CarbonCut calculation and receive report authorisation earn the C3 Seal — a mark of climate accountability. The Seal confirms that results are structured in line with recognised disclosure standards (SECR, CSRD, SEC), making them suitable for use in reports, investor filings, and marketing claims.",
     icon: Blocks,
-    metric: "authorised calculation report"
+    metric: "Authorised Calculation Report"
   },
   {
     title: "CarbonESG Dashboard ",

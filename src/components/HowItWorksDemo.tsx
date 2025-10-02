@@ -13,14 +13,14 @@ export default function HowItWorks() {
       title: "Calculate",
       subtitle: "Get the full picture",
       description: "CarbonCut quantifies emissions across all marketing channels, producing campaign-level CO₂e with channel attribution.",
-      metrics: { value: "", label: "Campaign CO₂e - made audit-ready." },
+      metrics: {  label: "Campaign CO₂e - made audit-ready." },
       skeleton: <SkeletonOne />,
       className: "col-span-1 lg:col-span-4 border-b lg:border-r border-tertiary/20",
     },
     {
       step: 2,
       title: "Report", 
-      subtitle: "Find what matters most",
+      subtitle: "See what matters most",
       description: (
     <>
       CarbonCut produces campaign-level reports that slot directly into compliance frameworks — from{" "}
@@ -38,7 +38,7 @@ export default function HowItWorks() {
       title: "Offset",
       subtitle: "Cut where it counts",
       description: "Residual tonnes can be retired through a curated portfolio of verified projects (nature, energy, waste and more). Every action generates an immutable smart-contract record.",
-      metrics: { value: "", label: "Verified credits only." },
+      metrics: {  label: "Verified credits only." },
       skeleton: <SkeletonThree />,
       className: "col-span-1 lg:col-span-3 lg:border-r border-tertiary/20",
     },
@@ -47,7 +47,7 @@ export default function HowItWorks() {
       title: "Certification",
       subtitle: "Show your commitment", 
       description: "Once campaign offsets are complete, CarbonCut issues a certificate of climate accountability. Each certificate is backed by a transparent audit trail — linking the campaign's calculated footprint to the verified credits retired on its behalf. To guarantee integrity, every retirement is also logged on a smart contract, creating an immutable record that shows what was retired, when, and against which campaign. This ensures proof that can be trusted by finance teams, auditors, and external stakeholders.",
-      metrics: { value: "98%", label: "Trust you can show." },
+      metrics: {  label: "Trust you can show." },
       skeleton: <SkeletonFour />,
       className: "col-span-1 lg:col-span-3 border-b lg:border-none border-tertiary/20",
     },
@@ -62,7 +62,7 @@ export default function HowItWorks() {
         </h2>
 
         <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-gray-600 text-center font-normal">
-          CarbonCut turns campaign emissions into clear CO₂e numbers and verified credit retirements giving marketing teams clarity and auditors the documentation they expect.
+          CarbonCut turns    <span className="text-orange-500">campaign emissions into clear CO₂e numbers </span> and verified credit retirements giving marketing teams clarity and auditors the documentation they expect.
         </p>
       </div>
 
@@ -130,11 +130,10 @@ const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
   );
 };
 
-const FeatureMetrics = ({ metrics }: { metrics: { value: string; label: string } }) => {
+const FeatureMetrics = ({ metrics }: { metrics: {  label: string } }) => {
   return (
     <div className="inline-flex items-center gap-2 bg-tertiary/10 px-3 py-1 rounded-full mb-4">
       <div className="w-2 h-2 bg-tertiary rounded-full animate-pulse"></div>
-      <span className="text-tertiary font-bold text-sm">{metrics.value}</span>
       <span className="text-gray-600 text-xs">{metrics.label}</span>
     </div>
   );
@@ -149,7 +148,7 @@ export const SkeletonOne = () => {
           <div className="bg-tertiary/10 rounded-lg p-4 border border-tertiary/20">
             <div className="flex items-center gap-2 mb-3">
               <Calculator className="w-5 h-5 text-tertiary" />
-              <span className="font-semibold text-gray-800">Live Carbon Tracking</span>
+              <span className="font-semibold text-gray-800">Brand Awareness Campaign (Q3)</span>
             </div>
             <div className="space-y-3">
               {[
@@ -187,9 +186,9 @@ export const SkeletonOne = () => {
 
 export const SkeletonTwo = () => {
   const campaigns = [
-    { name: "Summer Launch", reduction: 3.2, color: "bg-orange-500" },
-    { name: "Always-On Digital", reduction: 2.5, color: "bg-orange-500" },
-    { name: "Product Launch", reduction: 1.8, color: "bg-orange-500" },
+    { name: "Summer Launch (production)", reduction: 3.2, color: "bg-orange-500" },
+    { name: "Always-On Digital (server)", reduction: 2.5, color: "bg-orange-500" },
+    { name: "Holiday Promotion(print)", reduction: 1.8, color: "bg-orange-500" },
   ];
 
   const maxReduction = Math.max(...campaigns.map(c => c.reduction));
@@ -199,7 +198,7 @@ export const SkeletonTwo = () => {
       <div className="w-full space-y-3">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="w-5 h-5 text-tertiary" />
-          <span className="font-semibold text-gray-800">Campaign Analysis</span>
+          <span className="font-semibold text-gray-800">Example: Top Three Campaign Drivers</span>
         </div>
         
         {campaigns.map((campaign, idx) => {
@@ -239,17 +238,25 @@ export const SkeletonThree = () => {
   return (
     <div className="relative flex gap-10 h-full py-8 px-2">
       <div className="w-full mx-auto bg-gradient-to-br from-green-50 via-white to-green-50/30 group h-full rounded-xl border border-green-200 shadow-lg p-6">
-        <div className="flex flex-1 w-full  flex-col justify-center space-y-4">
+        <div className="flex flex-1 w-full flex-col justify-center space-y-4">
           {/* Header */}
           <div className="text-center pb-4 border-b border-green-200">
-            
-            <h3 className="text-lg font-bold text-gray-800">Campaign: Brand Awareness (Q3)</h3>
+            <h3 className="text-lg font-bold text-gray-800">Example: Retirement</h3>
           </div>
 
           {/* Project Details Card */}
           <div className="bg-white rounded-xl p-4 border border-green-200 shadow-sm space-y-3">
             <div className="space-y-3">
+              {/* Campaign Information */}
               <div className="flex justify-between items-start">
+                <span className="text-sm text-gray-600 font-medium">Campaign:</span>
+                <span className="text-sm font-semibold text-gray-800 text-right">
+                  Brand Awareness (Q3)
+                </span>
+              </div>
+
+              {/* Offset Project */}
+              <div className="flex justify-between items-start pt-2 border-t border-gray-100">
                 <span className="text-sm text-gray-600 font-medium">Offset Project:</span>
                 <span className="text-sm font-semibold text-gray-800 text-right leading-relaxed">
                   Kenya Clean Cookstoves<br/>
@@ -257,17 +264,21 @@ export const SkeletonThree = () => {
                 </span>
               </div>
               
+              {/* Credits Retired */}
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                 <span className="text-sm text-gray-600 font-medium">Credits Retired:</span>
                 <span className="text-xl font-bold text-green-600">4.9 tCO₂e</span>
               </div>
               
+              {/* Retirement ID */}
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                 <span className="text-sm text-gray-600">Retirement ID:</span>
                 <span className="text-sm font-mono font-semibold text-gray-800 bg-gray-50 px-3 py-1.5 rounded">
                   GS-123-456-789
                 </span>
               </div>
+
+             
             </div>
             
             {/* Download Button */}
@@ -276,15 +287,15 @@ export const SkeletonThree = () => {
                 <Download className="w-4 h-4" />
                 Download Certificate (PDF)
               </button>
-            
             </div>
           </div>
         </div>
       </div>
-    
     </div>
   );
 };
+
+
 
 export const SkeletonFour = () => {
   return (
@@ -295,15 +306,15 @@ export const SkeletonFour = () => {
           <div className="bg-white rounded-lg p-4 border border-tertiary/20">
             <div className="flex items-center gap-2 mb-4">
               <Award className="w-5 h-5 text-tertiary" />
-              <span className="font-semibold text-gray-800">Certified Campaign </span>
+              <span className="font-semibold text-gray-800">Example: Certificate Snippet</span>
             </div>
             
             {/* Certificate Content */}
             <div className="space-y-4">
               {/* Certified Campaign */}
-              <div className="flex justify-center  items-center pb-3 border-b ">
-                
-                <span className="text-2xl font-bold text-gray-800">Brand Awareness Q3</span>
+              <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                <span className="text-sm font-medium text-gray-700">Certified Campaign:</span>
+                <span className="text-lg font-bold text-gray-800">Brand Awareness Q3</span>
               </div>
               
               {/* Total CO₂e Neutralised */}
@@ -325,14 +336,9 @@ export const SkeletonFour = () => {
               </div>
               
               {/* On-Chain Reference */}
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-700">On-Chain Reference:</span>
-                <div className="text-right">
-                  <p className="text-sm text-gray-600 mb-1">Smart Contract Hash</p>
-                  <p className="text-sm font-mono font-bold text-gray-800 bg-gray-100 px-3 py-1 rounded">
-                    #0x8aF9…D12
-                  </p>
-                </div>
+                <span className="text-sm font-mono font-bold text-gray-800">#0x8aF9…D12</span>
               </div>
             </div>
           </div>
@@ -342,4 +348,3 @@ export const SkeletonFour = () => {
     </div>
   );
 };
-

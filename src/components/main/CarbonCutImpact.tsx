@@ -13,7 +13,11 @@ const CarbonCutImpact = () => {
               Our Impact & Expertise at a <span className="text-tertiary">Glance</span>
             </h2>
             <p className="text-gray-600 text-lg max-w-4xl mx-auto leading-relaxed">
-              A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
+              A trusted platform to {" "}
+               <span className="text-orange-500 font-semibold">measure,</span> 
+               <span className="text-orange-500 font-semibold">report,</span>  and{" "}
+               <span className="text-orange-500 font-semibold">offset</span>  {" "}
+               carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
             </p>
           </BlurFade>
         </div>

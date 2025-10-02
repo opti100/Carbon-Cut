@@ -9,20 +9,6 @@ import { MoveUpRight } from 'lucide-react'
 
 const BrandsSection = () => {
 
-  const brands = [
-    { name: 'Adobe', logoPath: "/companies/Adobe_Corporate_logo.svg" },
-    { name: 'Checkr', logo: 'Checkr' },
-    { name: 'Square', logo: 'Square' },
-    { name: 'Twilio', logo: 'twilio' },
-    { name: '1Password', logo: '1Passw0rd' },
-    { name: 'Broadcom', logo: 'BROADCOM' },
-    { name: 'NBA', logo: 'NBA' },
-    { name: 'Sendoso', logo: 'Sendoso' },
-    { name: 'Motive', logo: 'motive', subtitle: 'Formerly KeepTruckin' },
-    { name: 'Brex', logo: 'Brex' },
-    { name: 'Univision', logo: 'univision' },
-  ]
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -84,8 +70,8 @@ const BrandsSection = () => {
                 variants={itemVariants}
               >
                 Trusted by<br />
-                leading brands<br />
-                <span className="text-tertiary">CarbonCut</span>
+               
+                <span className="text-tertiary"> leading brands</span>
               </motion.h2>
 
               <motion.p

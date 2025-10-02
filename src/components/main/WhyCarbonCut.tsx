@@ -31,7 +31,7 @@ const WhyCarbonCut = () => {
             Security, Reliability,<span className='text-tertiary'> Simplicity </span> 
           </h2>
           <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
-           A platform built for leaders who need carbon data they can trust. CarbonCut ensures your marketing emissions are measured with accuracy, reported with transparency, and offset with compliant and globally verified credits.
+           A platform built for leaders who need  <span className="text-orange-500">carbon data they can trust.</span> CarbonCut ensures your marketing emissions are measured with accuracy, reported with transparency, and offset with compliant and globally verified credits.
 
           </p>
         </BlurFade>
