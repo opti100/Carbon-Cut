@@ -1,151 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= isLogin ? 'Login Code' : 'Verification Code' %> - CarbonCut</title>
+    <title><%= isLogin ? 'Your Login Code' : 'Verify Your Email' %></title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-        .container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
             max-width: 600px;
             margin: 0 auto;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         .header {
-            background-color: #00CC33;
-            padding: 30px 20px;
             text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            color: white;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .header p {
-            margin: 8px 0 0;
-            color: white;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 40px 30px;
-            background-color: white;
-        }
-        .greeting {
-            color: #333;
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-        .message {
-            color: #555;
-            font-size: 16px;
-            line-height: 1.6;
             margin-bottom: 30px;
         }
-        .otp-container {
-            background-color: #f8f9fa;
-            border: 2px solid #00CC33;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d5a27;
+        }
+        .title {
+            color: #2d5a27;
+            margin-bottom: 20px;
+        }
+        .otp-code {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             margin: 30px 0;
         }
-        .otp-code {
-            font-size: 36px;
+        .otp-number {
+            font-size: 32px;
             font-weight: bold;
-            color: #00CC33;
-            letter-spacing: 4px;
-            margin: 0;
-            font-family: 'Courier New', monospace;
+            letter-spacing: 8px;
+            color: #0ea5e9;
+            font-family: monospace;
         }
-        .expiry-note {
-            color: #666;
-            font-size: 14px;
-            margin-top: 25px;
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
             padding: 15px;
-            background-color: #f8f9fa;
-            border-left: 4px solid #FFA500;
+            margin: 20px 0;
             border-radius: 4px;
-        }
-        .security-tip {
-            margin-top: 25px;
-            padding: 15px;
-            background-color: #fff3cd;
-            border-left: 4px solid #FFA500;
-            border-radius: 4px;
-        }
-        .security-tip-title {
-            color: #856404;
-            font-weight: bold;
-            font-size: 14px;
-            margin: 0 0 8px;
-        }
-        .security-tip-text {
-            color: #856404;
-            font-size: 14px;
-            margin: 0;
-            line-height: 1.5;
         }
         .footer {
-            background-color: #f8f9fa;
-            padding: 20px;
             text-align: center;
-            border-top: 1px solid #e9ecef;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
         }
-        .footer p {
-            color: #6c757d;
-            font-size: 12px;
-            margin: 0;
-            line-height: 1.4;
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #16a34a;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>CarbonCut</h1>
-            <p>Carbon Emissions Calculator</p>
+            <div class="logo">🌱 CarbonCut</div>
         </div>
         
-        <div class="content">
-            <div class="greeting">Hi <%= name %>,</div>
-            
-            <div class="message">
-                <%= isLogin 
-                    ? 'Your login code for accessing your CarbonCut dashboard is:' 
-                    : 'Your verification code for downloading the PDF report is:' %>
-            </div>
-            
-            <div class="otp-container">
-                <div class="otp-code"><%= otp %></div>
-            </div>
-            
-            <div class="expiry-note">
-                <strong>⏰ Important:</strong> This code will expire in 10 minutes. If you didn't request this code, please ignore this email.
-            </div>
-            
-            <% if (isLogin) { %>
-            <div class="security-tip">
-                <div class="security-tip-title">🔒 Security Tip</div>
-                <div class="security-tip-text">
-                    Never share this code with anyone. CarbonCut will never ask for your login code via phone or email.
-                </div>
-            </div>
-            <% } %>
+        <h1 class="title">
+            <%= isLogin ? `Welcome back, ${name}!` : `Welcome to CarbonCut, ${name}!` %>
+        </h1>
+        
+        <p>
+            <%= isLogin ? 
+                'Please use the verification code below to complete your login:' : 
+                'Thank you for joining CarbonCut! Please use the verification code below to complete your account setup:' 
+            %>
+        </p>
+        
+        <div class="otp-code">
+            <p style="margin: 0; font-weight: bold; color: #374151;">Your verification code is:</p>
+            <div class="otp-number"><%= otp %></div>
         </div>
+        
+        <div class="warning">
+            <strong>⚠️ Important:</strong>
+            <ul style="margin: 10px 0;">
+                <li>This code will expire in <strong>10 minutes</strong></li>
+                <li>Don't share this code with anyone</li>
+                <li>If you didn't request this code, please ignore this email</li>
+            </ul>
+        </div>
+        
+        <% if (!isLogin) { %>
+        <p>
+            Once verified, you'll be able to:
+        </p>
+        <ul>
+            <li>🌍 Calculate your carbon footprint</li>
+            <li>💚 Purchase verified carbon credits</li>
+            <li>📊 Track your sustainability progress</li>
+            <li>🎯 Set and achieve net-zero goals</li>
+        </ul>
+        <% } %>
         
         <div class="footer">
             <p>
-                Powered by Optiminastic | CarbonCut<br>
-                For support, contact: <a href="mailto:akshae@optiminastic.com" style="color: #00CC33;">akshae@optiminastic.com</a>
+                Need help? Contact us at 
+                <a href="mailto:support@carboncut.com" style="color: #16a34a;">support@carboncut.com</a>
+            </p>
+            <p>
+                This email was sent to <strong><%= email %></strong>
+            </p>
+            <p style="font-size: 12px; color: #999;">
+                CarbonCut - Driving real-world sustainability outcomes
             </p>
         </div>
     </div>

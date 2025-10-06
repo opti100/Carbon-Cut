@@ -16,6 +16,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
   login: (email: string, otp: string) => Promise<void>;
   logout: () => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   checkAuth: () => Promise<void>;
 }
 
@@ -100,6 +101,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isAuthenticated: !!user,
     login,
     logout,
+    setUser,
     checkAuth
   };
 
