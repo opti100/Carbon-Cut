@@ -41,7 +41,7 @@ const BlogDashboard = () => {
         <CardHeader className="p-0">
           <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
             <Image
-              src={post.image || '/articles/article1.jpg'}
+              src={post.image || '/blogs/blogsOne.png'}
               alt={post.title}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"

@@ -15,8 +15,6 @@ const Header = () => {
             >
                 <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 lg:px-6 h-15">
                     <div className="flex items-center gap-4">
-                     
-
                         <Image
                             src="/carboncutlogo26-9.svg"
                             alt="CarbonCut Logo"
@@ -25,15 +23,7 @@ const Header = () => {
                             className="w-48 h-48"
                         />
                     </div>
-
-
-
                     <div className='flex  items-center space-x-4'>
-
-
-
-
-
                         <div className="flex items-center space-x-4">
                             {/* Dropdown Container */}
                             <div className="relative group">

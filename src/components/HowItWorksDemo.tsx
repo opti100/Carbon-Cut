@@ -4,8 +4,7 @@ import { cn } from "@/lib/utils";
 import createGlobe from "cobe";
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { Calculator, BarChart3, Zap, Award, TrendingDown, Target, CheckCircle } from "lucide-react";
-import { Ripple } from "./ui/ripple";
+import { Calculator, BarChart3, Zap, Award, TrendingDown, Target, CheckCircle, Leaf, Download } from "lucide-react";
 
 export default function HowItWorks() {
   const steps = [
@@ -13,17 +12,24 @@ export default function HowItWorks() {
       step: 1,
       title: "Calculate",
       subtitle: "Get the full picture",
-      description: "Track emissions across all marketing channels in real-time. Our advanced algorithms analyze everything from digital ad spend to print materials, giving you precise carbon footprint data you can trust.",
-      metrics: { value: "2.3M", label: "kg CO₂ tracked" },
+      description: "CarbonCut quantifies emissions across all marketing channels, producing campaign-level CO₂e with channel attribution.",
+      metrics: {  label: "Campaign CO₂e - made audit-ready." },
       skeleton: <SkeletonOne />,
       className: "col-span-1 lg:col-span-4 border-b lg:border-r border-tertiary/20",
     },
     {
       step: 2,
       title: "Report", 
-      subtitle: "Find what matters most",
-      description: "Discover which campaigns drive the highest emissions and identify quick wins. Our AI-powered insights reveal hidden patterns and suggest immediate optimization opportunities.",
-      metrics: { value: "47%", label: "avg. reduction" },
+      subtitle: "See what matters most",
+      description: (
+    <>
+      CarbonCut produces campaign-level reports that slot directly into compliance frameworks — from{" "}
+      <strong>SECR (UK)</strong> to <strong>SEC climate rules (US)</strong> and <strong>CSRD (EU)</strong>. 
+      Results are structured for both marketing reviews and sustainability disclosures, giving teams and auditors the same, defensible dataset.
+    </>
+  ) ,
+
+      metrics: { value: "", label: "Board-ready outputs." },
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 border-tertiary/20",
     },
@@ -31,8 +37,8 @@ export default function HowItWorks() {
       step: 3,
       title: "Offset",
       subtitle: "Cut where it counts",
-      description: "Implement targeted strategies to reduce your marketing footprint without compromising performance. Get personalized recommendations based on your industry and campaign types.",
-      metrics: { value: "15 days", label: "to see results" },
+      description: "Residual tonnes can be retired through a curated portfolio of verified projects (nature, energy, waste and more). Every action generates an immutable smart-contract record.",
+      metrics: {  label: "Verified credits only." },
       skeleton: <SkeletonThree />,
       className: "col-span-1 lg:col-span-3 lg:border-r border-tertiary/20",
     },
@@ -40,24 +46,23 @@ export default function HowItWorks() {
       step: 4,
       title: "Certification",
       subtitle: "Show your commitment", 
-      description: "Earn verified sustainability credentials that resonate with eco-conscious customers. Build trust through transparent reporting and industry-recognized certifications.",
-      metrics: { value: "98%", label: "client satisfaction" },
+      description: "Once campaign offsets are complete, CarbonCut issues a certificate of climate accountability. Each certificate is backed by a transparent audit trail — linking the campaign's calculated footprint to the verified credits retired on its behalf. To guarantee integrity, every retirement is also logged on a smart contract, creating an immutable record that shows what was retired, when, and against which campaign. This ensures proof that can be trusted by finance teams, auditors, and external stakeholders.",
+      metrics: {  label: "Trust you can show." },
       skeleton: <SkeletonFour />,
       className: "col-span-1 lg:col-span-3 border-b lg:border-none border-tertiary/20",
     },
   ];
 
   return (
-    <div className="relative z-20 py-10  max-w-7xl mx-auto ">
+    <div className="relative z-20 py-10 max-w-7xl mx-auto">
       <div className="px-8">
         <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
-         <span> How CarbonCut Works in{" "}
-          <span className="text-orange-500">4 Simple Steps</span> </span>
+          <span>How CarbonCut Works in{" "}
+          <span className="text-orange-500">4 Simple Steps</span></span>
         </h2>
 
         <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-gray-600 text-center font-normal">
-          From calculating your carbon footprint to earning sustainability certifications, 
-          CarbonCut makes reducing marketing emissions simple and effective.
+          CarbonCut turns    <span className="text-orange-500">campaign emissions into clear CO₂e numbers </span> and verified credit retirements giving marketing teams clarity and auditors the documentation they expect.
         </p>
       </div>
 
@@ -66,10 +71,10 @@ export default function HowItWorks() {
           {steps.map((step) => (
             <FeatureCard key={step.title} className={step.className}>
               <FeatureTitle>
-                <span >Step {step.step}:</span>
+                <span>Step {step.step}:</span>
                 <span className="text-tertiary"> {step.title}</span>
               </FeatureTitle>
-              <FeatureSubtitle >
+              <FeatureSubtitle>
                 <span className="text-orange-500">{step.subtitle}</span>
               </FeatureSubtitle>
               <FeatureDescription>{step.description}</FeatureDescription>
@@ -99,7 +104,7 @@ const FeatureCard = ({
 
 const FeatureTitle = ({ children }: { children?: React.ReactNode }) => {
   return (
-    <p className="max-w-5xl mx-auto text-left tracking-tight text-black text-xl md:text-2xl md:leading-snug font-bold mb-2">
+    <p className="max-w-5xl text-left tracking-tight text-black text-xl md:text-2xl md:leading-snug font-bold mb-2">
       {children}
     </p>
   );
@@ -116,20 +121,19 @@ const FeatureSubtitle = ({ children }: { children?: React.ReactNode }) => {
 const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
   return (
     <p className={cn(
-      "text-sm md:text-base max-w-4xl text-left mx-auto",
+      "text-sm md:text-base",
       "text-gray-600 font-normal",
-      "text-left max-w-sm mx-0 md:text-sm my-2 leading-relaxed"
+      "text-left max-w-full md:text-sm my-2 leading-relaxed"
     )}>
       {children}
     </p>
   );
 };
 
-const FeatureMetrics = ({ metrics }: { metrics: { value: string; label: string } }) => {
+const FeatureMetrics = ({ metrics }: { metrics: {  label: string } }) => {
   return (
     <div className="inline-flex items-center gap-2 bg-tertiary/10 px-3 py-1 rounded-full mb-4">
       <div className="w-2 h-2 bg-tertiary rounded-full animate-pulse"></div>
-      <span className="text-tertiary font-bold text-sm">{metrics.value}</span>
       <span className="text-gray-600 text-xs">{metrics.label}</span>
     </div>
   );
@@ -144,14 +148,14 @@ export const SkeletonOne = () => {
           <div className="bg-tertiary/10 rounded-lg p-4 border border-tertiary/20">
             <div className="flex items-center gap-2 mb-3">
               <Calculator className="w-5 h-5 text-tertiary" />
-              <span className="font-semibold text-gray-800">Live Carbon Tracking</span>
+              <span className="font-semibold text-gray-800">Brand Awareness Campaign (Q3)</span>
             </div>
             <div className="space-y-3">
               {[
-                { channel: "Digital Ads", emissions: "1,245 kg", width: "w-16" },
-                { channel: "Print Materials", emissions: "892 kg", width: "w-12" },
-                { channel: "Video Production", emissions: "2,156 kg", width: "w-20" },
-                { channel: "Events", emissions: "687 kg", width: "w-10" },
+                { channel: "Digital Ads", emissions: "1.2", width: "w-16" },
+                { channel: "Print Collateral", emissions: "0.9", width: "w-12" },
+                { channel: "Video Production", emissions: "2.1", width: "w-20" },
+                { channel: "Events", emissions: "0.7", width: "w-10" },
               ].map((item, idx) => (
                 <motion.div 
                   key={item.channel}
@@ -162,14 +166,14 @@ export const SkeletonOne = () => {
                 >
                   <div className={`h-2 ${item.width} bg-orange-500 rounded-full`}></div>
                   <span className="text-sm text-gray-600 flex-1">{item.channel}</span>
-                  <span className="text-sm font-bold text-tertiary">{item.emissions} CO₂</span>
+                  <span className="text-sm font-bold text-tertiary">{item.emissions} tCO₂e</span>
                 </motion.div>
               ))}
             </div>
             <div className="mt-4 pt-3 border-t border-green-200">
               <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-800">Total Emissions</span>
-                <span className="font-bold text-lg text-tertiary">4,980 kg CO₂</span>
+                <span className="font-semibold text-gray-800">Total Campaign Footprint</span>
+                <span className="font-bold text-lg text-tertiary">4.9 tCO₂e</span>
               </div>
             </div>
           </div>
@@ -182,94 +186,116 @@ export const SkeletonOne = () => {
 
 export const SkeletonTwo = () => {
   const campaigns = [
-    { name: "Summer Campaign", reduction: 35, color: "bg-orange-500" },
-    { name: "Brand Awareness", reduction: 22, color: "bg-orange-500" },
-    { name: "Product Launch", reduction: 18, color: "bg-orange-500" },
-    { name: "Holiday Promo", reduction: 45, color: "bg-orange-500" },
+    { name: "Summer Launch (production)", reduction: 3.2, color: "bg-orange-500" },
+    { name: "Always-On Digital (server)", reduction: 2.5, color: "bg-orange-500" },
+    { name: "Holiday Promotion(print)", reduction: 1.8, color: "bg-orange-500" },
   ];
+
+  const maxReduction = Math.max(...campaigns.map(c => c.reduction));
 
   return (
     <div className="relative flex flex-col items-start p-6 gap-4 h-full overflow-hidden">
       <div className="w-full space-y-3">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="w-5 h-5 text-tertiary" />
-          <span className="font-semibold text-gray-800">Campaign Analysis</span>
+          <span className="font-semibold text-gray-800">Example: Top Three Campaign Drivers</span>
         </div>
         
-        {campaigns.map((campaign, idx) => (
-          <motion.div
-            key={campaign.name}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: idx * 0.1 }}
-            className="bg-white rounded-lg p-3 border border-tertiary/20 shadow-sm hover:shadow-md transition-all duration-200 hover:border-tertiary/40"
-          >
-            <div className="flex justify-between items-center mb-2">
-              <span className="font-medium text-gray-800 text-sm">{campaign.name}</span>
-              <span className="text-sm font-bold text-tertiary">-{campaign.reduction}%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <motion.div 
-                className={`h-2 rounded-full ${campaign.color}`}
-                initial={{ width: 0 }}
-                animate={{ width: `${campaign.reduction}%` }}
-                transition={{ delay: idx * 0.1 + 0.5, duration: 0.8 }}
-              />
-            </div>
-          </motion.div>
-        ))}
+        {campaigns.map((campaign, idx) => {
+          const barWidth = (campaign.reduction / maxReduction) * 100;
+
+          return (
+            <motion.div
+              key={campaign.name}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white rounded-lg p-3 border border-tertiary/20 shadow-sm hover:shadow-md transition-all duration-200 hover:border-tertiary/40"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-medium text-gray-800 text-sm">{campaign.name}</span>
+                <span className="text-sm font-bold text-tertiary">-{campaign.reduction}tCO₂e</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <motion.div 
+                  className={`h-2 rounded-full ${campaign.color}`}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${barWidth}%` }}
+                  transition={{ delay: idx * 0.1 + 0.5, duration: 0.8 }}
+                />
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
+
       <div className="absolute right-0 z-[100] inset-y-0 w-20 bg-gradient-to-l from-white to-transparent h-full pointer-events-none" />
     </div>
   );
 };
-// ...existing code...
 
 export const SkeletonThree = () => {
   return (
-    <div className="relative flex gap-10 h-full group/image">
-      <div className="w-full mx-auto bg-gradient-to-br from-green-50 to-white group h-full rounded-lg border border-gray-200 p-6">
-        <div className="flex flex-1 w-full h-full flex-col items-center justify-center space-y-6">
-          {/* Optimization Center */}
-          <div className="text-center space-y-4">
-            <div className="relative">
-              <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto border-4 border-orange-500">
-                <Zap className="w-10 h-10 text-orange-500" />
-              </div>
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
-                <TrendingDown className="w-3 h-3 text-white" />
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-2xl font-bold text-orange-500">15 Days</div>
-              <div className="text-sm text-gray-600">to see results</div>
-            </div>
+    <div className="relative flex gap-10 h-full py-8 px-2">
+      <div className="w-full mx-auto bg-gradient-to-br from-green-50 via-white to-green-50/30 group h-full rounded-xl border border-green-200 shadow-lg p-6">
+        <div className="flex flex-1 w-full flex-col justify-center space-y-4">
+          {/* Header */}
+          <div className="text-center pb-4 border-b border-green-200">
+            <h3 className="text-lg font-bold text-gray-800">Example: Retirement</h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
-            {[
-              { label: "Efficiency", value: "+32%", color: "text-tertiary" },
-              { label: "Cost Savings", value: "$12K", color: "text-tertiary" },
-              { label: "CO₂ Reduced", value: "2.1T", color: "text-orange-500" }, // orange metric
-              { label: "ROI", value: "340%", color: "text-tertiary" },
-            ].map((metric, idx) => (
-              <motion.div 
-                key={metric.label}
-                className="bg-white rounded-lg p-3 text-center border border-tertiary/20"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                <div className={`font-bold text-sm ${metric.color}`}>{metric.value}</div>
-                <div className="text-xs text-gray-500">{metric.label}</div>
-              </motion.div>
-            ))}
+          {/* Project Details Card */}
+          <div className="bg-white rounded-xl p-4 border border-green-200 shadow-sm space-y-3">
+            <div className="space-y-3">
+              {/* Campaign Information */}
+              <div className="flex justify-between items-start">
+                <span className="text-sm text-gray-600 font-medium">Campaign:</span>
+                <span className="text-sm font-semibold text-gray-800 text-right">
+                  Brand Awareness (Q3)
+                </span>
+              </div>
+
+              {/* Offset Project */}
+              <div className="flex justify-between items-start pt-2 border-t border-gray-100">
+                <span className="text-sm text-gray-600 font-medium">Offset Project:</span>
+                <span className="text-sm font-semibold text-gray-800 text-right leading-relaxed">
+                  Kenya Clean Cookstoves<br/>
+                  <span className="text-xs text-green-600">Gold Standard, Vintage 2023</span>
+                </span>
+              </div>
+              
+              {/* Credits Retired */}
+              <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+                <span className="text-sm text-gray-600 font-medium">Credits Retired:</span>
+                <span className="text-xl font-bold text-green-600">4.9 tCO₂e</span>
+              </div>
+              
+              {/* Retirement ID */}
+              <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+                <span className="text-sm text-gray-600">Retirement ID:</span>
+                <span className="text-sm font-mono font-semibold text-gray-800 bg-gray-50 px-3 py-1.5 rounded">
+                  GS-123-456-789
+                </span>
+              </div>
+
+             
+            </div>
+            
+            {/* Download Button */}
+            <div className="pt-3">
+              <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg">
+                <Download className="w-4 h-4" />
+                Download Certificate (PDF)
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+
 
 export const SkeletonFour = () => {
   return (
@@ -277,116 +303,48 @@ export const SkeletonFour = () => {
       <div className="w-full p-5 mx-auto bg-gradient-to-br from-green-50 to-white shadow-2xl group h-full rounded-lg border border-tertiary/20">
         <div className="flex flex-1 w-full h-full flex-col space-y-4">
           {/* Certification Dashboard */}
-          <div className="bg-tertiary/10 rounded-lg p-4 border border-tertiary/20">
-            <div className="flex items-center gap-2 mb-3">
+          <div className="bg-white rounded-lg p-4 border border-tertiary/20">
+            <div className="flex items-center gap-2 mb-4">
               <Award className="w-5 h-5 text-tertiary" />
-              <span className="font-semibold text-gray-800">Certification Progress</span>
+              <span className="font-semibold text-gray-800">Example: Certificate Snippet</span>
             </div>
             
-            {/* Main Certificate Badge */}
-            <div className="text-center mb-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-50 border-4 border-orange-500 mb-2">
-                <Award className="w-8 h-8 text-orange-500" />
+            {/* Certificate Content */}
+            <div className="space-y-4">
+              {/* Certified Campaign */}
+              <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                <span className="text-sm font-medium text-gray-700">Certified Campaign:</span>
+                <span className="text-lg font-bold text-gray-800">Brand Awareness Q3</span>
               </div>
-              <div className="text-lg font-bold text-gray-800">Sustainability Certified</div>
-              <div className="text-sm text-gray-600">Level: Gold Standard</div>
-            </div>
-
-            {/* Certification Metrics */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {[
-                { label: "Trust Score", value: "98%", color: "text-tertiary" },
-                { label: "Verified Claims", value: "47", color: "text-tertiary" },
-                { label: "CO₂ Offset", value: "5.2T", color: "text-orange-500" },
-                { label: "Client Rating", value: "4.9★", color: "text-orange-500" },
-              ].map((metric, idx) => (
-                <motion.div 
-                  key={metric.label}
-                  className="bg-white rounded-lg p-2 text-center border border-tertiary/20"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <div className={`font-bold text-sm ${metric.color}`}>{metric.value}</div>
-                  <div className="text-xs text-gray-500">{metric.label}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Certification Badges */}
-            <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-700 mb-2">Active Certifications:</div>
-              {[
-                { name: "Carbon Neutral Verified", status: "Active", color: "bg-green-100 text-green-800" },
-                { name: "ISO 14001 Compliant", status: "Active", color: "bg-green-100 text-green-800" },
-                { name: "B-Corp Certified", status: "Pending", color: "bg-yellow-100 text-yellow-800" },
-              ].map((cert, idx) => (
-                <motion.div 
-                  key={cert.name}
-                  className="flex items-center justify-between text-xs p-2 bg-white rounded border border-tertiary/20"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 + 0.3 }}
-                >
-                  <span className="text-gray-700">{cert.name}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${cert.color}`}>
-                    {cert.status}
-                  </span>
-                </motion.div>
-              ))}
+              
+              {/* Total CO₂e Neutralised */}
+              <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                <span className="text-sm font-medium text-gray-700">Total CO₂e Neutralised:</span>
+                <span className="text-lg font-bold text-green-600">4.9 tCO₂e</span>
+              </div>
+              
+              {/* Issued Date */}
+              <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                <span className="text-sm font-medium text-gray-700">Issued:</span>
+                <span className="text-sm font-semibold text-gray-800">15 October 2025</span>
+              </div>
+              
+              {/* Certificate ID */}
+              <div className="flex justify-between items-center pb-3 border-b border-gray-200">
+                <span className="text-sm font-medium text-gray-700">Certificate ID:</span>
+                <span className="text-sm font-mono font-bold text-gray-800">CC-BAQ3-2025</span>
+              </div>
+              
+              {/* On-Chain Reference */}
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-gray-700">On-Chain Reference:</span>
+                <span className="text-sm font-mono font-bold text-gray-800">#0x8aF9…D12</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="absolute bottom-0 z-40 inset-x-0 h-60 bg-gradient-to-t from-white to-transparent w-full pointer-events-none" />
     </div>
-  );
-};
-
-export const Globe = ({ className }: { className?: string }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    let phi = 0;
-
-    if (!canvasRef.current) return;
-
-    const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
-      width: 600 * 2,
-      height: 600 * 2,
-      phi: 0,
-      theta: 0,
-      dark: 0,
-      diffuse: 1.2,
-      mapSamples: 16000,
-      mapBrightness: 6,
-      baseColor: [0.2, 0.8, 0.2], // Green base
-      markerColor: [0, 0.8, 0.2], // Tertiary green
-      glowColor: [0.2, 1, 0.4], // Green glow
-      markers: [
-        { location: [37.7595, -122.4367], size: 0.03 },
-        { location: [40.7128, -74.006], size: 0.1 },
-        { location: [51.5074, -0.1278], size: 0.08 },
-        { location: [35.6762, 139.6503], size: 0.06 },
-        { location: [-33.8688, 151.2093], size: 0.05 },
-      ],
-      onRender: (state) => {
-        state.phi = phi;
-        phi += 0.01;
-      },
-    });
-
-    return () => {
-      globe.destroy();
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: 600, height: 600, maxWidth: "100%", aspectRatio: 1 }}
-      className={className}
-    />
   );
 };

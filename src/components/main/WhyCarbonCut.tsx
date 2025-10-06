@@ -8,17 +8,17 @@ const WhyCarbonCut = () => {
     {
       icon: Calculator,
       title: "Accurate Carbon Calculation",
-      description: "Measure emissions with precision across campaigns and operations.",
+      description: "Quantify campaign and operational emissions with precision, including Scope 3 impacts, using methodologies aligned with recognised standards.",
     },
     {
       icon: ClipboardList,
       title: "Transparent Reporting",
-      description: "Get clear, auditable reports aligned with ESG standards.",
+      description: "Generate clear, audit-ready reports structured for ESG, SECR, SEC, and CSRD disclosure — built for finance, sustainability, and compliance teams.",
     },
     {
       icon: TreePine,
       title: "Verified Carbon Offsetting",
-      description: "Support certified projects that deliver real climate impact.",
+      description: "Neutralise tonnes of carbon through certified projects across nature, energy, waste and others,  each linked to a transparent certificate trail and smart-contract record.",
     },
   ];
 
@@ -31,7 +31,8 @@ const WhyCarbonCut = () => {
             Security, Reliability,<span className='text-tertiary'> Simplicity </span> 
           </h2>
           <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
-            A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
+           A platform built for leaders who need  <span className="text-orange-500">carbon data they can trust.</span> CarbonCut ensures your marketing emissions are measured with accuracy, reported with transparency, and offset with compliant and globally verified credits.
+
           </p>
         </BlurFade>
 

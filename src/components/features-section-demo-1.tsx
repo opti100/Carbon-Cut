@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useId } from "react";
-import { Calculator, BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap, Shield, TrendingDown, Users, Blocks } from "lucide-react";
+import { Calculator,LayoutDashboard ,BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap, Shield, TrendingDown, Users, Blocks } from "lucide-react";
 import { BlurFade } from "./ui/blur-fade";
 
 export default function WhatCarbonCutProvides() {
@@ -14,12 +14,17 @@ export default function WhatCarbonCutProvides() {
             Powerful Features for{" "}
             <span className="text-tertiary">Carbon Reduction</span>
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Everything you need to{" "}
-            <span className="text-orange-500 font-semibold">measure, analyze</span>, and{" "}
-            <span className="text-orange-500 font-semibold">reduce</span> your marketing
-            emissions with precision and confidence.
-          </p>
+
+
+          <span>
+            <span className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Everything you need to{" "}
+              <span className="text-orange-500 font-semibold">measure, report</span>, and{" "}
+              <span className="text-orange-500 font-semibold">address</span>  marketing emissions with accuracy and confidence.
+            </span>
+          </span>
+
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">CarbonCut delivers the essentials today — and is building the next generation of compliance and climate tools for tomorrow.</p>
         </BlurFade>
 
 
@@ -77,40 +82,40 @@ export default function WhatCarbonCutProvides() {
 }
 const grid = [
   {
-    title: "Real-Time Carbon Tracking",
-    description: "Monitor your marketing emissions across all channels in real-time with our advanced tracking algorithms and automated data collection.",
+    title: "CarbonCalculator",
+    description: "Quantify campaign emissions across digital, print, OOH, and events. Built on GHG Protocol + ISO 14064, with outputs mapped to SECR, CSRD, and SEC formats.",
     icon: BarChart3,
-    metric: "99.9% Accuracy"
+    metric: "Campaign-level CO₂e in minutes."
   },
   {
-    title: "Campaign Emission Analytics",
-    description: "Get detailed breakdowns of carbon footprint by campaign, channel, and creative assets to identify your biggest impact areas.",
+    title: "CarbonOffset",
+    description: "Neutralise residual tonnes via a curated marketplace of verified credits (Verra, Gold Standard, ACR, CAR). Every retirement is logged on a smart contract for transparency and traceability.",
     icon: Target,
-    metric: "47% Avg Reduction"
+    metric: "Trusted projects, verifiable retirements"
   },
   {
-    title: "Blockchain Carbon Credits",
-    description: "Tokenize and trade verified carbon credits on our secure blockchain platform with full transparency and immutable records.",
+    title: "C3 Seal (CarbonCut Certified)",
+    description: "Campaigns that complete a CarbonCut calculation and receive report authorisation earn the C3 Seal — a mark of climate accountability. The Seal confirms that results are structured in line with recognised disclosure standards (SECR, CSRD, SEC), making them suitable for use in reports, investor filings, and marketing claims.",
     icon: Blocks,
-    metric: "Web3 Enabled"
+    metric: "Authorised Calculation Report"
   },
   {
-    title: "Verified Offset Projects",
-    description: "Choose from a curated selection of verified carbon offset projects to balance your footprint and support climate action worldwide.",
-    icon: Leaf,
-    metric: "500+ Projects"
+    title: "CarbonESG Dashboard ",
+    description: "A centralized, multi-user ESG platform to transform campaign data into audit-ready disclosures in SECR, CSRD, and SEC formats.",
+    icon: LayoutDashboard,
+    metric: "Compliance made simple"
   },
   {
-    title: "Compliance Certification",
-    description: "Generate industry-standard reports and certifications including SECR, CSRD, and SEC compliance for stakeholder transparency.",
+    title: "CarbonTokens (CCTs)",
+    description: "A tokenisation layer where retired credits are converted into CarbonCut Tokens (CCTs). These tokens serve as an engagement tool, providing on-chain proof that a retirement has taken place, while expanding transparency and accessibility in the carbon ecosystem.",
     icon: Award,
-    metric: "ISO 14064 Compliant"
+    metric: "Proof on-chain, backed by real retirements."
   },
   {
-    title: "Multi-Channel Integration",
-    description: "Seamlessly integrate with major advertising platforms, CMS systems, and marketing tools for comprehensive emission tracking.",
+    title: "Enterprise API",
+    description: "Direct API integration for agencies, DSPs, SSPs, and ad exchanges — embedding CarbonCut into existing marketing and reporting workflows.",
     icon: Globe,
-    metric: "50+ Integrations"
+    metric: "Sustainability as part of the stack"
   },
 ];
 

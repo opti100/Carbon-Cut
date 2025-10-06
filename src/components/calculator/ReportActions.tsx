@@ -9,6 +9,7 @@ import { Download, Loader2, Award, Cloud, Database } from "lucide-react";
 import { PDFFormData } from "@/services/report-formats/secr-report";
 import { FormStep, StepIndicator, VerificationStep } from './OptSteps';
 import OffsetDialog from './OffSetDialog';
+import Link from 'next/link';
 interface ReportActionsProps {
   organization: OrganizationData;
   activities: ActivityData[];
@@ -42,7 +43,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
     disclosureFormat: 'SECR'
   });
 
-  const CERTIFICATION_PRICE = 199; 
+  const CERTIFICATION_PRICE = 199;
 
   const handleSendOTP = async () => {
     if (!pdfFormData.email || !pdfFormData.name) {
@@ -205,7 +206,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
               reportId: result.report.id,
               email: pdfFormData.email,
               companyName: pdfFormData.companyName,
-              amount: CERTIFICATION_PRICE * 100 
+              amount: CERTIFICATION_PRICE * 100
             }),
           });
 
@@ -557,8 +558,8 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
                     {/* Messages */}
                     {otpStep === 'form' && otpMessage && (
                       <div className={`mt-4 text-sm p-3 rounded ${otpMessage.includes('successfully') || otpMessage.includes('sent')
-                          ? 'bg-green-50 text-green-700'
-                          : 'bg-red-50 text-red-700'
+                        ? 'bg-green-50 text-green-700'
+                        : 'bg-red-50 text-red-700'
                         }`}>
                         {otpMessage}
                       </div>
@@ -611,8 +612,8 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
                         onClick={handlePDFDownload}
                         disabled={generatingPDF || !pdfFormData.companyName || !pdfFormData.phoneNumber}
                         className={`flex-1 font-medium text-sm ${wantsCertification
-                            ? 'bg-amber-600 hover:bg-amber-700'
-                            : 'bg-gray-800 hover:bg-gray-900'
+                          ? 'bg-amber-600 hover:bg-amber-700'
+                          : 'bg-gray-800 hover:bg-gray-900'
                           } text-white`}
                         type="button"
                       >
@@ -639,7 +640,13 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
               </div>
             </DialogContent>
           </Dialog>
-          <OffsetDialog/>
+          <Link href="/offset">
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-4 py-2.5 h-auto rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
+            >
+              Offset with CarbonCut
+            </Button>
+          </Link>
         </div>
       </CardContent>
     </Card>

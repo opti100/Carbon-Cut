@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Geist, Geist_Mono, Montserrat } from 'next/font/google'
+import { Geist, Geist_Mono } from "next/font/google";
 import Providers from "@/providers/providers";
-
-// const montserrat = Montserrat({
-//   subsets: ['latin'],
-//   weight: ['400', '500', '600', '700'],
-// })
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,23 +17,35 @@ export const metadata: Metadata = {
   title: "Carbon Cut",
   description: "Measure and Offset Your Marketing Carbon Emissions",
   icons: {
-    icon: '/logo.svg'
-  }
+    icon: "/logo.svg",
+  },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased font-satoshi`}
-      >
-        <Providers>
-          {children}
-        </Providers>
+      <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-Y388SH4Y4G"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-Y388SH4Y4G');
+            `,
+          }}
+        />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

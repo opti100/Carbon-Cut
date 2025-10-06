@@ -190,10 +190,10 @@ export const BlogOneContent = () => {
             If you&rsquo;ve read this far, you don&rsquo;t need a sermon; you need a first step. We built CarbonCut to be useful: a lightweight way to measure campaign CO₂e, keep an audit trail and neutralise the residual with on-record certificates. Use it to add the missing KPI next to your performance metrics, not to replace them.
           </p>
           <p className="text-lg mb-6 text-gray-900">
-            Try the
-            <Link href="/calculator" className='hover:text-tertiary' > CarbonCut calculator   </Link>
+            Try the{" "}
+            <Link href="/calculator" className='text-tertiary hover:text-black underline' >CarbonCalculator</Link>
             
-             to instantly measure your campaign&rsquo;s marketing CO₂e and offset the remainder with verified projects and retirement certificates your auditors can trust.
+              {" "}to instantly measure your campaign&rsquo;s marketing CO₂e and offset the remainder with verified projects and retirement certificates your auditors can trust.
           </p>
         </div>
     </div>

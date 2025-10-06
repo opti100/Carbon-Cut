@@ -10,7 +10,7 @@ const LatestArticlesGrid = () => {
       id: 1,
       title: "How to Conduct a Marketing Carbon Audit",
       excerpt: "A practical, step-by-step guide to measuring emissions from your digital and physical marketing activities.",
-      image: "/article-2/article1.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Our Sustainability Lead",
       date: "April 15, 2024",
       category: "Audit"
@@ -19,7 +19,7 @@ const LatestArticlesGrid = () => {
       id: 2,
       title: "Measure Your Marketing Carbon Footprint",
       excerpt: "Get a clear, actionable report on your carbon emissions across digital ads, content creation, and events.",
-      image: "/article-2/article2.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Dr. Elena Reed",
       date: "October 26, 2023",
       category: "Measurement"
@@ -28,7 +28,7 @@ const LatestArticlesGrid = () => {
       id: 3,
       title: "Embedding Carbon Awareness into Your Strategy",
       excerpt: "Use our calculator to identify emission hotspots and receive tailored recommendations for reducing your environmental impact.",
-      image: "/article-2/article3.jpg",
+      image: "/blogs/blogsOne.png",
       author: "CarbonCut Analytics",
       date: "November 30, 2023",
       category: "Strategy"
@@ -37,7 +37,7 @@ const LatestArticlesGrid = () => {
       id: 4,
       title: "Benchmark Your Marketing Carbon Output",
       excerpt: "Input your campaign data to see how your emissions compare to industry averages and uncover opportunities for improvement.",
-      image: "/article-2/article4.jpg",
+      image: "/blogs/blogsOne.png",
       author: "James Wright",
       date: "February 22, 2024",
       category: "Benchmarking"
@@ -46,7 +46,7 @@ const LatestArticlesGrid = () => {
       id: 5,
       title: "Mapping Your Marketing Carbon Footprint",
       excerpt: "Visualize the climate impact of your entire marketing funnel and build a strategy for sustainable growth.",
-      image: "/article-2/article5.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Linda Gibson",
       date: "March 5, 2024",
       category: "Mapping"
@@ -55,7 +55,7 @@ const LatestArticlesGrid = () => {
       id: 6,
       title: "Future-Proof Your Marketing with Carbon Metrics",
       excerpt: "Learn how measuring your emissions now can drive innovation, reduce costs, and build brand trust for long-term success.",
-      image: "/article-2/article6.jpg",
+      image: "/blogs/blogsOne.png",
       author: "Thomas Reed",
       date: "April 30, 2024",
       category: "Future"
