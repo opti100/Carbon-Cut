@@ -4,7 +4,6 @@ import { CHANNELS, DEFAULT_SCOPE, FALLBACK_CALCULATION, loadCountriesFromScienti
 import { ActivityData, CountryData, OrganizationData } from '@/types/types';
 import { useState, useEffect, useCallback } from 'react';
 import OrganizationForm from './organizationForm';
-import StatsOverview from './StatsOverview';
 import MarketingActivityForm from './MarketingActivityForm';
 import ActivityLog from './ActivityLog';
 import EmissionsBreakdown from './EmissionsBreakdown';
@@ -197,61 +196,9 @@ export default function MarketingCalculator() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }}></div>
         </div>
-        {/* <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-          <div className="text-center">
-            <h1 className="text-4xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-              Rebalance your
-              <span className="block bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
-                marketing impact
-              </span>
-            </h1>
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
-              Calculate and track your marketing activities&apos; carbon emissions with precision.
-              Get insights into your environmental impact and build a sustainable marketing strategy.
-            </p>
-            <div className="flex items-center justify-center gap-4 text-sm text-gray-400">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>Real-time calculations</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span>GHG Protocol compliant</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                <span>2025 emission factors</span>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
 
       <Card className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50 mt-4 mb-16 shadow-lg">
-        {/* <div className="py-8 border-b border-gray-200">
-          <div className="flex items-center justify-center space-x-8">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
-              <span className="text-gray-700 font-medium">Organization Details</span>
-            </div>
-            <div className="w-8 h-0.5 bg-gray-300"></div>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">2</div>
-              <span className="text-gray-500">Add Activities</span>
-            </div>
-            <div className="w-8 h-0.5 bg-gray-300"></div>
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center text-sm font-semibold">3</div>
-              <span className="text-gray-500">Review & Export</span>
-            </div>
-          </div>
-        </div> */}
-
-        {/* <div className="py-8">
-          <StatsOverview totals={totals} />
-        </div> */}
-
-        {/* Organization Form */}
         <div className="pb-8">
           <OrganizationForm
             organization={organization}

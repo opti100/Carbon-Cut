@@ -10,17 +10,15 @@ import {
 import { Button } from "../ui/button";
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { Building2, CheckCircle, Leaf, Clock } from 'lucide-react';
+import { Building2, Leaf } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 const OffsetDialog = () => {
   const [offsetDialogOpen, setOffsetDialogOpen] = useState(false);
   const [selectedMarket, setSelectedMarket] = useState<'compliance' | 'voluntary' | null>(null);
   const router = useRouter();
-
-  const totals = {
-    total: 1234.56,
-  };
+  const { isAuthenticated } = useAuth();
 
   const handleMarketSelection = (market: 'compliance' | 'voluntary') => {
     localStorage.setItem('selectedMarket', market);
@@ -29,16 +27,26 @@ const OffsetDialog = () => {
 
   const handleClose = () => {
     setOffsetDialogOpen(false);
-    setSelectedMarket(null); // Reset selection when closing
+    setSelectedMarket(null);
+  };
+
+  const handleDialogTrigger = () => {
+    if (!isAuthenticated) {
+      router.push('/signup');
+      return;
+    }
+    setOffsetDialogOpen(true);
   };
 
   return (
     <Dialog open={offsetDialogOpen} onOpenChange={setOffsetDialogOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-4 py-2.5 h-auto rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto">
-          Offset with CarbonCut
-        </Button>
-      </DialogTrigger>
+      <Button 
+        onClick={handleDialogTrigger}
+        className="bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-4 py-2.5 h-auto rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
+      >
+        Offset with CarbonCut
+      </Button>
+      
       <DialogContent className="bg-white border-gray-200 text-gray-900 max-w-[95vw] sm:max-w-md md:max-w-2xl lg:max-w-3xl max-h-[95vh] overflow-y-auto rounded-2xl sm:rounded-2xl p-4 sm:p-6">
         <DialogHeader className="px-0 sm:px-0">
           <DialogTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 text-center sm:text-left">
@@ -127,20 +135,6 @@ const OffsetDialog = () => {
           </Card>
         </div>
 
-        {/* Coming Soon Section */}
-        {selectedMarket && (
-          <div className="mt-6 sm:mt-8 p-4 sm:p-5 bg-yellow-50 rounded-xl border border-yellow-200">
-            <div className="flex items-start gap-3 sm:gap-4">
-              <Clock className="h-6 w-6 text-yellow-600 flex-shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm sm:text-base text-yellow-700 leading-relaxed">
-                  The {selectedMarket === 'compliance' ? 'Compliance' : 'Voluntary'} market is coming soon! Stay tuned for updates.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-
         <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Button
             variant="outline"
@@ -153,9 +147,9 @@ const OffsetDialog = () => {
             disabled={!selectedMarket}
             onClick={() => {
               handleClose();
-              if(selectedMarket === 'compliance'){
+              if (selectedMarket === 'compliance') {
                 router.push(`/offset?market=${selectedMarket}`);
-              }else{
+              } else {
                 router.push(`/projects`);
               }
             }}
