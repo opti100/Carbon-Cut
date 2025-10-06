@@ -15,10 +15,7 @@ const page = () => {
     <div>
       <Header/>
       <Calculator/>
-      {/* <HowItWorksDemo/> */}
       <CalculatorFAQ/>
-      {/* <CalculatorPreFooter/> */}
-      {/* <CalculatorFooter/> */}
        <PreFooter/>
       <Footer />
     </div>
