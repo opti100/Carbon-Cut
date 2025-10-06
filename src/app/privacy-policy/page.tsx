@@ -134,7 +134,7 @@ const page = () => {
             </Badge>
           </div>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            We're committed to protecting your privacy and being transparent about how we handle your data.
+            We&apos;re committed to protecting your privacy and being transparent about how we handle your data.
           </p>
         </div>
 
