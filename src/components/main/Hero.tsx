@@ -47,10 +47,10 @@ const Hero = () => {
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 80%, #ffffff 50%, ${color})`
 
   const verificationBadges = [
-    { name: "Verra", code: "VCS", logo: "/certified/VERRA.png", link: "https://verra.org/" },
-    { name: "Gold Standard", code: "GS", logo: "/certified/GA.png", link: "https://www.goldstandard.org/" },
-    { name: "American Carbon Registry", code: "ACR", logo: "/certified/ACR.svg", link: "https://www.americancarbonregistry.org/" },
-    { name: "Climate Action Reserve", code: "CAR", logo: "/certified/CAR.png", link: "https://www.climateactionreserve.org/" }
+    { name: "Verra", code: "VCS", logo: "/certified/VERRA.png", link: "https://verra.org/", status: "active" },
+    { name: "Gold Standard", code: "GS", logo: "/certified/GA.png", link: "https://www.goldstandard.org/", status: "pending" },
+    { name: "American Carbon Registry", code: "ACR", logo: "/certified/ACR.svg", link: "https://www.americancarbonregistry.org/", status: "pending" },
+    { name: "Climate Action Reserve", code: "CAR", logo: "/certified/CAR.png", link: "https://www.climateactionreserve.org/", status: "pending" }
   ]
 
   const navigationItems = [
@@ -78,9 +78,8 @@ const Hero = () => {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/95 backdrop-blur-md border-b border-gray-200/20 shadow-sm" : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md border-b border-gray-200/20 shadow-sm" : "bg-transparent"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
@@ -89,9 +88,9 @@ const Hero = () => {
               <Image
                 src="/ccLogo.svg"
                 alt="CarbonCut Logo"
-                width={160}
-                height={40}
-                className="h-8 w-auto sm:h-10 lg:h-12"
+                width={128}
+                height={128}
+                className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
               />
             </Link>
 
@@ -225,7 +224,7 @@ const Hero = () => {
 
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 md:px-8 text-center pt-24 sm:pt-28 md:pt-32 lg:pt-40">
         <div className="max-w-6xl mx-auto w-full">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -246,7 +245,7 @@ const Hero = () => {
             </div>
           </motion.h1>
 
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -255,7 +254,7 @@ const Hero = () => {
             From digital impressions to printed collateral, we calculate campaign-level emissions with audit-ready CO₂e results and link every residual tonne to a verified offset, complete with a certificate trail.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -274,7 +273,7 @@ const Hero = () => {
             </Button>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -287,28 +286,48 @@ const Hero = () => {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 mb-8 max-w-4xl mx-auto">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
               {verificationBadges.map((badge, index) => (
                 <motion.div
                   key={badge.code}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 + 0.8 }}
+                  transition={{ delay: index * 0.1 + 0.5 }}
                   className="group relative"
                 >
-                  <Link href={badge.link} className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-2 sm:p-3 md:p-4 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 aspect-square">
-                    <Image
-                      src={badge.logo}
-                      alt={badge.name}
-                      width={1020}
-                      height={1000}
-                      className="object-contain max-w-full max-h-full filter grayscale hover:grayscale-0 transition-all duration-200"
-                    />
-                  </Link>
+                  {badge.status === "active" ? (
+                    <Link
+                      href={badge.link}
+                      className="flex items-center justify-center bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-2 sm:p-3 shadow-sm hover:shadow-md transition-all duration-200 hover:border-orange-500/40 w-full h-20 sm:h-24"
+                    >
+                      <Image
+                        src={badge.logo}
+                        alt={badge.name}
+                        width={1020}
+                        height={1000}
+                        className="object-contain w-full h-full max-w-[80px] sm:max-w-[100px] filter grayscale hover:grayscale-0 transition-all duration-200"
+                      />
+                    </Link>
+                  ) : (
+                    <div className="relative flex items-center justify-center bg-gray-50/90 backdrop-blur-sm border border-gray-200 rounded-lg p-2 sm:p-3 shadow-sm w-full h-20 sm:h-24 cursor-not-allowed">
+                      <Image
+                        src={badge.logo}
+                        alt={badge.name}
+                        width={1020}
+                        height={1000}
+                        className="object-contain w-full h-full max-w-[80px] sm:max-w-[100px] filter grayscale opacity-30"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="bg-gray-600/90 text-white text-xs px-2 py-1 rounded-full font-medium">
+                          Pending
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-orange-500 text-white text-xs sm:text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10 shadow-lg">
-                    {badge.name}
+                  {/* Tooltip for larger screens */}
+                  <div className="hidden sm:block absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1.5 bg-orange-500 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10 shadow-lg">
+                    {badge.name} {badge.status === "pending" && "(Pending)"}
                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-orange-500"></div>
                   </div>
                 </motion.div>
