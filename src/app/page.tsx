@@ -18,11 +18,11 @@ export default function Home() {
       {/* <HowItsWorkTwo/> */}
       <HowItWorks/>
       <BrandsSection/>
-      <MarqueeDemo/>
+      {/* <MarqueeDemo/> */}
       <WhyCarbonCut/>
       <CarbonCutImpact/>
       <WhatCarbonCutProvides/>
-      <TestimonialCarousel/>
+      {/* <TestimonialCarousel/> */}
       <PreFooter/>
       <Footer />
     </main>
