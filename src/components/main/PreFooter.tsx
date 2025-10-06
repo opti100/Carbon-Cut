@@ -50,7 +50,7 @@ const PreFooter = () => {
               className="bg-black text-white px-6 py-3 rounded-md text-lg hover:bg-gray-800 transition"
               asChild
             >
-              <a href="/demo">Book Free Demo</a>
+              <a href="/demo">Contact CarbonCut</a>
             </Button>
           </div>
         </div>

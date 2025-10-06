@@ -49,7 +49,7 @@ const CalculatorPreFooter = () => {
                 className="bg-tertiary text-white px-6 py-3 rounded-md text-lg hover:bg-green-600 transition"
                 asChild
               >
-                <a href="/demo">Book Free Demo</a>
+                <a href="/demo">Contact CarbonCut</a>
               </Button>
               <Button
                 className="bg-orange-500 text-white px-6 py-3 rounded-md text-lg hover:bg-orange-600 transition"
