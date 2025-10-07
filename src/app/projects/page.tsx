@@ -211,7 +211,7 @@ const ProjectsPage = () => {
                         <div className="flex gap-2 mt-1">
                           <span className="text-xs text-gray-500">ID: {project.id}</span>
                           <Badge variant="outline" className="text-xs px-1 py-0">
-                            {project.status || 'Under development'}
+                            { 'Under development'}
                           </Badge>
                         </div>
                       </div>
@@ -232,7 +232,7 @@ const ProjectsPage = () => {
                     {/* Type */}
                     <div className="col-span-1">
                       <Badge variant="secondary" className="text-xs">
-                        {project.type || 'Avoidance'}
+                        { 'Avoidance'}
                       </Badge>
                     </div>
 
@@ -243,7 +243,7 @@ const ProjectsPage = () => {
 
                     {/* Methodology */}
                     <div className="col-span-1">
-                      <span className="text-sm">{project.methodology || 'ACM002'}</span>
+                      <span className="text-sm">{ 'ACM002'}</span>
                     </div>
 
                     {/* Actions */}
