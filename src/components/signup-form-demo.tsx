@@ -4,11 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-  IconBrandOnlyfans,
-} from "@tabler/icons-react";
 
 export default function SignupFormDemo() {
   const [submitted, setSubmitted] = useState(false);
@@ -45,13 +40,11 @@ export default function SignupFormDemo() {
 
   return (
     <div>
-      <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black">
+      <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl  dark:bg-black">
         <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
           CarbonCut
         </h2>
-        <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
-          Login to aceternity if you can because we don&apos;t have a login flow yet
-        </p>
+        
 
         <form className="my-8" onSubmit={handleSubmit}>
           <div className="mb-4 flex space-y-2 md:flex-row md:space-y-0 md:space-x-2 justify-start items-start">
@@ -95,14 +88,14 @@ export default function SignupFormDemo() {
             type="submit"
           >
             Contact CarbonCut →
-            <BottomGradient />
+            
           </button>
 
           <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
         </form>
       </div>
 
-      {/* ✅ Fade in/out success message */}
+    
       <div className="flex flex-row justify-center items-start">
         <AnimatePresence>
           {submitted && (
@@ -112,7 +105,7 @@ export default function SignupFormDemo() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.6 }}
              className="text-xl pt-4 text-neutral-800 dark:text-neutral-200">
-              Thanks, your response was submitted.
+              Thanks, your response was submitted...
             </motion.p>
           )}
         </AnimatePresence>
