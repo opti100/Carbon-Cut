@@ -4,9 +4,12 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Eye } from 'lucide-react';
+import { ExternalLink, Eye, MapPin } from 'lucide-react';
 import { useProjectDetails, useProjects } from '@/utils/projects/projectHooks';
 import { useAuth } from '@/contexts/AuthContext';
+import Header from '@/components/calculator/Header';
+import PreFooter from '@/components/main/PreFooter';
+import Footer from '@/components/main/Footer';
 
 const ProjectsPage = () => {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -37,8 +40,10 @@ const ProjectsPage = () => {
   }
 
   return (
+    <div>
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Carbon Offset Projects</h1>
+      <Header/>
+      <h1 className="text-3xl mt-20 font-bold mb-8">Carbon Offset Projects</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects?.map((project) => (
@@ -46,7 +51,7 @@ const ProjectsPage = () => {
             <CardContent className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <Badge variant="secondary">{project.registry}</Badge>
-                <Badge variant="outline">{project.region}</Badge>
+                <Badge className='text-orange-500 bg-white hover:bg-white'> <MapPin className='h-3 w-3 mr-1 ' /> {project.region}</Badge>
               </div>
               
               <h3 className="font-semibold text-lg mb-2 line-clamp-2">
@@ -159,6 +164,10 @@ const ProjectsPage = () => {
         </div>
       )}
     </div>
+      <PreFooter/>
+      <Footer/>
+
+     </div>
   );
 };
 
