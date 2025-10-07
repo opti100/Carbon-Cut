@@ -52,7 +52,7 @@ export default function SignupFormDemo() {
               <Label htmlFor="firstname">First name</Label>
               <Input
                 id="firstname"
-                placeholder="Bhavya"
+                placeholder="First name"
                 type="text"
                 value={formData.firstname}
                 onChange={handleChange}
@@ -62,7 +62,7 @@ export default function SignupFormDemo() {
               <Label htmlFor="lastname">Last name</Label>
               <Input
                 id="lastname"
-                placeholder="Shah"
+                placeholder="Last name"
                 type="text"
                 value={formData.lastname}
                 onChange={handleChange}
@@ -74,7 +74,7 @@ export default function SignupFormDemo() {
             <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
-              placeholder="bhavya@optiminastic.com"
+              placeholder="abc@gmail.com"
               type="email"
               value={formData.email}
               onChange={handleChange}
