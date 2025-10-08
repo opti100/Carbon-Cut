@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Carbon Cut",
   description: "Measure and Offset Your Marketing Carbon Emissions",
   icons: {
-    icon: "/CC.svg",
+    icon: "/Carboncut.svg",
   },
 };
 
