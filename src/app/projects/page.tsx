@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -80,8 +81,8 @@ const ProjectsPage = () => {
                   : 'bg-white text-black hover:bg-gray-100'
               }
             >
-              <Grid3x3 className="w-4 h-4 mr-2" />
-              
+              <Grid3x3 className="w-4 h-4 " />
+
             </Button>
             <Button
               variant="outline"
@@ -93,8 +94,8 @@ const ProjectsPage = () => {
                   : 'bg-white text-black hover:bg-gray-100'
               }
             >
-              <List className="w-4 h-4 mr-2" />
-              
+              <List className="w-4 h-4 " />
+
             </Button>
           </div>
 
@@ -119,7 +120,7 @@ const ProjectsPage = () => {
                   />
 
                   {/* 🔖 Overlay Badges */}
-                  <div className="absolute top-3 left-3">
+                  <div className="absolute top-3 left-3 w-20">
                     <Badge className="bg-green-100 text-green-700 border-0 hover:bg-green-100">
                       {project.registry}
                     </Badge>
@@ -172,30 +173,34 @@ const ProjectsPage = () => {
 
 
         {/* List View */}
+
         {viewMode === 'list' && (
           <div className="space-y-3">
             {/* Table Header */}
             <div className="bg-gray-50 border border-gray-200 rounded-lg px-6 py-3">
               <div className="grid grid-cols-12 gap-4 items-center text-sm font-medium text-gray-600">
                 <div className="col-span-4">Project Name</div>
-                <div className="col-span-2">Proponent</div>
-                <div className="col-span-1">Type</div>
-                <div className="col-span-2">GHG Program</div>
-                <div className="col-span-1">Methodology</div>
-                <div className="col-span-2 text-right">Actions</div>
+                <div className="col-span-2">Developer</div>
+                <div className="col-span-2">Registry</div>
+                <div className="col-span-2">Available Credits</div>
+                <div className="col-span-2">Total Issued</div>
               </div>
             </div>
 
             {/* Table Rows */}
             {filteredProjects?.map((project) => (
-              <Card key={project.id} className="hover:shadow-md transition-shadow border border-gray-200">
+              <Card
+                key={project.id}
+                className="hover:shadow-md transition-shadow border border-gray-200 cursor-pointer"
+                onClick={() => handleViewDetails(project.id)}
+              >
                 <CardContent className="p-4">
                   <div className="grid grid-cols-12 gap-4 items-center">
                     {/* Project Name with Image */}
                     <div className="col-span-4 flex items-center gap-3">
                       <div className="w-12 h-12 rounded-lg bg-gray-200 flex-shrink-0 overflow-hidden">
                         <Image
-                          src="/auth-hero.jpg" width={30} height={30}
+                          src="/auth-hero.jpg" width={48} height={48}
                           alt={project.name}
                           className="w-full h-full object-cover"
                           onError={(e) => {
@@ -209,68 +214,38 @@ const ProjectsPage = () => {
                           {project.name}
                         </h3>
                         <div className="flex gap-2 mt-1">
-                          <span className="text-xs text-gray-500">ID: {project.id}</span>
                           <Badge variant="outline" className="text-xs px-1 py-0">
-                            { 'Under development'}
+                            <MapPin className="h-3 w-3 mr-1" />
+                            {project.region}
                           </Badge>
                         </div>
                       </div>
                     </div>
 
-                    {/* Proponent */}
+                    {/* Developer */}
                     <div className="col-span-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                          <span className="text-xs font-medium text-blue-700">
-                            {project.developer?.charAt(0) || 'P'}
-                          </span>
-                        </div>
-                        <span className="text-sm truncate">{project.developer}</span>
-                      </div>
+                      <span className="text-sm text-gray-600">{project.developer}</span>
                     </div>
 
-                    {/* Type */}
-                    <div className="col-span-1">
-                      <Badge variant="secondary" className="text-xs">
-                        { 'Avoidance'}
+                    {/* Registry */}
+                    <div className="col-span-2">
+                      <Badge className="bg-green-100 text-green-700 border-0 hover:bg-green-100">
+                        {project.registry}
                       </Badge>
                     </div>
 
-                    {/* GHG Program */}
+                    {/* Available Credits */}
                     <div className="col-span-2">
-                      <span className="text-sm">{project.registry}</span>
+                      <span className="font-semibold text-green-600">
+                        {formatCredits(project.available_credits)} tCO₂e
+                      </span>
                     </div>
 
-                    {/* Methodology */}
-                    <div className="col-span-1">
-                      <span className="text-sm">{ 'ACM002'}</span>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="col-span-2 flex justify-end gap-2">
-                      <Button
-                        size="sm"
-                        onClick={() => handleViewDetails(project.id)}
-                        className="bg-green-500 text-white hover:bg-green-600"
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        View Details
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                      >
-                        <a
-                          href={project.registry_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center"
-                        >
-                          <ExternalLink className="w-4 h-4 mr-1" />
-                          Registry
-                        </a>
-                      </Button>
+                    {/* Total Issued */}
+                    <div className="col-span-2">
+                      <span className="font-medium text-gray-700">
+                        {formatCredits(project.issued_credits)} tCO₂e
+                      </span>
                     </div>
                   </div>
                 </CardContent>
@@ -287,64 +262,131 @@ const ProjectsPage = () => {
         )}
 
         {/* Project Details Modal */}
-        {selectedProjectId && projectDetails && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-              <div className="flex justify-between items-start mb-4">
-                <h2 className="text-2xl font-bold">
-                  {projectDetails.project.name}
-                </h2>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setSelectedProjectId(null)}
-                  className="text-2xl hover:bg-gray-100"
-                >
-                  ×
-                </Button>
-              </div>
 
-              <div className="space-y-4">
-                <p className="text-gray-600">
-                  {projectDetails.project.description}
-                </p>
+{selectedProjectId && projectDetails && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className="flex w-full max-w-5xl h-[70vh] bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95">
+      
+      {/* LEFT SIDE — Image (40%) */}
+      <div className="w-[40%] relative hidden md:block">
+        <Image
+          src="/hero2.jpg"
+          alt="Project image"
+          fill
+          className="object-cover h-full w-full"
+        />
+      </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <span className="font-medium">Developer:</span>
-                    <p>{projectDetails.project.developer}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium">Registry:</span>
-                    <p>{projectDetails.project.registry}</p>
-                  </div>
-                </div>
+      {/* RIGHT SIDE — Details (60%) */}
+      <div className="w-full md:w-[60%] flex flex-col justify-between px-10 py-8 overflow-y-auto">
+        
+        {/* Header */}
+        <div className="flex justify-between items-start mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900">
+            {projectDetails.project.name}
+          </h2>
+          <button
+            onClick={() => setSelectedProjectId(null)}
+            className="text-gray-400 hover:text-gray-700 transition-colors"
+          >
+            <span className="sr-only">Close</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
 
-                <div className="flex gap-2">
-                  <Button asChild className="bg-green-500 hover:bg-green-600">
-                    <a
-                      href={projectDetails.registry_redirect_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Registry
-                      <ExternalLink className="w-4 h-4 ml-2" />
-                    </a>
-                  </Button>
-                  <Button variant="outline" asChild>
-                    <a
-                      href={projectDetails.project.documents.project_document}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Project Document
-                    </a>
-                  </Button>
-                </div>
-              </div>
-            </div>
+        {/* Each Info Row */}
+        <div className="space-y-5">
+          <div className="flex justify-between border-b pb-2">
+            <span className="text-sm font-medium text-gray-500">Region</span>
+            <p className="text-gray-900 font-semibold">
+              {projectDetails.project.region || "N/A"}
+            </p>
           </div>
-        )}
+
+          <div className="flex justify-between border-b pb-2">
+            <span className="text-sm font-medium text-gray-500">Developer</span>
+            <p className="text-gray-900 font-semibold">
+              {projectDetails.project.developer || "N/A"}
+            </p>
+          </div>
+
+          <div className="flex justify-between border-b pb-2">
+            <span className="text-sm font-medium text-gray-500">Registry</span>
+            <p className="text-gray-900 font-semibold">
+              {projectDetails.project.registry || "N/A"}
+            </p>
+          </div>
+
+          <div className="flex justify-between border-b pb-2">
+            <span className="text-sm font-medium text-gray-500">Available Credits</span>
+            <p className="text-gray-900 font-semibold">
+              {formatCredits(projectDetails.project.available_credits)} tCO₂e
+            </p>
+          </div>
+
+          <div className="flex justify-between border-b pb-2">
+            <span className="text-sm font-medium text-gray-500">Issued Credits</span>
+            <p className="text-gray-900 font-semibold">
+              {formatCredits(projectDetails.project.issued_credits)} tCO₂e
+            </p>
+          </div>
+
+          {/* Description */}
+          <div className="border-b pb-4">
+            <span className="block text-sm font-medium text-gray-500 mb-1">Description</span>
+            <p className="text-gray-700 leading-relaxed">
+              {projectDetails.project.description}
+            </p>
+          </div>
+        </div>
+
+        {/* Buttons Row */}
+        <div className="flex gap-3 pt-6">
+          <Button
+            asChild
+            className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          >
+            <a
+              href={projectDetails.registry_redirect_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Registry
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </Button>
+
+          <Button
+            variant="outline"
+            asChild
+            className="flex items-center gap-2 border-gray-300 hover:bg-gray-100"
+          >
+            <a
+              href={projectDetails.project.documents.project_document}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Project Document
+            </a>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+    
       </div>
       <PreFooter />
       <Footer />
