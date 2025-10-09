@@ -135,7 +135,9 @@ export const BlogTwoContent = () => {
               If your team measures everything but CO₂e, now&apos;s the moment to change that. Start with clear numbers, pair them with a credible neutralisation path, and set a higher bar for the industry. Begin at carboncut.co.
             </p>
             <p className="text-xl leading-relaxed opacity-95">
-              Try the CarbonCalculator to instantly measure your campaign&apos;s marketing CO₂e and offset the remainder with verified projects and a transparent retirement certificate trail your auditors can trust.
+              Try the {" "}
+               <Link href="/calculator" className='text-tertiary hover:text-white underline' >CarbonCalculator</Link>
+          {" "}    to instantly measure your campaign&apos;s marketing CO₂e and offset the remainder with verified projects and a transparent retirement certificate trail your auditors can trust.
             </p>
           </div>
         </div>
