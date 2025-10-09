@@ -10,13 +10,7 @@ export const BlogTwoContent = () => {
     <div className=" bg-white">
       <article className="">
         <header className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 leading-tight">
-            CarbonCut launches world&apos;s first CliMarTech platform to make marketing measurable and net-zero ready
-          </h1>
-          
-          <p className="text-xl md:text-2xl font-semibold mb-8 text-gray-700 leading-relaxed">
-            Built for modern marketing teams, CarbonCut quantifies Scope 3 CO₂e and links every tonne to a verifiable certificate trail.
-          </p>
+        
 
           <div className="flex items-center text-gray-600 text-sm">
             <span className="font-semibold">London</span>

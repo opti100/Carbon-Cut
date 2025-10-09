@@ -36,7 +36,7 @@ const BlogDashboard = () => {
   }, [searchQuery, selectedCategory]);
 
   const BlogCard = ({ post }: { post: BlogPost }) => (
-    <Link href={`/blog/${post.slug}`} className="group block">
+    <Link href={`/blogs/${post.slug}`} className="group block">
       <Card className="h-full hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-orange-300 group-hover:scale-[1.02]">
         <CardHeader className="p-0">
           <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
