@@ -46,18 +46,7 @@ const BlogDashboard = () => {
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
-            <div className="absolute top-4 left-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-800">
-                {post.category}
-              </span>
-            </div>
-            {post.featured && (
-              <div className="absolute top-4 right-4">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-500 text-white">
-                  Featured
-                </span>
-              </div>
-            )}
+           
           </div>
         </CardHeader>
         
@@ -73,7 +62,7 @@ const BlogDashboard = () => {
             </div>
           </div>
           
-          <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-orange-600 transition-colors">
+          <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 transition-colors">
             {post.title}
           </h3>
           
@@ -89,7 +78,7 @@ const BlogDashboard = () => {
               <span className="text-sm text-gray-700">{post.author.name}</span>
             </div>
             
-            <div className="flex items-center gap-1 text-orange-600 font-medium text-sm group-hover:gap-2 transition-all">
+            <div className="flex items-center gap-1 hover:text-orange-600 font-medium text-sm group-hover:gap-2 group-hover:text-orange-600 transition-all">
               Read More
               <ArrowRight className="w-4 h-4" />
             </div>
@@ -106,7 +95,7 @@ const BlogDashboard = () => {
   // Show all filtered posts in the latest articles section
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen  mt-12">
       {/* Header */}
       
 
@@ -128,7 +117,7 @@ const BlogDashboard = () => {
             </div>
             
             <div className="flex items-center gap-2">
-              <Filter className="w-5 h-5 text-gray-500" />
+              {/* <Filter className="w-5 h-5 text-gray-500" /> */}
               <div className="flex flex-wrap gap-2">
                 {categories.map(category => (
                   <button

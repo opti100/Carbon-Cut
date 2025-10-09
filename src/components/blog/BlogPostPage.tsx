@@ -11,10 +11,12 @@ import { BlogOneContent } from '@/constants/blogs/blogone-data';
 import Header from '@/components/calculator/Header';
 import Footer from '@/components/main/Footer';
 import PreFooter from '../main/PreFooter';
+import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
 
 // Blog content component mapping
 const blogContentComponents: Record<string, React.ComponentType> = {
-  'marketing-carbon-emissions-missing-kpi': BlogOneContent,
+  '1': BlogOneContent,
+  '2': BlogTwoContent,
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
@@ -22,6 +24,8 @@ const blogContentComponents: Record<string, React.ComponentType> = {
 interface BlogPostPageProps {
   post: BlogPost;
 }
+
+
 
 const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
   // Get related posts from the same category
@@ -32,12 +36,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white ">
       <Header />
       
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
         {/* Back Button */}
-        <div className="mb-8">
+        <div className="mb-2 -mt-6">
           <Link 
             href="/blog" 
             className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors"
@@ -61,7 +65,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
           </div>
           
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-            {post.title}
+         {post.title}
           </h1>
           
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -90,14 +94,17 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         </header>
 
         {/* Featured Image */}
-        <div className="relative h-64 md:h-96 w-full mb-12 rounded-xl overflow-hidden">
-          <Image
-            src={post.image || '/blogs/blogsOne.png'}
-            alt={post.title}
-            fill
-            className="object-cover"
-          />
-        </div>
+      <div className="relative w-full mb-12 rounded-xl overflow-hidden">
+  <div className="aspect-video relative"> {/* 16:9 aspect ratio */}
+    <Image
+      src={post.image || '/blogs/blogsOne.png'}
+      alt={post.title}
+      fill
+      className="object-cover"
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+    />
+  </div>
+</div>
 
         {/* Article Content */}
         <div className="prose prose-lg max-w-none mb-12">

@@ -17,10 +17,11 @@ export interface BlogPost {
 
 // Import blog data from individual files
 import { blogOneData } from './blogs/blogone-data';
+import { blogTwoData } from './blogs/blogtwo-data';
 
 // Blog posts data
 export const blogPosts: BlogPost[] = [
-  blogOneData
+  blogOneData,blogTwoData
 ];
 
 // Utility functions for blog data
