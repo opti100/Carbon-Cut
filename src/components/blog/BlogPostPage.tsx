@@ -43,7 +43,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         {/* Back Button */}
         <div className="mb-2 -mt-6">
           <Link 
-            href="/blog" 
+            href="/blogs" 
             className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />

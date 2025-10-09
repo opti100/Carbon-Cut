@@ -19,7 +19,7 @@ const footerSections = [
       { label: 'Help Center', href: '/help-center' },
       { label: 'Partners', href: '/partners' },
       { label: 'Suggestions', href: '/suggestions' },
-      { label: 'Blog', href: '/blog' },
+      { label: 'Blog', href: '/blogs' },
       { label: 'Newsletters', href: '/newsletters' },
     ],
   },

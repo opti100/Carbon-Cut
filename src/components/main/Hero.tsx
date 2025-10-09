@@ -65,7 +65,7 @@ const Hero = () => {
       ]
     },
     { label: 'Solutions', href: '/solutions' },
-    { label: 'Blogs', href: '/blog' },
+    { label: 'Blogs', href: '/blogs' },
     { label: 'Resources', href: '/resources' },
   ]
 
