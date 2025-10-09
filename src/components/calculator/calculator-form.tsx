@@ -198,7 +198,7 @@ export default function MarketingCalculator() {
         </div>
       </div>
 
-      <Card className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50 mt-4 mb-16 shadow-lg">
+      <Card className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50 mt-28 mb-16 shadow-lg ">
         <div className="pb-8">
           <OrganizationForm
             organization={organization}

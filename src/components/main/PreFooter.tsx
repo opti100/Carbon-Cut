@@ -43,9 +43,7 @@ const PreFooter = () => {
           </div>
 
           <div className="mt-8 lg:mt-0 lg:ml-12">
-            <p className="text-lg text-gray-600 max-w-3xl text-left py-2">
-              Get a Free, personalized demo
-            </p>
+          
             <Button
               className="bg-black text-white px-6 py-3 rounded-md text-lg hover:bg-gray-800 transition"
               asChild

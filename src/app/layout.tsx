@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./globals.css"
 import { Geist, Geist_Mono } from "next/font/google";
 import Providers from "@/providers/providers";
 import Script from "next/script";
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Carbon Cut",
   description: "Measure and Offset Your Marketing Carbon Emissions",
   icons: {
-    icon: "/logo.svg",
+    icon: "/Carboncut.svg",
   },
 };
 

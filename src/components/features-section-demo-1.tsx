@@ -87,11 +87,23 @@ const grid = [
     icon: BarChart3,
     metric: "Campaign-level CO₂e in minutes."
   },
+    {
+    title: "CarbonLive (Entreprise API)",
+    description: "Direct API integration for agencies, DSPs, SSPs, and ad exchanges — embedding CarbonCut into existing marketing and reporting workflows.",
+    icon: Globe,
+    metric: "Sustainability as part of the stack"
+  },
   {
     title: "CarbonOffset",
     description: "Neutralise residual tonnes via a curated marketplace of verified credits (Verra, Gold Standard, ACR, CAR). Every retirement is logged on a smart contract for transparency and traceability.",
     icon: Target,
     metric: "Trusted projects, verifiable retirements"
+  },
+    {
+    title: "CarbonESG (Live Dashboard)",
+    description: "A centralized, multi-user ESG platform to transform campaign data into audit-ready disclosures in SECR, CSRD, and SEC formats.",
+    icon: LayoutDashboard,
+    metric: "Compliance made simple"
   },
   {
     title: "C3 Seal (CarbonCut Certified)",
@@ -99,24 +111,14 @@ const grid = [
     icon: Blocks,
     metric: "Authorised Calculation Report"
   },
+
   {
-    title: "CarbonESG Dashboard ",
-    description: "A centralized, multi-user ESG platform to transform campaign data into audit-ready disclosures in SECR, CSRD, and SEC formats.",
-    icon: LayoutDashboard,
-    metric: "Compliance made simple"
-  },
-  {
-    title: "CarbonTokens (CCTs)",
-    description: "A tokenisation layer where retired credits are converted into CarbonCut Tokens (CCTs). These tokens serve as an engagement tool, providing on-chain proof that a retirement has taken place, while expanding transparency and accessibility in the carbon ecosystem.",
+    title: "CarbonToken (CTN)",
+    description: "A tokenisation layer where retired credits are converted into CarbonCut Tokens (CTN). These tokens serve as an engagement tool, providing on-chain proof that a retirement has taken place, while expanding transparency and accessibility in the carbon ecosystem.",
     icon: Award,
     metric: "Proof on-chain, backed by real retirements."
   },
-  {
-    title: "Enterprise API",
-    description: "Direct API integration for agencies, DSPs, SSPs, and ad exchanges — embedding CarbonCut into existing marketing and reporting workflows.",
-    icon: Globe,
-    metric: "Sustainability as part of the stack"
-  },
+
 ];
 
 

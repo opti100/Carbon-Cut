@@ -59,12 +59,13 @@ const Hero = () => {
       hasDropdown: true,
       items: [
         { label: 'CarbonCalculator', href: '/calculator' },
+        { label: 'CarbonLive', href: '/live' },
         { label: 'CarbonOffset', href: '/offset' },
         { label: 'CarbonToken', href: '/token' },
       ]
     },
     { label: 'Solutions', href: '/solutions' },
-    { label: 'Pricing', href: '/pricing' },
+    { label: 'Blogs', href: '/blog' },
     { label: 'Resources', href: '/resources' },
   ]
 

@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { ArrowBigLeft, ChevronDown, CircleChevronLeft, Menu, User, X } from 'lucide-react'
 import Link from 'next/link'
@@ -13,10 +13,39 @@ import {
 
 const Header = () => {
 
-      const [isMenuOpen, setIsMenuOpen] = useState(false)
-      const [isScrolled, setIsScrolled] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
 
-       const navigationItems = [
+ const AURORA_COLORS = [
+    "#00CC33",
+    "#00AA2B",
+    "#00EE3B",
+    "#009928",
+    "#00FF40",
+  ]
+
+  const color = useMotionValue(AURORA_COLORS[0])
+
+  useEffect(() => {
+    animate(color, AURORA_COLORS, {
+      ease: "easeInOut",
+      duration: 8,
+      repeat: Infinity,
+      repeatType: "mirror",
+    })
+  }, [color])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 80%, #ffffff 50%, ${color})`
+
+  const navigationItems = [
     {
       label: 'Products',
       hasDropdown: true,
@@ -27,29 +56,29 @@ const Header = () => {
       ]
     },
     { label: 'Solutions', href: '/solutions' },
-    { label: 'Pricing', href: '/pricing' },
-    { label: 'Resources', href: '/resources' },
+    { label: 'Blogs', href: '/blog' },
   ]
-    return (
-        <div>
-             <motion.header
+  return (
+    <div>
+
+   
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/95 backdrop-blur-md border-b border-gray-200/20 shadow-sm" : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md border-b border-gray-200/20 shadow-sm" : "bg-transparent"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <Link href="/" className="flex items-center">
-             <Image
-              src="/ccLogo.svg"
-              alt="CarbonCut Logo"
-              width={128}
-              height={128}
-              className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
-            />
+              <Image
+                src="/ccLogo.svg"
+                alt="CarbonCut Logo"
+                width={128}
+                height={128}
+                className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -178,8 +207,10 @@ const Header = () => {
           </div>
         </motion.div>
       </motion.header>
-        </div>
-    )
+   
+
+    </div>
+  )
 }
 
 export default Header
