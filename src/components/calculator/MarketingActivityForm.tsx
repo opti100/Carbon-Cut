@@ -29,7 +29,7 @@ export default function MarketingActivityForm({
   const [formData, setFormData] = useState({
     market: 'United Kingdom',
     channel: 'Ad Production',
-    unit: 'Travel (km)',
+    unit: 'travel_km',
     qty: '',
     scope: 3,
     campaign: '',
@@ -114,15 +114,6 @@ export default function MarketingActivityForm({
       case 2: return "bg-yellow-50 text-yellow-700 border-yellow-200";
       case 3: return "bg-blue-50 text-blue-700 border-blue-200";
       default: return "bg-gray-50 text-gray-700 border-gray-200";
-    }
-  };
-
-  const getScopeIcon = (scope: number) => {
-    switch (scope) {
-      case 1: return "🔥";
-      case 2: return "⚡";
-      case 3: return "🌐";
-      default: return "📊";
     }
   };
 
