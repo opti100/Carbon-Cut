@@ -118,7 +118,7 @@ const BlogDashboard = () => {
             
             <div className="flex items-center gap-2">
               {/* <Filter className="w-5 h-5 text-gray-500" /> */}
-              <div className="flex flex-wrap gap-2">
+              {/* <div className="flex flex-wrap gap-2">
                 {categories.map(category => (
                   <button
                     key={category}
@@ -132,7 +132,7 @@ const BlogDashboard = () => {
                     {category}
                   </button>
                 ))}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
