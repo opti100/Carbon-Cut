@@ -4,16 +4,26 @@ import Link from 'next/link';
 
 export const BlogThreeContent = () => {
   return (
-    <div> 
+   <div> 
       <div className="bg-white">
         <article className="">
-         
+          <header className="mb-12">
+            <div className="flex items-center text-gray-600 text-sm">
+              <span className="font-semibold">Global</span>
+              <span className="mx-2">•</span>
+              <time dateTime="2025-10-15">15 October 2025</time>
+            </div>
+          </header>
 
           <div className="prose prose-lg max-w-none">
-            
+            <p className="text-lg leading-relaxed mb-6">
+              As the world pushes for credible sustainability, businesses are under mounting pressure not only to measure and report 
+              their environmental impact but also to neutralise what they can&apos;t avoid. Marketing, a major contributor to carbon impact, 
+              is often overlooked.
+            </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              CarbonCut is the world's first CliMarTech platform that helps marketing teams, procurement leaders, and ESG/compliance 
+              CarbonCut is the world&apos;s first CliMarTech platform that helps marketing teams, procurement leaders, and ESG/compliance 
               professionals measure, report, and offset carbon emission at campaign level. This makes progress toward net zero targets 
               and regulatory compliance practical, transparent, and traceable end-to-end.
             </p>
@@ -30,7 +40,7 @@ export const BlogThreeContent = () => {
               in consumer sectors.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              Every touchpoint, programmatic delivery, studios, logistics, venue, carries a carbon cost that adds to a brand's 
+              Every touchpoint, programmatic delivery, studios, logistics, venue, carries a carbon cost that adds to a brand&apos;s 
               carbon footprint.
             </p>
             <p className="text-lg leading-relaxed mb-8">
@@ -49,7 +59,7 @@ export const BlogThreeContent = () => {
 
             <blockquote className="border-l-4 border-gray-800 pl-6 my-12 py-4">
               <p className="text-xl font-semibold text-gray-900 mb-3 italic">
-                "Marketing has long measured everything except its climate cost"
+                &quot;Marketing has long measured everything except its climate cost&quot;
               </p>
               <p className="text-lg text-gray-800 leading-relaxed">
                 CarbonCut brings emissions and offsets into the same workflow, making sustainability as measurable as ROI for modern marketing teams.
@@ -135,7 +145,7 @@ export const BlogThreeContent = () => {
             </div>
 
             <h2 className="text-3xl font-bold mt-16 mb-6 text-gray-900">
-              What Does "Audit-Ready" Mean for Marketers?
+              What Does &quot;Audit-Ready&quot; Mean for Marketers?
             </h2>
 
             <div className="grid md:grid-cols-2 gap-6 my-10">
@@ -149,7 +159,7 @@ export const BlogThreeContent = () => {
               <div className="bg-gray-50 border-2 border-gray-200 p-8 rounded-xl">
                 <h4 className="text-xl font-bold text-gray-900 mb-4">Certification and the C3 Seal</h4>
                 <p className="text-lg text-gray-800 leading-relaxed">
-                  The C3 Seal gives stakeholders a clear signal: the campaign's emissions and carbon offsets follow recognised structure 
+                  The C3 Seal gives stakeholders a clear signal: the campaign&apos;s emissions and carbon offsets follow recognised structure 
                   and carry a verifiable record for public materials and investor updates.
                 </p>
               </div>
@@ -214,7 +224,7 @@ export const BlogThreeContent = () => {
               <div className="bg-gray-50 border-2 border-gray-200 p-8 rounded-xl">
                 <h4 className="text-xl font-bold text-gray-900 mb-4">Toward Net-Zero Advertising</h4>
                 <p className="text-lg text-gray-800 leading-relaxed">
-                  CarbonCut's mission is to decarbonise the digital economy—one impression, one API call, one offset at a time. 
+                  CarbonCut&apos;s mission is to decarbonise the digital economy—one impression, one API call, one offset at a time. 
                   Evolving from advertising emissions to tracking CO2 from internet activity globally.
                 </p>
               </div>
@@ -227,7 +237,7 @@ export const BlogThreeContent = () => {
               </div>
             </div>
 
-            <div className=" text-black rounded-2xl p-10 my-16 shadow-xl">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-10 my-16 shadow-xl">
               <h2 className="text-3xl font-bold mb-6">
                 Take Control of Your Marketing Carbon Footprint
               </h2>
@@ -237,9 +247,9 @@ export const BlogThreeContent = () => {
                 clear, verifiable data alongside performance metrics.
               </p>
               <p className="text-xl leading-relaxed opacity-95">
-                Don't wait for regulations to catch up. Try the {" "}
-                <Link href="/calculator" className='text-tertiary hover:text-black underline'>CarbonCalculator</Link>
-                {" "} to instantly measure your campaign's marketing CO₂e and offset the remainder with verified projects and a 
+                Don&apos;t wait for regulations to catch up. Try the {" "}
+                <Link href="/calculator" className='text-tertiary hover:text-white underline'>CarbonCalculator</Link>
+                {" "} to instantly measure your campaign&apos;s marketing CO₂e and offset the remainder with verified projects and a 
                 transparent retirement certificate trail your auditors can trust.
               </p>
             </div>
