@@ -7,20 +7,10 @@ export const BlogThreeContent = () => {
    <div> 
       <div className="bg-white">
         <article className="">
-          <header className="mb-12">
-            <div className="flex items-center text-gray-600 text-sm">
-              <span className="font-semibold">Global</span>
-              <span className="mx-2">•</span>
-              <time dateTime="2025-10-15">15 October 2025</time>
-            </div>
-          </header>
+          
 
           <div className="prose prose-lg max-w-none">
-            <p className="text-lg leading-relaxed mb-6">
-              As the world pushes for credible sustainability, businesses are under mounting pressure not only to measure and report 
-              their environmental impact but also to neutralise what they can&apos;t avoid. Marketing, a major contributor to carbon impact, 
-              is often overlooked.
-            </p>
+           
 
             <p className="text-lg leading-relaxed mb-8">
               CarbonCut is the world&apos;s first CliMarTech platform that helps marketing teams, procurement leaders, and ESG/compliance 
