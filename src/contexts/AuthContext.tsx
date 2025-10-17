@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const login = async (email: string, otp: string) => {
-    const response = await fetch('/api/auth/otp-login', {
+    const response = await fetch('http://localhost:8000/api/v1/auth/verify-otp/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', {
+      await fetch('http://localhost:8000/api/v1/auth/logout/', {
         method: 'POST',
         credentials: 'include'
       });

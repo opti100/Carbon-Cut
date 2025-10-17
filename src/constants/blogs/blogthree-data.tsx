@@ -227,7 +227,7 @@ export const BlogThreeContent = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-10 my-16 shadow-xl">
+            <div className=" text-black rounded-2xl p-10 my-16 shadow-xl">
               <h2 className="text-3xl font-bold mb-6">
                 Take Control of Your Marketing Carbon Footprint
               </h2>
@@ -238,7 +238,7 @@ export const BlogThreeContent = () => {
               </p>
               <p className="text-xl leading-relaxed opacity-95">
                 Don&apos;t wait for regulations to catch up. Try the {" "}
-                <Link href="/calculator" className='text-tertiary hover:text-white underline'>CarbonCalculator</Link>
+                <Link href="/calculator" className='text-tertiary hover:text-black underline'>CarbonCalculator</Link>
                 {" "} to instantly measure your campaign&apos;s marketing CO₂e and offset the remainder with verified projects and a 
                 transparent retirement certificate trail your auditors can trust.
               </p>

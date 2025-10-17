@@ -123,6 +123,7 @@ model auth_user {
   date_joined                DateTime                     @db.Timestamptz(6)
   auth_user_groups           auth_user_groups[]
   auth_user_user_permissions auth_user_user_permissions[]
+  campaign_campaign          campaign_campaign[]
   django_admin_log           django_admin_log[]
 
   @@index([username], map: "auth_user_username_6821ab7c_like")
@@ -274,6 +275,28 @@ model projects_registryupdates {
   @@index([external_id], map: "projects_registryupdates_external_id_58988e86_like")
   @@index([registry], map: "projects_registryupdates_registry_a13a713d")
   @@index([registry], map: "projects_registryupdates_registry_a13a713d_like")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model campaign_campaign {
+  id                      String     @id @db.Uuid
+  name                    String     @db.VarChar(255)
+  platform                String     @db.VarChar(100)
+  platform_campaign_ids   Json
+  track_impressions       Boolean
+  track_sessions          Boolean
+  real_time_updates       Boolean
+  update_interval_minutes Int
+  oauth_credentials       Json
+  created_at              DateTime   @db.Timestamptz(6)
+  updated_at              DateTime   @db.Timestamptz(6)
+  total_impressions       BigInt
+  total_emissions_kg      Float
+  created_by_id           Int?
+  auth_user               auth_user? @relation(fields: [created_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "campaign_campaign_created_by_id_cd020c25_fk_auth_user_id")
+
+  @@index([created_by_id], map: "campaign_campaign_created_by_id_cd020c25")
 }
 
 enum Market {
