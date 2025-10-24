@@ -5,7 +5,8 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');
-
+    const authtoken = await cookieStore.get('authtoken');
+    console.log('Auth Token from cookies:', authtoken);
     if (!email) {
       return NextResponse.json(
         { error: 'Email parameter is required' },
