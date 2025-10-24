@@ -69,7 +69,7 @@ const SignupPage = () => {
     const [otp, setOtp] = useState('')
     const [step, setStep] = useState<'form' | 'otp'>('form')
     const router = useRouter()
-    const { setUser } = useAuth() 
+    // const { setUser } = useAuth() 
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get('redirectTo') || '/dashboard';
 
@@ -91,7 +91,7 @@ const SignupPage = () => {
         onSuccess: async (data) => {
             console.log('Account created successfully:', data)
             if (data.user) {
-                setUser(data.user)
+                // setUser(data.user)
             }
             router.push(redirectTo)
             router.refresh()

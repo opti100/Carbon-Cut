@@ -49,7 +49,7 @@ const Header = () => {
       repeat: Infinity,
       repeatType: "mirror",
     })
-  }, [color])
+  }, [color,AURORA_COLORS])
 
   useEffect(() => {
     const handleScroll = () => {
