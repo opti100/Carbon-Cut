@@ -10,18 +10,18 @@ export const BlogFourContent = () => {
           <div className="prose prose-lg max-w-none">
            
 
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Marketing's Invisible Footprint</h3>
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Marketing&apos;s Invisible Footprint</h3>
             <p className="text-lg leading-relaxed mb-6">
               Every campaign from search ads to billboards, drives performance metrics, but it also releases CO₂e emissions through servers, screens, devices, and production processes. These emissions are real, measurable, and increasingly reportable. Yet, most media plans still overlook them.
             </p>
             <p className="text-lg leading-relaxed mb-6">
-              Research from the Carbon Trust shows that Scope 3 emissions account for around 70 - 90% of an organisation's total carbon footprint. For marketing teams, that includes the entire ecosystem of content creation, ad delivery, event production, and media operations.
+              Research from the Carbon Trust shows that Scope 3 emissions account for around 70 - 90% of an organisation&apos;s total carbon footprint. For marketing teams, that includes the entire ecosystem of content creation, ad delivery, event production, and media operations.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Even something as small as a digital impression has a footprint. Industry studies indicate that one million ad impressions can generate roughly one tonne of CO₂e, depending on geography, channel, and data chain efficiency. Multiply that across a global campaign, and the environmental cost becomes impossible to ignore.
             </p>
             <p className="text-lg leading-relaxed mb-8">
-              It's time to treat climate impact as a performance metric.
+              It&apos;s time to treat climate impact as a performance metric.
             </p>
 
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Why It Matters Now</h3>
@@ -32,25 +32,25 @@ export const BlogFourContent = () => {
               At the same time, agencies and brands face growing expectations to prove their sustainability commitments. Consumers and investors want auditable sustainability data, not just pledges or campaigns that sound good on paper.
             </p>
             <p className="text-lg leading-relaxed mb-8">
-              That's where the concept of a Carbon Column comes in a practical, data-backed way to include the carbon footprint of marketing campaigns right inside your media plan.
+              That&apos;s where the concept of a Carbon Column comes in a practical, data-backed way to include the carbon footprint of marketing campaigns right inside your media plan.
             </p>
             <p className="text-lg leading-relaxed mb-8">
               If marketing is measurable by reach and ROI, it should be measurable by CO₂e too. The first step? Add one more column to your spreadsheet and transform how you measure performance.
             </p>
 
             <h2 className="text-3xl font-bold mt-16 mb-6 text-gray-900">
-              Meet the "Carbon Column" - Where Media Metrics Meet Climate Metrics
+              Meet the &quot;Carbon Column&quot; - Where Media Metrics Meet Climate Metrics
             </h2>
 
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">What It Is</h3>
             <p className="text-lg leading-relaxed mb-6">
-              The Carbon Column is a simple yet powerful addition to your media plan. It's a new field that quantifies each channel's CO₂e marketing measurement.
+              The Carbon Column is a simple yet powerful addition to your media plan. It&apos;s a new field that quantifies each channel&apos;s CO₂e marketing measurement.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Placed alongside your budget, impressions, or CPM, this column shows the carbon emissions tracking for campaigns in real numbers, so sustainability becomes visible, actionable, and accountable.
             </p>
             <p className="text-lg leading-relaxed mb-8">
-              It's not a new system. It's simply a smarter way to make your existing media plan carbon calculation complete.
+              It&apos;s not a new system. It&apos;s simply a smarter way to make your existing media plan carbon calculation complete.
             </p>
 
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Why It Works</h3>
@@ -112,7 +112,7 @@ export const BlogFourContent = () => {
 
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Step 3 - Add Your Carbon Column</h3>
             <p className="text-lg leading-relaxed mb-6">
-              Once your CO₂e values are calculated, it's time to insert them into your media plan.
+              Once your CO₂e values are calculated, it&apos;s time to insert them into your media plan.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Add a dedicated Carbon Column right beside your cost, impressions, or reach metrics.
@@ -164,7 +164,7 @@ export const BlogFourContent = () => {
 
             <blockquote className="border-l-4 border-gray-800 pl-6 my-12 py-4">
               <p className="text-xl font-semibold text-gray-900 mb-3 italic">
-                "When you can see it, you can manage it. The Carbon Column makes carbon impact visible and manageable."
+                &quot;When you can see it, you can manage it. The Carbon Column makes carbon impact visible and manageable.&quot;
               </p>
             </blockquote>
 
@@ -173,13 +173,13 @@ export const BlogFourContent = () => {
               After calculating your campaign-level carbon footprint, the next step is to address unavoidable emissions.
             </p>
             <p className="text-lg leading-relaxed mb-4">
-              Offsetting doesn't replace reduction, it completes the cycle of responsibility.
+              Offsetting doesn&apos;t replace reduction, it completes the cycle of responsibility.
             </p>
             <p className="text-lg leading-relaxed mb-4">
               Support verified carbon offset for advertising initiatives such as reforestation, renewable energy, or community-based sustainability programmes.
             </p>
             <p className="text-lg leading-relaxed mb-4">
-              With CarbonCut's CarbonOffset module, you can select projects certified by trusted registries like Verra, Gold Standard, and ACR.
+              With CarbonCut&apos;s CarbonOffset module, you can select projects certified by trusted registries like Verra, Gold Standard, and ACR.
             </p>
             <p className="text-lg leading-relaxed mb-4">
               Every tonne of CO₂e you retire is recorded transparently on blockchain, ensuring traceability and preventing double counting. This provides auditable proof that your offsets are real, measurable, and permanent.
@@ -211,7 +211,7 @@ export const BlogFourContent = () => {
 
             <blockquote className="border-l-4 border-gray-800 pl-6 my-12 py-4">
               <p className="text-xl font-semibold text-gray-900 mb-3 italic">
-                "Carbon accountability isn't just good ethics, it's good business."
+                &quot;Carbon accountability isn&apos;t just good ethics, it&apos;s good business.&quot;
               </p>
             </blockquote>
 
@@ -232,12 +232,12 @@ export const BlogFourContent = () => {
             </p>
 
             <h2 className="text-3xl font-bold mt-16 mb-6 text-gray-900">
-              Marketing's Role in Tackling Scope 3 Emissions
+              Marketing&apos;s Role in Tackling Scope 3 Emissions
             </h2>
 
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Why It Matters</h3>
             <p className="text-lg leading-relaxed mb-6">
-              Indirect (Scope 3) emissions, those created across a company's supply chain, account for around 75% of total corporate emissions according to the World Resources Institute (WRI).
+              Indirect (Scope 3) emissions, those created across a company&lsquo;s supply chain, account for around 75% of total corporate emissions according to the World Resources Institute (WRI).
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Marketing plays a major part: servers powering ads, devices displaying them, paper used in print, travel for events, all contribute to this hidden footprint.
@@ -298,7 +298,7 @@ export const BlogFourContent = () => {
 
             <blockquote className="border-l-4 border-gray-800 pl-6 my-12 py-4">
               <p className="text-xl font-semibold text-gray-900 mb-3 italic">
-                "With CarbonCut, adding a Carbon Column is as effortless as adding a metric, but the impact lasts far beyond the campaign."
+                &quot;With CarbonCut, adding a Carbon Column is as effortless as adding a metric, but the impact lasts far beyond the campaign.&quot;
               </p>
             </blockquote>
 
@@ -311,7 +311,7 @@ export const BlogFourContent = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Adding a Carbon Column isn't just a sustainability gesture, it's a step toward smarter, more responsible marketing.
+              Adding a Carbon Column isn&apos;t just a sustainability gesture, it&apos;s a step toward smarter, more responsible marketing.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               It empowers teams to quantify their marketing carbon footprint, take verified action, and contribute to company-wide climate goals.
@@ -320,7 +320,7 @@ export const BlogFourContent = () => {
               Every click, every print run, and every event has a carbon cost. With CliMarTech solutions like CarbonCut, that cost becomes visible, accountable, and offsettable.
             </p>
             <p className="text-lg leading-relaxed mb-8">
-              The next era of marketing isn't just about creative impact, it's about climate impact.
+              The next era of marketing isn&apos;t just about creative impact, it&apos;s about climate impact.
             </p>
 
             <p className="text-xl font-semibold text-gray-900 mb-8 text-center">
@@ -336,12 +336,12 @@ export const BlogFourContent = () => {
                 Ready to Add Your Carbon Column?
               </h2>
               <p className="text-xl mb-6 leading-relaxed opacity-95">
-                Start measuring what matters with CarbonCut's comprehensive platform designed specifically for marketing teams.
+                Start measuring what matters with CarbonCut&apos;s comprehensive platform designed specifically for marketing teams.
               </p>
               <p className="text-xl leading-relaxed opacity-95">
                 Try the {" "}
                 <Link href="/calculator" className='text-tertiary hover:text-black underline'>CarbonCalculator</Link>
-                {" "} today to instantly measure your campaign's carbon footprint and begin your journey toward sustainable, accountable marketing.
+                {" "} today to instantly measure your campaign&apos;s carbon footprint and begin your journey toward sustainable, accountable marketing.
               </p>
             </div>
           </div>
