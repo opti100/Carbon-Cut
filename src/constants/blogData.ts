@@ -15,14 +15,17 @@ export interface BlogPost {
   featured?: boolean;
 }
 
+
 // Import blog data from individual files
 import { blogOneData } from './blogs/blogone-data';
 import { blogThreeeData } from './blogs/blogthree-data';
 import { blogTwoData } from './blogs/blogtwo-data';
+import { blogFourData } from './blogs/blogfour-data';
+
 
 // Blog posts data
 export const blogPosts: BlogPost[] = [
-  blogOneData,blogTwoData,blogThreeeData
+  blogOneData,blogTwoData,blogThreeeData,blogFourData
 ];
 
 // Utility functions for blog data

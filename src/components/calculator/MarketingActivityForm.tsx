@@ -121,11 +121,10 @@ export default function MarketingActivityForm({
     <div className="bg-gray-50 px-6  space-y-6 ">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
-          Add Marketing Activity
+          Add Marketing {" "}<span className="text-tertiary"> Activity</span>
         </h2>
-        <p className="text-gray-600 mt-2 max-w-3xl">
-          Enter the details of your marketing activity to calculate its carbon footprint.
-          We use <strong className="text-orange-400">verified emission factors</strong> and real-time data for accurate calculations.
+        <p className="text-gray-600 mt-2 max-w-4xl">
+          Enter the details of your marketing activity to estimate its {" "} <strong className="text-orange-400">Carbon Footprint</strong>
         </p>
       </div>
 
