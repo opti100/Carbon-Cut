@@ -21,7 +21,7 @@ interface SignupData {
 
 const sendSignupOTP = async (data: SignupData) => {
     console.log('Sending OTP for:', data)
-    const response = await fetch('/api/auth/signup/send-otp', {
+    const response = await fetch('http://localhost:8000/api/v1/auth/send-otp/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const sendSignupOTP = async (data: SignupData) => {
 
 const verifySignupOTP = async (data: SignupData & { otp: string }) => {
     console.log('Verifying OTP for:', data.email, 'with OTP:', data.otp)
-    const response = await fetch('/api/auth/signup/verify-otp', {
+    const response = await fetch('http://localhost:8000/api/v1/auth/verify-otp/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -71,11 +71,12 @@ const SignupPage = () => {
     const router = useRouter()
     // const { setUser } = useAuth() 
     const searchParams = useSearchParams();
-    const redirectTo = searchParams.get('redirectTo') || '/dashboard';
+    const redirectTo = searchParams.get('redirectTo') || '/campaigns';
 
     const sendOTPMutation = useMutation({
         mutationFn: sendSignupOTP,
         onSuccess: (data) => {
+
             console.log('OTP sent successfully:', data)
             if (data.debug?.otp) {
                 console.log('🔑 Development OTP:', data.debug.otp)

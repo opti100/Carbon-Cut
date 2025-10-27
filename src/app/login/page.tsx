@@ -53,7 +53,7 @@ const LoginPage = () => {
         mutationFn: () => login(email, otp),
         onSuccess: (data) => {
             console.log('Login successful:', data)
-            router.push('/dashboard')
+            router.push('/campaigns')
             router.refresh()
         },
         onError: (error: Error) => {
