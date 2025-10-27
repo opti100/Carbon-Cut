@@ -37,13 +37,10 @@ export default function ProfilePage() {
     phoneNumber: user?.phoneNumber || '',
     companyName: user?.companyName || '',
   });
-  const { data, isLoading, error } = useQuery({
-      queryKey: ['apiKeys'],
-      queryFn: ApiKeyService.getApiKeys,
-    });
-
-    
-  
+  // const { data, isLoading, error } = useQuery({
+  //     queryKey: ['apiKeys'],
+  //     queryFn: ApiKeyService.getApiKeys,
+  //   });
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: typeof formData) => {

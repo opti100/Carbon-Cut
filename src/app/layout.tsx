@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* <Script
+        <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-Y388SH4Y4G"
           strategy="afterInteractive"
@@ -42,14 +42,16 @@ export default function RootLayout({
             gtag('js', new Date());
             gtag('config', 'G-Y388SH4Y4G');
           `}
-        </Script> */}
+        </Script>
 
-        {/* <Script
+        <Script 
           src="/carboncut.min.js"
-          data-token="YOUR_TRACKER_TOKEN"
-          data-api-url="http://127.0.0.1:8000/api/v1/events/track"
-          data-debug="true"
-        /> */}
+          data-token="cc_sXY4uqI7fkEOSQljRSQrSpjV94O2dX78s5hDd0mQhZSAJHHmetsPFagYCnt2upwY"
+          data-api-url="http://127.0.0.1:8000/api/v1/events/"
+          data-debug="false"
+          data-domain="http://localhost:3000/"
+          />
+
         <Script id="plausible-analytics" strategy="afterInteractive">
           {`
             window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};

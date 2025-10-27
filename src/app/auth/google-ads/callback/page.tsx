@@ -6,29 +6,48 @@ import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function GoogleAdsCallbackPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [message, setMessage] = useState('Processing authentication...');
 
   useEffect(() => {
-    const code = searchParams.get('code');
+    const success = searchParams.get('success');
     const error = searchParams.get('error');
+    const code = searchParams.get('code');
     const state = searchParams.get('state');
 
     if (error) {
       setStatus('error');
       setMessage(`Authentication failed: ${error}`);
       
-      // Notify parent window
       if (window.opener) {
         window.opener.postMessage({
           type: 'GOOGLE_ADS_AUTH_ERROR',
           error: error
         }, window.location.origin);
       }
+      return;
+    }
+
+    if (success === 'true') {
+      setStatus('success');
+      setMessage('Successfully connected to Google Ads!');
+      
+      if (window.opener) {
+        window.opener.postMessage({
+          type: 'GOOGLE_ADS_AUTH_SUCCESS',
+          success: true
+        }, window.location.origin);
+      }
+
+      setTimeout(() => {
+        window.close();
+      }, 2000);
+      queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] });
       return;
     }
 
@@ -45,8 +64,6 @@ export default function GoogleAdsCallbackPage() {
       return;
     }
 
-    // The backend has already handled the token exchange in the callback
-    // Just notify success
     setStatus('success');
     setMessage('Successfully connected to Google Ads!');
 
@@ -58,7 +75,6 @@ export default function GoogleAdsCallbackPage() {
       }, window.location.origin);
     }
 
-    // Auto-close after 2 seconds
     setTimeout(() => {
       window.close();
     }, 2000);
