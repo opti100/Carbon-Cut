@@ -24,12 +24,14 @@ interface CreateApiKeyDialogProps {
 
 export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogProps) {
   const [name, setName] = useState('');
+  const [domain, setDomain] = useState('');
   const [generatedKey, setGeneratedKey] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const queryClient = useQueryClient();
 
   const createKeyMutation = useMutation({
-    mutationFn: (name: string) => ApiKeyService.createApiKey(name),
+    mutationFn: ({ name, domain }: { name: string; domain: string }) => 
+      ApiKeyService.createApiKey(name, domain),
     onSuccess: (response) => {
       if (response.data?.full_key) {
         setGeneratedKey(response.data.full_key);
@@ -41,7 +43,10 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      createKeyMutation.mutate(name.trim());
+      createKeyMutation.mutate({ 
+        name: name.trim(), 
+        domain: domain.trim() || '*' 
+      });
     }
   };
 
@@ -55,6 +60,7 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
 
   const handleClose = () => {
     setName('');
+    setDomain('');
     setGeneratedKey(null);
     setCopied(false);
     createKeyMutation.reset();
@@ -79,16 +85,31 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="name">API Key Name</Label>
+                <Label htmlFor="name">API Key Name *</Label>
                 <Input
                   id="name"
                   placeholder="e.g., Production Server, Dev Environment"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={createKeyMutation.isPending}
+                  required
                 />
                 <p className="text-sm text-gray-500">
                   Choose a descriptive name to identify this API key
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="domain">Domain (Optional)</Label>
+                <Input
+                  id="domain"
+                  placeholder="e.g., example.com or * for all domains"
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  disabled={createKeyMutation.isPending}
+                />
+                <p className="text-sm text-gray-500">
+                  Restrict this key to a specific domain. Use * to allow all domains.
                 </p>
               </div>
 
@@ -158,8 +179,8 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
             <Alert className="bg-blue-50 border-blue-200">
               <AlertDescription className="text-blue-800 text-sm">
                 <strong>How to use:</strong> Include this key in the{' '}
-                <code className="bg-blue-100 px-1 py-0.5 rounded">X-API-Key</code>{' '}
-                header of your API requests.
+                <code className="bg-blue-100 px-1 py-0.5 rounded font-mono">data-token</code>{' '}
+                attribute of your CarbonCut SDK script tag.
               </AlertDescription>
             </Alert>
 

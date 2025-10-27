@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   Key,
@@ -13,20 +12,33 @@ import {
   Clock,
   AlertCircle,
   Loader2,
+  Shield,
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { ApiKeyService } from '@/services/apikey/apikey';
-import { AlertDialog } from 'radix-ui';
-import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { VerifyInstallationDialog } from './VerifyInstallationDialog';
 
 export function ApiKeysList() {
   const [deleteKeyId, setDeleteKeyId] = useState<string | null>(null);
+  const [verifyKeyId, setVerifyKeyId] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error } = useQuery({
+  useEffect(() => {
+    console.log('🚀 ApiKeysList component mounted');
+    console.log('🔑 Checking cookies:', document.cookie);
+  }, []);
+
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['apiKeys'],
-    queryFn: ApiKeyService.getApiKeys,
+    queryFn: async () => {
+      console.log('⏳ Starting API keys fetch...');
+      const result = await ApiKeyService.getApiKeys();
+      console.log('📦 Query result:', result);
+      return result;
+    },
+    retry: 1,
+    staleTime: 30000,
   });
 
   const deleteMutation = useMutation({
@@ -44,22 +56,41 @@ export function ApiKeysList() {
     },
   });
 
+  // Handle the response structure from backend
   const apiKeys = data?.data?.api_keys || [];
+
+  console.log('📊 Current state:', { 
+    isLoading, 
+    hasError: !!error, 
+    dataExists: !!data,
+    apiKeysCount: apiKeys.length,
+    rawData: data 
+  });
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+        <span className="ml-2 text-gray-600">Loading API keys...</span>
       </div>
     );
   }
 
   if (error) {
+    console.error('❌ Error loading API keys:', error);
     return (
       <Alert variant="destructive">
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          Failed to load API keys. Please try again.
+          Failed to load API keys: {error instanceof Error ? error.message : 'Unknown error'}
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => refetch()}
+            className="ml-4"
+          >
+            Retry
+          </Button>
         </AlertDescription>
       </Alert>
     );
@@ -81,6 +112,8 @@ export function ApiKeysList() {
       </Card>
     );
   }
+
+  const selectedApiKey = apiKeys.find((key) => key.id === verifyKeyId);
 
   return (
     <>
@@ -113,6 +146,12 @@ export function ApiKeysList() {
                         {apiKey.prefix}••••••••••••••••
                       </span>
                     </div>
+                    {apiKey.domain && (
+                      <div className="flex items-center gap-1">
+                        <span className="text-gray-500">Domain:</span>
+                        <span className="font-medium">{apiKey.domain}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-4 text-sm text-gray-500">
@@ -138,8 +177,17 @@ export function ApiKeysList() {
                   <Button
                     variant="outline"
                     size="sm"
+                    onClick={() => setVerifyKeyId(apiKey.id)}
+                    title="Verify Installation"
+                  >
+                    <Shield className="h-4 w-4 text-blue-600" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => toggleMutation.mutate(apiKey.id)}
                     disabled={toggleMutation.isPending}
+                    title={apiKey.is_active ? 'Deactivate' : 'Activate'}
                   >
                     <Power
                       className={`h-4 w-4 ${
@@ -152,6 +200,7 @@ export function ApiKeysList() {
                     size="sm"
                     onClick={() => setDeleteKeyId(apiKey.id)}
                     disabled={deleteMutation.isPending}
+                    title="Delete"
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>
@@ -162,33 +211,15 @@ export function ApiKeysList() {
         ))}
       </div>
 
-      {/* <AlertDialog
-        open={!!deleteKeyId}
-        onOpenChange={(open) => !open && setDeleteKeyId(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete API Key</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this API key? This action cannot be
-              undone and any applications using this key will lose access
-              immediately.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteKeyId && deleteMutation.mutate(deleteKeyId)}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              {deleteMutation.isPending && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Delete Key
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog> */}
+      {selectedApiKey && (
+        <VerifyInstallationDialog
+          open={verifyKeyId !== null}
+          onOpenChange={(open) => !open && setVerifyKeyId(null)}
+          apiKeyId={selectedApiKey.id}
+          apiKeyName={selectedApiKey.name}
+          apiKeyPrefix={selectedApiKey.prefix}
+        />
+      )}
     </>
   );
 }
