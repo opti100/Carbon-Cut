@@ -49,7 +49,7 @@ const Header = () => {
       repeat: Infinity,
       repeatType: "mirror",
     })
-  }, [color])
+  }, [color,AURORA_COLORS])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -94,7 +94,7 @@ const Header = () => {
                 src="/ccLogo.svg"
                 alt="CarbonCut Logo"
                 width={128}
-                height={128}
+                height={64}
                 className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
               />
             </Link>

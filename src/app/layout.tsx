@@ -30,7 +30,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Analytics */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-Y388SH4Y4G"
@@ -45,12 +44,14 @@ export default function RootLayout({
           `}
         </Script>
 
+        <Script 
+          src="/carboncut.min.js"
+          data-token="cc_sXY4uqI7fkEOSQljRSQrSpjV94O2dX78s5hDd0mQhZSAJHHmetsPFagYCnt2upwY"
+          data-api-url="http://127.0.0.1:8000/api/v1/events/"
+          data-debug="false"
+          data-domain="http://localhost:3000/"
+          />
 
-        <Script
-          async
-          src="https://plausible.io/js/pa-C3xatQ2yOR6tFbBVZJes6.js"
-          strategy="afterInteractive"
-        />
         <Script id="plausible-analytics" strategy="afterInteractive">
           {`
             window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};

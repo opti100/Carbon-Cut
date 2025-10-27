@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const BlogTwoContent = () => {
   return (
-
+ 
     <div> 
 
     <div className=" bg-white">

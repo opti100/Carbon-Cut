@@ -13,7 +13,7 @@ import { Mail, Shield, Loader2, ArrowLeft, CheckCircle } from "lucide-react"
 import { useAuth } from '@/contexts/AuthContext'
 
 const sendOTP = async ({ email }: { email: string }) => {
-    const response = await fetch('/api/otp/send', {
+    const response = await fetch('http://127.0.0.1:8000/api/v1/auth/send-otp/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ const sendOTP = async ({ email }: { email: string }) => {
         body: JSON.stringify({ email }),
     })
 
-    if (!response.ok) {
+    if (!response.ok) { 
         const error = await response.json()
         throw new Error(error.message || 'Failed to send OTP')
     }
@@ -53,7 +53,7 @@ const LoginPage = () => {
         mutationFn: () => login(email, otp),
         onSuccess: (data) => {
             console.log('Login successful:', data)
-            router.push('/dashboard')
+            router.push('/campaigns')
             router.refresh()
         },
         onError: (error: Error) => {

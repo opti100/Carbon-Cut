@@ -10,6 +10,18 @@ import EmissionsBreakdown from './EmissionsBreakdown';
 import ReportActions from './ReportActions';
 import { Card } from '../ui/card';
 
+const getCookie = (name: string): string | null => {
+  if (typeof document === 'undefined') return null;
+  
+  const value = `; ${document.cookie}`;
+  console.log('All cookies:', value);
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop()?.split(';').shift() || null;
+  }
+  return null;
+};
+
 export default function MarketingCalculator() {
   const [organization, setOrganization] = useState<OrganizationData>({
     name: '',
@@ -47,6 +59,14 @@ export default function MarketingCalculator() {
     try {
       setCalculatingEmissions(prev => ({ ...prev, [activityId]: true }));
 
+      // Get the auth token from cookies
+      const authToken = getCookie('auth-token');
+      
+      if (!authToken) {
+        console.warn('No auth token found in cookies');
+        throw new Error('Authentication required');
+      }
+
       const requestBody = {
         userInput: {
           activityType: activity.activityLabel,
@@ -82,13 +102,22 @@ export default function MarketingCalculator() {
         requirePrecision: true
       };
 
-      const response = await fetch('/api/calculate-carbon', {
+      const response = await fetch('http://127.0.0.1:8000/api/v1/inventory/calculate-carbon/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`
+        },
         body: JSON.stringify(requestBody)
       });
 
-      if (!response.ok) throw new Error('API response not OK');
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error('Authentication failed. Please log in again.');
+        }
+        throw new Error('API response not OK');
+      }
 
       const result = await response.json();
       const emissions = result.success ? result.data.totalEmissions : 0;
