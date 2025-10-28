@@ -61,7 +61,7 @@ const Hero = () => {
         { label: 'CarbonCalculator', href: '/calculator' },
         { label: 'CarbonLive', href: '/live' },
         { label: 'CarbonOffset', href: '/offset' },
-        { label: 'CarbonToken', href: '/token' },
+      
       ]
     },
     { label: 'Solutions', href: '/solutions' },
