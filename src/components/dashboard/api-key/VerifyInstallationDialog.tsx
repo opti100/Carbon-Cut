@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -50,11 +50,24 @@ export function VerifyInstallationDialog({
   const [loadingGuide, setLoadingGuide] = useState(false);
   const [activeTab, setActiveTab] = useState<'verify' | 'guide'>('verify');
 
+  // Memoize the handleGetGuide function to prevent unnecessary re-renders
+  const handleGetGuide = useCallback(async () => {
+    setLoadingGuide(true);
+    try {
+      const response = await ApiKeyService.getInstallationGuide(apiKeyId);
+      setInstallationGuide(response.data.installation);
+    } catch (error) {
+      console.error('Error fetching installation guide:', error);
+    } finally {
+      setLoadingGuide(false);
+    }
+  }, [apiKeyId]); // Only re-create when apiKeyId changes
+
   useEffect(() => {
     if (open && !installationGuide) {
       handleGetGuide();
     }
-  }, [open]);
+  }, [open, installationGuide, handleGetGuide]); // Now includes all dependencies
 
   const handleVerify = async () => {
     if (!verificationUrl.trim()) {
@@ -89,18 +102,6 @@ export function VerifyInstallationDialog({
       });
     } finally {
       setIsVerifying(false);
-    }
-  };
-
-  const handleGetGuide = async () => {
-    setLoadingGuide(true);
-    try {
-      const response = await ApiKeyService.getInstallationGuide(apiKeyId);
-      setInstallationGuide(response.data.installation);
-    } catch (error) {
-      console.error('Error fetching installation guide:', error);
-    } finally {
-      setLoadingGuide(false);
     }
   };
 
@@ -333,7 +334,6 @@ export function VerifyInstallationDialog({
               </>
             ) : (
               <Alert variant="destructive">
-                {/* <AlertCircle className="h-4 w-4" /> */}
                 <AlertDescription>
                   Failed to load installation guide. Please try again.
                   <Button

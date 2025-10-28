@@ -87,10 +87,10 @@ export default function GoogleAdsCallbackPage() {
       window.close();
     }, 2000);
 
-  }, [searchParams]);
+  }, [searchParams, queryClient]); 
 
   const handleCreateGoogleAdsAccount = () => {
-    window.open('https://accounts.google.com/v3/signin/', '_blank');
+    window.open('https://ads.google.com/home/get-started/', '_blank');
   };
 
   const handleRetryConnection = () => {
@@ -155,7 +155,7 @@ export default function GoogleAdsCallbackPage() {
 
               <div className="space-y-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-2">What you'll need:</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">What you&apos;ll need:</h3>
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• A Google account (Gmail)</li>
                     <li>• Business information</li>

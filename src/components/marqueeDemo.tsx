@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Brex from "../../public/companies/Brex"
 import Univison from "../../public/companies/univison"
 import { Marquee } from "./ui/marquee"
@@ -32,7 +33,7 @@ const LogoItem = ({ logo }: { logo: string | ReactNode }) => {
     return (
       <div className="flex items-center justify-center w-28 h-28 mx-6">
         {!imgError ? (
-          <img
+          <Image
             src={logo}
             alt="logo"
             className="max-h-16 max-w-24 object-contain filter grayscale brightness-0"
