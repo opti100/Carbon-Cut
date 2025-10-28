@@ -114,26 +114,50 @@ export function CreateCampaignDialog({ open, onOpenChange }: CreateCampaignDialo
 
             <div className="space-y-2">
               <Label htmlFor="account">Google Ads Account *</Label>
-              <Select
-                onValueChange={(value) => setSelectedAccount(value)}
-                value={selectedAccount || ''}
-                disabled={accountsLoading}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={accountsLoading ? "Loading accounts..." : "Select an account"} />
-                </SelectTrigger>
-                <SelectContent>
-                  {accounts.map((account) => (
-                    <SelectItem key={account.id} value={account.id}>
-                      {account.name} ({account.currency}, {account.timezone})
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {!selectedAccount && (
-                <p className="text-xs text-red-500">Please select a Google Ads account.</p>
+
+              {accountsLoading ? (
+                <Select disabled>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Loading accounts..." />
+                  </SelectTrigger>
+                </Select>
+              ) : accounts.length === 0 ? (
+                <div className="p-3 border rounded-md bg-muted text-center">
+                  <p className="text-sm text-gray-600">No Google Ads accounts found.</p>
+                  <a
+                    href="https://ads.google.com/home/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline text-sm font-medium"
+                  >
+                    Create a Google Ads account
+                  </a>
+                </div>
+              ) : (
+                <>
+                  <Select
+                    onValueChange={(value) => setSelectedAccount(value)}
+                    value={selectedAccount || ''}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select an account" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {accounts.map((account) => (
+                        <SelectItem key={account.id} value={account.id}>
+                          {account.name} ({account.currency}, {account.timezone})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  {!selectedAccount && (
+                    <p className="text-xs text-red-500">Please select a Google Ads account.</p>
+                  )}
+                </>
               )}
             </div>
+
 
             <div className="space-y-2">
               <Label htmlFor="utm_param">UTM Parameters</Label>
@@ -210,8 +234,8 @@ export function CreateCampaignDialog({ open, onOpenChange }: CreateCampaignDialo
             >
               Cancel
             </Button>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={createMutation.isPending || !formData.name.trim() || !selectedAccount}
             >
               {createMutation.isPending && (

@@ -112,12 +112,7 @@ const grid = [
     metric: "Authorised Calculation Report"
   },
 
-  {
-    title: "CarbonToken (CTN)",
-    description: "A tokenisation layer where retired credits are converted into CarbonCut Tokens (CTN). These tokens serve as an engagement tool, providing on-chain proof that a retirement has taken place, while expanding transparency and accessibility in the carbon ecosystem.",
-    icon: Award,
-    metric: "Proof on-chain, backed by real retirements."
-  },
+
 
 ];
 
