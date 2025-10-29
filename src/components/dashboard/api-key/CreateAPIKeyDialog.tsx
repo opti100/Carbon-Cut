@@ -30,7 +30,7 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
   const queryClient = useQueryClient();
 
   const createKeyMutation = useMutation({
-    mutationFn: ({ name, domain }: { name: string; domain: string }) => 
+    mutationFn: ({ name, domain }: { name: string; domain: string }) =>
       ApiKeyService.createApiKey(name, domain),
     onSuccess: (response) => {
       if (response.data?.full_key) {
@@ -43,9 +43,9 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      createKeyMutation.mutate({ 
-        name: name.trim(), 
-        domain: domain.trim() || '*' 
+      createKeyMutation.mutate({
+        name: name.trim(),
+        domain: domain.trim() || '*',
       });
     }
   };
@@ -76,8 +76,9 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
           </DialogTitle>
           <DialogDescription>
             {generatedKey
-              ? 'Save this API key securely. You won\'t be able to see it again.'
+              ? "Save this API key securely. You won't be able to see it again."
               : 'Generate a new API key to access the CarbonCut API.'}
+            <div className="border-b mx-auto mt-5" />
           </DialogDescription>
         </DialogHeader>
 
@@ -85,8 +86,11 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="name">API Key Name *</Label>
+                <Label htmlFor="name">
+                  API Key Name <span className="text-orange-500">*</span>
+                </Label>
                 <Input
+                  className="border border-gray-300 rounded focus:border-gray-300 focus:ring-1 focus:ring-gray-300"
                   id="name"
                   placeholder="e.g., Production Server, Dev Environment"
                   value={name}
@@ -103,6 +107,7 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                 <Label htmlFor="domain">Domain (Optional)</Label>
                 <Input
                   id="domain"
+                  className="border border-gray-300 rounded focus:border-gray-300 focus:ring-1 focus:ring-gray-300"
                   placeholder="e.g., example.com or * for all domains"
                   value={domain}
                   onChange={(e) => setDomain(e.target.value)}
@@ -111,6 +116,8 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                 <p className="text-sm text-gray-500">
                   Restrict this key to a specific domain. Use * to allow all domains.
                 </p>
+
+                <div className="border-b mx-auto my-5" />
               </div>
 
               {createKeyMutation.error && (
@@ -135,6 +142,11 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
               <Button
                 type="submit"
                 disabled={!name.trim() || createKeyMutation.isPending}
+                className={`rounded-sm ${
+                  !name.trim()
+                    ? 'bg-gray-400 text-white'
+                    : 'bg-tertiary text-white'
+                }`}
               >
                 {createKeyMutation.isPending && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -144,49 +156,60 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
             </DialogFooter>
           </form>
         ) : (
-          <div className="space-y-4 py-4">
-            <Alert className="bg-amber-50 border-amber-200">
-              <AlertTriangle className="h-4 w-4 text-amber-600" />
-              <AlertDescription className="text-amber-800">
-                <strong>Important:</strong> Copy and save this API key now. For security
-                reasons, you won&apos;t be able to view it again.
-              </AlertDescription>
-            </Alert>
-
+          <div className="space-y-6 py-4">
             <div className="space-y-2">
               <Label>Your API Key</Label>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap sm:flex-nowrap">
                 <Input
                   value={generatedKey}
                   readOnly
-                  className="font-mono text-sm bg-gray-50"
+                  className="font-mono text-sm bg-gray-50 w-full p-2 rounded"
                 />
                 <Button
                   type="button"
                   variant="outline"
                   size="icon"
                   onClick={handleCopy}
+                  className='p-2 rounded'
                 >
                   {copied ? (
-                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <CheckCircle className="h-4 w-4 text-green-600 " />
                   ) : (
-                    <Copy className="h-4 w-4" />
+                    <Copy className="h-4 w-4 " />
                   )}
                 </Button>
               </div>
             </div>
 
-            <Alert className="bg-blue-50 border-blue-200">
-              <AlertDescription className="text-blue-800 text-sm">
-                <strong>How to use:</strong> Include this key in the{' '}
-                <code className="bg-blue-100 px-1 py-0.5 rounded font-mono">data-token</code>{' '}
-                attribute of your CarbonCut SDK script tag.
-              </AlertDescription>
-            </Alert>
+            {/* ⚠️ Warning Section - Updated */}
+            <div className="flex items-start sm:items-center gap-3 text-sm sm:text-base  p-4 rounded">
+              <AlertTriangle className="h-6 w-6 text-amber-600 flex-shrink-0" />
+              <div className="text-amber-700 leading-snug">
+                <strong>Important:</strong> Copy and save this API key now. For
+                security reasons, you won&apos;t be able to view it again.
+              </div>
+            </div>
 
-            <DialogFooter>
-              <Button onClick={handleClose} className="w-full">
-                {copied ? 'Done' : 'I\'ve Saved My Key'}
+            {/* Info Section */}
+            <div className="bg-blue-50 border border-blue-200 p-5 rounded space-y-2">
+              <div className="text-blue-800 text-sm sm:text-base">
+                <strong>How to use:</strong> Include this key in the{' '}
+                <code className="bg-blue-100 px-1 py-0.5 rounded font-mono">
+                  data-token
+                </code>{' '}
+                attribute of your CarbonCut SDK script tag.
+              </div>
+            </div>
+
+            <div className="border-b mx-auto mt-5" />
+
+            {/* ✅ Final Button - right aligned */}
+            <DialogFooter className="flex justify-end">
+              <Button
+                onClick={handleClose}
+                className="bg-tertiary text-white hover:text-tertiary hover:bg-white border border-tertiary hover:border-tertiary"
+              >
+                {copied ? 'Done' : "I've Saved My Key"}
               </Button>
             </DialogFooter>
           </div>

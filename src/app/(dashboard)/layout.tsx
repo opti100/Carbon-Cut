@@ -32,6 +32,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { GoogleAdsConnectDialog } from '@/components/dashboard/google-ads/GoogleAdsConnectDialog';
+import Image from 'next/image';
 
 export default function DashboardLayout({
   children,
@@ -81,15 +82,16 @@ export default function DashboardLayout({
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-8">
               <Link href="/campaigns" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CC</span>
-                </div>
-                <span className="text-xl font-bold text-gray-900 hidden sm:block">
-                  CarbonCut
-                </span>
+                <Image
+                  src="/ccLogo.svg"
+                  alt="CarbonCut Logo"
+                  width={128}
+                  height={64}
+                  className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+                />
               </Link>
 
-              <nav className="hidden md:flex items-center gap-1">
+              <nav className="hidden md:flex items-center gap-3">
                 {navigation.map((item) => (
                   <Link key={item.name} href={item.href}>
                     <Button
@@ -132,8 +134,8 @@ export default function DashboardLayout({
                 )}
               </Button>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+          
+               
                   <Button
                     variant="ghost"
                     className="flex items-center gap-3 hover:bg-gray-100"
@@ -144,46 +146,18 @@ export default function DashboardLayout({
                       </AvatarFallback>
                     </Avatar>
                     <div className="hidden md:flex flex-col items-start">
-                      <span className="text-sm font-medium text-gray-900">
-                        {user?.name || 'User'}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {user?.email}
-                      </span>
+                      <Link href="/profile" className="flex flex-col items-start">
+                        <span className="text-sm font-medium text-gray-900">
+                          {user?.name || 'User'}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {user?.email}
+                        </span>
+                      </Link>
                     </div>
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium">{user?.name || 'User'}</p>
-                      <p className="text-xs text-gray-500">{user?.email}</p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push('/profile')}>
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => router.push('/settings')}>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setConnectDialogOpen(true)}>
-                    <Link2 className="mr-2 h-4 w-4" />
-                    <span>Google Ads Integration</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => router.push('/reports')}>
-                    <FileText className="mr-2 h-4 w-4" />
-                    <span>My Reports</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Logout</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                
+            
 
               <Button
                 variant="ghost"
@@ -252,8 +226,8 @@ export default function DashboardLayout({
         open={connectDialogOpen}
         onOpenChange={setConnectDialogOpen}
         isConnected={status?.is_connected}
-        // onConnect={connect}
-        // onDisconnect={disconnect}
+      // onConnect={connect}
+      // onDisconnect={disconnect}
       />
     </div>
   );
