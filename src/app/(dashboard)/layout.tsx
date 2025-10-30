@@ -79,7 +79,8 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-16 relative">
+            {/* Logo (Left) */}
             <div className="flex items-center gap-8">
               <Link href="/campaigns" className="flex items-center gap-2">
                 <Image
@@ -87,26 +88,32 @@ export default function DashboardLayout({
                   alt="CarbonCut Logo"
                   width={128}
                   height={64}
-                  className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+                  className="w-24 sm:w-32 md:w-40 lg:w-48"
                 />
               </Link>
-
-              <nav className="hidden md:flex items-center gap-3">
-                {navigation.map((item) => (
-                  <Link key={item.name} href={item.href}>
-                    <Button
-                      variant="ghost"
-                      className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {item.name}
-                    </Button>
-                  </Link>
-                ))}
-              </nav>
             </div>
 
+            {/* Center Navigation */}
+            <nav
+              className="hidden sm:flex items-center gap-3 absolute left-1/2 -translate-x-1/2
+        max-sm:hidden"
+            >
+              {navigation.map((item) => (
+                <Link key={item.name} href={item.href}>
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-900 whitespace-nowrap"
+                  >
+                    <item.icon className="h-4 w-4" />
+                    {item.name}
+                  </Button>
+                </Link>
+              ))}
+            </nav>
+
+            {/* Right Side Controls */}
             <div className="flex items-center gap-3">
+              {/* Google Ads Connect Button */}
               <Button
                 variant="outline"
                 size="sm"
@@ -122,9 +129,6 @@ export default function DashboardLayout({
                   <>
                     <CheckCircle className="h-4 w-4 text-green-600" />
                     <span className="text-green-600">Google Ads</span>
-                    {/* <Badge variant="secondary" className="bg-green-100 text-green-700">
-                      Connected
-                    </Badge> */}
                   </>
                 ) : (
                   <>
@@ -134,48 +138,38 @@ export default function DashboardLayout({
                 )}
               </Button>
 
-          
-               
-                  <Button
-                    variant="ghost"
-                    className="flex items-center gap-3 hover:bg-gray-100"
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarFallback className="bg-gradient-to-br from-green-500 to-blue-600 text-white text-sm font-semibold">
-                        {getInitials(user?.name, user?.email)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="hidden md:flex flex-col items-start">
-                      <Link href="/profile" className="flex flex-col items-start">
-                        <span className="text-sm font-medium text-gray-900">
-                          {user?.name || 'User'}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {user?.email}
-                        </span>
-                      </Link>
-                    </div>
-                  </Button>
-                
-            
+              {/* Profile */}
+              <Button variant="ghost" className="flex items-center gap-3 hover:bg-gray-100">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-tertiary text-white text-sm font-semibold">
+                    {getInitials(user?.name, user?.email)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="hidden md:flex flex-col items-start">
+                  <Link href="/profile" className="flex flex-col items-start">
+                    <span className="text-sm font-medium text-gray-900">
+                      {user?.name || 'User'}
+                    </span>
+                    <span className="text-xs text-gray-500">{user?.email}</span>
+                  </Link>
+                </div>
+              </Button>
 
+              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden"
+                className="sm:flex md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
-                {mobileMenuOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </Button>
             </div>
           </div>
 
+          {/* Mobile Dropdown */}
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t">
+            <div className="sm:hidden py-4 border-t">
               <nav className="flex flex-col gap-2">
                 <Button
                   variant="ghost"
@@ -217,6 +211,7 @@ export default function DashboardLayout({
           )}
         </div>
       </header>
+
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}

@@ -90,7 +90,7 @@ export default function GoogleAdsCallbackPage() {
   }, [searchParams, queryClient]); 
 
   const handleCreateGoogleAdsAccount = () => {
-    window.open('https://ads.google.com/home/get-started/', '_blank');
+    window.open('https://business.google.com/in/google-ads/', '_blank');
   };
 
   const handleRetryConnection = () => {

@@ -33,6 +33,9 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiKeysList } from "@/components/dashboard/api-key/ApiList";
 import { CreateApiKeyDialog } from "@/components/dashboard/api-key/CreateAPIKeyDialog";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function ProfilePage() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -46,6 +49,20 @@ export default function ProfilePage() {
     phoneNumber: user?.phoneNumber || "",
     companyName: user?.companyName || "",
   });
+    const getInitials = (name?: string, email?: string) => {
+    if (name) {
+      return name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    if (email) {
+      return email.slice(0, 2).toUpperCase();
+    }
+    return 'U';
+  };
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -123,11 +140,10 @@ export default function ProfilePage() {
                   if (item.href) router.push(item.href);
                   else if (item.onClick) item.onClick();
                 }}
-                className={`w-full flex items-center justify-center md:justify-start gap-3 px-4 py-3 rounded-lg text-left transition-colors whitespace-nowrap ${
-                  item.active
+                className={`w-full flex items-center justify-center md:justify-start gap-3 px-4 py-3 rounded-lg text-left transition-colors whitespace-nowrap ${item.active
                     ? "text-orange-500"
                     : ""
-                }`}
+                  }`}
               >
                 <item.icon className="h-4 w-4 flex-shrink-0" />
                 <span className="text-sm font-medium truncate">{item.label}</span>
@@ -189,6 +205,23 @@ export default function ProfilePage() {
                     </AlertDescription>
                   </Alert>
                 )}
+
+                <div  className="flex items-center gap-3 ">
+                <Avatar className="h-14 w-14">
+                  <AvatarFallback className="bg-tertiary text-white text-2xl font-semibold">
+                    {getInitials(user?.name, user?.email)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="hidden md:flex flex-col items-start">
+                  <div className="flex flex-col items-start">
+                    <span className=" font-semibold text-gray-900 mt-4">
+                      {user?.name || 'User'}
+                    </span>
+                    <span className="text-gray-500">{user?.email}</span>
+                    <span className="text-tertiary  flex"> <Image src="/verifiedTick.svg" alt="Verified" width={16} height={16} className="mr-1" />  Verified Account </span>
+                  </div>
+                </div>
+              </div>
 
                 <form onSubmit={handleSubmit}>
                   <div className="space-y-6">
