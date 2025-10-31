@@ -254,7 +254,7 @@ export const blogThreeeData: BlogPost = {
   id: '3',
   slug: '3',
   category: 'Introducing CarbonCut',
-  title: 'Fast, Accurate, Authorised, Real-Time Marketing Carbon Emissions & Auto-Offsetting.',
+  title: 'Introducing CarbonCut: Fast, Accurate, Authorised, Real-Time Marketing Carbon Emissions & Auto-Offsetting.',
   excerpt: 'As the world pushes for credible sustainability, businesses are under mounting pressure not only to measure and report their environmental impact but also to neutralise what they can’t avoid.',
    date: '2025-10-15',
   author: {

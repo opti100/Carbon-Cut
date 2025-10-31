@@ -50,7 +50,9 @@ export default function MarketingCalculator() {
 
     loadCountries();
   }, []);
-  const calcCO2AI = async (activity: ActivityData): Promise<number> => {
+
+  // Memoize calcCO2AI to prevent it from changing on every render
+  const calcCO2AI = useCallback(async (activity: ActivityData): Promise<number> => {
     const activityId = activity.id;
 
     if (calculatingEmissions[activityId]) return 0;
@@ -132,8 +134,10 @@ export default function MarketingCalculator() {
     } finally {
       setCalculatingEmissions(prev => ({ ...prev, [activityId]: false }));
     }
-  };
-  useCallback(() => {
+  }, [calculatingEmissions, emissionResults]); // Add dependencies
+
+  // Memoize the recalculation function
+  const recalculateAllActivities = useCallback(() => {
     activities.forEach(activity => {
       const shouldRecalculate =
         emissionResults[activity.id] === undefined ||
@@ -145,9 +149,7 @@ export default function MarketingCalculator() {
     });
   }, [activities, emissionResults, calculatingEmissions, calcCO2AI]);
 
-
-
-  const getDisplayCO2 = (activity: ActivityData): number => {
+  const getDisplayCO2 = useCallback((activity: ActivityData): number => {
     if (emissionResults[activity.id] !== undefined) {
       return emissionResults[activity.id];
     }
@@ -162,9 +164,9 @@ export default function MarketingCalculator() {
     }
 
     return 0;
-  };
+  }, [emissionResults, calculatingEmissions, calcCO2AI]);
 
-  const updateActivity = (activityId: number, updates: Partial<ActivityData>) => {
+  const updateActivity = useCallback((activityId: number, updates: Partial<ActivityData>) => {
     setActivities(prev => prev.map(activity => {
       if (activity.id === activityId) {
         const updatedActivity = { ...activity, ...updates };
@@ -180,19 +182,19 @@ export default function MarketingCalculator() {
       }
       return activity;
     }));
-  };
+  }, [calcCO2AI]);
 
-  const addActivity = async (activityData: Omit<ActivityData, 'id'>) => {
+  const addActivity = useCallback(async (activityData: Omit<ActivityData, 'id'>) => {
     const newActivity: ActivityData = {
       ...activityData,
       id: activities.length + 1
     };
 
-    setActivities([...activities, newActivity]);
+    setActivities(prev => [...prev, newActivity]);
     await calcCO2AI(newActivity);
-  };
+  }, [activities.length, calcCO2AI]);
 
-  const calculateTotals = () => {
+  const calculateTotals = useCallback(() => {
     let total = 0;
     const byChannel: Record<string, number> = {};
     const byMarket: Record<string, number> = {};
@@ -213,7 +215,7 @@ export default function MarketingCalculator() {
       byMarket,
       byScope
     };
-  };
+  }, [activities, getDisplayCO2]);
 
   const totals = calculateTotals();
 

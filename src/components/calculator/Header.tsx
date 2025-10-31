@@ -19,7 +19,7 @@ import {
         { label: 'CarbonCalculator', href: '/calculator' },
         { label: 'CarbonLive', href: '/live' },
         { label: 'CarbonOffset', href: '/offset' },
-        { label: 'CarbonToken', href: '/token' },
+       
       ]
     },
     { label: 'Solutions', href: '/solutions' },
@@ -27,18 +27,20 @@ import {
     { label: 'Resources', href: '/resources' },
   ]
 
-const Header = () => {
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
-
- const AURORA_COLORS = [
+   const AURORA_COLORS = [
     "#00CC33",
     "#00AA2B",
     "#00EE3B",
     "#009928",
     "#00FF40",
   ]
+const Header = () => {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+
 
   const color = useMotionValue(AURORA_COLORS[0])
 

@@ -363,6 +363,6 @@ export const blogFourData: BlogPost = {
     avatar: '/'
   },
   readTime: '8 min read',
-  image: '/blogs/blogThree.jpg',
+  image: '/blogs/blogFour.png',
   featured: true,
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -48,6 +48,9 @@ export default function UserDashboard() {
   const [hasSearched, setHasSearched] = useState(false);
   const [paymentVerifying, setPaymentVerifying] = useState(false);
   const [paymentMessage, setPaymentMessage] = useState('');
+
+  // Use ref to track if initial load has happened to prevent duplicate API calls
+  const initialLoadDone = useRef(false);
 
   // Memoized fetch function to prevent infinite re-renders
   const fetchUserData = useCallback(async (email?: string) => {
@@ -98,7 +101,7 @@ export default function UserDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [emailInput, isAuthenticated]);
+  }, []); // Remove emailInput from dependencies
 
   // Memoized fetch function for authenticated users
   const fetchUserReports = useCallback(async (email: string) => {
@@ -183,37 +186,48 @@ export default function UserDashboard() {
 
   // Effect to handle initial data loading and payment verification
   useEffect(() => {
-    // Check for payment success
-    const paymentStatus = searchParams.get('payment');
-    const sessionId = searchParams.get('session_id');
-    
-    if (paymentStatus === 'success' && sessionId) {
-      console.log('Payment success detected, verifying...', sessionId);
-      verifyPayment(sessionId);
-    } else if (paymentStatus === 'cancelled') {
-      setPaymentMessage('⚠️ Payment was cancelled. You can try again from your report.');
-      setTimeout(() => setPaymentMessage(''), 5000);
-    }
+    // Prevent duplicate initial loads
+    if (initialLoadDone.current) return;
 
-    // Load user data
-    if (isAuthenticated && user?.email) {
-      setUserData({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        phoneNumber: user.phoneNumber,
-        companyName: user.companyName,
-        createdAt: new Date().toISOString()
-      });
-      fetchUserReports(user.email);
-    } else if (!authLoading && !isAuthenticated) {
-      const emailFromUrl = searchParams.get('email');
-      if (emailFromUrl && emailFromUrl !== emailInput) {
-        setEmailInput(emailFromUrl);
-        fetchUserData(emailFromUrl);
+    const handleInitialLoad = async () => {
+      // Check for payment success
+      const paymentStatus = searchParams.get('payment');
+      const sessionId = searchParams.get('session_id');
+      
+      if (paymentStatus === 'success' && sessionId) {
+        console.log('Payment success detected, verifying...', sessionId);
+        await verifyPayment(sessionId);
+      } else if (paymentStatus === 'cancelled') {
+        setPaymentMessage('⚠️ Payment was cancelled. You can try again from your report.');
+        setTimeout(() => setPaymentMessage(''), 5000);
       }
+
+      // Load user data
+      if (isAuthenticated && user?.email) {
+        setUserData({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          phoneNumber: user.phoneNumber,
+          companyName: user.companyName,
+          createdAt: new Date().toISOString()
+        });
+        await fetchUserReports(user.email);
+      } else if (!authLoading && !isAuthenticated) {
+        const emailFromUrl = searchParams.get('email');
+        if (emailFromUrl) {
+          setEmailInput(emailFromUrl);
+          await fetchUserData(emailFromUrl);
+        }
+      }
+
+      initialLoadDone.current = true;
+    };
+
+    if (!authLoading) {
+      handleInitialLoad();
     }
-  }, [isAuthenticated, user, authLoading, searchParams, fetchUserReports, verifyPayment]);
+  }, [isAuthenticated, user, authLoading, searchParams, fetchUserReports, verifyPayment, fetchUserData]);
 
   const downloadReport = async (reportId: string) => {
     try {
@@ -276,7 +290,7 @@ export default function UserDashboard() {
 
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchUserData();
+    fetchUserData(emailInput);
   };
 
   const handleLogout = async () => {
