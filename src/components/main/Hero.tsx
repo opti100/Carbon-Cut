@@ -238,7 +238,7 @@ const Hero = () => {
                 animationDuration={300}
                 textClassName=''
                 className="inline-block text-tertiary"
-                words={["Calculate", "Report", "Offset"]}
+                words={["Calculate", "Reduce", "Offset"]}
               />
               <span className="text-black">marketing</span>
             </div>
