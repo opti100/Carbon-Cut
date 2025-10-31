@@ -18,10 +18,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { ApiKeyService } from '@/services/apikey/apikey';
 import { VerifyInstallationDialog } from './VerifyInstallationDialog';
+import { ConversionRulesDialog } from './ConversionRuleDialog';
 
 export function ApiKeysList() {
   const [deleteKeyId, setDeleteKeyId] = useState<string | null>(null);
   const [verifyKeyId, setVerifyKeyId] = useState<string | null>(null);
+  // hold the apiKey id for which the conversion rules dialog is open
+  const [conversionRulesKeyId, setConversionRulesKeyId] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -59,12 +62,12 @@ export function ApiKeysList() {
   // Handle the response structure from backend
   const apiKeys = data?.data?.api_keys || [];
 
-  console.log('📊 Current state:', { 
-    isLoading, 
-    hasError: !!error, 
+  console.log('📊 Current state:', {
+    isLoading,
+    hasError: !!error,
     dataExists: !!data,
     apiKeysCount: apiKeys.length,
-    rawData: data 
+    rawData: data
   });
 
   if (isLoading) {
@@ -83,9 +86,9 @@ export function ApiKeysList() {
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
           Failed to load API keys: {error instanceof Error ? error.message : 'Unknown error'}
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => refetch()}
             className="ml-4"
           >
@@ -114,6 +117,8 @@ export function ApiKeysList() {
   }
 
   const selectedApiKey = apiKeys.find((key) => key.id === verifyKeyId);
+  // selected conversion rules apiKey (for Verify dialog it's separate)
+  const selectedConversionApiKey = apiKeys.find((k) => k.id === conversionRulesKeyId);
 
   return (
     <>
@@ -174,6 +179,20 @@ export function ApiKeysList() {
                 </div>
 
                 <div className="flex items-center gap-2">
+                  <Button onClick={() => setConversionRulesKeyId(apiKey.id)}>
+                    Manage Conversions
+                  </Button>
+
+                  <ConversionRulesDialog
+                    apiKeyId={apiKey.id}
+                    apiKeyName={apiKey.name}
+                    open={conversionRulesKeyId === apiKey.id}
+                    onOpenChange={(open) => {
+                      // when dialog is closed, clear the id; when opened via dialog control, ensure id is set
+                      if (open) setConversionRulesKeyId(apiKey.id);
+                      else setConversionRulesKeyId(null);
+                    }}
+                  />
                   <Button
                     variant="outline"
                     size="sm"
@@ -190,9 +209,8 @@ export function ApiKeysList() {
                     title={apiKey.is_active ? 'Deactivate' : 'Activate'}
                   >
                     <Power
-                      className={`h-4 w-4 ${
-                        apiKey.is_active ? 'text-green-600' : 'text-gray-400'
-                      }`}
+                      className={`h-4 w-4 ${apiKey.is_active ? 'text-green-600' : 'text-gray-400'
+                        }`}
                     />
                   </Button>
                   <Button
@@ -218,6 +236,14 @@ export function ApiKeysList() {
           apiKeyId={selectedApiKey.id}
           apiKeyName={selectedApiKey.name}
           apiKeyPrefix={selectedApiKey.prefix}
+        />
+      )}
+      {selectedConversionApiKey && (
+        <ConversionRulesDialog
+          apiKeyId={selectedConversionApiKey.id}
+          apiKeyName={selectedConversionApiKey.name}
+          open={conversionRulesKeyId !== null}
+          onOpenChange={(open) => !open && setConversionRulesKeyId(null)}
         />
       )}
     </>
