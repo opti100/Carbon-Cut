@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ConnectGoogleAds from "@/components/live/ConnectGoogleAds";
 import CreateApiKey from "@/components/live/CreateApiKey";
 import CreateCampaign from "@/components/live/CreateCampaign";
@@ -15,9 +15,7 @@ import StepLabel from '@mui/material/StepLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { styled } from '@mui/material/styles';
 
-
 const CustomStepConnector = styled(StepConnector)(({ theme }) => ({
- 
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
     top: 10,
     left: 'calc(-50% + 16px)',
@@ -41,34 +39,42 @@ const CustomStepConnector = styled(StepConnector)(({ theme }) => ({
 }));
 
 export default function Page() {
-  // const [activeStep, setActiveStep] = useState(0); // MUI uses 0-based indexing
-   const [activeStep, setActiveStep] = useState(1); // 1-based indexing for easier understanding
-   const [currentStep,setCurrentStep] = useState(1); // 1-based indexing for easier understanding
+  const [currentStep, setCurrentStep] = useState(1); // 1-based indexing for easier understanding
+
+  // Sync Material-UI stepper with current step (convert to 0-based)
+  const activeStepForMUI = currentStep - 1;
 
   const steps = [
     'Connect Google Ads Account',
-    'Create API Key & SDK',
+    'Create API Key & SDK', 
     'Create Campaign',
     'Campaign Status',
   ];
 
+  // Handle step completion and auto-advance
+  const handleStepComplete = (stepNumber: number) => {
+    if (stepNumber === currentStep) {
+      setCurrentStep(stepNumber + 1);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-neutral-200 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl">
-        
-        {/* Progress Card */}
-        <div className="bg-white shadow-lg rounded-xl p-6 w-full">
-          <div className="flex flex-col">
+    <>
+      <div className=" bg-neutral-200 rounded-lg flex items-center justify-center p-4 overflow-hidden">
+        <div className="w-full max-w-7xl h-full flex flex-col">
+          
+          {/* Progress Card */}
+          <div className="bg-white shadow-lg rounded-xl p-6 w-full flex-shrink-0">
             
-            {/* Material-UI Stepper */}
-            <Box sx={{ width: '100%', mb: 4 }}>
+            {/* Material-UI Stepper - Synced with currentStep */}
+            <Box sx={{ width: '100%', mb: 3 }}>
               <Stepper 
-                activeStep={activeStep} 
+                activeStep={activeStepForMUI}
                 alternativeLabel
                 connector={<CustomStepConnector />}
               >
-                {steps.map((label) => (
-                  <Step key={label}>
+                {steps.map((label, index) => (
+                  <Step key={label} completed={currentStep > index + 1}>
                     <StepLabel 
                       StepIconProps={{
                         sx: {
@@ -89,51 +95,84 @@ export default function Page() {
                 ))}
               </Stepper>
             </Box>
+          </div>
 
-            {/* Content Area */}
-            <div className="w-full bg-neutral-50 rounded-lg p-6 sm:p-8 mt-4 min-h-[300px] sm:min-h-[350px] flex items-center justify-center border border-gray-200">
-              <div className="text-center">
-                <p className="text-xl font-semibold text-gray-700 mb-3">
-                  {steps[activeStep]}
+          {/* Four Cards Section - Flex-1 to take remaining space */}
+          <div className="flex-1 bg-white shadow-lg rounded-xl p-6 mt-4 overflow-auto">
+            <div className="h-full flex flex-col">
+              
+              {/* Current Step Title */}
+              <div className="text-center mb-6">
+                <p className="text-xl font-semibold text-gray-700">
+                  Step {currentStep}: {steps[currentStep - 1]}
                 </p>
-                <p className="text-gray-500 mb-6">
-                  {activeStep === 0 && "Connect your Google Ads account to get started"}
-                  {activeStep === 1 && "Generate API keys and set up the SDK"}
-                  {activeStep === 2 && "Create and configure your advertising campaign"}
-                  {activeStep === 3 && "Monitor your campaign performance and status"}
+                <p className="text-gray-500 text-sm mt-2">
+                  {currentStep === 1 && "Connect your Google Ads account to get started"}
+                  {currentStep === 2 && "Generate API keys and set up the SDK"} 
+                  {currentStep === 3 && "Create and configure your advertising campaign"}
+                  {currentStep === 4 && "Monitor your campaign performance and status"}
                 </p>
+              </div>
+
+              {/* Four Cards Grid - Fixed minimal height for all cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1">
+                {/* All cards have same fixed height: h-64 = 256px (minimal height) */}
+                <div className="h-64"> {/* ADJUST THIS VALUE TO CHANGE ALL CARD HEIGHTS */}
+                  <ConnectGoogleAds 
+                    isActive={currentStep === 1} 
+                    isCompleted={currentStep > 1} 
+                    onComplete={() => handleStepComplete(1)} 
+                  />
+                </div>
                 
-                {/* Step Navigation Buttons */}
-                <div className="flex justify-center gap-4">
-                  <button
-                    onClick={() => setActiveStep((prev) => Math.max(prev - 1, 0))}
-                    disabled={activeStep === 0}
-                    className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Previous
-                  </button>
-                  <button
-                    onClick={() => setActiveStep((prev) => Math.min(prev + 1, steps.length - 1))}
-                    disabled={activeStep === steps.length - 1}
-                    className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Next
-                  </button>
+                <div className="h-64"> {/* SAME HEIGHT AS ABOVE */}
+                  <CreateApiKey 
+                    isActive={currentStep === 2} 
+                    isCompleted={currentStep > 2} 
+                    onComplete={() => handleStepComplete(2)} 
+                  />
+                </div>
+                
+                <div className="h-64"> {/* SAME HEIGHT AS ABOVE */}
+                  <CreateCampaign 
+                    isActive={currentStep === 3} 
+                    isCompleted={currentStep > 3} 
+                    onComplete={() => handleStepComplete(3)} 
+                  />
+                </div>
+                
+                <div className="h-64"> {/* SAME HEIGHT AS ABOVE */}
+                  <CampaignStatus 
+                    isActive={currentStep === 4} 
+                    isCompleted={currentStep > 4} 
+                  />
                 </div>
               </div>
-            </div>
 
+              {/* Navigation Buttons - COMMENTED OUT */}
+              {/*
+              <div className="flex justify-center gap-4 mt-6 flex-shrink-0">
+                <button
+                  onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentStep === 1}
+                  className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => setCurrentStep((prev) => Math.min(prev + 1, steps.length))}
+                  disabled={currentStep === steps.length}
+                  className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
+              </div>
+              */}
+              
+            </div>
           </div>
         </div>
-
-        {/* Uncomment if you want to use the original grid layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8 mt-8">
-          <ConnectGoogleAds isActive={currentStep === 1} isCompleted={currentStep > 1} onComplete={() => setCurrentStep(2)} />
-          <CreateApiKey isActive={currentStep === 2} isCompleted={currentStep > 2} onComplete={() => setCurrentStep(3)} />
-          <CreateCampaign isActive={currentStep === 3} isCompleted={currentStep > 3} onComplete={() => setCurrentStep(4)} />
-          <CampaignStatus isActive={currentStep === 4} isCompleted={currentStep > 4} />
-        </div>
       </div>
-    </div>
+    </>
   );
 }

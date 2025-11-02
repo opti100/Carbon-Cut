@@ -27,11 +27,14 @@ import {
   X,
   CheckCircle,
   AlertCircle,
-  Loader2
+  Loader2,
+  Radio // Add Radio icon for Live
 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GoogleAdsConnectDialog } from '@/components/dashboard/google-ads/GoogleAdsConnectDialog';
+import { CreateApiKeyDialog } from '@/components/dashboard/api-key/CreateAPIKeyDialog';
+import { CreateCampaignDialog } from '@/components/dashboard/campaign/CreateCampaignsDialog';
 import Image from 'next/image';
 
 export default function DashboardLayout({
@@ -40,10 +43,37 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user, isAuthenticated, logout } = useAuth();
-  const { status, isLoading: adsLoading, connect, disconnect } = useGoogleAds();
+  const { status, isLoading: adsLoading, connect, disconnect, checkConnection } = useGoogleAds();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [connectDialogOpen, setConnectDialogOpen] = useState(false);
+  const [createApiKeyDialogOpen, setCreateApiKeyDialogOpen] = useState(false);
+  const [createCampaignDialogOpen, setCreateCampaignDialogOpen] = useState(false);
+
+  // Listen for custom events from child components
+  useEffect(() => {
+    const handleOpenGoogleAdsDialog = () => {
+      setConnectDialogOpen(true);
+    };
+
+    const handleOpenApiKeyDialog = () => {
+      setCreateApiKeyDialogOpen(true);
+    };
+
+    const handleOpenCampaignDialog = () => {
+      setCreateCampaignDialogOpen(true);
+    };
+
+    window.addEventListener('openGoogleAdsDialog', handleOpenGoogleAdsDialog);
+    window.addEventListener('openCreateApiKeyDialog', handleOpenApiKeyDialog);
+    window.addEventListener('openCreateCampaignDialog', handleOpenCampaignDialog);
+    
+    return () => {
+      window.removeEventListener('openGoogleAdsDialog', handleOpenGoogleAdsDialog);
+      window.removeEventListener('openCreateApiKeyDialog', handleOpenApiKeyDialog);
+      window.removeEventListener('openCreateCampaignDialog', handleOpenCampaignDialog);
+    };
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -52,6 +82,7 @@ export default function DashboardLayout({
 
   const navigation = [
     { name: 'Campaigns', href: '/campaigns', icon: LayoutDashboard },
+    { name: 'Live', href: '/live', icon: Radio }, // Add Live navigation
     { name: 'Integrations', href: '/integrations', icon: Link2 },
   ];
 
@@ -68,6 +99,24 @@ export default function DashboardLayout({
       return email.slice(0, 2).toUpperCase();
     }
     return 'U';
+  };
+
+  // Handle successful connection
+  const handleConnectionSuccess = () => {
+    console.log('Google Ads connection successful');
+    // Refresh the connection status
+    checkConnection();
+    // Close the dialog
+    setConnectDialogOpen(false);
+  };
+
+  // Handle connect button click with error handling
+  const handleConnectClick = () => {
+    try {
+      setConnectDialogOpen(true);
+    } catch (error) {
+      console.error('Error opening connect dialog:', error);
+    }
   };
 
   if (!isAuthenticated) {
@@ -117,8 +166,9 @@ export default function DashboardLayout({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setConnectDialogOpen(true)}
+                onClick={handleConnectClick}
                 className="hidden md:flex items-center gap-2"
+                disabled={adsLoading}
               >
                 {adsLoading ? (
                   <>
@@ -175,11 +225,17 @@ export default function DashboardLayout({
                   variant="ghost"
                   className="w-full justify-start"
                   onClick={() => {
-                    setConnectDialogOpen(true);
+                    handleConnectClick();
                     setMobileMenuOpen(false);
                   }}
+                  disabled={adsLoading}
                 >
-                  {status?.is_connected ? (
+                  {adsLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <span>Checking...</span>
+                    </>
+                  ) : status?.is_connected ? (
                     <>
                       <CheckCircle className="mr-2 h-4 w-4 text-green-600" />
                       <span className="text-green-600">Google Ads Connected</span>
@@ -212,17 +268,26 @@ export default function DashboardLayout({
         </div>
       </header>
 
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
 
+      {/* Global Dialogs */}
       <GoogleAdsConnectDialog
         open={connectDialogOpen}
         onOpenChange={setConnectDialogOpen}
         isConnected={status?.is_connected}
-      // onConnect={connect}
-      // onDisconnect={disconnect}
+        onSuccess={handleConnectionSuccess}
+      />
+
+      <CreateApiKeyDialog
+        open={createApiKeyDialogOpen}
+        onOpenChange={setCreateApiKeyDialogOpen}
+      />
+
+      <CreateCampaignDialog
+        open={createCampaignDialogOpen}
+        onOpenChange={setCreateCampaignDialogOpen}
       />
     </div>
   );
