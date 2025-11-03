@@ -57,7 +57,7 @@ export default function CreateApiKey({ isActive, isCompleted, onComplete }: Prop
     <Card
       className={`
         h-full flex flex-col relative transition-all duration-300 overflow-hidden
-        ${isActive ? "ring-2 ring-blue-500 shadow-lg scale-105" : ""}
+        ${isActive ? "" : ""}
         ${isCompleteState ? "border-green-200 bg-green-50/30" : "border-gray-200 bg-white"}
         ${!isActive && !isCompleteState ? "opacity-60" : ""}
       `}
@@ -137,10 +137,7 @@ export default function CreateApiKey({ isActive, isCompleted, onComplete }: Prop
         </div>
       </div>
 
-      {/* Active Indicator */}
-      {isActive && !isCompleteState && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600" />
-      )}
+    
     </Card>
   );
 }

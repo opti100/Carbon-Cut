@@ -80,10 +80,7 @@ export default function CampaignStatus({ isActive, isCompleted }: Props) {
         </div>
       </div>
 
-      {/* Active Indicator */}
-      {isActive && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-500 to-green-600" />
-      )}
+   
     </Card>
   );
 }

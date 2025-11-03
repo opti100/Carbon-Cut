@@ -60,11 +60,11 @@ export default function Page() {
 
   return (
     <>
-      <div className=" bg-neutral-200 rounded-lg flex items-center justify-center p-4 overflow-hidden">
-        <div className="w-full max-w-7xl h-full flex flex-col">
+      <div className="  rounded-lg flex items-center justify-center p-4 overflow-hidden">
+        <div className="w-full max-w-7xl h-full flex flex-col mt-20">
           
           {/* Progress Card */}
-          <div className="bg-white shadow-lg rounded-xl p-6 w-full flex-shrink-0">
+          <div className=" rounded-xl p-6 w-full shrink-0">
             
             {/* Material-UI Stepper - Synced with currentStep */}
             <Box sx={{ width: '100%', mb: 3 }}>
@@ -95,29 +95,29 @@ export default function Page() {
                 ))}
               </Stepper>
             </Box>
-          </div>
+          {/* </div> */}
 
           {/* Four Cards Section - Flex-1 to take remaining space */}
-          <div className="flex-1 bg-white shadow-lg rounded-xl p-6 mt-4 overflow-auto">
+          {/* <div className="flex-1 bg-white shadow-lg rounded-xl p-6 mt-4 overflow-auto"> */}
             <div className="h-full flex flex-col">
               
               {/* Current Step Title */}
               <div className="text-center mb-6">
-                <p className="text-xl font-semibold text-gray-700">
+                {/* <p className="text-xl font-semibold text-gray-700">
                   Step {currentStep}: {steps[currentStep - 1]}
-                </p>
-                <p className="text-gray-500 text-sm mt-2">
+                </p> */}
+                {/* <p className="text-gray-500 text-sm mt-2">
                   {currentStep === 1 && "Connect your Google Ads account to get started"}
                   {currentStep === 2 && "Generate API keys and set up the SDK"} 
                   {currentStep === 3 && "Create and configure your advertising campaign"}
                   {currentStep === 4 && "Monitor your campaign performance and status"}
-                </p>
+                </p> */}
               </div>
 
               {/* Four Cards Grid - Fixed minimal height for all cards */}
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1">
                 {/* All cards have same fixed height: h-64 = 256px (minimal height) */}
-                <div className="h-64"> {/* ADJUST THIS VALUE TO CHANGE ALL CARD HEIGHTS */}
+                <div className="h-74"> 
                   <ConnectGoogleAds 
                     isActive={currentStep === 1} 
                     isCompleted={currentStep > 1} 
@@ -125,7 +125,7 @@ export default function Page() {
                   />
                 </div>
                 
-                <div className="h-64"> {/* SAME HEIGHT AS ABOVE */}
+                <div className="h-74"> 
                   <CreateApiKey 
                     isActive={currentStep === 2} 
                     isCompleted={currentStep > 2} 
@@ -133,7 +133,7 @@ export default function Page() {
                   />
                 </div>
                 
-                <div className="h-64"> {/* SAME HEIGHT AS ABOVE */}
+                <div className="h-74">
                   <CreateCampaign 
                     isActive={currentStep === 3} 
                     isCompleted={currentStep > 3} 
@@ -141,7 +141,7 @@ export default function Page() {
                   />
                 </div>
                 
-                <div className="h-64"> {/* SAME HEIGHT AS ABOVE */}
+                <div className="h-74"> 
                   <CampaignStatus 
                     isActive={currentStep === 4} 
                     isCompleted={currentStep > 4} 

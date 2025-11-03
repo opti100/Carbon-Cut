@@ -37,7 +37,7 @@ export default function ConnectGoogleAds({ isActive, isCompleted, onComplete, on
     <Card
       className={`
         h-full flex flex-col relative transition-all duration-300 overflow-hidden
-        ${isActive ? "ring-2 ring-blue-500 shadow-lg scale-105" : ""}
+        ${isActive ? "" : ""}
         ${isCompleted || isConnected ? "border-green-200 bg-green-50/30" : "border-gray-200 bg-white"}
         ${!isActive && !isCompleted && !isConnected ? "opacity-60" : ""}
       `}
@@ -115,10 +115,7 @@ export default function ConnectGoogleAds({ isActive, isCompleted, onComplete, on
         </div>
       </div>
 
-      {/* Active Indicator */}
-      {isActive && !isCompleted && !isConnected && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-600" />
-      )}
+    
     </Card>
   );
 }
