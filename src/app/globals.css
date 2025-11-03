@@ -203,7 +203,6 @@
   height: 100%;
 }
 
-
 *::selection {
   background-color: #00CC33; /* your custom blue */
   color: white; /* optional – changes the text color when selected */
