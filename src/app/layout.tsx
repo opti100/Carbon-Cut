@@ -46,10 +46,10 @@ export default function RootLayout({
 
         <Script 
           src="/carboncut.min.js"
-          data-token="cc_sXY4uqI7fkEOSQljRSQrSpjV94O2dX78s5hDd0mQhZSAJHHmetsPFagYCnt2upwY"
+          data-token="cc_mXGFQlyhMJUmhT8kozdJ8GRClOeLAZLUeS1YsLmE9VT41hVPw0KTF54IdFrnWamO"
           data-api-url="http://127.0.0.1:8000/api/v1/events/"
-          data-debug="false"
-          data-domain="http://localhost:3000/"
+          data-debug="true" 
+          data-domain="http://localhost:3000"
           />
 
         <Script id="plausible-analytics" strategy="afterInteractive">

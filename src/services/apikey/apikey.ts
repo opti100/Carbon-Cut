@@ -2,7 +2,10 @@ import {
   ApiKeysListResponse, 
   CreateApiKeyResponse,
   VerificationResult,
-  InstallationGuideResponse 
+  InstallationGuideResponse, 
+  ConversionRulesResponse,
+  CreateConversionRuleRequest,
+  ConversionRule
 } from "@/types/api-key";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
@@ -98,4 +101,50 @@ export class ApiKeyService {
       method: 'GET',
     });
   }
+  static async getConversionRules(keyId: string): Promise<ConversionRulesResponse> {
+    return fetchWithAuth(`${this.baseUrl}/${keyId}/conversion-rules/`, {
+      method: 'GET',
+    });
+  }
+
+  /**
+   * Create a new conversion rule
+   */
+  static async createConversionRule(
+    keyId: string,
+    ruleData: CreateConversionRuleRequest
+  ): Promise<{ success: boolean; data: { rule: ConversionRule } }> {
+    return fetchWithAuth(`${this.baseUrl}/${keyId}/conversion-rules/`, {
+      method: 'POST',
+      body: JSON.stringify(ruleData),
+    });
+  }
+
+  /**
+   * Update a conversion rule
+   */
+  static async updateConversionRule(
+    keyId: string,
+    ruleId: string,
+    updates: Partial<ConversionRule>
+  ): Promise<{ success: boolean }> {
+    return fetchWithAuth(`${this.baseUrl}/${keyId}/conversion-rules/${ruleId}/`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  /**
+   * Delete a conversion rule
+   */
+  static async deleteConversionRule(keyId: string, ruleId: string): Promise<{ success: boolean }> {
+    return fetchWithAuth(`${this.baseUrl}/${keyId}/conversion-rules/${ruleId}/`, {
+      method: 'DELETE',
+    });
+  }
+
+  static async toggleConversionRule(keyId: string, ruleId: string, isActive: boolean): Promise<{ success: boolean }> {
+    return this.updateConversionRule(keyId, ruleId, { is_active: isActive });
+  }
+
 }

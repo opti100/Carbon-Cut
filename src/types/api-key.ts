@@ -85,3 +85,59 @@ export interface InstallationGuideResponse {
     installation: InstallationGuide;
   };
 }
+export type ConversionRuleType = 'url' | 'click' | 'form_submit' | 'custom_event';
+export type MatchType = 'exact' | 'contains' | 'starts_with' | 'ends_with' | 'regex' | 'query_param';
+
+export interface ConversionRule {
+  id: string;
+  name: string;
+  rule_type: ConversionRuleType;
+  priority: number;
+  is_active: boolean;
+  conversion_count: number;
+  last_triggered_at: string | null;
+  created_at: string;
+  
+  // URL rules
+  url_pattern?: string;
+  match_type?: MatchType;
+  
+  // Click rules
+  css_selector?: string;
+  element_text?: string;
+  
+  // Form rules
+  form_id?: string;
+  
+  // Custom event rules
+  custom_event_name?: string;
+  
+  // Value tracking
+  track_value?: boolean;
+  value_selector?: string;
+  default_value?: number;
+}
+
+export interface CreateConversionRuleRequest {
+  name: string;
+  rule_type: ConversionRuleType;
+  url_pattern?: string;
+  match_type?: MatchType;
+  css_selector?: string;
+  element_text?: string;
+  form_id?: string;
+  custom_event_name?: string;
+  track_value?: boolean;
+  value_selector?: string;
+  default_value?: number;
+  priority?: number;
+}
+
+export interface ConversionRulesResponse {
+  success: boolean;
+  message: string;
+  data: {
+    rules: ConversionRule[];
+    total_count: number;
+  };
+}

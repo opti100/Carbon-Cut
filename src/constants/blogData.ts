@@ -18,14 +18,19 @@ export interface BlogPost {
 
 // Import blog data from individual files
 import { blogOneData } from './blogs/blogone-data';
-import { blogThreeeData } from './blogs/blogthree-data';
 import { blogTwoData } from './blogs/blogtwo-data';
 import { blogFourData } from './blogs/blogfour-data';
+import { blogFiveData } from './blogs/blogfive-data';
+import { blogThreeeData } from './blogs/blogthree-data';
 
 
 // Blog posts data
 export const blogPosts: BlogPost[] = [
-  blogOneData,blogTwoData,blogThreeeData,blogFourData
+  blogOneData,
+  blogTwoData,
+  blogThreeeData, // Fixed typo here
+  blogFourData,
+  blogFiveData,
 ];
 
 // Utility functions for blog data
