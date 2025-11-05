@@ -27,7 +27,7 @@ export const blogFiveContent = ()=>{
           Most organizations know their operational footprint inside out, yet few can say the same about their digital one.
         </p>
         <p className="mb-4">
-          Every click, ad impression, and video stream depends on a vast infrastructure of servers, data centers, networks, and devices, all consuming electricity and releasing CO₂. Behind every "digital" interaction lies something intensely physical: energy demand.
+          Every click, ad impression, and video stream depends on a vast infrastructure of servers, data centers, networks, and devices, all consuming electricity and releasing CO₂. Behind every &quot;digital&quot; interaction lies something intensely physical: energy demand.
         </p>
         <p className="mb-4">
           Recent studies estimate that the ICT sector (including data centers, networks, and user devices) accounts for between <strong>2.1% and 3.9%</strong> of global greenhouse gas emissions, roughly comparable to the aviation industry. Some reports, such as The Shift Project, suggest the internet alone could account for around <strong>3.7%</strong> of global emissions, and rising.
@@ -37,7 +37,7 @@ export const blogFiveContent = ()=>{
         </p>
         <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
           <p className="text-green-800 font-medium">
-            That's the gap CarbonCut was created to close: making these emissions measurable, auditable, and accountable in real time.
+            That&apos;s the gap CarbonCut was created to close: making these emissions measurable, auditable, and accountable in real time.
           </p>
         </div>
       </div>
@@ -62,7 +62,7 @@ export const blogFiveContent = ()=>{
         </div>
 
         <p className="mb-4">
-          Streaming video and digital advertising are particularly energy-intensive. For example, a single hour of HD video streaming emits between <strong>100g–200g of CO₂e</strong>, depending on network efficiency and power sources. Multiply that by billions of views daily, and the climate cost of "online engagement" becomes tangible.
+          Streaming video and digital advertising are particularly energy-intensive. For example, a single hour of HD video streaming emits between <strong>100g–200g of CO₂e</strong>, depending on network efficiency and power sources. Multiply that by billions of views daily, and the climate cost of &quot;online engagement&quot; becomes tangible.
         </p>
 
         <h3 className="text-2xl font-semibold text-gray-800 mb-4 mt-8">Why Most ESG Reports Miss It</h3>
@@ -73,13 +73,13 @@ export const blogFiveContent = ()=>{
           Even as frameworks like CSRD (EU), SECR (UK), and the upcoming SEC Climate Rule (US) tighten disclosure requirements, digital emissions often remain uncounted simply because teams lack the tools to quantify them.
         </p>
         <p className="mb-6">
-          But unmeasured doesn't mean nonexistent. For global enterprises, internet emissions can represent a substantial share of marketing, IT, and media operations, hiding in plain sight across the digital supply chain.
+          But unmeasured doesn&apos;t mean nonexistent. For global enterprises, internet emissions can represent a substantial share of marketing, IT, and media operations, hiding in plain sight across the digital supply chain.
         </p>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
           <p className="text-yellow-800">
-            <strong>💡 Related Reading:</strong> If you want to see how theory meets practice in digital sustainability, don't miss — 
-            <em>"Add a Carbon Column: Turning Your Media Plan Into CO₂e, Fast."</em>
+            <strong>💡 Related Reading:</strong> If you want to see how theory meets practice in digital sustainability, don&apos;t miss — 
+            <em>&quot;Add a Carbon Column: Turning Your Media Plan Into CO₂e, Fast.&quot;</em>
           </p>
         </div>
       </section>
@@ -93,7 +93,7 @@ export const blogFiveContent = ()=>{
           Traditional sustainability models were designed for the factory age. Today, economic value is created in data centers, ad networks, and AI models — the new industrial engines.
         </p>
         <p className="mb-4">
-          A sustainability professional who ignores internet emissions is like a supply chain manager who overlooks transportation. The digital layer is no longer peripheral; it's foundational to how businesses operate, communicate, and grow.
+          A sustainability professional who ignores internet emissions is like a supply chain manager who overlooks transportation. The digital layer is no longer peripheral; it&apos;s foundational to how businesses operate, communicate, and grow.
         </p>
         <p className="mb-6">
           Ignoring that layer means leaving a major part of the carbon ledger blank. A true expert must recognize that the internet carbon footprint is a material risk, one that demands visibility, not avoidance.
@@ -133,7 +133,7 @@ export const blogFiveContent = ()=>{
 
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-6">
           <p className="text-gray-800 italic">
-            "For sustainability teams, these are not optional disclosures; they're part of a company's true footprint. As <em>Nature</em> (2020) reported, 'data-driven economies risk underestimating emissions by ignoring digital operations in Scope 3.'"
+            &quot;For sustainability teams, these are not optional disclosures; they&apos;re part of a company&apos;s true footprint. As <em>Nature</em> (2020) reported, &apos;data-driven economies risk underestimating emissions by ignoring digital operations in Scope 3.&apos;&quot;
           </p>
         </div>
 
@@ -158,7 +158,7 @@ export const blogFiveContent = ()=>{
 
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
           <p className="text-green-800">
-            <strong>🌍 Try It Yourself:</strong> Curious what your campaign emits? Try <a href="#" className="text-green-600 underline hover:text-green-800">CarbonCut's free Internet Emissions Calculator</a>.
+            <strong>🌍 Try It Yourself:</strong> Curious what your campaign emits? Try <a href="#" className="text-green-600 underline hover:text-green-800">CarbonCut&apos;s free Internet Emissions Calculator</a>.
           </p>
         </div>
       </section>
@@ -185,7 +185,7 @@ export const blogFiveContent = ()=>{
         </div>
 
         <p className="mb-6">
-          Recognizing that shift defines expertise. The next generation of sustainability professionals won't just count emissions; they'll connect marketing data, server usage, and carbon intensity into one continuous view.
+          Recognizing that shift defines expertise. The next generation of sustainability professionals won&apos;t just count emissions; they&apos;ll connect marketing data, server usage, and carbon intensity into one continuous view.
         </p>
 
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">From Reporting to Responsibility</h3>
@@ -193,7 +193,7 @@ export const blogFiveContent = ()=>{
           Regulators no longer accept pledges without proof. As CSRD, SECR, and the SEC Climate Rule roll out, real-time Scope 3 tracking will become non-negotiable. Sustainability teams that fail to include internet emissions in reporting will soon face compliance and reputational risks alike.
         </p>
         <p className="mb-6">
-          CarbonCut's framework aligns with this shift, offering auditable, API-integrated measurement that maps seamlessly to reporting standards. It's not about more paperwork; it's about measurable climate accountability.
+          CarbonCut&apos;s framework aligns with this shift, offering auditable, API-integrated measurement that maps seamlessly to reporting standards. It&apos;s not about more paperwork; it&apos;s about measurable climate accountability.
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
@@ -208,10 +208,10 @@ export const blogFiveContent = ()=>{
         <h2 className="text-3xl font-bold text-gray-900 mb-6">Reframing the Future — From Experts to Enablers</h2>
         
         <p className="mb-4">
-          The sustainability leaders of tomorrow won't just manage reports; they'll enable organizations to decarbonize in real time. The internet's footprint, once invisible, is now measurable, optimizable, and offsettable.
+          The sustainability leaders of tomorrow won&apos;t just manage reports; they&apos;ll enable organizations to decarbonize in real time. The internet&apos;s footprint, once invisible, is now measurable, optimizable, and offsettable.
         </p>
         <p className="mb-4">
-          As AI, streaming, and e-commerce expand, the carbon emissions of internet advertising and digital infrastructure will only grow. The question isn't whether to act, but how quickly sustainability frameworks evolve to include them.
+          As AI, streaming, and e-commerce expand, the carbon emissions of internet advertising and digital infrastructure will only grow. The question isn&apos;t whether to act, but how quickly sustainability frameworks evolve to include them.
         </p>
         <p className="mb-6">
           Those who integrate sustainable marketing and digital carbon accountability early will lead the next ESG frontier. The rest risk falling behind a wave of regulation, and a rising generation of climate-conscious consumers.
@@ -223,13 +223,13 @@ export const blogFiveContent = ()=>{
         <h2 className="text-3xl font-bold text-gray-900 mb-6">Closing Summary</h2>
         
         <p className="mb-4">
-          If sustainability expertise doesn't include the internet, it's incomplete. The digital world has a physical cost: every byte burns watts, and every watt emits carbon. Yet that cost is now measurable through science and technology.
+          If sustainability expertise doesn&apos;t include the internet, it&apos;s incomplete. The digital world has a physical cost: every byte burns watts, and every watt emits carbon. Yet that cost is now measurable through science and technology.
         </p>
         <p className="mb-4">
           CarbonCut exists to make this accountability practical, tracking, reducing, and offsetting internet emissions with verified, real-time data.
         </p>
         <p className="text-xl font-semibold text-gray-900">
-          The next sustainability revolution won't start in factories — it'll start in the cloud.
+          The next sustainability revolution won&apos;t start in factories — it&apos;ll start in the cloud.
         </p>
       </section>
 
