@@ -14,13 +14,15 @@ import PreFooter from '../main/PreFooter';
 import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
 import { BlogThreeContent } from '@/constants/blogs/blogthree-data';
 import { BlogFourContent } from '@/constants/blogs/blogfour-data';
+import { blogFiveContent } from '@/constants/blogs/blogfive-data';
 
 // Blog content component mapping
 const blogContentComponents: Record<string, React.ComponentType> = {
   '1': BlogOneContent,
   '2': BlogTwoContent,
   '3': BlogThreeContent,
-  '4': BlogFourContent
+  '4': BlogFourContent,
+  '5': blogFiveContent,
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
