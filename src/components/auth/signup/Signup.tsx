@@ -20,8 +20,9 @@ interface SignupData {
 }
 
 const sendSignupOTP = async (data: SignupData) => {
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
     console.log('Sending OTP for:', data)
-    const response = await fetch('http://localhost:8000/api/v1/auth/send-otp/', {
+    const response = await fetch(`${BASE_URL}/auth/send-otp/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -40,8 +41,9 @@ const sendSignupOTP = async (data: SignupData) => {
 }
 
 const verifySignupOTP = async (data: SignupData & { otp: string }) => {
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
     console.log('Verifying OTP for:', data.email, 'with OTP:', data.otp)
-    const response = await fetch('http://localhost:8000/api/v1/auth/verify-otp/', {
+    const response = await fetch(`${BASE_URL}/auth/verify-otp/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -81,11 +81,12 @@ export default function ProfilePage() {
     }
     return 'U';
   };
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL 
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
       const response = await fetch(
-        "http://localhost:8000/api/v1/auth/update-profile/",
+        "/auth/update-profile/",
         {
           method: "PATCH",
           credentials: "include",

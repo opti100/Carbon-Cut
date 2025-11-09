@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 const makeRequest = async (endpoint: string, options: RequestInit = {}) => {
   const response = await fetch(`${API_BASE}${endpoint}`, {

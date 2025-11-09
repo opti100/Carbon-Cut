@@ -45,7 +45,7 @@ export const useAuth = () => {
   return context;
 };
 
-const API_BASE = 'http://localhost:8000/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 const getCookie = (name: string): string | null => {
   if (typeof document === 'undefined') return null;
