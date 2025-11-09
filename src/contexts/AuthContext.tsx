@@ -64,7 +64,7 @@ const deleteCookie = (name: string) => {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
-const makeRequest = async (url: string, options: RequestInit = {}) => {
+export const makeRequest = async (url: string, options: RequestInit = {}) => {
   const token = getCookie('auth-token');
   
   const headers: Record<string, string> = {

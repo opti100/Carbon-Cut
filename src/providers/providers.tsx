@@ -10,10 +10,12 @@ import { GoogleAdsProvider } from '@/contexts/GoogleAdsContext'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,
-      gcTime: 10 * 60 * 1000,
-      retry: 3,
-      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes default
+      gcTime: 10 * 60 * 1000, // 10 minutes in cache
+      retry: 1,
+      refetchOnWindowFocus: false, // Disable global refetch on focus
+      refetchOnMount: false, // Disable global refetch on mount
+      refetchOnReconnect: true, // Only refetch on reconnect
     },
     mutations: {
       retry: 1,
