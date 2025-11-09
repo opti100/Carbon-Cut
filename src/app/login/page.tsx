@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Mail, Shield, Loader2, ArrowLeft, CheckCircle } from "lucide-react"
 import { useAuth } from '@/contexts/AuthContext'
+import { toast } from 'sonner'
 
 const sendOTP = async ({ email }: { email: string }) => {
     const response = await fetch('http://127.0.0.1:8000/api/v1/auth/send-otp/', {
@@ -21,7 +22,7 @@ const sendOTP = async ({ email }: { email: string }) => {
         body: JSON.stringify({ email }),
     })
 
-    if (!response.ok) { 
+    if (!response.ok) {
         const error = await response.json()
         throw new Error(error.message || 'Failed to send OTP')
     }
@@ -53,7 +54,14 @@ const LoginPage = () => {
         mutationFn: () => login(email, otp),
         onSuccess: (data) => {
             console.log('Login successful:', data)
-            router.push('/campaigns')
+            toast("Event has been created", {
+                description: "Sunday, December 03, 2023 at 9:00 AM",
+                action: {
+                    label: "Undo",
+                    onClick: () => console.log("Undo"),
+                },
+            })
+            router.push('/dashboard')
             router.refresh()
         },
         onError: (error: Error) => {
@@ -102,10 +110,10 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="w-full lg:w-1/2 flex flex-col bg-background">
                 {/* Logo Section */}
-                <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
+                {/* <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
                     <div className="flex items-center space-x-3">
                         <Image
                             src="/logo.png"
@@ -115,7 +123,7 @@ const LoginPage = () => {
                             className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 xl:w-20 xl:h-20"
                         />
                     </div>
-                </div>
+                </div> */}
 
                 {/* Main Form Container */}
                 <div className="flex-1 flex items-center justify-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
@@ -126,7 +134,7 @@ const LoginPage = () => {
                                     {step === 'email' ? 'Welcome Back' : 'Verify Your Email'}
                                 </CardTitle>
                                 <CardDescription className="text-muted-foreground text-xs sm:text-sm lg:text-base leading-relaxed px-2 sm:px-0">
-                                    {step === 'email' 
+                                    {step === 'email'
                                         ? 'Enter your email to receive a login code'
                                         : (
                                             <>
