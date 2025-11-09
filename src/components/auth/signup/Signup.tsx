@@ -69,14 +69,12 @@ const SignupPage = () => {
     const [otp, setOtp] = useState('')
     const [step, setStep] = useState<'form' | 'otp'>('form')
     const router = useRouter()
-    // const { setUser } = useAuth() 
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get('redirectTo') || '/campaigns';
 
     const sendOTPMutation = useMutation({
         mutationFn: sendSignupOTP,
         onSuccess: (data) => {
-
             console.log('OTP sent successfully:', data)
             if (data.debug?.otp) {
                 console.log('🔑 Development OTP:', data.debug.otp)
@@ -87,13 +85,11 @@ const SignupPage = () => {
             console.error('Send OTP error:', error.message)
         }
     })
+
     const verifyOTPMutation = useMutation({
         mutationFn: (data: SignupData & { otp: string }) => verifySignupOTP(data),
         onSuccess: async (data) => {
             console.log('Account created successfully:', data)
-            if (data.user) {
-                // setUser(data.user)
-            }
             router.push(redirectTo)
             router.refresh()
         },
@@ -134,52 +130,56 @@ const SignupPage = () => {
     const error = sendOTPMutation.error || verifyOTPMutation.error
 
     return (
-        <div className="min-h-screen flex flex-col lg:flex-row">
+        <div className="h-screen flex flex-col lg:flex-row overflow-hidden">
+            {/* Left Side - Hero Image */}
             <div className="hidden lg:flex lg:w-1/2 relative bg-cover bg-center" style={{
                 backgroundImage: "url('/login-hero.jpg')"
             }}>
-                <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-6 lg:p-8 xl:p-12">
+                <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-8 xl:p-12">
                     <div className="text-white">
                         <h1 className="text-xl lg:text-2xl xl:text-4xl font-bold mb-2 lg:mb-4 leading-tight">
                             CarbonCut has made it simple to track and
                             offset our carbon Emissions.
                         </h1>
-                        <p className="text-sm lg:text-base xl:text-lg opacity-90">
+                        <p className="text-base xl:text-lg opacity-90">
                             Driving real-world sustainability outcomes.
                         </p>
                     </div>
                 </div>
             </div>
-            <div className="w-full lg:w-1/2 flex flex-col bg-background">
-                <div className="flex items-center justify-center p-4 sm:p-6 lg:p-8 pb-2 sm:pb-4">
-                    <div className="flex items-center space-x-3">
+
+            {/* Right Side - Form */}
+            <div className="w-full lg:w-1/2 flex flex-col bg-background overflow-auto">
+                {/* Logo */}
+                {/* <div className="flex items-center justify-center py-4 lg:py-6 shrink-0">
+                    <Link href="/" className="flex items-center">
                         <Image
-                            src="/logo.png"
-                            alt="Carbon Cut Logo"
-                            width={40}
-                            height={40}
-                            className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 xl:w-20 xl:h-20"
+                            src="/ccLogo.svg"
+                            alt="CarbonCut Logo"
+                            width={128}
+                            height={128}
+                            className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
                         />
-                    </div>
-                </div>
+                    </Link>
+                </div> */}
 
                 {/* Main Form Container */}
-                <div className="flex-1 flex items-center justify-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-                    <div className="w-full max-w-sm sm:max-w-md">
+                <div className="flex-1 flex items-center justify-center px-4 lg:px-8 pb-6">
+                    <div className="w-full max-w-md">
                         <Card className="border-0 shadow-none bg-transparent">
-                            <CardHeader className="text-center pb-4 sm:pb-6 lg:pb-8 px-0">
-                                <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
+                            <CardHeader className="text-center pb-4 lg:pb-6 px-0 space-y-1">
+                                <CardTitle className="text-xl lg:text-2xl font-bold text-foreground">
                                     {step === 'form' ? 'Create Your Account' : 'Verify Your Email'}
                                 </CardTitle>
-                                <CardDescription className="text-muted-foreground text-xs sm:text-sm lg:text-base leading-relaxed px-2 sm:px-0">
-                                    {step === 'form' 
+                                <CardDescription className="text-sm text-muted-foreground">
+                                    {step === 'form'
                                         ? 'Enter your details to get started with CarbonCut'
                                         : (
                                             <>
                                                 We&apos;ve sent a 6-digit code to{' '}
-                                                <span className="font-medium break-all">{formData.email}</span>
+                                                <span className="font-medium">{formData.email}</span>
                                                 {process.env.NODE_ENV === 'development' && (
-                                                    <div className="mt-2 text-xs text-orange-600">
+                                                    <div className="mt-1 text-xs text-orange-600">
                                                         Development: Check console for OTP
                                                     </div>
                                                 )}
@@ -189,10 +189,10 @@ const SignupPage = () => {
                                 </CardDescription>
                             </CardHeader>
 
-                            <CardContent className="space-y-4 sm:space-y-5 lg:space-y-6 px-0">
+                            <CardContent className="space-y-4 px-0">
                                 {/* Error Alert */}
                                 {error && (
-                                    <Alert variant="destructive" className="text-xs sm:text-sm">
+                                    <Alert variant="destructive" className="text-sm py-2">
                                         <AlertDescription>
                                             {error.message}
                                         </AlertDescription>
@@ -201,9 +201,9 @@ const SignupPage = () => {
 
                                 {/* Success Alert */}
                                 {sendOTPMutation.isSuccess && step === 'otp' && (
-                                    <Alert className="border-green-200 bg-green-50">
+                                    <Alert className="border-green-200 bg-green-50 py-2">
                                         <CheckCircle className="h-4 w-4 text-green-600" />
-                                        <AlertDescription className="text-green-700 text-xs sm:text-sm">
+                                        <AlertDescription className="text-green-700 text-sm">
                                             OTP sent successfully! {process.env.NODE_ENV === 'development' && 'Check console for OTP.'}
                                         </AlertDescription>
                                     </Alert>
@@ -211,175 +211,168 @@ const SignupPage = () => {
 
                                 {/* Form Step */}
                                 {step === 'form' ? (
-                                    <form onSubmit={handleFormSubmit} className="space-y-4 sm:space-y-5 lg:space-y-6">
+                                    <form onSubmit={handleFormSubmit} className="space-y-3">
                                         {/* Name Field */}
-                                        <div className="space-y-2">
-                                            <Label htmlFor="name" className="text-xs sm:text-sm font-medium text-foreground">
+                                        <div className="space-y-1.5">
+                                            <Label htmlFor="name" className="text-sm font-medium">
                                                 Full Name
                                             </Label>
                                             <div className="relative">
                                                 <Input
                                                     type="text"
                                                     id="name"
-                                                    name="name"
                                                     required
                                                     value={formData.name}
                                                     onChange={(e) => handleInputChange('name', e.target.value)}
                                                     placeholder="Enter your full name"
-                                                    className="w-full h-10 sm:h-11 lg:h-12 pl-9 sm:pl-10 text-sm sm:text-base"
+                                                    className="w-full h-10 pl-9"
                                                     disabled={isLoading}
                                                 />
-                                                <User className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400" />
+                                                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                             </div>
                                         </div>
 
                                         {/* Email Field */}
-                                        <div className="space-y-2">
-                                            <Label htmlFor="email" className="text-xs sm:text-sm font-medium text-foreground">
+                                        <div className="space-y-1.5">
+                                            <Label htmlFor="email" className="text-sm font-medium">
                                                 Email Address
                                             </Label>
                                             <div className="relative">
                                                 <Input
                                                     type="email"
                                                     id="email"
-                                                    name="email"
                                                     required
                                                     value={formData.email}
                                                     onChange={(e) => handleInputChange('email', e.target.value)}
                                                     placeholder="Enter your email address"
-                                                    className="w-full h-10 sm:h-11 lg:h-12 pl-9 sm:pl-10 text-sm sm:text-base"
+                                                    className="w-full h-10 pl-9"
                                                     disabled={isLoading}
                                                 />
-                                                <Mail className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400" />
+                                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                             </div>
                                         </div>
 
                                         {/* Company Name Field */}
-                                        <div className="space-y-2">
-                                            <Label htmlFor="companyName" className="text-xs sm:text-sm font-medium text-foreground">
+                                        <div className="space-y-1.5">
+                                            <Label htmlFor="companyName" className="text-sm font-medium">
                                                 Company Name
                                             </Label>
                                             <div className="relative">
                                                 <Input
                                                     type="text"
                                                     id="companyName"
-                                                    name="companyName"
                                                     required
                                                     value={formData.companyName}
                                                     onChange={(e) => handleInputChange('companyName', e.target.value)}
                                                     placeholder="Enter your company name"
-                                                    className="w-full h-10 sm:h-11 lg:h-12 pl-9 sm:pl-10 text-sm sm:text-base"
+                                                    className="w-full h-10 pl-9"
                                                     disabled={isLoading}
                                                 />
-                                                <Building className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400" />
+                                                <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                             </div>
                                         </div>
 
                                         {/* Phone Number Field */}
-                                        <div className="space-y-2">
-                                            <Label htmlFor="phoneNumber" className="text-xs sm:text-sm font-medium text-foreground">
+                                        <div className="space-y-1.5">
+                                            <Label htmlFor="phoneNumber" className="text-sm font-medium">
                                                 Phone Number
                                             </Label>
                                             <div className="relative">
                                                 <Input
                                                     type="tel"
                                                     id="phoneNumber"
-                                                    name="phoneNumber"
                                                     required
                                                     value={formData.phoneNumber}
                                                     onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
                                                     placeholder="Enter your phone number"
-                                                    className="w-full h-10 sm:h-11 lg:h-12 pl-9 sm:pl-10 text-sm sm:text-base"
+                                                    className="w-full h-10 pl-9"
                                                     disabled={isLoading}
                                                 />
-                                                <Phone className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400" />
+                                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                             </div>
                                         </div>
 
                                         <Button
                                             type="submit"
-                                            className="w-full h-10 sm:h-11 lg:h-12 bg-orange-500 hover:bg-orange-600 text-white text-sm sm:text-base font-medium"
+                                            className="w-full h-10 bg-orange-500 hover:bg-orange-600 text-white font-medium mt-4"
                                             disabled={isLoading}
                                         >
                                             {sendOTPMutation.isPending ? (
                                                 <>
-                                                    <Loader2 className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" />
-                                                    <span className="text-xs sm:text-sm">Sending Code...</span>
+                                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                    Sending Code...
                                                 </>
                                             ) : (
                                                 <>
-                                                    <Mail className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                                                    <span className="text-xs sm:text-sm">Send Verification Code</span>
+                                                    <Mail className="mr-2 h-4 w-4" />
+                                                    Send Verification Code
                                                 </>
                                             )}
                                         </Button>
                                     </form>
                                 ) : (
                                     /* OTP Step */
-                                    <form onSubmit={handleOTPSubmit} className="space-y-4 sm:space-y-5 lg:space-y-6">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="otp" className="text-xs sm:text-sm font-medium text-foreground">
+                                    <form onSubmit={handleOTPSubmit} className="space-y-4">
+                                        <div className="space-y-1.5">
+                                            <Label htmlFor="otp" className="text-sm font-medium">
                                                 Verification Code
                                             </Label>
                                             <div className="relative">
                                                 <Input
                                                     type="text"
                                                     id="otp"
-                                                    name="otp"
                                                     required
                                                     value={otp}
                                                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                                                     placeholder="Enter 6-digit code"
-                                                    className="w-full h-10 sm:h-11 lg:h-12 pl-9 sm:pl-10 text-center text-base sm:text-lg lg:text-xl font-mono tracking-wider sm:tracking-widest"
+                                                    className="w-full h-11 pl-9 text-center text-lg font-mono tracking-widest"
                                                     disabled={isLoading}
                                                     maxLength={6}
                                                 />
-                                                <Shield className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400" />
+                                                <Shield className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                                             </div>
                                         </div>
 
                                         {/* Action Buttons */}
-                                        <div className="flex flex-col gap-2 sm:gap-3">
-                                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                                                <Button
-                                                    type="button"
-                                                    variant="outline"
-                                                    onClick={handleBackToForm}
-                                                    className="w-full sm:flex-1 h-10 sm:h-11 lg:h-12 text-xs sm:text-sm"
-                                                    disabled={isLoading}
-                                                >
-                                                    <ArrowLeft className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                                                    Back
-                                                </Button>
-                                                <Button
-                                                    type="submit"
-                                                    className="w-full sm:flex-1 h-10 sm:h-11 lg:h-12 bg-tertiary hover:bg-tertiary/90 text-white text-xs sm:text-sm font-medium"
-                                                    disabled={isLoading || otp.length !== 6}
-                                                >
-                                                    {verifyOTPMutation.isPending ? (
-                                                        <>
-                                                            <Loader2 className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" />
-                                                            Creating Account...
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <Shield className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                                                            Create Account
-                                                        </>
-                                                    )}
-                                                </Button>
-                                            </div>
+                                        <div className="flex gap-2">
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                onClick={handleBackToForm}
+                                                className="flex-1 h-10"
+                                                disabled={isLoading}
+                                            >
+                                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                                Back
+                                            </Button>
+                                            <Button
+                                                type="submit"
+                                                className="flex-1 h-10 bg-tertiary hover:bg-tertiary/90 text-white font-medium"
+                                                disabled={isLoading || otp.length !== 6}
+                                            >
+                                                {verifyOTPMutation.isPending ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        Creating...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Shield className="mr-2 h-4 w-4" />
+                                                        Create Account
+                                                    </>
+                                                )}
+                                            </Button>
                                         </div>
 
                                         {/* Resend Button */}
-                                        <div className="text-center pt-2">
+                                        <div className="text-center">
                                             <Button
                                                 type="button"
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={handleResendOTP}
                                                 disabled={isLoading}
-                                                className="text-primary hover:text-primary/80 text-xs sm:text-sm h-auto p-2"
+                                                className="text-primary hover:text-primary/80 h-8"
                                             >
                                                 {sendOTPMutation.isPending ? 'Sending...' : 'Resend Code'}
                                             </Button>
@@ -388,12 +381,12 @@ const SignupPage = () => {
                                 )}
 
                                 {/* Login Link */}
-                                <div className="text-center pt-2 sm:pt-4">
-                                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                                <div className="text-center pt-2">
+                                    <p className="text-sm text-muted-foreground">
                                         Already have an account?{' '}
                                         <Link
                                             href="/login"
-                                            className="font-medium text-primary hover:text-primary/80 transition-colors underline break-words"
+                                            className="font-medium text-primary hover:text-primary/80 transition-colors underline"
                                         >
                                             Sign in
                                         </Link>

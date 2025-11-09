@@ -95,7 +95,7 @@ export function GoogleAdsConnectDialog({
       setIsConnecting(true);
       setError(null);
 
-      const authUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/v1/impressions/google/redirect-url/`;
+      const authUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/impressions/google/redirect-url/`;
       const left = window.screen.width / 2 - POPUP_WIDTH / 2;
       const top = window.screen.height / 2 - POPUP_HEIGHT / 2;
 

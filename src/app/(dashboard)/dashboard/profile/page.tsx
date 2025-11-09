@@ -29,14 +29,16 @@ import {
   Link2,
   FileText,
   LogOut,
+  AlertTriangle,
 } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiKeysList } from "@/components/dashboard/api-key/ApiList";
 import { CreateApiKeyDialog } from "@/components/dashboard/api-key/CreateAPIKeyDialog";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Link from "next/link";
 import Image from "next/image";
 import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog";
+import { ApiKeyService } from "@/services/apikey/apikey";
 
 export default function ProfilePage() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -50,6 +52,21 @@ export default function ProfilePage() {
     phoneNumber: user?.phoneNumber || "",
     companyName: user?.companyName || "",
   });
+
+  // Check if user already has an API key
+  const { data: apiKeysData } = useQuery({
+    queryKey: ['apiKeys'],
+    queryFn: async () => {
+      const result = await ApiKeyService.getApiKeys();
+      return result;
+    },
+    retry: 1,
+    staleTime: 30000,
+  });
+
+  const apiKeys = apiKeysData?.data?.api_keys || [];
+  const hasApiKey = apiKeys.length > 0;
+
   const getInitials = (name?: string, email?: string) => {
     if (name) {
       return name
@@ -113,57 +130,15 @@ export default function ProfilePage() {
     }
   };
 
-  const navigationItems = [
-    { icon: User, label: "Profile", href: "/profile", active: true },
-    { icon: Settings, label: "Settings", href: "/settings", active: false },
-    {
-      icon: Link2,
-      label: "Google Ads Integration",
-      onClick: () => setConnectDialogOpen(true),
-      active: false,
-    },
-    { icon: FileText, label: "My Reports", href: "/reports", active: false },
-  ];
+  const handleCreateKeyClick = () => {
+    if (hasApiKey) {
+      return; // Prevent opening if already has a key
+    }
+    setCreateKeyDialogOpen(true);
+  };
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      {/* <div className="w-full md:w-72 ">
-        <div className="p-6">
-          <div className="font-bold mb-4 text-lg text-center md:text-left">
-            Account Settings
-          </div>
-          <nav className="space-y-3">
-            {navigationItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  if (item.href) router.push(item.href);
-                  else if (item.onClick) item.onClick();
-                }}
-                className={`w-full flex items-center justify-center md:justify-start gap-3 px-4 py-3 rounded-lg text-left transition-colors whitespace-nowrap ${item.active
-                    ? "text-orange-500"
-                    : ""
-                  }`}
-              >
-                <item.icon className="h-4 w-4 flex-shrink-0" />
-                <span className="text-sm font-medium truncate">{item.label}</span>
-              </button>
-            ))}
-            <div>
-              <button
-                onClick={handleLogout}
-                className="w-full flex items-center justify-center md:justify-start gap-3 px-4 py-3 rounded-lg text-left transition-colors whitespace-nowrap text-gray-700 hover:bg-gray-100"
-              >
-                <LogOut className="h-4 w-4 flex-shrink-0" />
-                <span className="text-sm font-medium truncate">Logout</span>
-              </button>
-            </div>
-          </nav>
-        </div>
-      </div> */}
-
-      {/* Main Content */}
       <div className="flex-1 p-4 sm:p-6 md:p-8">
         <div className="container mx-auto max-w-4xl">
           <div className="grid gap-6">
@@ -171,7 +146,6 @@ export default function ProfilePage() {
               <CardHeader>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-
                     <CardTitle>Profile Information</CardTitle>
                     <CardDescription>
                       Your personal details and contact information
@@ -188,7 +162,6 @@ export default function ProfilePage() {
                       Edit Profile
                     </Button>
                   )}
-
                 </div>
               </CardHeader>
 
@@ -365,7 +338,6 @@ export default function ProfilePage() {
               </CardHeader>
 
               <CardContent className="pt-2">
-                
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div className="flex items-center gap-3">
                     <Calendar className="h-5 w-5 text-gray-400" />
@@ -407,20 +379,42 @@ export default function ProfilePage() {
                       API Keys
                     </CardTitle>
                     <CardDescription>
-                      Manage your API keys for programmatic access
+                      Manage your API key for programmatic access
                     </CardDescription>
                   </div>
-                  <Button
-                    onClick={() => setCreateKeyDialogOpen(true)}
-                    className="text-white bg-orange-600 rounded hover:bg-white hover:text-orange-500 transition w-full sm:w-auto"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create API Key
-                  </Button>
+                  {hasApiKey ? (
+                    <Button
+                      disabled
+                      className="text-white bg-gray-400 rounded cursor-not-allowed w-full sm:w-auto"
+                      title="You can only have one API key"
+                    >
+                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      Limit Reached
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleCreateKeyClick}
+                      className="text-white bg-[#ff8904] hover:bg-[#ff8904]/90 rounded transition w-full sm:w-auto"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create API Key
+                    </Button>
+                  )}
                 </div>
               </CardHeader>
 
               <CardContent className="pt-2 overflow-x-auto">
+                {hasApiKey && (
+                  <Alert className="mb-4 bg-[#ff8904]/10 border-[#ff8904]/30">
+                    <AlertTriangle className="h-4 w-4 text-[#ff8904]" />
+                    <AlertDescription className="text-gray-800">
+                      <p className="font-medium">Single API Key Policy</p>
+                      <p className="text-sm mt-1">
+                        For security reasons, you can only have one active API key at a time. Delete your existing key to create a new one.
+                      </p>
+                    </AlertDescription>
+                  </Alert>
+                )}
                 <ApiKeysList />
               </CardContent>
             </Card>

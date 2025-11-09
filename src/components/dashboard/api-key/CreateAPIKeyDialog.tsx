@@ -13,8 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Copy, CheckCircle, Loader2, AlertTriangle } from 'lucide-react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Copy, CheckCircle, Loader2, AlertTriangle, Globe } from 'lucide-react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ApiKeyService } from '@/services/apikey/apikey';
 
 interface CreateApiKeyDialogProps {
@@ -29,6 +29,20 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
   const [copied, setCopied] = useState(false);
   const queryClient = useQueryClient();
 
+  // Check if user already has an API key
+  const { data: apiKeysData } = useQuery({
+    queryKey: ['apiKeys'],
+    queryFn: async () => {
+      const result = await ApiKeyService.getApiKeys();
+      return result;
+    },
+    retry: 1,
+    staleTime: 30000,
+  });
+
+  const apiKeys = apiKeysData?.data?.api_keys || [];
+  const hasApiKey = apiKeys.length > 0;
+
   const createKeyMutation = useMutation({
     mutationFn: ({ name, domain }: { name: string; domain: string }) =>
       ApiKeyService.createApiKey(name, domain),
@@ -42,10 +56,10 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim()) {
+    if (name.trim() && domain.trim() && !hasApiKey) {
       createKeyMutation.mutate({
         name: name.trim(),
-        domain: domain.trim() || '*',
+        domain: domain.trim(),
       });
     }
   };
@@ -77,84 +91,105 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
           <DialogDescription>
             {generatedKey
               ? "Save this API key securely. You won't be able to see it again."
-              : 'Generate a new API key to access the CarbonCut API.'}
-            <div className="border-b mx-auto mt-5" />
+              : 'Enter your website domain to generate an API key for CarbonCut SDK.'}
           </DialogDescription>
         </DialogHeader>
 
         {!generatedKey ? (
-          <form onSubmit={handleSubmit}>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">
-                  API Key Name <span className="text-orange-500">*</span>
-                </Label>
-                <Input
-                  className="border border-gray-300 rounded focus:border-gray-300 focus:ring-1 focus:ring-gray-300"
-                  id="name"
-                  placeholder="e.g., Production Server, Dev Environment"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  disabled={createKeyMutation.isPending}
-                  required
-                />
-                <p className="text-sm text-gray-500">
-                  Choose a descriptive name to identify this API key
-                </p>
-              </div>
+          <>
+            {hasApiKey ? (
+              <Alert className="bg-[#ff8904]/10 border-[#ff8904]/30">
+                <AlertTriangle className="h-4 w-4 text-[#ff8904]" />
+                <AlertDescription className="text-gray-800">
+                  <p className="font-medium mb-1">API Key Limit Reached</p>
+                  <p className="text-sm">
+                    You already have an API key. Please delete your existing key before creating a new one.
+                  </p>
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <div className="space-y-4 py-4">
+                  <Alert className="bg-blue-50 border-blue-200">
+                    <Globe className="h-4 w-4 text-blue-600" />
+                    <AlertDescription className="text-blue-800 text-sm">
+                      <strong>Important:</strong> Enter the domain where you&apos;ll install the CarbonCut SDK. This ensures proper tracking and security.
+                    </AlertDescription>
+                  </Alert>
 
-              <div className="space-y-2">
-                <Label htmlFor="domain">Domain (Optional)</Label>
-                <Input
-                  id="domain"
-                  className="border border-gray-300 rounded focus:border-gray-300 focus:ring-1 focus:ring-gray-300"
-                  placeholder="e.g., example.com or * for all domains"
-                  value={domain}
-                  onChange={(e) => setDomain(e.target.value)}
-                  disabled={createKeyMutation.isPending}
-                />
-                <p className="text-sm text-gray-500">
-                  Restrict this key to a specific domain. Use * to allow all domains.
-                </p>
+                  <div className="space-y-2">
+                    <Label htmlFor="domain">
+                      Website Domain <span className="text-[#ff8904]">*</span>
+                    </Label>
+                    <Input
+                      id="domain"
+                      className="border border-gray-300 rounded focus:border-[#ff8904]/50 focus:ring-1 focus:ring-[#ff8904]/50"
+                      placeholder="e.g., example.com or www.example.com"
+                      value={domain}
+                      onChange={(e) => setDomain(e.target.value)}
+                      disabled={createKeyMutation.isPending}
+                      required
+                    />
+                    <p className="text-sm text-gray-500">
+                      Enter the domain where you&apos;ll install the tracking script (without https://)
+                    </p>
+                  </div>
 
-                <div className="border-b mx-auto my-5" />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="name">
+                      API Key Name <span className="text-[#ff8904]">*</span>
+                    </Label>
+                    <Input
+                      className="border border-gray-300 rounded focus:border-[#ff8904]/50 focus:ring-1 focus:ring-[#ff8904]/50"
+                      id="name"
+                      placeholder="e.g., Production Website, Main Site"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      disabled={createKeyMutation.isPending}
+                      required
+                    />
+                    <p className="text-sm text-gray-500">
+                      Choose a descriptive name to identify this API key
+                    </p>
+                  </div>
 
-              {createKeyMutation.error && (
-                <Alert variant="destructive">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertDescription>
-                    {createKeyMutation.error.message}
-                  </AlertDescription>
-                </Alert>
-              )}
-            </div>
+                  {createKeyMutation.error && (
+                    <Alert variant="destructive">
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>
+                        {createKeyMutation.error.message}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+                </div>
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClose}
-                disabled={createKeyMutation.isPending}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={!name.trim() || createKeyMutation.isPending}
-                className={`rounded-sm ${
-                  !name.trim()
-                    ? 'bg-gray-400 text-white'
-                    : 'bg-tertiary text-white'
-                }`}
-              >
-                {createKeyMutation.isPending && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Generate Key
-              </Button>
-            </DialogFooter>
-          </form>
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleClose}
+                    disabled={createKeyMutation.isPending}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={!name.trim() || !domain.trim() || createKeyMutation.isPending}
+                    className={`rounded-sm ${
+                      !name.trim() || !domain.trim()
+                        ? 'bg-gray-400 text-white'
+                        : 'bg-[#ff8904] hover:bg-[#ff8904]/90 text-white'
+                    }`}
+                  >
+                    {createKeyMutation.isPending && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Generate Key
+                  </Button>
+                </DialogFooter>
+              </form>
+            )}
+          </>
         ) : (
           <div className="space-y-6 py-4">
             <div className="space-y-2">
@@ -163,53 +198,49 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                 <Input
                   value={generatedKey}
                   readOnly
-                  className="font-mono text-sm bg-gray-50 w-full p-2 rounded"
+                  className="font-mono text-sm flex-1 bg-gray-50"
                 />
                 <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
                   onClick={handleCopy}
-                  className='p-2 rounded'
+                  variant="outline"
+                  className="shrink-0 border-[#ff8904]/30 hover:bg-[#ff8904]/10"
                 >
                   {copied ? (
-                    <CheckCircle className="h-4 w-4 text-green-600 " />
+                    <CheckCircle className="h-4 w-4 text-tertiary" />
                   ) : (
-                    <Copy className="h-4 w-4 " />
+                    <Copy className="h-4 w-4" />
                   )}
                 </Button>
               </div>
-            </div>
-
-            {/* ⚠️ Warning Section - Updated */}
-            <div className="flex items-start sm:items-center gap-3 text-sm sm:text-base  p-4 rounded">
-              <AlertTriangle className="h-6 w-6 text-amber-600 flex-shrink-0" />
-              <div className="text-amber-700 leading-snug">
-                <strong>Important:</strong> Copy and save this API key now. For
-                security reasons, you won&apos;t be able to view it again.
+              <div className="bg-[#ff8904]/10 border border-[#ff8904]/30 p-4 rounded">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="h-5 w-5 text-[#ff8904] flex-shrink-0 mt-0.5" />
+                  <div className="text-sm text-gray-800">
+                    <strong>Important:</strong> Copy this key now and store it securely. For
+                    security reasons, you won&apos;t be able to view it again.
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Info Section */}
             <div className="bg-blue-50 border border-blue-200 p-5 rounded space-y-2">
               <div className="text-blue-800 text-sm sm:text-base">
-                <strong>How to use:</strong> Include this key in the{' '}
-                <code className="bg-blue-100 px-1 py-0.5 rounded font-mono">
-                  data-token
-                </code>{' '}
-                attribute of your CarbonCut SDK script tag.
+                <strong>Next Steps:</strong>
+                <ol className="list-decimal list-inside mt-2 space-y-1 text-sm">
+                  <li>Copy and save your API key</li>
+                  <li>Close this dialog to view the installation script</li>
+                  <li>Install the script on your website</li>
+                  <li>Optionally verify the installation</li>
+                </ol>
               </div>
             </div>
 
-            <div className="border-b mx-auto mt-5" />
-
-            {/* ✅ Final Button - right aligned */}
             <DialogFooter className="flex justify-end">
               <Button
                 onClick={handleClose}
-                className="bg-tertiary text-white hover:text-tertiary hover:bg-white border border-tertiary hover:border-tertiary"
+                className="bg-tertiary text-white hover:bg-tertiary/90"
               >
-                {copied ? 'Done' : "I've Saved My Key"}
+                Done - View Installation Script
               </Button>
             </DialogFooter>
           </div>

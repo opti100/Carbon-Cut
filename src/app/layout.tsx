@@ -44,13 +44,13 @@ export default function RootLayout({
           `}
         </Script>
 
-        <Script 
+        {/* <Script 
           src="/carboncut.min.js"
           data-token="cc_mXGFQlyhMJUmhT8kozdJ8GRClOeLAZLUeS1YsLmE9VT41hVPw0KTF54IdFrnWamO"
           data-api-url="http://127.0.0.1:8000/api/v1/events/"
           data-debug="true" 
           data-domain="http://localhost:3000"
-          />
+          /> */}
 
         <Script id="plausible-analytics" strategy="afterInteractive">
           {`
