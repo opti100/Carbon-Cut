@@ -1,178 +1,159 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import ConnectGoogleAds from "@/components/live/ConnectGoogleAds";
-import CreateApiKey from "@/components/live/CreateApiKey";
-import CreateCampaign from "@/components/live/CreateCampaign";
-import CampaignStatus from "@/components/live/CampaignStatus";
-import { motion } from "framer-motion";
-import { CheckCircle2, Circle } from "lucide-react";
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { styled } from '@mui/material/styles';
+import * as React from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { Link, Code, Tag, Info, Loader2 } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import GoogleAdsStep from "@/components/live/GoogleAdsStep"
+import ApiKeyStep from "@/components/live/ApiKeyStep"
+import CampaignCreationStep from "@/components/live/CampaignCreationStep"
+import VerticalStepper from "@/components/live/Stepper"
+import { toast } from "sonner"
+import Image from "next/image"
+import { makeRequest } from "@/contexts/AuthContext"
 
-const CustomStepConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 10,
-    left: 'calc(-50% + 16px)',
-    right: 'calc(50% + 16px)',
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#10b981',
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: '#10b981',
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#e5e7eb',
-    borderTopWidth: 3,
-    borderRadius: 1,
-  },
-}));
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1"
 
 export default function Page() {
-  const [currentStep, setCurrentStep] = useState(1); // 1-based indexing for easier understanding
-
-  // Sync Material-UI stepper with current step (convert to 0-based)
-  const activeStepForMUI = currentStep - 1;
+  const router = useRouter()
+  const [activeStep, setActiveStep] = React.useState(0)
 
   const steps = [
-    'Connect Google Ads Account',
-    'Create API Key & SDK', 
-    'Create Campaign',
-    'Campaign Status',
-  ];
+    {
+      title: "Connect Google Ads Account",
+      description:
+        "Connect your Google Ads account to start tracking campaigns. After connection, select one of your customer accounts from Google Ads.",
+      icon: <Link className="w-5 h-5" />,
+    },
+    {
+      title: "API Key & Script Installation",
+      description:
+        "Create an API key to authenticate your integration. Copy the script tag with your API key and install it on your website to enable tracking.",
+      icon: <Code className="w-5 h-5" />,
+    },
+    {
+      title: "Campaign Creation",
+      description:
+        "Select a campaign from your Google Ads account. We'll automatically generate UTM parameters and campaign name based on your selection.",
+      icon: <Tag className="w-5 h-5" />,
+    },
+  ]
+  
+  // const { data: onboardingStatus, isLoading: isLoadingStatus } = useQuery({
+  //   queryKey: ["onboardingStatus"],
+  //   queryFn: async () => {
+  //     const result = await makeRequest(`${API_BASE}/auth/onboarding-status/`, {
+  //       method: "GET",
+  //     })
+  //     return result.data
+  //   },
+  //   staleTime: 0,
+  //   retry: 1,
+  // })
 
-  // Handle step completion and auto-advance
-  const handleStepComplete = (stepNumber: number) => {
-    if (stepNumber === currentStep) {
-      setCurrentStep(stepNumber + 1);
+  // // Check if onboarding is completed and redirect
+  // useEffect(() => {
+  //   if (onboardingStatus?.completed) {
+  //     toast.success("Onboarding already completed!")
+  //     router.push("/dashboard/campaigns")
+  //   } else if (onboardingStatus?.current_step) {
+  //     // Set the active step to the last completed step
+  //     setActiveStep(onboardingStatus.current_step)
+  //   }
+  // }, [onboardingStatus, router])
+
+  const handleStepComplete = async () => {
+    // Update backend with completed step
+    const stepKeys = ["google_ads_connected", "api_key_verified", "campaign_created"]
+    // if (activeStep < stepKeys.length) {
+    //   try {
+    //     await makeRequest(`${API_BASE}/auth/onboarding-status/`, {
+    //       method: "POST",
+    //       body: JSON.stringify({
+    //         step_key: stepKeys[activeStep],
+    //         completed: true,
+    //       }),
+    //     })
+    //   } catch (error) {
+    //     console.error("Failed to update onboarding progress:", error)
+    //   }
+    // }
+
+    if (activeStep < steps.length - 1) {
+      setActiveStep(activeStep + 1)
     }
-  };
+  }
+
+  const renderStepContent = () => {
+    switch (activeStep) {
+      case 0:
+        return <GoogleAdsStep onComplete={handleStepComplete} />
+
+      case 1:
+        return <ApiKeyStep onComplete={handleStepComplete} />
+
+      case 2:
+        return <CampaignCreationStep onComplete={handleStepComplete} />
+
+      default:
+        return null
+    }
+  }
+
+  // if (isLoadingStatus) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+  //       <div className="flex flex-col items-center gap-4">
+  //         <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+  //         <p className="text-sm text-gray-600">Loading onboarding status...</p>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
-    <>
-      <div className="  rounded-lg flex items-center justify-center p-4 overflow-hidden">
-        <div className="w-full max-w-7xl h-full flex flex-col mt-20">
-          
-          {/* Progress Card */}
-          <div className=" rounded-xl p-6 w-full shrink-0">
-            
-            {/* Material-UI Stepper - Synced with currentStep */}
-            <Box sx={{ width: '100%', mb: 3 }}>
-              <Stepper 
-                activeStep={activeStepForMUI}
-                alternativeLabel
-                connector={<CustomStepConnector />}
-              >
-                {steps.map((label, index) => (
-                  <Step key={label} completed={currentStep > index + 1}>
-                    <StepLabel 
-                      StepIconProps={{
-                        sx: {
-                          '&.Mui-completed': {
-                            color: '#10b981',
-                          },
-                          '&.Mui-active': {
-                            color: '#10b981',
-                          },
-                        }
-                      }}
-                    >
-                      <span className="text-sm font-semibold text-gray-700">
-                        {label}
-                      </span>
-                    </StepLabel>
-                  </Step>
-                ))}
-              </Stepper>
-            </Box>
-          {/* </div> */}
-
-          {/* Four Cards Section - Flex-1 to take remaining space */}
-          {/* <div className="flex-1 bg-white shadow-lg rounded-xl p-6 mt-4 overflow-auto"> */}
-            <div className="h-full flex flex-col">
-              
-              {/* Current Step Title */}
-              <div className="text-center mb-6">
-                {/* <p className="text-xl font-semibold text-gray-700">
-                  Step {currentStep}: {steps[currentStep - 1]}
-                </p> */}
-                {/* <p className="text-gray-500 text-sm mt-2">
-                  {currentStep === 1 && "Connect your Google Ads account to get started"}
-                  {currentStep === 2 && "Generate API keys and set up the SDK"} 
-                  {currentStep === 3 && "Create and configure your advertising campaign"}
-                  {currentStep === 4 && "Monitor your campaign performance and status"}
-                </p> */}
-              </div>
-
-              {/* Four Cards Grid - Fixed minimal height for all cards */}
-              <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-1">
-                {/* All cards have same fixed height: h-64 = 256px (minimal height) */}
-                <div className="h-74"> 
-                  <ConnectGoogleAds 
-                    isActive={currentStep === 1} 
-                    isCompleted={currentStep > 1} 
-                    onComplete={() => handleStepComplete(1)} 
-                  />
-                </div>
-                
-                <div className="h-74"> 
-                  <CreateApiKey 
-                    isActive={currentStep === 2} 
-                    isCompleted={currentStep > 2} 
-                    onComplete={() => handleStepComplete(2)} 
-                  />
-                </div>
-                
-                <div className="h-74">
-                  <CreateCampaign 
-                    isActive={currentStep === 3} 
-                    isCompleted={currentStep > 3} 
-                    onComplete={() => handleStepComplete(3)} 
-                  />
-                </div>
-                
-                <div className="h-74"> 
-                  <CampaignStatus 
-                    isActive={currentStep === 4} 
-                    isCompleted={currentStep > 4} 
-                  />
-                </div>
-              </div>
-
-              {/* Navigation Buttons - COMMENTED OUT */}
-              {/*
-              <div className="flex justify-center gap-4 mt-6 flex-shrink-0">
-                <button
-                  onClick={() => setCurrentStep((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentStep === 1}
-                  className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => setCurrentStep((prev) => Math.min(prev + 1, steps.length))}
-                  disabled={currentStep === steps.length}
-                  className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next
-                </button>
-              </div>
-              */}
-              
-            </div>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-gray-900">CarbonCut</h1>
+          <div className="flex items-center gap-3 sm:gap-5">
+             {/* <span className="text-xs text-gray-600 hidden sm:inline">Logged in as user@example.com</span> */}
+            <button className="text-xs text-gray-600 hover:text-gray-900">Help</button>
+            {/* <div className="w-px h-5 bg-gray-300 hidden sm:block" /> */}
+            {/* <button className="text-xs text-gray-600 hover:text-gray-900">Log out</button>  */}
           </div>
         </div>
+      </header>
+
+      {/* Main Layout */}
+      <div className="flex-1 flex items-stretch p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-6 lg:gap-8 h-full mx-auto">
+          {/* Left Sidebar - Stepper */}
+          <div className="lg:w-[45%] bg-white rounded-lg p-8 shadow-sm border border-gray-200 h-screen px-6 sm:px-8 lg:px-12 py-8 lg:py-10 relative min-h-[500px] lg:min-h-0 overflow-y-auto">
+            <div className="flex items-start gap-3 mb-8">
+              <div className="flex-shrink-0 mt-1">
+                <Info className="w-5 h-5 text-gray-500" />
+              </div>
+              <p className="text-gray-700 text-sm">
+                Get started by connecting your Google Ads account and setting up campaign tracking.
+              </p>
+            </div>
+            <VerticalStepper steps={steps} activeStep={activeStep} isConnected={false} />
+            <Image
+              src={"/background-star.svg"}
+              alt="Background Star"
+              className="absolute bottom-0 right-0 opacity-20"
+              width={50}
+              height={50}
+            />
+          </div>
+
+          {/* Right Content Area */}
+          <div className="lg:w-[55%] p-6 sm:p-8 lg:p-12 overflow-y-auto">{renderStepContent()}</div>
+        </div>
       </div>
-    </>
-  );
+    </div>
+  )
 }
