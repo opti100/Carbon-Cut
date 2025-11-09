@@ -100,7 +100,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
         group_by: "day",
       }),
     enabled: !!campaign,
-    refetchInterval: 10,
+    refetchInterval: 10000,
   })
 
   const syncMutation = useMutation({
