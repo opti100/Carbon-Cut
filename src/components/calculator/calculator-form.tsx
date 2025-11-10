@@ -103,8 +103,9 @@ export default function MarketingCalculator() {
         realTimeData: true,
         requirePrecision: true
       };
-
-      const response = await fetch('http://127.0.0.1:8000/api/v1/inventory/calculate-carbon/', {
+      
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${BASE_URL}/api/v1/inventory/calculate-carbon/`, {
         method: 'POST',
         credentials: 'include',
         headers: { 
