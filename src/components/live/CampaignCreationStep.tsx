@@ -310,7 +310,9 @@ export default function CampaignCreationStep({ onComplete }: CampaignCreationSte
         )}
       </div>
 
-      <Button
+     
+      <div className="flex flex-1 gap-2">
+         <Button
         type="submit"
         disabled={isFormDisabled || !selectedGoogleAdsCampaign || selectedCount === 0}
         className="bg-tertiary hover:bg-tertiary/90"
@@ -323,10 +325,15 @@ export default function CampaignCreationStep({ onComplete }: CampaignCreationSte
         ) : (
           <>
             <Sparkles className="mr-2 h-4 w-4" />
-            Create Campaign ({selectedCount} UTMs)
+            Create Campaign 
           </>
         )}
       </Button>
+      <Button className="bg-white text-gray-900 hover:bg-gray-100">
+        Skip
+      </Button>
+      <p className="text-sm">You can create Campaigns inside Dashboard </p>
+      </div>
     </form>
   )
 }

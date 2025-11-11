@@ -189,7 +189,7 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
               <div className="flex gap-2">
                 <Input
                   type="text"
-                  value={`${latestApiKey.prefix}••••••••`}
+                  value={`${latestApiKey.prefix}`}
                   readOnly
                   className="flex-1 bg-gray-50 font-mono"
                 />
