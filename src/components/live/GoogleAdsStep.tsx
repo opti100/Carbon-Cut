@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, Link, Loader2, AlertCircle } from "lucide-react";
+import { CheckCircle, Loader2, AlertCircle } from "lucide-react";
 import { useGoogleAds } from "@/contexts/GoogleAdsContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog";
+import { useRouter, usePathname } from "next/navigation";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 
 interface GoogleAdsStepProps {
   onComplete: () => void;
@@ -16,6 +19,13 @@ interface GoogleAdsStepProps {
 
 export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
   const { status, isLoading, accounts, accountsLoading, switchAccount } = useGoogleAds();
+  const {  user, isLoading: authLoading } = useAuth();
+  console.log("Auth User in GoogleAdsStep:", user);
+  const { isAuthenticated, redirectToLogin, redirectToSignup } = useAuthRedirect();
+  console.log("isAuthenticated in GoogleAdsStep:", isAuthenticated);
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [connectDialogOpen, setConnectDialogOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(status?.customer_id || "");
   const [isSwitching, setIsSwitching] = useState(false);
@@ -49,9 +59,54 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
     }
   }, [isConnected, status?.customer_id, isSwitching]);
 
+  if (authLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-tertiary font-medium">
+            STEP 1 OF 3
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900">Connect Google Ads Account</h2>
+        </div>
+        <div className="flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-tertiary" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-tertiary font-medium">
+            STEP 1 OF 3
+          </div>
+          <h2 className="text-3xl font-bold text-gray-900">Connect Google Ads Account</h2>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            You need to log in to your account to connect Google Ads and start tracking campaigns.
+          </p>
+        </div>
+        <div className="space-y-4">
+          <Button
+            onClick={() => redirectToLogin()}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            Login
+          </Button>
+          <Button
+           onClick={() => redirectToSignup()}
+            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900"
+          >
+            Signup
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
-      {/* Step Header */}
       <div className="space-y-2">
         <div className="flex items-center gap-2 text-tertiary font-medium">
           STEP 1 OF 3
@@ -114,7 +169,7 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
             <Alert className="bg-green-50 border-green-200">
               <CheckCircle className="h-4 w-4 text-green-600" />
               <AlertDescription className="text-green-800">
-                Google Ads account connected successfully! 
+                Google Ads account connected successfully!
               </AlertDescription>
             </Alert>
 

@@ -93,9 +93,8 @@ export const makeRequest = async (url: string, options: RequestInit = {}) => {
 const fetchCurrentUser = async (): Promise<User | null> => {
   const token = getCookie('auth-token');
   if (!token) return null;
-
-  const data = await makeRequest(`${API_BASE}/auth/me/`);
-  return data.success && data.user ? data.user : null;
+  const response = await makeRequest(`${API_BASE}/auth/me/`);
+  return response.success && response.data?.user ? response.data.user : null;
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -107,6 +106,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isLoading = useAppSelector(selectIsLoading);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
+  // Sync token from cookie to Redux on mount
+  useEffect(() => {
+    const cookieToken = getCookie('auth-token');
+    if (cookieToken && cookieToken !== token) {
+      dispatch(setTokenAction(cookieToken));
+    }
+  }, []); // Run once on mount
+
   const { data: currentUser, refetch } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchCurrentUser,
@@ -115,9 +122,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     retry: 1,
   });
 
+  // Update both user AND token when user is fetched
   useEffect(() => {
     if (currentUser) {
-      dispatch(setUserAction(currentUser));
+      const cookieToken = getCookie('auth-token');
+      dispatch(setCredentials({
+        user: currentUser,
+        token: cookieToken || '',
+      }));
     }
   }, [currentUser, dispatch]);
 
