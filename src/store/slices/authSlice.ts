@@ -35,7 +35,7 @@ const authSlice = createSlice({
         const date = new Date();
         date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
         const expires = `expires=${date.toUTCString()}`;
-        document.cookie = `auth-token=${encodeURIComponent(action.payload.token)}; ${expires}; path=/; samesite=lax`;
+        document.cookie = `auth-token=${encodeURIComponent(action.payload.token)}; ${expires}; path=/; samesite=none`;
       }
     },
     
