@@ -81,12 +81,12 @@ export default function CampaignsPage() {
               <AlertCircle className="h-5 w-5 text-[#ff8904] flex-shrink-0" />
               <AlertDescription className="text-foreground ml-2">
                 <div className="flex items-center justify-between gap-4">
-                  <span className="font-medium">Connect your Google Ads account to create and manage campaigns</span>
+                  <span className="font-medium">Complete Your Onboarding to connect your Google Ads account</span>
                   <Button
                     variant="outline"
                     size="sm"
                     className="ml-auto border-[#ff8904]/30 hover:bg-[#ff8904]/10 text-[#ff8904] whitespace-nowrap bg-transparent"
-                    onClick={() => router.push("/dashboard/integrations")}
+                    onClick={() => router.push("/live")}
                   >
                     Connect Now
                   </Button>

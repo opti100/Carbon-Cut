@@ -90,7 +90,7 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
         <div className="space-y-4">
           <Button
             onClick={() => redirectToLogin()}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full bg-orange-600 hover:bg-orange-700 text-white"
           >
             Login
           </Button>
