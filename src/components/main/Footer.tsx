@@ -82,9 +82,9 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-800">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            Copyright 2025-26 @Optiminastic SG PTE LTD & Optiminastic UK Limited
+            Copyright 2025-26 @CARBON TECH INTERNATIONAL LIMITED
           </p>
-          
+
           <div className="flex items-center space-x-4">
             <Link href="#" className="text-gray-400 hover:text-white transition-colors">
               <Instagram className="w-5 h-5" />
@@ -101,7 +101,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-   
+
     </footer>
   )
 }

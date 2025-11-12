@@ -10,44 +10,38 @@ export default function HowItWorks() {
   const steps = [
     {
       step: 1,
-      title: "Calculate",
-      subtitle: "Get the full picture",
-      description: "CarbonCut quantifies emissions across all marketing channels, producing campaign-level CO₂e with channel attribution.",
-      metrics: {  label: "Campaign CO₂e - made audit-ready." },
+      title: "Connect",
+      subtitle: "Integrate once — measure forever",
+      description: "Connect your ad platforms, data streams, or infrastructure once. CarbonLive immediately begins real-time CO₂e tracking across servers, delivery networks, and data transfers — using live grid-intensity data and verified emission factors.",
+      metrics: { label: "Instant integration, instant visibility" },
       skeleton: <SkeletonOne />,
       className: "col-span-1 lg:col-span-4 border-b lg:border-r border-tertiary/20",
     },
     {
       step: 2,
-      title: "Report", 
-      subtitle: "See what matters most",
-      description: (
-    <>
-      CarbonCut produces campaign-level reports that slot directly into compliance frameworks — from{" "}
-      <strong>SECR (UK)</strong> to <strong>SEC climate rules (US)</strong> and <strong>CSRD (EU)</strong>. 
-      Results are structured for both marketing reviews and sustainability disclosures, giving teams and auditors the same, defensible dataset.
-    </>
-  ) ,
+      title: "Monitor",
+      subtitle: "Real-time insights you can act on",
+      description: "View live CO₂e totals, forecasted footprints, and AI-agent recommendations for immediate emission reduction — all mapped to GHG Protocol categories.",
 
-      metrics: { value: "", label: "Board-ready outputs." },
+      metrics: { value: "", label: "Live dashboards. Instant accountability." },
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 border-tertiary/20",
     },
     {
       step: 3,
-      title: "Offset",
-      subtitle: "Cut where it counts",
-      description: "Residual tonnes can be retired through a curated portfolio of verified projects (nature, energy, waste and more). Every action generates an immutable smart-contract record.",
-      metrics: {  label: "Verified credits only." },
+      title: "Auto-Offset",
+      subtitle: "Residuals retired automatically",
+      description: "When emissions hit a defined threshold or a campaign ends, CarbonLive automatically retires verified carbon credits from approved registries such as Verra, Gold Standard, or ACR.",
+      metrics: { label: "Verified offsets, executed automatically." },
       skeleton: <SkeletonThree />,
       className: "col-span-1 lg:col-span-3 lg:border-r border-tertiary/20",
     },
     {
       step: 4,
-      title: "Certification",
-      subtitle: "Show your commitment", 
-      description: "Once campaign offsets are complete, CarbonCut issues a certificate of climate accountability. Each certificate is backed by a transparent audit trail — linking the campaign's calculated footprint to the verified credits retired on its behalf. To guarantee integrity, every retirement is also logged on a smart contract, creating an immutable record that shows what was retired, when, and against which campaign. This ensures proof that can be trusted by finance teams, auditors, and external stakeholders.",
-      metrics: {  label: "Trust you can show." },
+      title: "Certify & Share",
+      subtitle: "Proof you can publish",
+      description: "Every offset completed through CarbonLive generates a measure-linked certificate and on-chain reference hash, providing finance teams, auditors, and clients with verifiable proof of real-time emission control and neutrality.",
+      metrics: { label: "  Transparent data. Trusted results." },
       skeleton: <SkeletonFour />,
       className: "col-span-1 lg:col-span-3 border-b lg:border-none border-tertiary/20",
     },
@@ -56,13 +50,15 @@ export default function HowItWorks() {
   return (
     <div className="relative z-20 py-10 max-w-7xl mx-auto">
       <div className="px-8">
-        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto text-center tracking-tight font-bold text-gray-800 mb-6">
+        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto  tracking-tight font-bold text-gray-800 mb-6">
           <span>How CarbonCut Works in{" "}
-          <span className="text-orange-500">4 Simple Steps</span></span>
+            <span className="text-orange-500">4 Simple Steps</span></span>
         </h2>
 
         <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-gray-600 text-center font-normal">
-          CarbonCut turns    <span className="text-orange-500">campaign emissions into clear CO₂e numbers </span> and verified credit retirements giving marketing teams clarity and auditors the documentation they expect.
+          CarbonLive  <span className="text-orange-500">measures, reduces, and offsets </span>  emissions in real time — starting with internet advertising and expanding to energy and gas sectors.
+          {" "}
+         <p>   Our AI-driven agents identify reduction opportunities as they happen, while automation ensures every residual tonne is instantly offset with verified carbon credits. </p>
         </p>
       </div>
 
@@ -130,7 +126,7 @@ const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
   );
 };
 
-const FeatureMetrics = ({ metrics }: { metrics: {  label: string } }) => {
+const FeatureMetrics = ({ metrics }: { metrics: { label: string } }) => {
   return (
     <div className="inline-flex items-center gap-2 bg-tertiary/10 px-3 py-1 rounded-full mb-4">
       <div className="w-2 h-2 bg-tertiary rounded-full animate-pulse"></div>
@@ -148,16 +144,15 @@ export const SkeletonOne = () => {
           <div className="bg-tertiary/10 rounded-lg p-4 border border-tertiary/20">
             <div className="flex items-center gap-2 mb-3">
               <Calculator className="w-5 h-5 text-tertiary" />
-              <span className="font-semibold text-gray-800">Brand Awareness Campaign (Q3)</span>
+              <span className="font-semibold text-gray-800"> XYZ Awareness Campaign (01.08.2025)</span>
             </div>
             <div className="space-y-3">
               {[
-                { channel: "Digital Ads", emissions: "1.2", width: "w-16" },
-                { channel: "Print Collateral", emissions: "0.9", width: "w-12" },
-                { channel: "Video Production", emissions: "2.1", width: "w-20" },
-                { channel: "Events", emissions: "0.7", width: "w-10" },
+                { channel: "DSP Connected:", emissions: "Google DV360", width: "w-16" },
+                { channel: "Impressions:", emissions: "60,000,000", width: "w-12" },
+                { channel: "Active UTM:", emissions: "480", width: "w-20" },
               ].map((item, idx) => (
-                <motion.div 
+                <motion.div
                   key={item.channel}
                   className="flex items-center gap-3"
                   initial={{ opacity: 0, x: -20 }}
@@ -166,14 +161,14 @@ export const SkeletonOne = () => {
                 >
                   <div className={`h-2 ${item.width} bg-orange-500 rounded-full`}></div>
                   <span className="text-sm text-gray-600 flex-1">{item.channel}</span>
-                  <span className="text-sm font-bold text-tertiary">{item.emissions} tCO₂e</span>
+                  <span className="text-sm font-bold text-tertiary">{item.emissions}</span>
                 </motion.div>
               ))}
             </div>
             <div className="mt-4 pt-3 border-t border-green-200">
               <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-800">Total Campaign Footprint</span>
-                <span className="font-bold text-lg text-tertiary">4.9 tCO₂e</span>
+                <span className="font-semibold text-gray-800">Carbon Emission:</span>
+                <span className="font-bold text-lg text-tertiary">40.2 Mt CO2ee</span>
               </div>
             </div>
           </div>
@@ -186,9 +181,9 @@ export const SkeletonOne = () => {
 
 export const SkeletonTwo = () => {
   const campaigns = [
-    { name: "Summer Launch (production)", reduction: 3.2, color: "bg-orange-500" },
-    { name: "Always-On Digital (server)", reduction: 2.5, color: "bg-orange-500" },
-    { name: "Holiday Promotion(print)", reduction: 1.8, color: "bg-orange-500" },
+    { name: "Summer Launch: Relocate ad server region", reduction: 3.2, color: "bg-orange-500" },
+    { name: "Always-On Digital: Optimise campaign split", reduction: 2.5, color: "bg-orange-500" },
+    { name: "Holiday Promotions: Reduce redundant ad sets", reduction: 1.8, color: "bg-orange-500" },
   ];
 
   const maxReduction = Math.max(...campaigns.map(c => c.reduction));
@@ -198,9 +193,9 @@ export const SkeletonTwo = () => {
       <div className="w-full space-y-3">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="w-5 h-5 text-tertiary" />
-          <span className="font-semibold text-gray-800">Example: Top Three Campaign Drivers</span>
+          <span className="font-semibold text-gray-800">AI agents reduction tasks</span>
         </div>
-        
+
         {campaigns.map((campaign, idx) => {
           const barWidth = (campaign.reduction / maxReduction) * 100;
 
@@ -217,7 +212,7 @@ export const SkeletonTwo = () => {
                 <span className="text-sm font-bold text-tertiary">-{campaign.reduction}tCO₂e</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <motion.div 
+                <motion.div
                   className={`h-2 rounded-full ${campaign.color}`}
                   initial={{ width: 0 }}
                   animate={{ width: `${barWidth}%` }}
@@ -241,7 +236,7 @@ export const SkeletonThree = () => {
         <div className="flex flex-1 w-full flex-col justify-center space-y-4">
           {/* Header */}
           <div className="text-center pb-4 border-b border-green-200">
-            <h3 className="text-lg font-bold text-gray-800">Example: Retirement</h3>
+            <h3 className="text-lg font-bold text-gray-800">Retirement Summary</h3>
           </div>
 
           {/* Project Details Card */}
@@ -251,36 +246,35 @@ export const SkeletonThree = () => {
               <div className="flex justify-between items-start">
                 <span className="text-sm text-gray-600 font-medium">Campaign:</span>
                 <span className="text-sm font-semibold text-gray-800 text-right">
-                  Brand Awareness (Q3)
+                  Always-On Display Q4
                 </span>
               </div>
 
               {/* Offset Project */}
               <div className="flex justify-between items-start pt-2 border-t border-gray-100">
-                <span className="text-sm text-gray-600 font-medium">Offset Project:</span>
-                <span className="text-sm font-semibold text-gray-800 text-right leading-relaxed">
-                  Kenya Clean Cookstoves<br/>
-                  <span className="text-xs text-green-600">Gold Standard, Vintage 2023</span>
-                </span>
+                <span className="text-sm text-gray-600 font-medium">Residual Emissions:</span>
+
+                <span className="text-sm text-green-600">1.26 tCO₂e</span>
+
               </div>
-              
+
               {/* Credits Retired */}
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <span className="text-sm text-gray-600 font-medium">Credits Retired:</span>
-                <span className="text-xl font-bold text-green-600">4.9 tCO₂e</span>
+                <span className="text-sm text-gray-600 font-medium">Offset Project:</span>
+                <span className="text-sm font-bold text-green-600"> Indonesia Mangrove Restoration (GS 2024)</span>
               </div>
-              
+
               {/* Retirement ID */}
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
                 <span className="text-sm text-gray-600">Retirement ID:</span>
                 <span className="text-sm font-mono font-semibold text-gray-800 bg-gray-50 px-3 py-1.5 rounded">
-                  GS-123-456-789
+                  GS-984-212-B77
                 </span>
               </div>
 
-             
+
             </div>
-            
+
             {/* Download Button */}
             <div className="pt-3">
               <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg">
@@ -306,9 +300,9 @@ export const SkeletonFour = () => {
           <div className="bg-white rounded-lg p-4 border border-tertiary/20">
             <div className="flex items-center gap-2 mb-4">
               <Award className="w-5 h-5 text-tertiary" />
-              <span className="font-semibold text-gray-800">Example: Certificate Snippet</span>
+              <span className="font-semibold text-gray-800">Certificate Snippet</span>
             </div>
-            
+
             {/* Certificate Content */}
             <div className="space-y-4">
               {/* Certified Campaign */}
@@ -316,29 +310,29 @@ export const SkeletonFour = () => {
                 <span className="text-sm font-medium text-gray-700">Certified Campaign:</span>
                 <span className="text-lg font-bold text-gray-800">Brand Awareness Q3</span>
               </div>
-              
+
               {/* Total CO₂e Neutralised */}
               <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                 <span className="text-sm font-medium text-gray-700">Total CO₂e Neutralised:</span>
                 <span className="text-lg font-bold text-green-600">4.9 tCO₂e</span>
               </div>
-              
+
               {/* Issued Date */}
               <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                 <span className="text-sm font-medium text-gray-700">Issued:</span>
                 <span className="text-sm font-semibold text-gray-800">15 October 2025</span>
               </div>
-              
+
               {/* Certificate ID */}
               <div className="flex justify-between items-center pb-3 border-b border-gray-200">
                 <span className="text-sm font-medium text-gray-700">Certificate ID:</span>
-                <span className="text-sm font-mono font-bold text-gray-800">CC-BAQ3-2025</span>
+                <span className="text-sm font-bold text-gray-800">CC-BAQ3-2025</span>
               </div>
-              
+
               {/* On-Chain Reference */}
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-700">On-Chain Reference:</span>
-                <span className="text-sm font-mono font-bold text-gray-800">#0x8aF9…D12</span>
+                <span className="text-sm font-bold text-gray-800">Smart Contract Hash #0x8aF9…D12</span>
               </div>
             </div>
           </div>
