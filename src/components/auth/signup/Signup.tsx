@@ -37,7 +37,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/a
 // API functions with proper typing
 const signupAPI = {
   sendOTP: async (data: SignupData): Promise<AuthResponse> => {
-    const response = await fetch(`${API_BASE_URL}/auth/signup/send-otp`, {
+    const response = await fetch(`${API_BASE_URL}/auth/send-otp/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -114,7 +114,6 @@ const SignupPage = () => {
       toast.error(error.message)
     },
   })
-
   const verifyOTPMutation = useMutation({
     mutationKey: signupKeys.verifyOTP(),
     mutationFn: signupAPI.verifyOTP,
