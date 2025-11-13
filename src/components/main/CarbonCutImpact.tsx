@@ -17,7 +17,7 @@ const CarbonCutImpact = () => {
                <span className="text-orange-500 font-semibold">measure,</span> 
                <span className="text-orange-500 font-semibold">report,</span>  and{" "}
                <span className="text-orange-500 font-semibold">offset</span>  {" "}
-               carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
+                carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
             </p>
           </BlurFade>
         </div>
@@ -27,21 +27,21 @@ const CarbonCutImpact = () => {
           {[
             {
               title: 'First of Its Kind',
-              desc: 'World’s first CliMarTech platform for marketing emissions',
+              desc: 'The world’s first platform for real-time emission Tracking & Reduction',
               bg: 'bg-tertiary',
               text: 'text-black',
               delay: 0,
             },
             {
-              title: 'Scope 3 Ready',
-              desc: 'Purpose-built to address the biggest blind spot in advertising carbon',
+              title: 'Impact Ready',
+              desc: 'Purpose-built to address the biggest blind spot in carbon - Time',
               bg: 'bg-gray-50',
               text: 'text-gray-900',
               delay: 100,
             },
             {
               title: 'Audit-Ready',
-              desc: 'Reports aligned with SECR (UK), SEC (US), CSRD (EU) disclosure frameworks',
+              desc: 'Reports aligned with SECR, SEC, CSRD disclosure frameworks',
               bg: 'bg-gray-50',
               text: 'text-gray-900',
               delay: 200,
@@ -78,9 +78,9 @@ const CarbonCutImpact = () => {
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
           {[
-            { label: '~Minutes, Not Months', desc: 'To calculate a campaign-level footprint' },
-            { label: '10+ Years', desc: 'Marketing and sustainability expertise behind the platform' },
-            { label: 'Built for Marketing', desc: 'Created by marketers, for marketing & advertising emissions' },
+            { label: '~Minutes, Not Months', desc: 'Campaign-level or operational footprints calculated in minutes — not months.' },
+            { label: '10+ Years', desc: 'Internet, Energy and Sustainability expertise behind the platform' },
+            { label: 'Built for Marketing', desc: 'Created by disruptors, for disruption with speed and accuracy' },
             { label: 'Trusted', desc: 'Designed for transparency, compliance and climate integrity' },
           ].map((metric, idx) => (
             <div key={idx} className="text-center">

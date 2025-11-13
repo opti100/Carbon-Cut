@@ -31,16 +31,18 @@ export default function WhatCarbonCutProvides() {
           <span>
             <span className="text-lg text-gray-600 max-w-3xl mx-auto">
               Everything you need to{" "}
-              <span className="text-orange-500 font-semibold">measure, report</span>, and{" "}
-              <span className="text-orange-500 font-semibold">address</span>  marketing emissions with accuracy and confidence.
+              <span className="text-orange-500 font-semibold">measure, reduce</span>, and{" "}
+              <span className="text-orange-500 font-semibold">offset</span>   emissions with precision and confidence
             </span>
           </span>
 
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">CarbonCut delivers the essentials today — and is building the next generation of compliance and climate tools for tomorrow.</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto"> — whether from internet advertising, energy operations, or industrial activity.
+            CarbonCut delivers the tools enterprises need today and is continuously building the next generation of AI-driven, compliance-ready climate technology for tomorrow.
+          </p>
         </BlurFade>
 
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 md:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-6 md:gap-4">
           {grid.map((feature, index) => (
             <BlurFade
               key={feature.title}
@@ -95,19 +97,19 @@ export default function WhatCarbonCutProvides() {
 const grid = [
   {
     title: "CarbonCalculator",
-    description: "Quantify campaign emissions across digital, print, OOH, and events. Built on GHG Protocol + ISO 14064, with outputs mapped to SECR, CSRD, and SEC formats.",
+    description: "Quantify campaign or operational emissions across digital, print, OOH, events, energy, and infrastructure systems. Built on GHG Protocol and ISO 14064, with outputs mapped to SECR (UK), CSRD (EU), and SEC (US) disclosure formats.",
     icon: BarChart3,
-    metric: "Campaign-level CO₂e in minutes."
+    metric: "Campaign or site-level CO₂e in minutes."
   },
   {
     title: "CarbonLive (Entreprise API)",
     description: "Direct API integration for agencies, DSPs, SSPs, and ad exchanges — embedding CarbonCut into existing marketing and reporting workflows.",
     icon: Globe,
-    metric: "Sustainability as part of the stack"
+    metric: "Sustainability built into your stack."
   },
   {
     title: "CarbonOffset",
-    description: "Neutralise residual tonnes via a curated marketplace of verified credits (Verra, Gold Standard, ACR, CAR). Every retirement is logged on a smart contract for transparency and traceability.",
+    description: "Neutralise residual tonnes through a curated global marketplace of verified projects — including Verra, Gold Standard, ACR, and CAR. Each retirement is recorded on a smart contract ledger, providing full transparency and traceability from emission to offset.",
     icon: Target,
     metric: "Trusted projects, verifiable retirements"
   },
@@ -117,12 +119,18 @@ const grid = [
     icon: LayoutDashboard,
     metric: "Compliance made simple"
   },
-  {
-    title: "C3 Seal (CarbonCut Certified)",
-    description: "Campaigns that complete a CarbonCut calculation and receive report authorisation earn the C3 Seal — a mark of climate accountability. The Seal confirms that results are structured in line with recognised disclosure standards (SECR, CSRD, SEC), making them suitable for use in reports, investor filings, and marketing claims.",
-    icon: Blocks,
-    metric: "Authorised Calculation Report"
-  },
+  // {
+  //   title: "C3 Seal (CarbonCut Certified)",
+  //   description: "Campaigns that complete a CarbonCut calculation and receive report authorisation earn the C3 Seal — a mark of climate accountability. The Seal confirms that results are structured in line with recognised disclosure standards (SECR, CSRD, SEC), making them suitable for use in reports, investor filings, and marketing claims.",
+  //   icon: Blocks,
+  //   metric: "Authorised Calculation Report"
+  // },
+  //  {
+  //   title: "CarbonToken(CTN)",
+  //   description: "A tokenisation layer where retired credits are converted into CarbonCut Tokens (CTN). These tokens serve as an engagement tool, providing on-chain proof that a retirement has taken place, while expanding transparency and accessibility in the carbon ecosystem.",
+  //   icon: Blocks,
+  //   metric: " Proof on-chain, backed by real retirements."
+  // },
 
 
 

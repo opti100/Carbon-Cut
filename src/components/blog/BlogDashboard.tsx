@@ -19,7 +19,12 @@ const BlogDashboard = () => {
 
   // Filter posts based on search and category
   React.useEffect(() => {
-    let filtered = blogPosts;
+    let filtered = [...blogPosts];
+
+    // Sort by date - latest first
+    filtered.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(post => post.category === selectedCategory);
