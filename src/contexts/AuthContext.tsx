@@ -71,14 +71,13 @@ const fetchCurrentUser = async (): Promise<User | null> => {
     
     // Handle different response structures
     if (response.data?.success && response.data?.user) {
-      return response.data.user;
+      return response.data.data.user;
     }
     
     if (response.data?.user) {
-      return response.data.user;
+      return response.data.data.user;
     }
     
-    // If the response itself is the user object
     if (response.data?.id && response.data?.email) {
       return response.data;
     }
