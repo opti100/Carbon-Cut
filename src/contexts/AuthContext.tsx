@@ -70,11 +70,11 @@ const fetchCurrentUser = async (): Promise<User | null> => {
     const response = await api.get('/auth/me/');
     
     // Handle different response structures
-    if (response.data?.success && response.data?.user) {
-      return response.data.data.user;
-    }
-    
-    if (response.data?.user) {
+    // if (response.data?.success && response.data?.user) {
+    //   return response.data.data.user;
+    // }
+    // console.log("Response Data:", response.data.data.user);
+    if (response.data.data.user) {
       return response.data.data.user;
     }
     
