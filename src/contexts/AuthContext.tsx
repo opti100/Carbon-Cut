@@ -1,8 +1,8 @@
 "use client";
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import {
   setCredentials,
   logout as logoutAction,
@@ -27,6 +27,7 @@ interface AuthContextType {
   login: (email: string, otp: string) => Promise<void>;
   logout: () => Promise<void>;
   sendOTP: (email: string, name?: string) => Promise<void>;
+  refetchUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,27 +40,57 @@ export const useAuth = () => {
   return context;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
+// Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000,
 });
 
+// Add response interceptor for better error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized - could trigger logout
+      console.log('Unauthorized request detected');
+    }
+    return Promise.reject(error);
+  }
+);
+
+// Fetch current user from /auth/me endpoint
 const fetchCurrentUser = async (): Promise<User | null> => {
   try {
-    const response = await api.get(`${API_BASE}/auth/me/`);
-    console.log('fetchCurrentUser response:', response.data);
+    const response = await api.get('/auth/me/');
     
-    if (response.data.success && response.data.user) {
+    // Handle different response structures
+    if (response.data?.success && response.data?.user) {
       return response.data.user;
     }
+    
+    if (response.data?.user) {
+      return response.data.user;
+    }
+    
+    // If the response itself is the user object
+    if (response.data?.id && response.data?.email) {
+      return response.data;
+    }
+    
     return null;
   } catch (error) {
-    console.error('fetchCurrentUser error:', error);
+    if (axios.isAxiosError(error)) {
+      // Don't log 401 as errors - it's expected when not authenticated
+      if (error.response?.status !== 401) {
+        console.error('fetchCurrentUser error:', error.message);
+      }
+    }
     return null;
   }
 };
@@ -71,20 +102,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const user = useAppSelector(selectUser);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
-  // Fetch user on mount and when authenticated
-  const { data: currentUser, isLoading } = useQuery({
+  // Fetch user data with optimized settings
+  const { 
+    data: currentUser, 
+    isLoading,
+    refetch: refetchUser 
+  } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchCurrentUser,
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
-    refetchOnMount: true,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    retry: (failureCount, error) => {
+      // Don't retry on 401 errors
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    refetchOnMount: 'always',
     refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   });
 
-  // Update Redux when user data changes
-  React.useEffect(() => {
+  // Update Redux store when user data changes
+  useEffect(() => {
     if (currentUser) {
-      console.log('Setting user in Redux:', currentUser);
       dispatch(setUserAction(currentUser));
     }
   }, [currentUser, dispatch]);
@@ -96,16 +138,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return response.data;
     },
     onSuccess: (data) => {
-      console.log('Login success:', data);
-      if (data.success && data.user && data.auth_token) {
+      if (data.success && data.user) {
         dispatch(setCredentials({
           user: data.user,
-          token: data.auth_token,
+          token: data.auth_token || data.token,
         }));
-        // Refetch user data
+        
+        // Refetch user data after successful login
         setTimeout(() => {
           queryClient.invalidateQueries({ queryKey: ['currentUser'] });
-        }, 500);
+        }, 300);
+      }
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message;
+        console.error('Login failed:', message);
+        throw new Error(message);
       }
     },
   });
@@ -120,6 +169,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
       return response.data;
     },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message;
+        console.error('Send OTP failed:', message);
+        throw new Error(message);
+      }
+    },
   });
 
   // Logout mutation
@@ -128,15 +184,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         await api.post('/auth/logout/');
       } catch (error) {
-        console.error('Logout error:', error);
+        // Continue with logout even if API call fails
+        console.error('Logout API call failed:', error);
       }
     },
     onSettled: () => {
+      // Clear all state
       dispatch(logoutAction());
       queryClient.clear();
     },
   });
 
+  // Public methods
   const login = async (email: string, otp: string) => {
     await loginMutation.mutateAsync({ email, otp });
   };
@@ -149,13 +208,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await logoutMutation.mutateAsync();
   };
 
-  const value = {
+  const handleRefetchUser = async () => {
+    await refetchUser();
+  };
+
+  const value: AuthContextType = {
     user,
     isLoading: isLoading || loginMutation.isPending,
     isAuthenticated,
     login,
     logout,
     sendOTP,
+    refetchUser: handleRefetchUser,
   };
 
   return (
@@ -165,15 +229,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-export const makeRequest = async (url: string, options: RequestInit = {}) => {
-  const method = options.method || 'GET';
-  const axiosOptions = {
-    method,
-    url,
-    data: options.body ? JSON.parse(options.body as string) : undefined,
-    headers: options.headers ? Object.fromEntries(new Headers(options.headers)) : undefined,
-  };
+// Export the axios instance for other modules to use
+export { api };
 
-  const response = await api.request(axiosOptions);
+// Helper function for making requests with the configured axios instance
+export const makeRequest = async (endpoint: string, options: {
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+  data?: any;
+  headers?: Record<string, string>;
+} = {}) => {
+  const { method = 'GET', data, headers } = options;
+  
+  const response = await api.request({
+    url: endpoint,
+    method,
+    data,
+    headers,
+  });
+  
   return response.data;
 };
