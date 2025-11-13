@@ -12,6 +12,8 @@ import {
   animate,
 } from "framer-motion"
 import Image from 'next/image'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 
  const AURORA_COLORS = [
     "#00CC33",
@@ -23,8 +25,6 @@ import Image from 'next/image'
 const Hero = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
-
- 
 
   const color = useMotionValue(AURORA_COLORS[0])
 
