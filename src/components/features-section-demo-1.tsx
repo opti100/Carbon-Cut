@@ -2,10 +2,23 @@
 
 import React from "react";
 import { useId } from "react";
-import { Calculator,LayoutDashboard ,BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap, Shield, TrendingDown, Users, Blocks } from "lucide-react";
+import { Calculator, LayoutDashboard, BarChart3, Leaf, Award, Target, Globe, FileCheck, Zap, Shield, TrendingDown, Users, Blocks } from "lucide-react";
 import { BlurFade } from "./ui/blur-fade";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function WhatCarbonCutProvides() {
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['me'],
+    queryFn: async () => {
+      const response = await axios.get(`${BASE_URL}/auth/me/`, {
+        withCredentials: true,
+      })
+      return response.data;
+    }
+  })
+  console.log(data);
   return (
     <div className="py-20  bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -14,8 +27,7 @@ export default function WhatCarbonCutProvides() {
             Powerful Features for{" "}
             <span className="text-tertiary">Carbon Reduction</span>
           </h2>
-
-
+          {JSON.stringify(data)}
           <span>
             <span className="text-lg text-gray-600 max-w-3xl mx-auto">
               Everything you need to{" "}
@@ -87,7 +99,7 @@ const grid = [
     icon: BarChart3,
     metric: "Campaign-level CO₂e in minutes."
   },
-    {
+  {
     title: "CarbonLive (Entreprise API)",
     description: "Direct API integration for agencies, DSPs, SSPs, and ad exchanges — embedding CarbonCut into existing marketing and reporting workflows.",
     icon: Globe,
@@ -99,7 +111,7 @@ const grid = [
     icon: Target,
     metric: "Trusted projects, verifiable retirements"
   },
-    {
+  {
     title: "CarbonESG (Live Dashboard)",
     description: "A centralized, multi-user ESG platform to transform campaign data into audit-ready disclosures in SECR, CSRD, and SEC formats.",
     icon: LayoutDashboard,
