@@ -8,17 +8,17 @@ const WhyCarbonCut = () => {
     {
       icon: Calculator,
       title: "Accurate Carbon Calculation",
-      description: "Quantify campaign and operational emissions with precision, including Scope 3 impacts, using methodologies aligned with recognised standards.",
+      description: "Quantify campaign and operational emissions with precision using methodologies aligned with GHG Protocol, ISO 14064, and verified by climate scientists.",
     },
     {
       icon: ClipboardList,
       title: "Transparent Reporting",
-      description: "Generate clear, audit-ready reports structured for ESG, SECR, SEC, and CSRD disclosure — built for finance, sustainability, and compliance teams.",
+      description: "Generate clear, audit-ready reports designed for ESG, SECR, SEC, and CSRD disclosures.Built for finance, sustainability, and compliance teams, CarbonCut delivers numbers that stand up to regulatory and investor scrutiny.",
     },
     {
       icon: TreePine,
       title: "Verified Carbon Offsetting",
-      description: "Neutralise tonnes of carbon through certified projects across nature, energy, waste and others,  each linked to a transparent certificate trail and smart-contract record.",
+      description: "Neutralise every residual tonne through certified projects across nature, energy waste sectors and others. Each offset is backed by a verifiable certificate trail and an immutable smart-contract record, ensuring end-to-end trust and traceability.",
     },
   ];
 
@@ -31,8 +31,11 @@ const WhyCarbonCut = () => {
             Security, Reliability,<span className='text-tertiary'> Simplicity </span> 
           </h2>
           <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
-           A platform built for leaders who need  <span className="text-orange-500">carbon data they can trust.</span> CarbonCut ensures your marketing emissions are measured with accuracy, reported with transparency, and offset with compliant and globally verified credits.
+           A platform built for leaders who demand carbon data they can trust   <span className="text-orange-500"> ON THE GO.</span>  {" "} 
+CarbonCut ensures your emissions are measured with accuracy, reported with transparency, and offset through globally verified credits — all in real time.
 
+           
+          
           </p>
         </BlurFade>
 

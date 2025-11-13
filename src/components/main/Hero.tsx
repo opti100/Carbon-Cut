@@ -15,13 +15,13 @@ import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
- const AURORA_COLORS = [
-    "#00CC33",
-    "#00AA2B",
-    "#00EE3B",
-    "#009928",
-    "#00FF40",
-  ]
+const AURORA_COLORS = [
+  "#00CC33",
+  "#00AA2B",
+  "#00EE3B",
+  "#009928",
+  "#00FF40",
+]
 const Hero = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -62,12 +62,25 @@ const Hero = () => {
         { label: 'CarbonCalculator', href: '/calculator' },
         { label: 'CarbonLive', href: '/live' },
         { label: 'CarbonOffset', href: '/offset' },
-      
+
       ]
     },
     { label: 'Solutions', href: '/solutions' },
     { label: 'Blogs', href: '/blogs' },
     { label: 'Resources', href: '/resources' },
+  ]
+
+  const CarbonCutNav = [
+    {
+      label: 'CarbonCut',
+      hasDropdown: true,
+      items: [
+        { label: 'CarbonCalculator', href: '/calculator' },
+        { label: 'CarbonLive', href: '/live' },
+        { label: 'CarbonOffset', href: '/offset' },
+
+      ]
+    },
   ]
 
   return (
@@ -240,10 +253,10 @@ const Hero = () => {
                 className="inline-block text-tertiary"
                 words={["Calculate", "Reduce", "Offset"]}
               />
-              <span className="text-black">marketing</span>
+              <span className="text-black">carbon </span>
             </div>
-            <div className="mt-1 sm:mt-2">
-              <span className="text-black">emissions</span>
+            <div className="mt-0 sm:mt-1 md:mt-2 flex justify-center">
+              <span className="text-black text-3xl xs:text-4xl sm:text-5xl md:text-5xl lg:text-5xl xl:text-6xl">emissions — in real-time</span>
             </div>
           </motion.h1>
 
@@ -251,9 +264,10 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-6 sm:mb-8 md:mb-10 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto leading-relaxed px-2"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-6 sm:mb-8 md:mb-10 max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-3xl mx-auto leading-relaxed px-2 text-center"
           >
-            From digital impressions to printed collateral, we calculate campaign-level emissions with audit-ready CO₂e results and link every residual tonne to a verified offset, complete with a certificate trail.
+            From internet advertising to energy & beyond, CarbonCut Tracks and Reduces emissions as they happen. Our AI-driven reduction agents analyse live activity data, cut unnecessary emissions, and auto-offset every residual tonne with verified carbon credits.
+            Because real impact doesn&apos;t wait — it happens <span className='font-bold'> in real-time.</span>
           </motion.p>
 
           <motion.div
@@ -262,17 +276,38 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-10 md:mb-12"
           >
-            <Button
-              asChild
-              size={"lg"}
-              className="bg-tertiary hover:bg-tertiary/90 text-white px-6 py-2 sm:px-8 sm:py-3.5 md:px-10 md:py-2 text-base sm:text-lg md:text-xl font-semibold rounded-lg h-auto shadow-lg hover:shadow-xl transition-all duration-200 group relative overflow-hidden w-full sm:w-auto"
-            >
-              <Link href="/calculator" className="flex items-center justify-center space-x-2 sm:space-x-3">
-                <Calculator className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-                <span>CarbonCalculator</span>
-                <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </Link>
-            </Button>
+            {/* CarbonCut Dropdown Button */}
+            {CarbonCutNav.map((item) => (
+              <div key={item.label} className="relative group w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  className="bg-tertiary hover:bg-tertiary/90 text-white px-6 py-2 sm:px-8 sm:py-3.5 md:px-10 md:py-2 text-base sm:text-lg md:text-xl font-semibold rounded-lg h-auto shadow-lg hover:shadow-xl transition-all duration-200 group relative overflow-hidden w-full sm:w-auto"
+                >
+                  <span className="flex items-center justify-center space-x-2 sm:space-x-3">
+                   
+                    <span>{item.label}</span>
+                    <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform group-hover:rotate-180" />
+                  </span>
+                </Button>
+
+                {/* Dropdown Menu */}
+                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200/80 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 backdrop-blur-md z-50">
+                  <div className="py-2">
+                    {item.items?.map((subItem) => (
+                      <Link
+                        key={subItem.label}
+                        href={subItem.href}
+                        className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-tertiary hover:bg-gray-50 transition-colors"
+                      >
+                      
+                        <span className="font-medium">{subItem.label}</span>
+                        <ArrowUpRight className="w-4 h-4 ml-auto transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
           </motion.div>
 
           <motion.div

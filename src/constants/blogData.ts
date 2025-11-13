@@ -22,6 +22,7 @@ import { blogTwoData } from './blogs/blogtwo-data';
 import { blogFourData } from './blogs/blogfour-data';
 import { blogFiveData } from './blogs/blogfive-data';
 import { blogThreeeData } from './blogs/blogthree-data';
+import { blogSixData } from './blogs/blogsix-data';
 
 
 // Blog posts data
@@ -31,6 +32,7 @@ export const blogPosts: BlogPost[] = [
   blogThreeeData, // Fixed typo here
   blogFourData,
   blogFiveData,
+  blogSixData
 ];
 
 // Utility functions for blog data

@@ -357,7 +357,7 @@ export const blogFourData: BlogPost = {
   category: 'Sustainable Marketing',
   title: 'Add a Carbon Column to Your Media Plan',
   excerpt: 'The Hidden Metric Missing From Every Campaign',
-  date: '2025-11-23',
+  date: '2025-10-23',
   author: {
     name: '',
     avatar: '/'

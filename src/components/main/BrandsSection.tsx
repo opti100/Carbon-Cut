@@ -63,7 +63,13 @@ const BrandsSection = () => {
                 // @ts-expect-error - ignore
                 variants={itemVariants}
               >
-                CarbonCut delivers defensible CO₂e data that stands up to SECR, SEC, and CSRD disclosure.
+                <p>
+
+                CarbonCut empowers forward-thinking brands to make the internet measurable, transparent, and climate-accountable.
+                </p>
+                <p>
+                  Our clients rely on CarbonCut’s defensible CO₂e data that meets the strictest global disclosure standards — including SECR (UK), SEC (US), and CSRD (EU).
+                </p>
               </motion.p>
 
               <motion.div
@@ -76,7 +82,7 @@ const BrandsSection = () => {
                   <div className="flex items-start gap-3">
                     <MoveUpRight className="text-tertiary w-5 h-5 flex-shrink-0 mt-0.5" />
                     <p className="text-base text-white leading-relaxed">
-                      Clients report <span className="font-bold">up to 30% faster disclosure preparation</span> with audit-ready outputs.
+                     90% faster <span className="font-bold">sustainability and disclosure reporting</span>  with audit-ready outputs
                     </p>
                   </div>
 
@@ -84,7 +90,7 @@ const BrandsSection = () => {
                   <div className="flex items-start gap-3">
                     <MoveUpRight className="text-tertiary w-5 h-5 flex-shrink-0 mt-0.5" />
                     <p className="text-base text-white leading-relaxed">
-                      Users report <span className="font-bold">up to 15% lower emissions per campaign</span> without sacrificing performance.
+                     Up to <span className="font-bold">15% lower emissions</span> achieved without reducing performance  
                     </p>
                   </div>
 
@@ -92,7 +98,9 @@ const BrandsSection = () => {
                   <div className="flex items-start gap-3">
                     <MoveUpRight className="text-tertiary w-5 h-5 flex-shrink-0 mt-0.5" />
                     <p className="text-base text-white leading-relaxed">
-                      Every tonne neutralised tied to a verifiable on-chain retirement.
+                    Every tonne offset linked to a verifiable, registry-backed  {" "}
+
+                      <span className="font-bold">carbon retirement</span>
                     </p>
                   </div>
                 </div>
