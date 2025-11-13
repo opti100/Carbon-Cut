@@ -14,6 +14,7 @@ import { campaignApi } from "@/services/campaign/campaign"
 import { CreateCampaignDialog } from "@/components/dashboard/campaign/CreateCampaignsDialog"
 import { DashboardHeader } from "@/components/DashboardHeader"
 import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog"
+import { GoogleAdsReconnectBanner } from "@/components/dashboard/google-ads/GoogleAdsReconnectBanner"
 
 export default function CampaignsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
@@ -56,6 +57,7 @@ export default function CampaignsPage() {
   return (
     <>
       <DashboardHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Campaigns" }]} />
+      <GoogleAdsReconnectBanner/>
       <div className="flex-1 overflow-auto p-6">
         <div className="mx-auto max-w-7xl space-y-8">
           <div className="flex justify-between items-start gap-6">
