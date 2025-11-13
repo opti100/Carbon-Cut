@@ -8,17 +8,17 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function WhatCarbonCutProvides() {
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['me'],
-    queryFn: async () => {
-      const response = await axios.get(`${BASE_URL}/auth/me/`, {
-        withCredentials: true,
-      })
-      return response.data;
-    }
-  })
-  console.log(data);
+  // const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+  // const { data, isLoading, isError } = useQuery({
+  //   queryKey: ['me'],
+  //   queryFn: async () => {
+  //     const response = await axios.get(`${BASE_URL}/auth/me/`, {
+  //       withCredentials: true,
+  //     })
+  //     return response.data;
+  //   }
+  // })
+  // console.log(data);
   return (
     <div className="py-20  bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -27,7 +27,7 @@ export default function WhatCarbonCutProvides() {
             Powerful Features for{" "}
             <span className="text-tertiary">Carbon Reduction</span>
           </h2>
-          {JSON.stringify(data)}
+          {/* {JSON.stringify(data)} */}
           <span>
             <span className="text-lg text-gray-600 max-w-3xl mx-auto">
               Everything you need to{" "}
