@@ -51,7 +51,7 @@ const api = axios.create({
 
 const fetchCurrentUser = async (): Promise<User | null> => {
   try {
-    const response = await api.get('/auth/me/');
+    const response = await api.get(`${API_BASE}/auth/me/`);
     console.log('fetchCurrentUser response:', response.data);
     
     if (response.data.success && response.data.user) {
