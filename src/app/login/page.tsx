@@ -232,9 +232,9 @@ function LoginPage() {
                 ) : (
                   <form onSubmit={handleOTPSubmit} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="otp" className="text-sm font-medium">
+                      {/* <Label htmlFor="otp" className="text-sm font-medium">
                         Verification Code
-                      </Label>
+                      </Label> */}
                       <div className="relative flex justify-center">
                         <InputOTP
                           id="otp"

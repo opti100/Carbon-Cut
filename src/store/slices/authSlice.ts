@@ -30,13 +30,6 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
-      
-      if (typeof document !== 'undefined') {
-        const date = new Date();
-        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
-        const expires = `expires=${date.toUTCString()}`;
-        document.cookie = `auth-token=${encodeURIComponent(action.payload.token)}; ${expires}; path=/; samesite=none`;
-      }
     },
     
     setUser: (state, action: PayloadAction<User>) => {
