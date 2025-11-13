@@ -61,7 +61,16 @@ const getCookie = (name: string): string | null => {
 };
 
 const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  // Delete for all possible configurations
+  const isProduction = window.location.hostname.includes('carboncut.co');
+  
+  if (isProduction) {
+    // Production - delete with Secure and SameSite=None
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=None; Secure`;
+  } else {
+    // Development - delete with SameSite=Lax
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Lax`;
+  }
 };
 
 export const makeRequest = async (url: string, options: RequestInit = {}) => {
@@ -76,25 +85,56 @@ export const makeRequest = async (url: string, options: RequestInit = {}) => {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  console.log('Making request to:', url);
+  console.log('With token:', token ? 'Present' : 'Missing');
+  console.log('Headers:', headers);
+
   const response = await fetch(url, {
     ...options,
     headers,
     credentials: 'include',
   });
 
+  console.log('Response status:', response.status);
+  console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ message: 'Request failed' }));
+    console.error('Request failed:', error);
     throw new Error(error.message || `HTTP ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  console.log('Response data:', data);
+  return data;
 };
 
 const fetchCurrentUser = async (): Promise<User | null> => {
-  const token = getCookie('auth-token');
-  if (!token) return null;
-  const response = await makeRequest(`${API_BASE}/auth/me/`);
-  return response.success && response.data?.user ? response.data.user : null;
+  try {
+    const token = getCookie('auth-token');
+    console.log('fetchCurrentUser - Token:', token ? 'Present' : 'Missing');
+    
+    if (!token) {
+      console.log('No token found, returning null');
+      return null;
+    }
+    
+    const response = await makeRequest(`${API_BASE}/auth/me/`);
+    console.log('fetchCurrentUser - Response:', response);
+    
+    // Handle both response structures
+    if (response.success && response.data?.user) {
+      return response.data.user;
+    } else if (response.success && response.user) {
+      return response.user;
+    }
+    
+    console.log('No user in response, returning null');
+    return null;
+  } catch (error) {
+    console.error('fetchCurrentUser error:', error);
+    return null;
+  }
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -106,30 +146,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isLoading = useAppSelector(selectIsLoading);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
-  // Sync token from cookie to Redux on mount
-  useEffect(() => {
-    const cookieToken = getCookie('auth-token');
-    if (cookieToken && cookieToken !== token) {
-      dispatch(setTokenAction(cookieToken));
-    }
-  }, []); // Run once on mount
-
-  const { data: currentUser, refetch } = useQuery({
+  const { data: currentUser, refetch, isLoading: userLoading } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchCurrentUser,
     enabled: !!getCookie('auth-token'),
     staleTime: 5 * 60 * 1000,
     retry: 1,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
-  // Update both user AND token when user is fetched
   useEffect(() => {
+    console.log('Current user from query:', currentUser);
     if (currentUser) {
-      const cookieToken = getCookie('auth-token');
-      dispatch(setCredentials({
-        user: currentUser,
-        token: cookieToken || '',
-      }));
+      dispatch(setUserAction(currentUser));
     }
   }, [currentUser, dispatch]);
 
@@ -141,12 +171,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     },
     onSuccess: (data) => {
+      console.log('Login success:', data);
       if (data.success && data.user && data.auth_token) {
         dispatch(setCredentials({
           user: data.user,
           token: data.auth_token,
         }));
-        queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+        // Wait a bit for cookie to be set, then refetch
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+        }, 500);
       }
     },
   });
@@ -210,7 +244,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const handleFocus = () => {
-      if (getCookie('auth-token')) {
+      const authToken = getCookie('auth-token');
+      console.log('Window focus - Token:', authToken ? 'Present' : 'Missing');
+      if (authToken) {
         refetch();
       }
     };
@@ -224,7 +260,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const interval = setInterval(() => {
       const authToken = getCookie('auth-token');
+      console.log('Cookie check interval - Token:', authToken ? 'Present' : 'Missing');
       if (!authToken) {
+        console.log('Token missing, logging out');
         dispatch(logoutAction());
         queryClient.clear();
       }
@@ -236,7 +274,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     user,
     token,
-    isLoading: isLoading || loginMutation.isPending,
+    isLoading: isLoading || loginMutation.isPending || userLoading,
     isAuthenticated,
     login,
     logout,

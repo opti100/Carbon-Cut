@@ -67,7 +67,7 @@ export const googleAdsApi = {
    */
   async checkConnection() {
     const response = await fetchWithAuth(`${API_BASE_URL}/impressions/google-ads/status/`);
-    console.log('✅ Google Ads status response:', response);
+    // console.log('✅ Google Ads status response:', response);
     
     // Backend returns data directly at root level
     return {
@@ -101,7 +101,7 @@ export const googleAdsApi = {
    */
   async getAccounts() {
     const response = await fetchWithAuth(`${API_BASE_URL}/impressions/google-ads/accounts/`);
-    console.log('✅ Accounts response:', response);
+    // console.log('✅ Accounts response:', response);
     return response;
   },
 

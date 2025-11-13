@@ -37,7 +37,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/a
 // API functions with proper typing
 const signupAPI = {
   sendOTP: async (data: SignupData): Promise<AuthResponse> => {
-    const response = await fetch(`${API_BASE_URL}/auth/signup/send-otp`, {
+    const response = await fetch(`${API_BASE_URL}/auth/send-otp/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -346,9 +346,9 @@ const SignupPage = () => {
                   /* OTP Step */
                   <form onSubmit={handleOTPSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="otp" className="text-sm font-medium">
+                      {/* <Label htmlFor="otp" className="text-sm font-medium">
                         Verification Code
-                      </Label>
+                      </Label> */}
                       <div className="relative flex justify-center">
                         <InputOTP
                           id="otp"
@@ -370,7 +370,7 @@ const SignupPage = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-col gap-2 sm:gap-3">
+                    <div className="flex  gap-2 sm:gap-3">
                       <Button
                         type="button"
                         variant="outline"

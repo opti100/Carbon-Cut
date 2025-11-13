@@ -75,35 +75,35 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-tertiary font-medium">
-            STEP 1 OF 3
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">Connect Google Ads Account</h2>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            You need to log in to your account to connect Google Ads and start tracking campaigns.
-          </p>
-        </div>
-        <div className="space-y-4">
-          <Button
-            onClick={() => redirectToLogin()}
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white"
-          >
-            Login
-          </Button>
-          <Button
-           onClick={() => redirectToSignup()}
-            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900"
-          >
-            Signup
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className="space-y-6">
+  //       <div className="space-y-2">
+  //         <div className="flex items-center gap-2 text-tertiary font-medium">
+  //           STEP 1 OF 3
+  //         </div>
+  //         <h2 className="text-3xl font-bold text-gray-900">Connect Google Ads Account</h2>
+  //         <p className="text-gray-600 text-sm leading-relaxed">
+  //           You need to log in to your account to connect Google Ads and start tracking campaigns.
+  //         </p>
+  //       </div>
+  //       <div className="space-y-4">
+  //         <Button
+  //           onClick={() => redirectToLogin()}
+  //           className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+  //         >
+  //           Login
+  //         </Button>
+  //         <Button
+  //          onClick={() => redirectToSignup()}
+  //           className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900"
+  //         >
+  //           Signup
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="space-y-6">

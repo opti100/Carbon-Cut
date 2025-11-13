@@ -329,7 +329,9 @@ export default function CampaignCreationStep({ onComplete }: CampaignCreationSte
           </>
         )}
       </Button>
-      <Button className="bg-white text-gray-900 hover:bg-gray-100 shadow">
+      <Button className="bg-white text-gray-900 hover:bg-gray-100 shadow" onClick={()=>{
+        router.push("/dashboard")
+      }}>
         Skip
       </Button>
       {/* <p className="text-sm">You can create Campaigns inside Dashboard </p> */}

@@ -84,7 +84,7 @@ export const GoogleAdsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     queryFn: async () => {
       console.log('📡 Fetching Google Ads accounts from API...');
       const result = await googleAdsApi.getAccounts();
-      console.log('✅ Accounts fetched:', result);
+      // console.log('✅ Accounts fetched:', result);
       return result.data || result; 
     },
     enabled: statusData?.is_connected === true,
@@ -161,15 +161,15 @@ export const GoogleAdsProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     await switchAccountMutation.mutateAsync(customerId);
   };
 
-  console.log('GoogleAdsContext state:', {
-    isConnected: statusData?.is_connected,
-    isLoading,
-    error,
-    statusData,
-    accountsCount: accountsData?.accounts?.length,
-    accountsCached: queryClient.getQueryState(['googleAdsAccounts'])?.dataUpdatedAt,
-    isSwitchingAccount,
-  });
+  // console.log('GoogleAdsContext state:', {
+  //   isConnected: statusData?.is_connected,
+  //   isLoading,
+  //   error,
+  //   statusData,
+  //   accountsCount: accountsData?.accounts?.length,
+  //   accountsCached: queryClient.getQueryState(['googleAdsAccounts'])?.dataUpdatedAt,
+  //   isSwitchingAccount,
+  // });
 
   return (
     <GoogleAdsContext.Provider
