@@ -12,7 +12,7 @@ import { Card } from '../ui/card';
 
 const getCookie = (name: string): string | null => {
   if (typeof document === 'undefined') return null;
-  
+
   const value = `; ${document.cookie}`;
   console.log('All cookies:', value);
   const parts = value.split(`; ${name}=`);
@@ -63,7 +63,7 @@ export default function MarketingCalculator() {
 
       // Get the auth token from cookies
       const authToken = getCookie('auth-token');
-      
+
       if (!authToken) {
         console.warn('No auth token found in cookies');
         throw new Error('Authentication required');
@@ -103,12 +103,12 @@ export default function MarketingCalculator() {
         realTimeData: true,
         requirePrecision: true
       };
-      
+
       const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
       const response = await fetch(`${BASE_URL}/inventory/calculate-carbon/`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         },
@@ -151,15 +151,18 @@ export default function MarketingCalculator() {
   }, [activities, emissionResults, calculatingEmissions, calcCO2AI]);
 
   const getDisplayCO2 = useCallback((activity: ActivityData): number => {
+    // If we have a cached result, return it
     if (emissionResults[activity.id] !== undefined) {
       return emissionResults[activity.id];
     }
 
+    // If currently calculating, return fallback
     if (calculatingEmissions[activity.id]) {
       return FALLBACK_CALCULATION.getBasicEmission(activity);
     }
 
-    if (emissionResults[activity.id] === undefined) {
+    // If no result and not calculating, trigger calculation and return fallback
+    if (emissionResults[activity.id] === undefined && !calculatingEmissions[activity.id]) {
       calcCO2AI(activity);
       return FALLBACK_CALCULATION.getBasicEmission(activity);
     }
@@ -245,7 +248,10 @@ export default function MarketingCalculator() {
             countries={availableCountries}
             loadingCountries={loadingCountries}
             onAddActivity={addActivity}
-          />
+            getDisplayCO2={getDisplayCO2}
+            activities={activities}
+            calculatingEmissions={calculatingEmissions} 
+            emissionResults={emissionResults}          />
         </div>
 
         <div className="space-y-8 pb-16">
