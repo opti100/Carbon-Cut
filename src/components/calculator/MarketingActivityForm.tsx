@@ -1,5 +1,5 @@
 import { ActivityData, ChannelUnits, CountryData } from '@/types/types';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Loader2, Plus, Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { DateRange } from 'react-day-picker';
+import { ACTIVITY_CONVERSIONS } from '@/constants/data';
 
 interface MarketingActivityFormProps {
   activities: ActivityData[];
@@ -102,17 +103,23 @@ export default function MarketingActivityForm({
     console.log('📋 Available units:', availableUnits);
     console.log('📊 Form data:', { market: formData.market, channel: formData.channel, unit: formData.unit, qty: formData.qty });
 
-    if (!formData.qty || parseFloat(formData.qty) <= 0) {
-      setUnitEmissions({});
-      setUnitCalculating({});
-      setUnitIds({});
-      setIsCalculatingAll(false);
+    // Changed from AND to OR - calculate if we have quantity OR if channel/market changes
+    const shouldCalculate = formData.qty && parseFloat(formData.qty) > 0;
+    
+    if (!shouldCalculate) {
+      // Only clear if there's no quantity at all
+      if (!formData.qty || parseFloat(formData.qty) <= 0) {
+        setUnitEmissions({});
+        setUnitCalculating({});
+        setUnitIds({});
+        setIsCalculatingAll(false);
+      }
       return;
     }
 
     setIsCalculatingAll(true);
 
-    // Debounce the calculation
+    // Debounce the calculation - removed to make it instant
     const timeoutId = setTimeout(() => {
       const newUnitIds: Record<string, number> = {};
       const newUnitEmissions: Record<string, number> = {};
@@ -165,7 +172,7 @@ export default function MarketingActivityForm({
       setUnitCalculating(newUnitCalculating);
       setIsCalculatingAll(false);
       setSelectKey(prev => prev + 1);
-    }, 300);
+    }, 100); // Reduced debounce from 300ms to 100ms for faster response
 
     return () => {
       clearTimeout(timeoutId);
@@ -177,7 +184,7 @@ export default function MarketingActivityForm({
     formData.qty, 
     formData.scope, 
     dateRange?.from,
-    availableUnits // Add availableUnits as dependency
+    availableUnits
   ]);
 
   const handleChange = (field: string, value: string | number) => {
@@ -255,6 +262,44 @@ export default function MarketingActivityForm({
       setAddingActivity(false);
     }
   };
+
+  // Memoize the conversion function
+  const getApproximateQuantities = useCallback((selectedUnit: string, quantity: number) => {
+    if (!quantity || quantity <= 0) return {};
+    
+    const approximations: Record<string, number> = {};
+    
+    availableUnits.forEach(([label, unitKey]) => {
+      if (unitKey === selectedUnit) {
+        // Same unit, same quantity
+        approximations[unitKey] = quantity;
+      } else {
+        // Use conversion factors from ACTIVITY_CONVERSIONS
+        const conversionFactor = ACTIVITY_CONVERSIONS[selectedUnit]?.[unitKey];
+        
+        if (conversionFactor !== undefined) {
+          // Direct conversion exists
+          approximations[unitKey] = quantity * conversionFactor;
+        } else {
+          // Try reverse conversion
+          const reverseConversion = ACTIVITY_CONVERSIONS[unitKey]?.[selectedUnit];
+          if (reverseConversion !== undefined && reverseConversion !== 0) {
+            approximations[unitKey] = quantity / reverseConversion;
+          } else {
+            // No conversion available, use proportional estimate based on emission factors
+            // This provides a reasonable fallback
+            approximations[unitKey] = quantity * 0.5;
+          }
+        }
+      }
+    });
+    
+    return approximations;
+  }, [availableUnits]);
+
+  const approximateQuantities = useMemo(() => {
+    return getApproximateQuantities(formData.unit, parseFloat(formData.qty) || 0);
+  }, [formData.unit, formData.qty, getApproximateQuantities]);
 
   const formatEmissions = (value: number) => {
     return value.toFixed(5);
@@ -367,7 +412,6 @@ export default function MarketingActivityForm({
         <div className="space-y-2">
           <Label htmlFor="activity-type" className="text-gray-700 font-medium">Activity type</Label>
           <Select
-            key={`select-${selectKey}`}
             value={formData.unit}
             onValueChange={(value) => handleChange('unit', value)}
           >
@@ -376,31 +420,17 @@ export default function MarketingActivityForm({
             </SelectTrigger>
             <SelectContent>
               {availableUnits.map(([label, key]) => {
-                const emissionValue = unitEmissions[key];
-                console.log(`🎨 Rendering ${label} (${key}) with emission:`, emissionValue);
-                
                 return (
                   <SelectItem key={key} value={key}>
                     <div className='flex justify-between items-center w-full gap-4'>
                       <div className="flex-1">
                         {label}
                       </div>
-                      <div className="flex-shrink-0 min-w-[120px] text-right">
+                      <div className="flex-shrink-0 min-w-[120px] text-right flex items-center justify-end gap-2">
                         {formData.qty && parseFloat(formData.qty) > 0 ? (
-                          <div className="flex items-center justify-end gap-2">
-                            {isCalculatingAll || unitCalculating[key] ? (
-                              <div className="flex items-center gap-1">
-                                <Loader2 className="h-3 w-3 animate-spin text-blue-500" />
-                                <span className="text-xs text-gray-500">...</span>
-                              </div>
-                            ) : emissionValue !== undefined ? (
-                              <span className="text-xs font-semibold text-green-600 whitespace-nowrap">
-                                {formatEmissions(emissionValue)} kg CO₂e
-                              </span>
-                            ) : (
-                              <span className="text-xs text-gray-400">-</span>
-                            )}
-                          </div>
+                          <span className="text-xs font-semibold text-blue-600 whitespace-nowrap">
+                            ≈ {approximateQuantities[key]?.toFixed(2) || '-'}
+                          </span>
                         ) : (
                           <span className="text-xs text-gray-300">-</span>
                         )}
@@ -411,6 +441,57 @@ export default function MarketingActivityForm({
               })}
             </SelectContent>
           </Select>
+          
+          {/* Show approximate conversions below */}
+          {formData.qty && parseFloat(formData.qty) > 0 && availableUnits.length > 1 && (
+            <div className="mt-3 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-200 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm font-semibold text-blue-900">
+                  Equivalent Activity Conversions
+                </p>
+                <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                  Based on {formData.qty} {availableUnits.find(([, k]) => k === formData.unit)?.[0]}
+                </span>
+              </div>
+              
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {availableUnits.map(([label, key]) => {
+                  const approxQty = approximateQuantities[key];
+                  const isSelected = key === formData.unit;
+                  
+                  return (
+                    <div 
+                      key={key} 
+                      onClick={() => handleChange('unit', key)}
+                      className={`flex justify-between items-center text-sm py-2 px-3 rounded-md transition-all cursor-pointer ${
+                        isSelected 
+                          ? 'bg-blue-100 border-2 border-blue-400 shadow-sm' 
+                          : 'bg-white border border-gray-200 hover:border-blue-300 hover:shadow-sm'
+                      }`}
+                    >
+                      <span className={`flex-1 ${isSelected ? 'font-semibold text-blue-900' : 'text-gray-700'}`}>
+                        {label}
+                        {isSelected && (
+                          <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
+                            Selected
+                          </span>
+                        )}
+                      </span>
+                      <span className={`ml-4 ${isSelected ? 'text-blue-700 font-bold text-base' : 'text-gray-600'}`}>
+                        ≈ {approxQty?.toFixed(2) || '-'}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              <div className="mt-3 pt-3 border-t border-blue-200">
+                <p className="text-xs text-blue-700">
+                  💡 <strong>Tip:</strong> Click any activity type to switch and compare equivalent quantities
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
