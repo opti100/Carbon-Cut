@@ -38,8 +38,6 @@ export default function MarketingActivityForm({
   const [formData, setFormData] = useState({
     market: 'United Kingdom',
     channel: 'Ad Production',
-    unit: 'travel_km',
-    qty: '',
     scope: 3,
     campaign: '',
     notes: ''
@@ -50,160 +48,115 @@ export default function MarketingActivityForm({
     to: new Date()
   });
 
+  // Store quantities for each activity type
+  const [quantities, setQuantities] = useState<Record<string, string>>({});
+  // Track which units have been manually edited by the user
+  const [manuallyEditedUnits, setManuallyEditedUnits] = useState<Set<string>>(new Set());
   const [addingActivity, setAddingActivity] = useState(false);
-  const [unitEmissions, setUnitEmissions] = useState<Record<string, number>>({});
-  const [unitCalculating, setUnitCalculating] = useState<Record<string, boolean>>({});
-  const [unitIds, setUnitIds] = useState<Record<string, number>>({});
-  const [isCalculatingAll, setIsCalculatingAll] = useState(false);
-  const [selectKey, setSelectKey] = useState(0);
+
+  // Use ref to prevent infinite loops
+  const isCalculatingRef = useRef(false);
 
   // Use useMemo to stabilize the availableUnits array
   const availableUnits = useMemo(() => {
     return channels[formData.channel] || [];
   }, [channels, formData.channel]);
 
-  const getDisplayCO2Ref = useRef(getDisplayCO2);
-  const calculatingEmissionsRef = useRef(calculatingEmissions);
-  const emissionResultsRef = useRef(emissionResults);
+  // Calculate value for a target unit based on multiple source units (weighted average)
+  const calculateFromMultipleSources = useCallback((
+    targetUnit: string,
+    sourceUnits: { unit: string; value: number }[]
+  ): number | null => {
+    const validConversions: number[] = [];
 
-  // Update refs
-  useEffect(() => {
-    getDisplayCO2Ref.current = getDisplayCO2;
-    calculatingEmissionsRef.current = calculatingEmissions;
-    emissionResultsRef.current = emissionResults;
-  });
+    sourceUnits.forEach(({ unit: sourceUnit, value: sourceValue }) => {
+      if (sourceValue <= 0) return;
 
-  // Watch for emission results updates for all units
-  useEffect(() => {
-    const newUnitEmissions = { ...unitEmissions };
-    const newUnitCalculating = { ...unitCalculating };
-    let hasUpdates = false;
-    
-    Object.entries(unitIds).forEach(([unitKey, id]) => {
-      if (emissionResults[id] !== undefined && newUnitEmissions[unitKey] !== emissionResults[id]) {
-        newUnitEmissions[unitKey] = emissionResults[id];
-        newUnitCalculating[unitKey] = false;
-        hasUpdates = true;
-      } else if (calculatingEmissions[id] && !newUnitCalculating[unitKey]) {
-        newUnitCalculating[unitKey] = true;
-        hasUpdates = true;
+      // Try direct conversion
+      const directFactor = ACTIVITY_CONVERSIONS[sourceUnit]?.[targetUnit];
+      if (directFactor !== undefined) {
+        validConversions.push(sourceValue * directFactor);
+        return;
+      }
+
+      // Try reverse conversion
+      const reverseFactor = ACTIVITY_CONVERSIONS[targetUnit]?.[sourceUnit];
+      if (reverseFactor !== undefined && reverseFactor !== 0) {
+        validConversions.push(sourceValue / reverseFactor);
+        return;
       }
     });
 
-    if (hasUpdates) {
-      setUnitEmissions(newUnitEmissions);
-      setUnitCalculating(newUnitCalculating);
-    }
-  }, [emissionResults, calculatingEmissions, unitIds]);
+    if (validConversions.length === 0) return null;
 
-  // Calculate emissions for all available units when form data changes
-  useEffect(() => {
-    console.log('🔄 Effect triggered');
-    console.log('📋 Channel:', formData.channel);
-    console.log('📋 Available units:', availableUnits);
-    console.log('📊 Form data:', { market: formData.market, channel: formData.channel, unit: formData.unit, qty: formData.qty });
+    // Return weighted average of all valid conversions
+    const average = validConversions.reduce((sum, val) => sum + val, 0) / validConversions.length;
+    return average;
+  }, []);
 
-    // Changed from AND to OR - calculate if we have quantity OR if channel/market changes
-    const shouldCalculate = formData.qty && parseFloat(formData.qty) > 0;
+  // Handle quantity change for a specific unit
+  const handleQuantityChange = (unitKey: string, value: string) => {
+    const numValue = parseFloat(value);
     
-    if (!shouldCalculate) {
-      // Only clear if there's no quantity at all
-      if (!formData.qty || parseFloat(formData.qty) <= 0) {
-        setUnitEmissions({});
-        setUnitCalculating({});
-        setUnitIds({});
-        setIsCalculatingAll(false);
-      }
-      return;
+    // Prevent calculation loop
+    if (isCalculatingRef.current) return;
+    isCalculatingRef.current = true;
+
+    // Update the quantity immediately
+    const newQuantities = { ...quantities, [unitKey]: value };
+    
+    let newManuallyEditedUnits = new Set(manuallyEditedUnits);
+
+    if (value === '' || isNaN(numValue) || numValue <= 0) {
+      // User cleared the field - remove from manually edited set
+      newManuallyEditedUnits.delete(unitKey);
+    } else {
+      // User entered a value - add to manually edited set
+      newManuallyEditedUnits.add(unitKey);
+      
+      // Calculate other fields immediately
+      const editedSources = Array.from(newManuallyEditedUnits)
+        .map(key => ({
+          unit: key,
+          value: parseFloat(newQuantities[key] || '0')
+        }))
+        .filter(source => source.value > 0);
+
+      // Calculate non-manual fields
+      availableUnits.forEach(([label, targetKey]) => {
+        if (newManuallyEditedUnits.has(targetKey)) {
+          // Skip manually edited fields
+          return;
+        }
+
+        const calculatedValue = calculateFromMultipleSources(targetKey, editedSources);
+        
+        if (calculatedValue !== null) {
+          newQuantities[targetKey] = calculatedValue.toFixed(2);
+        }
+      });
     }
 
-    setIsCalculatingAll(true);
-
-    // Debounce the calculation - removed to make it instant
-    const timeoutId = setTimeout(() => {
-      const newUnitIds: Record<string, number> = {};
-      const newUnitEmissions: Record<string, number> = {};
-      const newUnitCalculating: Record<string, boolean> = {};
-
-      const baseId = Date.now() * -1;
-
-      console.log(`🚀 Starting calculation for ${availableUnits.length} units in channel: ${formData.channel}`);
-
-      availableUnits.forEach(([label, unitKey], index) => {
-        const uniqueId = baseId - index;
-        newUnitIds[unitKey] = uniqueId;
-
-        const activityToCalculate: ActivityData = {
-          id: uniqueId,
-          date: dateRange?.from?.toISOString().slice(0, 10) || new Date().toISOString().slice(0, 10),
-          market: formData.market,
-          channel: formData.channel,
-          unit: unitKey,
-          activityLabel: label,
-          qty: parseFloat(formData.qty) || 0,
-          scope: formData.scope,
-          campaign: formData.campaign,
-          notes: formData.notes
-        };
-
-        console.log(`🔍 Calculating for ${label} (${unitKey}) in ${formData.channel}:`, {
-          id: activityToCalculate.id,
-          market: activityToCalculate.market,
-          channel: activityToCalculate.channel,
-          unit: activityToCalculate.unit,
-          activityLabel: activityToCalculate.activityLabel,
-          qty: activityToCalculate.qty,
-          scope: activityToCalculate.scope
-        });
-
-        const emission = getDisplayCO2Ref.current(activityToCalculate);
-        console.log(`📊 Result for ${label} (unit: ${unitKey}):`, emission);
-        console.log(`📊 Type of emission:`, typeof emission);
-        newUnitEmissions[unitKey] = emission;
-        newUnitCalculating[unitKey] = calculatingEmissionsRef.current[uniqueId] || false;
-      });
-
-      console.log('✅ Setting new emissions:', newUnitEmissions);
-      console.log('✅ Emissions keys:', Object.keys(newUnitEmissions));
-      console.log('✅ Emissions values:', Object.values(newUnitEmissions));
-
-      setUnitIds(newUnitIds);
-      setUnitEmissions(newUnitEmissions);
-      setUnitCalculating(newUnitCalculating);
-      setIsCalculatingAll(false);
-      setSelectKey(prev => prev + 1);
-    }, 100); // Reduced debounce from 300ms to 100ms for faster response
-
-    return () => {
-      clearTimeout(timeoutId);
-      setIsCalculatingAll(false);
-    };
-  }, [
-    formData.market, 
-    formData.channel,
-    formData.qty, 
-    formData.scope, 
-    dateRange?.from,
-    availableUnits
-  ]);
+    // Update state once
+    setQuantities(newQuantities);
+    setManuallyEditedUnits(newManuallyEditedUnits);
+    
+    // Reset flag after state update
+    setTimeout(() => {
+      isCalculatingRef.current = false;
+    }, 0);
+  };
 
   const handleChange = (field: string, value: string | number) => {
     if (field === 'channel') {
-      const newUnits = channels[value as string];
-      console.log('🔄 Channel changed to:', value);
-      console.log('🔄 New units:', newUnits);
+      // Clear quantities when channel changes
+      setQuantities({});
+      setManuallyEditedUnits(new Set());
       
-      // Clear emissions when channel changes
-      setUnitEmissions({});
-      setUnitCalculating({});
-      setUnitIds({});
-      setSelectKey(prev => prev + 1);
-      
-      // Update all related state together
+      // Update channel and scope
       setFormData(prev => ({
         ...prev,
         channel: value as string,
-        unit: newUnits && newUnits.length > 0 ? newUnits[0][1] : '',
         scope: defaultScope[value as string] || 3
       }));
       
@@ -214,9 +167,10 @@ export default function MarketingActivityForm({
   };
 
   const handleSubmit = async () => {
-    const qty = parseFloat(formData.qty);
-    if (!qty || qty < 0) {
-      alert('Please enter a valid quantity.');
+    // Check if at least one quantity is entered
+    const hasQuantity = Object.values(quantities).some(q => q && parseFloat(q) > 0);
+    if (!hasQuantity) {
+      alert('Please enter at least one quantity.');
       return;
     }
 
@@ -228,81 +182,42 @@ export default function MarketingActivityForm({
     setAddingActivity(true);
 
     try {
-      const activityLabel = availableUnits.find(([, key]) => key === formData.unit)?.[0] || formData.unit;
+      // Add activities for each non-zero quantity
+      const activitiesToAdd = availableUnits
+        .filter(([label, unitKey]) => quantities[unitKey] && parseFloat(quantities[unitKey]) > 0)
+        .map(([label, unitKey]) => ({
+          date: dateRange.from!.toISOString().slice(0, 10),
+          market: formData.market,
+          channel: formData.channel,
+          unit: unitKey,
+          activityLabel: label,
+          qty: parseFloat(quantities[unitKey]),
+          scope: formData.scope,
+          campaign: formData.campaign,
+          notes: formData.notes
+        }));
 
-      const activityData: Omit<ActivityData, 'id'> = {
-        date: dateRange.from.toISOString().slice(0, 10),
-        market: formData.market,
-        channel: formData.channel,
-        unit: formData.unit,
-        activityLabel,
-        qty,
-        scope: formData.scope,
-        campaign: formData.campaign,
-        notes: formData.notes
-      };
+      console.log('✅ Adding Activities:', activitiesToAdd);
+      
+      // Add all activities
+      for (const activity of activitiesToAdd) {
+        onAddActivity(activity);
+      }
 
-      console.log('✅ Adding Activity:', activityData);
-      onAddActivity(activityData);
-
-      // Reset form fields and preview
+      // Reset form fields
+      setQuantities({});
+      setManuallyEditedUnits(new Set());
       setFormData(prev => ({
         ...prev,
-        qty: '',
         campaign: '',
         notes: ''
       }));
-      setUnitEmissions({});
-      setUnitCalculating({});
-      setUnitIds({});
     } catch (error) {
-      console.error('Error adding activity:', error);
-      alert('Error adding activity. Please try again.');
+      console.error('Error adding activities:', error);
+      alert('Error adding activities. Please try again.');
     } finally {
       setAddingActivity(false);
     }
-  };
-
-  // Memoize the conversion function
-  const getApproximateQuantities = useCallback((selectedUnit: string, quantity: number) => {
-    if (!quantity || quantity <= 0) return {};
-    
-    const approximations: Record<string, number> = {};
-    
-    availableUnits.forEach(([label, unitKey]) => {
-      if (unitKey === selectedUnit) {
-        // Same unit, same quantity
-        approximations[unitKey] = quantity;
-      } else {
-        // Use conversion factors from ACTIVITY_CONVERSIONS
-        const conversionFactor = ACTIVITY_CONVERSIONS[selectedUnit]?.[unitKey];
-        
-        if (conversionFactor !== undefined) {
-          // Direct conversion exists
-          approximations[unitKey] = quantity * conversionFactor;
-        } else {
-          // Try reverse conversion
-          const reverseConversion = ACTIVITY_CONVERSIONS[unitKey]?.[selectedUnit];
-          if (reverseConversion !== undefined && reverseConversion !== 0) {
-            approximations[unitKey] = quantity / reverseConversion;
-          } else {
-            // No conversion available, use proportional estimate based on emission factors
-            // This provides a reasonable fallback
-            approximations[unitKey] = quantity * 0.5;
-          }
-        }
-      }
-    });
-    
-    return approximations;
-  }, [availableUnits]);
-
-  const approximateQuantities = useMemo(() => {
-    return getApproximateQuantities(formData.unit, parseFloat(formData.qty) || 0);
-  }, [formData.unit, formData.qty, getApproximateQuantities]);
-
-  const formatEmissions = (value: number) => {
-    return value.toFixed(5);
   };
 
   const getScopeColor = (scope: number) => {
@@ -315,13 +230,14 @@ export default function MarketingActivityForm({
   };
 
   return (
-    <div className="bg-gray-50 px-6  space-y-6 ">
+    <div className="bg-gray-50 px-6 space-y-6">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
-          Add Marketing {" "}<span className="text-tertiary"> Activity</span>
+          Add Marketing <span className="text-tertiary">Activity</span>
         </h2>
         <p className="text-gray-600 mt-2 max-w-4xl">
-          Enter the details of your marketing activity to estimate its {" "} <strong className="text-orange-400">Carbon Footprint</strong>
+          Enter the details of your marketing activity to estimate its{" "}
+          <strong className="text-orange-400">Carbon Footprint</strong>
         </p>
       </div>
 
@@ -361,7 +277,7 @@ export default function MarketingActivityForm({
         </Popover>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="market" className="text-gray-700 font-medium">Market</Label>
           <Select
@@ -408,116 +324,61 @@ export default function MarketingActivityForm({
             </SelectContent>
           </Select>
         </div>
+      </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="activity-type" className="text-gray-700 font-medium">Activity type</Label>
-          <Select
-            value={formData.unit}
-            onValueChange={(value) => handleChange('unit', value)}
-          >
-            <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500/20">
-              <SelectValue placeholder="Select activity type" />
-            </SelectTrigger>
-            <SelectContent>
-              {availableUnits.map(([label, key]) => {
-                return (
-                  <SelectItem key={key} value={key}>
-                    <div className='flex justify-between items-center w-full gap-4'>
-                      <div className="flex-1">
-                        {label}
-                      </div>
-                      <div className="flex-shrink-0 min-w-[120px] text-right flex items-center justify-end gap-2">
-                        {formData.qty && parseFloat(formData.qty) > 0 ? (
-                          <span className="text-xs font-semibold text-blue-600 whitespace-nowrap">
-                            ≈ {approximateQuantities[key]?.toFixed(2) || '-'}
-                          </span>
-                        ) : (
-                          <span className="text-xs text-gray-300">-</span>
-                        )}
-                      </div>
-                    </div>
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
-          
-          {/* Show approximate conversions below */}
-          {formData.qty && parseFloat(formData.qty) > 0 && availableUnits.length > 1 && (
-            <div className="mt-3 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-200 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-semibold text-blue-900">
-                  Equivalent Activity Conversions
-                </p>
-                <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                  Based on {formData.qty} {availableUnits.find(([, k]) => k === formData.unit)?.[0]}
-                </span>
-              </div>
-              
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {availableUnits.map(([label, key]) => {
-                  const approxQty = approximateQuantities[key];
-                  const isSelected = key === formData.unit;
-                  
-                  return (
-                    <div 
-                      key={key} 
-                      onClick={() => handleChange('unit', key)}
-                      className={`flex justify-between items-center text-sm py-2 px-3 rounded-md transition-all cursor-pointer ${
-                        isSelected 
-                          ? 'bg-blue-100 border-2 border-blue-400 shadow-sm' 
-                          : 'bg-white border border-gray-200 hover:border-blue-300 hover:shadow-sm'
-                      }`}
-                    >
-                      <span className={`flex-1 ${isSelected ? 'font-semibold text-blue-900' : 'text-gray-700'}`}>
-                        {label}
-                        {isSelected && (
-                          <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                            Selected
-                          </span>
-                        )}
-                      </span>
-                      <span className={`ml-4 ${isSelected ? 'text-blue-700 font-bold text-base' : 'text-gray-600'}`}>
-                        ≈ {approxQty?.toFixed(2) || '-'}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-              
-              <div className="mt-3 pt-3 border-t border-blue-200">
-                <p className="text-xs text-blue-700">
-                  💡 <strong>Tip:</strong> Click any activity type to switch and compare equivalent quantities
-                </p>
-              </div>
-            </div>
+      {/* Activity Type Quantities */}
+      <div className="space-y-4">
+        {/* <div className="flex items-center justify-between">
+          <Label className="text-gray-700 font-medium text-lg">Activity Type Quantities</Label>
+          {manuallyEditedUnits.size > 0 && (
+            <span className="text-xs text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+              💡 Calculating from{" "}
+              <strong>{manuallyEditedUnits.size}</strong> manually entered value{manuallyEditedUnits.size > 1 ? 's' : ''}
+            </span>
           )}
+        </div> */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-gray-200">
+          {availableUnits.map(([label, unitKey]) => {
+            const isManuallyEdited = manuallyEditedUnits.has(unitKey);
+            const hasValue = quantities[unitKey] && parseFloat(quantities[unitKey]) > 0;
+            const isAutoCalculated = hasValue && !isManuallyEdited;
+            
+            return (
+              <div key={unitKey} className="space-y-2">
+                <Label 
+                  htmlFor={unitKey} 
+                  className={`text-sm font-medium }`}
+                >
+                  {label}
+                  {/* {isManuallyEdited && (
+                    <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
+                      Manual
+                    </span>
+                  )} */}
+                </Label>
+                <Input
+                  id={unitKey}
+                  type="number"
+                  step="0.01"
+                  value={quantities[unitKey] || ''}
+                  onChange={(e) => handleQuantityChange(unitKey, e.target.value)}
+                  placeholder={`Enter ${label.toLowerCase()}`}
+                  className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 
+                  }`}
+                />
+                {/* {isAutoCalculated && (
+                  <p className="text-xs text-green-600">
+                    ≈ Auto-calculated (weighted avg from {manuallyEditedUnits.size} input{manuallyEditedUnits.size > 1 ? 's' : ''})
+                  </p>
+                )} */}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="quantity" className="text-gray-700 font-medium">
-              Quantity
-            </Label>
-          </div>
-          <Input
-            id="quantity"
-            type="number"
-            step="0.000001"
-            value={formData.qty}
-            onChange={(e) => handleChange('qty', e.target.value)}
-            placeholder="e.g., 5000000"
-            className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
-          />
-          {formData.unit && (
-            <p className="text-sm text-gray-500">
-              Unit: {availableUnits.find(([, key]) => key === formData.unit)?.[0] || formData.unit}
-            </p>
-          )}
-        </div>
-
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label className="text-gray-700 font-medium">Emission Scope</Label>
           <Select
@@ -581,22 +442,22 @@ export default function MarketingActivityForm({
         />
       </div>
 
-      <div className="flex justify-end ">
+      <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
-          disabled={addingActivity || !formData.qty || !dateRange?.from}
+          disabled={addingActivity || !Object.values(quantities).some(q => q && parseFloat(q) > 0) || !dateRange?.from}
           size="lg"
           className="bg-tertiary text-white shadow-lg hover:shadow-xl rounded-sm hover:bg-green-600 transition-all duration-200"
         >
           {addingActivity ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin mr-2" />
-              Adding Activity...
+              Adding Activities...
             </>
           ) : (
             <>
               <Plus className="h-5 w-5 mr-2" />
-              Add Activity
+              Add Activities
             </>
           )}
         </Button>

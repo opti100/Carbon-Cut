@@ -9,6 +9,7 @@ export interface ActivityData {
   scope: number;
   campaign?: string;
   notes?: string;
+  quantities?: Record<string, { label: string; value: number }>;
 }
 
 export interface OrganizationData {
