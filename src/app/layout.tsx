@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "Carbon Cut",
   description: "Measure and Offset Your Marketing Carbon Emissions",
   icons: {
-    icon: "/Carboncut.svg",
+    icon: "/favicon.ico",
   },
 };
 
@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-Y388SH4Y4G"
@@ -58,8 +58,7 @@ export default function RootLayout({
             plausible.init();
           `}
         </Script>
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        
         <Providers>{children}</Providers>
       </body>
     </html>
