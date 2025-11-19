@@ -110,6 +110,29 @@ export default function MarketingActivityForm({
     if (value === '' || isNaN(numValue) || numValue <= 0) {
       // User cleared the field - remove from manually edited set
       newManuallyEditedUnits.delete(unitKey);
+      
+      // If there are OTHER manually edited fields, recalculate this field
+      if (newManuallyEditedUnits.size > 0) {
+        const editedSources = Array.from(newManuallyEditedUnits)
+          .map(key => ({
+            unit: key,
+            value: parseFloat(newQuantities[key] || '0')
+          }))
+          .filter(source => source.value > 0);
+
+        // Calculate the cleared field based on other manual fields
+        const calculatedValue = calculateFromMultipleSources(unitKey, editedSources);
+        
+        if (calculatedValue !== null) {
+          newQuantities[unitKey] = calculatedValue.toFixed(2);
+        } else {
+          // If no conversion possible, leave it empty
+          newQuantities[unitKey] = '';
+        }
+      } else {
+        // No other fields filled, clear this field
+        newQuantities[unitKey] = '';
+      }
     } else {
       // User entered a value - add to manually edited set
       newManuallyEditedUnits.add(unitKey);
@@ -182,27 +205,41 @@ export default function MarketingActivityForm({
     setAddingActivity(true);
 
     try {
-      // Add activities for each non-zero quantity
-      const activitiesToAdd = availableUnits
+      // Get all non-zero quantities
+      const filledActivities = availableUnits
         .filter(([label, unitKey]) => quantities[unitKey] && parseFloat(quantities[unitKey]) > 0)
         .map(([label, unitKey]) => ({
-          date: dateRange.from!.toISOString().slice(0, 10),
-          market: formData.market,
-          channel: formData.channel,
-          unit: unitKey,
-          activityLabel: label,
-          qty: parseFloat(quantities[unitKey]),
-          scope: formData.scope,
-          campaign: formData.campaign,
-          notes: formData.notes
+          label,
+          unitKey,
+          value: parseFloat(quantities[unitKey])
         }));
 
-      console.log('✅ Adding Activities:', activitiesToAdd);
+      // ✅ Create ONE combined activity with all quantities
+      const combinedActivity = {
+        date: dateRange.from!.toISOString().slice(0, 10),
+        market: formData.market,
+        channel: formData.channel,
+        // Use channel as the unit identifier
+        unit: formData.channel,
+        activityLabel: formData.channel,
+        // Use 1 for display purposes (actual quantities are in the quantities object)
+        qty: 1,
+        scope: formData.scope,
+        campaign: formData.campaign,
+        notes: formData.notes,
+        // Store all quantities as additional data
+        quantities: Object.fromEntries(
+          filledActivities.map(({ label, unitKey, value }) => [
+            unitKey, 
+            { label, value }
+          ])
+        )
+      };
+
+      console.log('✅ Adding Combined Activity:', combinedActivity);
       
-      // Add all activities
-      for (const activity of activitiesToAdd) {
-        onAddActivity(activity);
-      }
+      // ✅ Add ONLY ONE combined activity (not multiple)
+      onAddActivity(combinedActivity);
 
       // Reset form fields
       setQuantities({});
@@ -213,8 +250,8 @@ export default function MarketingActivityForm({
         notes: ''
       }));
     } catch (error) {
-      console.error('Error adding activities:', error);
-      alert('Error adding activities. Please try again.');
+      console.error('Error adding activity:', error);
+      alert('Error adding activity. Please try again.');
     } finally {
       setAddingActivity(false);
     }
@@ -328,15 +365,9 @@ export default function MarketingActivityForm({
 
       {/* Activity Type Quantities */}
       <div className="space-y-4">
-        {/* <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <Label className="text-gray-700 font-medium text-lg">Activity Type Quantities</Label>
-          {manuallyEditedUnits.size > 0 && (
-            <span className="text-xs text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-              💡 Calculating from{" "}
-              <strong>{manuallyEditedUnits.size}</strong> manually entered value{manuallyEditedUnits.size > 1 ? 's' : ''}
-            </span>
-          )}
-        </div> */}
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-gray-200">
           {availableUnits.map(([label, unitKey]) => {
@@ -348,14 +379,10 @@ export default function MarketingActivityForm({
               <div key={unitKey} className="space-y-2">
                 <Label 
                   htmlFor={unitKey} 
-                  className={`text-sm font-medium }`}
+                  className={`text-sm font-medium `}
                 >
                   {label}
-                  {/* {isManuallyEdited && (
-                    <span className="ml-2 text-xs bg-blue-500 text-white px-2 py-0.5 rounded">
-                      Manual
-                    </span>
-                  )} */}
+                
                 </Label>
                 <Input
                   id={unitKey}
@@ -364,14 +391,9 @@ export default function MarketingActivityForm({
                   value={quantities[unitKey] || ''}
                   onChange={(e) => handleQuantityChange(unitKey, e.target.value)}
                   placeholder={`Enter ${label.toLowerCase()}`}
-                  className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 
-                  }`}
+                  className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 `}
                 />
-                {/* {isAutoCalculated && (
-                  <p className="text-xs text-green-600">
-                    ≈ Auto-calculated (weighted avg from {manuallyEditedUnits.size} input{manuallyEditedUnits.size > 1 ? 's' : ''})
-                  </p>
-                )} */}
+              
               </div>
             );
           })}
@@ -452,12 +474,12 @@ export default function MarketingActivityForm({
           {addingActivity ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin mr-2" />
-              Adding Activities...
+              Adding Activity...
             </>
           ) : (
             <>
               <Plus className="h-5 w-5 mr-2" />
-              Add Activities
+              Add Activity
             </>
           )}
         </Button>
