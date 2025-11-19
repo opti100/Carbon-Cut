@@ -12,6 +12,8 @@ import {
   animate,
 } from "framer-motion"
 import Image from 'next/image'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 
 const AURORA_COLORS = [
   "#00CC33",

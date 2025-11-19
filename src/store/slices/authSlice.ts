@@ -10,56 +10,31 @@ export interface User {
 
 interface AuthState {
   user: User | null;
-  token: string | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
-  token: null,
   isAuthenticated: false,
-  isLoading: false,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<{ user: User; token: string }>) => {
+    setCredentials: (state, action: PayloadAction<{ user: User; token?: string }>) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
       state.isAuthenticated = true;
-      
-      if (typeof document !== 'undefined') {
-        const date = new Date();
-        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
-        const expires = `expires=${date.toUTCString()}`;
-        document.cookie = `auth-token=${encodeURIComponent(action.payload.token)}; ${expires}; path=/; samesite=lax`;
-      }
     },
     
     setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-    },
-    
-    setToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
       state.isAuthenticated = true;
-    },
-    
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
     },
     
     logout: (state) => {
       state.user = null;
-      state.token = null;
       state.isAuthenticated = false;
-      
-      if (typeof document !== 'undefined') {
-        document.cookie = 'auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      }
     },
     
     updateUserProfile: (state, action: PayloadAction<Partial<User>>) => {
@@ -73,8 +48,6 @@ const authSlice = createSlice({
 export const {
   setCredentials,
   setUser,
-  setToken,
-  setLoading,
   logout,
   updateUserProfile,
 } = authSlice.actions;
@@ -82,6 +55,4 @@ export const {
 export default authSlice.reducer;
 
 export const selectUser = (state: { auth: AuthState }) => state.auth.user;
-export const selectToken = (state: { auth: AuthState }) => state.auth.token;
 export const selectIsAuthenticated = (state: { auth: AuthState }) => state.auth.isAuthenticated;
-export const selectIsLoading = (state: { auth: AuthState }) => state.auth.isLoading;

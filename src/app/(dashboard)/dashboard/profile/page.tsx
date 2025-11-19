@@ -103,10 +103,10 @@ export default function ProfilePage() {
     },
   });
 
-  if (!isAuthenticated) {
-    router.push("/login");
-    return null;
-  }
+  // if (!isAuthenticated) {
+  //   router.push("/login");
+  //   return null;
+  // }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
