@@ -345,9 +345,9 @@ const SignupPage = () => {
                   /* OTP Step */
                   <form onSubmit={handleOTPSubmit} className="space-y-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="otp" className="text-sm font-medium">
+                      {/* <Label htmlFor="otp" className="text-sm font-medium">
                         Verification Code
-                      </Label>
+                      </Label> */}
                       <div className="relative flex justify-center">
                         <InputOTP
                           id="otp"
@@ -369,7 +369,7 @@ const SignupPage = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-col gap-2 sm:gap-3">
+                    <div className="flex  gap-2 sm:gap-3">
                       <Button
                         type="button"
                         variant="outline"

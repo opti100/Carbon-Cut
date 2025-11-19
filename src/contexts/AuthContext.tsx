@@ -1,18 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-
+import axios, { AxiosError } from 'axios';
 import {
   setCredentials,
-  setLoading,
   logout as logoutAction,
   selectUser,
-  selectToken,
   selectIsAuthenticated,
-  selectIsLoading,
   setUser as setUserAction,
-  setToken as setTokenAction,
 } from '@/store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hook';
 
@@ -26,13 +22,12 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, otp: string) => Promise<void>;
   logout: () => Promise<void>;
   sendOTP: (email: string, name?: string) => Promise<void>;
-  refreshToken: () => Promise<boolean>;
+  refetchUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,56 +40,58 @@ export const useAuth = () => {
   return context;
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
-const getCookie = (name: string): string | null => {
-  if (typeof document === 'undefined') return null;
-  
-  const cookies = document.cookie.split(';');
-  for (const cookie of cookies) {
-    const [cookieName, cookieValue] = cookie.split('=').map(c => c.trim());
-    if (cookieName === name && cookieValue) {
-      return decodeURIComponent(cookieValue);
-    }
-  }
-  return null;
-};
-
-const deleteCookie = (name: string) => {
-  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
-
-export const makeRequest = async (url: string, options: RequestInit = {}) => {
-  const token = getCookie('auth-token');
-  
-  const headers: Record<string, string> = {
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: API_BASE,
+  withCredentials: true,
+  headers: {
     'Content-Type': 'application/json',
-    ...(options.headers as Record<string, string> || {}),
-  };
+  },
+  timeout: 10000,
+});
 
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+// Add response interceptor for better error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized - could trigger logout
+      console.log('Unauthorized request detected');
+    }
+    return Promise.reject(error);
   }
+);
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-    credentials: 'include',
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || `HTTP ${response.status}`);
-  }
-
-  return response.json();
-};
-
+// Fetch current user from /auth/me endpoint
 const fetchCurrentUser = async (): Promise<User | null> => {
-  const token = getCookie('auth-token');
-  if (!token) return null;
-  const response = await makeRequest(`${API_BASE}/auth/me/`);
-  return response.success && response.data?.user ? response.data.user : null;
+  try {
+    const response = await api.get('/auth/me/');
+    
+    // Handle different response structures
+    // if (response.data?.success && response.data?.user) {
+    //   return response.data.data.user;
+    // }
+    // console.log("Response Data:", response.data.data.user);
+    if (response.data.data.user) {
+      return response.data.data.user;
+    }
+    
+    if (response.data?.id && response.data?.email) {
+      return response.data;
+    }
+    
+    return null;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Don't log 401 as errors - it's expected when not authenticated
+      if (error.response?.status !== 401) {
+        console.error('fetchCurrentUser error:', error.message);
+      }
+    }
+    return null;
+  }
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -102,91 +99,102 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const queryClient = useQueryClient();
   
   const user = useAppSelector(selectUser);
-  const token = useAppSelector(selectToken);
-  const isLoading = useAppSelector(selectIsLoading);
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
-  // Sync token from cookie to Redux on mount
-  useEffect(() => {
-    const cookieToken = getCookie('auth-token');
-    if (cookieToken && cookieToken !== token) {
-      dispatch(setTokenAction(cookieToken));
-    }
-  }, []); // Run once on mount
-
-  const { data: currentUser, refetch } = useQuery({
+  // Fetch user data with optimized settings
+  const { 
+    data: currentUser, 
+    isLoading,
+    refetch: refetchUser 
+  } = useQuery({
     queryKey: ['currentUser'],
     queryFn: fetchCurrentUser,
-    enabled: !!getCookie('auth-token'),
-    staleTime: 5 * 60 * 1000,
-    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    retry: (failureCount, error) => {
+      // Don't retry on 401 errors
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   });
 
-  // Update both user AND token when user is fetched
+  // Update Redux store when user data changes
   useEffect(() => {
     if (currentUser) {
-      const cookieToken = getCookie('auth-token');
-      dispatch(setCredentials({
-        user: currentUser,
-        token: cookieToken || '',
-      }));
+      dispatch(setUserAction(currentUser));
     }
   }, [currentUser, dispatch]);
 
+  // Login mutation
   const loginMutation = useMutation({
     mutationFn: async ({ email, otp }: { email: string; otp: string }) => {
-      return makeRequest(`${API_BASE}/auth/verify-otp/`, {
-        method: 'POST',
-        body: JSON.stringify({ email, otp }),
-      });
+      const response = await api.post('/auth/verify-otp/', { email, otp });
+      return response.data;
     },
     onSuccess: (data) => {
-      if (data.success && data.user && data.auth_token) {
+      if (data.success && data.user) {
         dispatch(setCredentials({
           user: data.user,
-          token: data.auth_token,
+          token: data.auth_token || data.token,
         }));
-        queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+        
+        // Refetch user data after successful login
+        setTimeout(() => {
+          queryClient.invalidateQueries({ queryKey: ['currentUser'] });
+        }, 300);
+      }
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message;
+        console.error('Login failed:', message);
+        throw new Error(message);
       }
     },
   });
 
+  // Send OTP mutation
   const sendOTPMutation = useMutation({
     mutationFn: async ({ email, name }: { email: string; name?: string }) => {
-      return makeRequest(`${API_BASE}/auth/send-otp/`, {
-        method: 'POST',
-        body: JSON.stringify({ email, name, isLogin: true }),
+      const response = await api.post('/auth/send-otp/', { 
+        email, 
+        name, 
+        isLogin: true 
       });
+      return response.data;
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || error.message;
+        console.error('Send OTP failed:', message);
+        throw new Error(message);
+      }
     },
   });
 
+  // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      return makeRequest(`${API_BASE}/auth/logout/`, {
-        method: 'POST',
-      }).catch(() => ({}));
+      try {
+        await api.post('/auth/logout/');
+      } catch (error) {
+        // Continue with logout even if API call fails
+        console.error('Logout API call failed:', error);
+      }
     },
     onSettled: () => {
+      // Clear all state
       dispatch(logoutAction());
-      deleteCookie('auth-token');
       queryClient.clear();
     },
   });
 
-  const refreshTokenMutation = useMutation({
-    mutationFn: async () => {
-      return makeRequest(`${API_BASE}/auth/refresh-token/`, {
-        method: 'POST',
-      });
-    },
-    onSuccess: (data) => {
-      if (data.token) {
-        dispatch(setTokenAction(data.token));
-        queryClient.invalidateQueries({ queryKey: ['currentUser'] });
-      }
-    },
-  });
-
+  // Public methods
   const login = async (email: string, otp: string) => {
     await loginMutation.mutateAsync({ email, otp });
   };
@@ -199,49 +207,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await logoutMutation.mutateAsync();
   };
 
-  const refreshToken = async (): Promise<boolean> => {
-    try {
-      await refreshTokenMutation.mutateAsync();
-      return true;
-    } catch {
-      return false;
-    }
+  const handleRefetchUser = async () => {
+    await refetchUser();
   };
 
-  useEffect(() => {
-    const handleFocus = () => {
-      if (getCookie('auth-token')) {
-        refetch();
-      }
-    };
-
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, [refetch]);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const interval = setInterval(() => {
-      const authToken = getCookie('auth-token');
-      if (!authToken) {
-        dispatch(logoutAction());
-        queryClient.clear();
-      }
-    }, 2 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [isAuthenticated, dispatch, queryClient]);
-
-  const value = {
+  const value: AuthContextType = {
     user,
-    token,
     isLoading: isLoading || loginMutation.isPending,
     isAuthenticated,
     login,
     logout,
     sendOTP,
-    refreshToken,
+    refetchUser: handleRefetchUser,
   };
 
   return (
@@ -249,4 +226,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Export the axios instance for other modules to use
+export { api };
+
+// Helper function for making requests with the configured axios instance
+export const makeRequest = async (endpoint: string, options: {
+  method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+  data?: any;
+  headers?: Record<string, string>;
+} = {}) => {
+  const { method = 'GET', data, headers } = options;
+  
+  const response = await api.request({
+    url: endpoint,
+    method,
+    data,
+    headers,
+  });
+  
+  return response.data;
 };
