@@ -105,7 +105,7 @@ export default function MarketingActivityForm({
     // Update the quantity immediately
     const newQuantities = { ...quantities, [unitKey]: value };
     
-    let newManuallyEditedUnits = new Set(manuallyEditedUnits);
+    const newManuallyEditedUnits = new Set(manuallyEditedUnits);
 
     if (value === '' || isNaN(numValue) || numValue <= 0) {
       // User cleared the field - remove from manually edited set
