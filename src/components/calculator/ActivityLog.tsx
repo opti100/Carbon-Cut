@@ -80,7 +80,6 @@ export default function ActivityLog({
 
         <div className="bg-gray-50 rounded-lg p-6 text-center relative">
           <div className="flex items-center justify-center mx-auto mb-4">
-
             <Image src="\impact-overview\channels.svg" alt="Channels" width={70} height={70} />
           </div>
           <div className="text-sm text-gray-600 mb-1">
@@ -149,8 +148,25 @@ export default function ActivityLog({
                 </div>
               </div>
 
-              {/* Second Row - 3 Columns */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+              {/* Activity Type Quantities Section */}
+              {activity.quantities && Object.keys(activity.quantities).length > 0 && (
+                <div className="mb-8">
+                  <Label className="text-sm text-gray-600 mb-3 block">Activity Type Quantities</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {Object.entries(activity.quantities).map(([unitKey, data]: [string, any]) => (
+                      <div key={unitKey} className="bg-white p-3 rounded-md border border-gray-200">
+                        <div className="text-xs text-gray-500 mb-1">{data.label}</div>
+                        <div className="text-lg font-semibold text-gray-900">
+                          {data.value.toLocaleString()}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Second Row - 2 Columns */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div>
                   <Label className="text-sm text-gray-600 mb-1 block">Scope</Label>
                   <p className="text-sm text-gray-900">
@@ -159,29 +175,17 @@ export default function ActivityLog({
                 </div>
 
                 <div>
-                  <Label className="text-sm text-gray-600 mb-1 block">Quantity</Label>
-                  <p className="text-sm text-gray-900">{activity.qty.toLocaleString()}</p>
-                </div>
-
-                <div>
-                  <Label className="text-sm text-gray-600 mb-1 block">Activity type</Label>
-                  <p className="text-sm text-gray-900">{activity.activityLabel}</p>
-                </div>
-              </div>
-
-              {/* Third Row - 2 Columns */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
                   <Label className="text-sm text-gray-600 mb-1 block">Campaign name</Label>
                   <p className="text-sm text-gray-900">{activity.campaign || '-'}</p>
                 </div>
+              </div>
 
-                <div>
-                  <Label className="text-sm text-gray-600 mb-1 block">Notes</Label>
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    {activity.notes || 'No notes available'}
-                  </p>
-                </div>
+              {/* Notes */}
+              <div className="mb-8">
+                <Label className="text-sm text-gray-600 mb-1 block">Notes</Label>
+                <p className="text-sm text-gray-500 leading-relaxed">
+                  {activity.notes || 'No notes available'}
+                </p>
               </div>
 
               {/* CO2 Emissions - Right aligned at bottom */}
@@ -206,10 +210,6 @@ export default function ActivityLog({
           </AccordionItem>
         ))}
       </Accordion>
-
-
-
-
     </div>
   );
 }

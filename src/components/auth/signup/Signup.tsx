@@ -114,7 +114,6 @@ const SignupPage = () => {
       toast.error(error.message)
     },
   })
-
   const verifyOTPMutation = useMutation({
     mutationKey: signupKeys.verifyOTP(),
     mutationFn: signupAPI.verifyOTP,

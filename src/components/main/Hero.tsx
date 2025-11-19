@@ -25,6 +25,7 @@ const AURORA_COLORS = [
 const Hero = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isCarbonCutDropdownOpen, setIsCarbonCutDropdownOpen] = useState(false) // Add this state
 
   const color = useMotionValue(AURORA_COLORS[0])
 
@@ -281,25 +282,27 @@ const Hero = () => {
               <div key={item.label} className="relative group w-full sm:w-auto">
                 <Button
                   size="lg"
+                  onClick={() => setIsCarbonCutDropdownOpen(!isCarbonCutDropdownOpen)}
                   className="bg-tertiary hover:bg-tertiary/90 text-white px-6 py-2 sm:px-8 sm:py-3.5 md:px-10 md:py-2 text-base sm:text-lg md:text-xl font-semibold rounded-lg h-auto shadow-lg hover:shadow-xl transition-all duration-200 group relative overflow-hidden w-full sm:w-auto"
                 >
                   <span className="flex items-center justify-center space-x-2 sm:space-x-3">
-                   
                     <span>{item.label}</span>
-                    <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform group-hover:rotate-180" />
+                    <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform ${isCarbonCutDropdownOpen ? 'rotate-180' : ''} group-hover:rotate-180`} />
                   </span>
                 </Button>
 
                 {/* Dropdown Menu */}
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200/80 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 backdrop-blur-md z-50">
+                <div className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-200/80 transition-all duration-200 backdrop-blur-md z-50 ${
+                  isCarbonCutDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                } sm:group-hover:opacity-100 sm:group-hover:visible`}>
                   <div className="py-2">
                     {item.items?.map((subItem) => (
                       <Link
                         key={subItem.label}
                         href={subItem.href}
+                        onClick={() => setIsCarbonCutDropdownOpen(false)}
                         className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:text-tertiary hover:bg-gray-50 transition-colors"
                       >
-                      
                         <span className="font-medium">{subItem.label}</span>
                         <ArrowUpRight className="w-4 h-4 ml-auto transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                       </Link>

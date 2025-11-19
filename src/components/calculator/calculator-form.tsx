@@ -12,7 +12,7 @@ import { Card } from '../ui/card';
 
 const getCookie = (name: string): string | null => {
   if (typeof document === 'undefined') return null;
-  
+
   const value = `; ${document.cookie}`;
   console.log('All cookies:', value);
   const parts = value.split(`; ${name}=`);
@@ -30,8 +30,8 @@ export default function MarketingCalculator() {
   });
 
   const [activities, setActivities] = useState<ActivityData[]>([]);
-  const [calculatingEmissions, setCalculatingEmissions] = useState<Record<number, boolean>>({});
-  const [emissionResults, setEmissionResults] = useState<Record<number, number>>({});
+  const [calculatingEmissions, setCalculatingEmissions] = useState<Record<number | string, boolean>>({});
+  const [emissionResults, setEmissionResults] = useState<Record<number | string, number>>({});
   const [availableCountries, setAvailableCountries] = useState<CountryData[]>([]);
   const [loadingCountries, setLoadingCountries] = useState(true);
 
@@ -51,19 +51,125 @@ export default function MarketingCalculator() {
     loadCountries();
   }, []);
 
-  // Memoize calcCO2AI to prevent it from changing on every render
+  // Update calcCO2AI to handle combined activities
   const calcCO2AI = useCallback(async (activity: ActivityData): Promise<number> => {
     const activityId = activity.id;
 
+    // ✅ NEW: Handle combined activities with multiple quantities
+    if (activity.quantities && Object.keys(activity.quantities).length > 0) {
+      let totalEmissions = 0;
+
+      // Calculate emissions for each quantity type
+      for (const [unitKey, data] of Object.entries(activity.quantities)) {
+        const individualActivityId = `${activityId}_${unitKey}`;
+        
+        // Skip if already calculating or already have result
+        if (calculatingEmissions[individualActivityId] || emissionResults[individualActivityId] !== undefined) {
+          if (emissionResults[individualActivityId] !== undefined) {
+            totalEmissions += emissionResults[individualActivityId];
+          }
+          continue;
+        }
+
+        try {
+          setCalculatingEmissions(prev => ({ ...prev, [individualActivityId]: true }));
+
+          const authToken = getCookie('auth-token');
+          if (!authToken) {
+            throw new Error('Authentication required');
+          }
+
+          // Create individual activity data for this specific unit
+          const requestBody = {
+            userInput: {
+              activityType: data.label,
+              channel: activity.channel,
+              market: activity.market,
+              quantity: data.value,
+              unit: unitKey,
+              scope: activity.scope || 3,
+              date: activity.date || new Date().toISOString().split('T')[0],
+              campaign: activity.campaign,
+              electricity: unitKey.includes('kWh') ? data.value : undefined,
+              transport: unitKey.includes('km') ? {
+                mode: unitKey.replace('_km', ''),
+                distance: data.value,
+                country: activity.market,
+                date: activity.date
+              } : undefined,
+              digital: {
+                type: unitKey,
+                quantity: data.value,
+                channel: activity.channel,
+                market: activity.market,
+                activityType: data.label,
+                scope: activity.scope,
+                date: activity.date
+              },
+              country: activity.market,
+              includeDeviceEnergy: false,
+              description: `Calculate carbon emissions for ${data.label} activity in ${activity.market} market using ${activity.channel} channel with quantity ${data.value} ${unitKey} on ${activity.date} (Scope ${activity.scope})`
+            },
+            useAI: true,
+            realTimeData: true,
+            requirePrecision: true
+          };
+
+          const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+          const response = await fetch(`${BASE_URL}/inventory/calculate-carbon/`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify(requestBody)
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              throw new Error('Authentication failed. Please log in again.');
+            }
+            throw new Error(`API error: ${response.status}`);
+          }
+
+          const result = await response.json();
+          const emissions = result.success ? result.data.totalEmissions : 0;
+
+          console.log(`✅ API Result for ${unitKey} (${data.label}):`, emissions, 'kg CO₂e');
+
+          // Cache individual unit emissions
+          setEmissionResults(prev => ({ ...prev, [individualActivityId]: emissions }));
+          totalEmissions += emissions;
+
+        } catch (error) {
+          console.error(`❌ Error calculating ${unitKey}:`, error);
+          const fallbackEmission = FALLBACK_CALCULATION.getBasicEmission({
+            ...activity,
+            unit: unitKey,
+            qty: data.value
+          });
+          setEmissionResults(prev => ({ ...prev, [individualActivityId]: fallbackEmission }));
+          totalEmissions += fallbackEmission;
+        } finally {
+          setCalculatingEmissions(prev => ({ ...prev, [individualActivityId]: false }));
+        }
+      }
+
+      // Store total emissions for the combined activity
+      console.log(`✅ Total emissions for activity #${activityId}:`, totalEmissions, 'kg CO₂e');
+      setEmissionResults(prev => ({ ...prev, [activityId]: totalEmissions }));
+      return totalEmissions;
+    }
+
+    // ✅ EXISTING: Original single activity code
     if (calculatingEmissions[activityId]) return 0;
     if (emissionResults[activityId] !== undefined) return emissionResults[activityId];
 
     try {
       setCalculatingEmissions(prev => ({ ...prev, [activityId]: true }));
 
-      // Get the auth token from cookies
       const authToken = getCookie('auth-token');
-      
       if (!authToken) {
         console.warn('No auth token found in cookies');
         throw new Error('Authentication required');
@@ -103,12 +209,12 @@ export default function MarketingCalculator() {
         realTimeData: true,
         requirePrecision: true
       };
-      
+
       const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
       const response = await fetch(`${BASE_URL}/inventory/calculate-carbon/`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`
         },
@@ -135,22 +241,56 @@ export default function MarketingCalculator() {
     } finally {
       setCalculatingEmissions(prev => ({ ...prev, [activityId]: false }));
     }
-  }, [calculatingEmissions, emissionResults]); // Add dependencies
+  }, [calculatingEmissions, emissionResults]);
 
-  // Memoize the recalculation function
-  const recalculateAllActivities = useCallback(() => {
-    activities.forEach(activity => {
-      const shouldRecalculate =
-        emissionResults[activity.id] === undefined ||
-        !calculatingEmissions[activity.id];
+  // Update getDisplayCO2 to handle combined activities
+  const getDisplayCO2 = useCallback((activity: ActivityData): number => {
+    // Check if this is a combined activity with multiple quantities
+    if (activity.quantities && Object.keys(activity.quantities).length > 0) {
+      // Return cached total if available
+      if (emissionResults[activity.id] !== undefined) {
+        return emissionResults[activity.id];
+      }
 
-      if (shouldRecalculate) {
+      // If calculating any part, return current total or fallback
+      const isCalculating = Object.keys(activity.quantities).some(
+        unitKey => calculatingEmissions[`${activity.id}_${unitKey}`]
+      );
+
+      if (isCalculating) {
+        // Return sum of calculated parts + fallback for rest
+        let total = 0;
+        Object.entries(activity.quantities).forEach(([unitKey, data]) => {
+          const individualId = `${activity.id}_${unitKey}`;
+          if (emissionResults[individualId] !== undefined) {
+            total += emissionResults[individualId];
+          } else {
+            total += FALLBACK_CALCULATION.getBasicEmission({
+              ...activity,
+              unit: unitKey,
+              qty: data.value
+            });
+          }
+        });
+        return total;
+      }
+
+      // Trigger calculation if not started
+      if (!calculatingEmissions[activity.id]) {
         calcCO2AI(activity);
       }
-    });
-  }, [activities, emissionResults, calculatingEmissions, calcCO2AI]);
 
-  const getDisplayCO2 = useCallback((activity: ActivityData): number => {
+      // Return fallback total while calculating
+      return Object.entries(activity.quantities).reduce((sum, [unitKey, data]) => {
+        return sum + FALLBACK_CALCULATION.getBasicEmission({
+          ...activity,
+          unit: unitKey,
+          qty: data.value
+        });
+      }, 0);
+    }
+
+    // Single activity (original behavior)
     if (emissionResults[activity.id] !== undefined) {
       return emissionResults[activity.id];
     }
@@ -159,7 +299,7 @@ export default function MarketingCalculator() {
       return FALLBACK_CALCULATION.getBasicEmission(activity);
     }
 
-    if (emissionResults[activity.id] === undefined) {
+    if (emissionResults[activity.id] === undefined && !calculatingEmissions[activity.id]) {
       calcCO2AI(activity);
       return FALLBACK_CALCULATION.getBasicEmission(activity);
     }
@@ -245,7 +385,10 @@ export default function MarketingCalculator() {
             countries={availableCountries}
             loadingCountries={loadingCountries}
             onAddActivity={addActivity}
-          />
+            getDisplayCO2={getDisplayCO2}
+            activities={activities}
+            calculatingEmissions={calculatingEmissions} 
+            emissionResults={emissionResults}          />
         </div>
 
         <div className="space-y-8 pb-16">

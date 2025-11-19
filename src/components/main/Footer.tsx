@@ -86,16 +86,17 @@ const Footer = () => {
           </p>
 
           <div className="flex items-center space-x-4">
-            <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link href="https://www.instagram.com/carboncut.co?igsh=YXZyYmF4a3djZXZ6
+" className="text-gray-400 hover:text-white transition-colors">
               <Instagram className="w-5 h-5" />
             </Link>
-            <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link href="https://www.facebook.com/profile.php?id=61580263412275" className="text-gray-400 hover:text-white transition-colors">
               <Facebook className="w-5 h-5" />
             </Link>
-            <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link href="https://x.com/CarbonCut_co" className="text-gray-400 hover:text-white transition-colors">
               <Twitter className="w-5 h-5" />
             </Link>
-            <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+            <Link href="https://www.linkedin.com/company/carboncut-co/" className="text-gray-400 hover:text-white transition-colors">
               <Linkedin className="w-5 h-5" />
             </Link>
           </div>
