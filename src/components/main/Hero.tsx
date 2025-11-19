@@ -106,7 +106,7 @@ const Hero = () => {
                 alt="CarbonCut Logo"
                 width={128}
                 height={128}
-                className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+                className="w-32  sm:w-40  lg:w-48 "
               />
             </Link>
 

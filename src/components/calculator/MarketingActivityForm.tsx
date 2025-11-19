@@ -364,9 +364,9 @@ export default function MarketingActivityForm({
       </div>
 
       {/* Activity Type Quantities */}
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label className="text-gray-700 font-medium text-lg">Activity Type Quantities</Label>
+          <Label className="text-gray-700 font-medium ">Activity Type </Label>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-gray-200">
