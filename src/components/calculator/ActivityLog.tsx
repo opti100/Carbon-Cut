@@ -25,24 +25,7 @@ export default function ActivityLog({
   getDisplayCO2,
   onUpdateActivity
 }: ActivityLogProps) {
-  const getScopeColor = (scope: number) => {
-    switch (scope) {
-      case 1: return "bg-red-50 text-red-700 border-red-200";
-      case 2: return "bg-orange-50 text-orange-700 border-orange-200"; // Changed to orange
-      case 3: return "bg-blue-50 text-blue-700 border-blue-200";
-      default: return "bg-gray-50 text-gray-700 border-gray-200";
-    }
-  };
-
-  const getScopeIcon = (scope: number) => {
-    switch (scope) {
-      case 1: return "🔥";
-      case 2: return "⚡";
-      case 3: return "🌐";
-      default: return "📊";
-    }
-  };
-
+  
   const formatEmissions = (value: number) => {
     return value.toFixed(5);
   };
@@ -68,7 +51,7 @@ export default function ActivityLog({
 
       {/* Summary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div className="bg-gray-50 rounded-lg p-6 text-center relative">
+        {/* <div className="bg-gray-50 rounded-lg p-6 text-center relative">
           <div className="flex items-center justify-center mx-auto mb-4">
             <Image src="\impact-overview\total-activites.svg" alt="Total activities" width={70} height={70} />
           </div>
@@ -105,10 +88,11 @@ export default function ActivityLog({
           <div className="text-sm text-gray-600 mb-1">
             Total CO₂e <span className="text-gray-400">-</span> <span className="text-2xl font-semibold text-gray-900">{formatEmissions(activities.reduce((sum, activity) => sum + getDisplayCO2(activity), 0))} kg</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Activities Table */}
+      
       <Accordion type="single" className="space-y-4" collapsible>
         {activities.map((activity, index) => (
           <AccordionItem

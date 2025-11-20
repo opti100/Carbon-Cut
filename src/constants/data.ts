@@ -484,7 +484,7 @@ export const ACTIVITY_CONVERSIONS: Record<string, Record<string, number>> = {
   },
   "data_per_visit_bytes": {
     "web_visit": 0.0000004,
-    "hosting_kWh": 0.00000000006
+    "hosting_kWh": 0.00000000006   
   },
   "hosting_kWh": {
     "web_visit": 6667,
