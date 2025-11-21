@@ -45,6 +45,7 @@ export default function CalculatorLanding() {
 
   // Activities and emissions
   const [activities, setActivities] = useState<ActivityData[]>([]);
+  const [latestActivityId, setLatestActivityId] = useState<number | null>(null);
   const { calculatingEmissions, emissionResults, calcCO2AI, getDisplayCO2 } = useEmissionsCalculator();
 
   // Available data
@@ -98,6 +99,7 @@ export default function CalculatorLanding() {
       };
 
       setActivities((prev) => [...prev, newActivity]);
+      setLatestActivityId(newActivity.id);
       await calcCO2AI(newActivity);
     },
     [calcCO2AI]
@@ -211,18 +213,18 @@ export default function CalculatorLanding() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
       <div
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col mt-20"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-30 pb-0 flex flex-col"
         style={{ height: 'calc(100vh - 5rem)' }}
       >
         <StepperProgress currentStep={currentStep} />
 
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-0">
-          <div className="lg:col-span-2  rounded-xl  p-8 overflow-y-auto flex flex-col">
+          <div className="lg:col-span-2 rounded-xl p-8 flex flex-col min-h-[600px]" style={{ backgroundColor: '', border: '' }}>
             <AnimatePresence mode="wait">
               {currentStep === 1 && (
-                <OrganizationStep
+                <OrganizationStep 
                   organization={organization}
                   setOrganization={setOrganization}
                   reportingPeriod={reportingPeriod}
@@ -268,26 +270,41 @@ export default function CalculatorLanding() {
               )}
             </AnimatePresence>
 
-            <div className="flex justify-between items-center pt-6 border-t mt-auto">
-              <Button onClick={handleBack} variant="outline" disabled={currentStep === 1} className="px-8">
-                Back
-              </Button>
+            <div className="flex justify-between items-center pt-6 mt-auto" style={{ borderTop: '1px solid #d1cebb' }}>
+              {currentStep > 1 ? (
+                <Button
+                  onClick={handleBack}
+                  variant="outline"
+                  className="px-8 text-white"
+                  style={{
+                    borderColor: "#d1cebb",
+                    backgroundColor: "#6c5f31"
+                  }}
+                >
+                  Back
+                </Button>
+              ) : (
+                <div></div>
+              )}
+
+
 
               {currentStep === 4 ? (
                 <div className="flex gap-3">
                   <Button
                     onClick={handleAddActivityAndReset}
                     variant="outline"
-                    className="px-8 border-green-600 text-green-600 hover:bg-green-50"
+                    className="px-8"
+                    style={{ borderColor: '#b0ea1d', color: '#6c5f31', backgroundColor: '#fcfdf6' }}
                   >
                     Add Activity
                   </Button>
-                  <Button onClick={handleNext} className="bg-green-600 hover:bg-green-700 text-white px-8">
+                  <Button onClick={handleNext} className="px-8 text-white" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
                     Next Step
                   </Button>
                 </div>
               ) : (
-                <Button onClick={handleNext} className="bg-green-600 hover:bg-green-700 text-white px-8">
+                <Button onClick={handleNext} className="px-8 text-white" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
                   Next Step
                 </Button>
               )}
@@ -299,37 +316,44 @@ export default function CalculatorLanding() {
       </div>
 
       {activities.length > 0 && (
-        <div id="activity-log-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Activity Log</h2>
+        <>
+          <div id="activity-log-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{ backgroundColor: '#fcfdf6' }}>
+            <h2 className="text-3xl font-bold mb-6" style={{ color: '#080c04' }}>Activity Log</h2>
 
-          <ActivityLog
-            activities={activities}
-            countries={availableCountries}
-            channels={CHANNELS}
-            calculatingEmissions={calculatingEmissions}
-            getDisplayCO2={getDisplayCO2}
-            onUpdateActivity={updateActivity}
-          />
+            <ActivityLog
+              activities={activities}
+              countries={availableCountries}
+              channels={CHANNELS}
+              calculatingEmissions={calculatingEmissions}
+              getDisplayCO2={getDisplayCO2}
+              onUpdateActivity={updateActivity}
+              latestActivityId={latestActivityId}
+            />
 
-          <EmissionsBreakdown totals={totals} />
+            <EmissionsBreakdown totals={totals} />
 
-          <ReportActions
-            organization={{
-              name: organization,
-              period:
-                reportingPeriod?.from && reportingPeriod?.to
-                  ? `${format(reportingPeriod.from, 'LLL dd, y')} - ${format(reportingPeriod.to, 'LLL dd, y')}`
-                  : 'Not specified',
-              offsets: separateOffsets || 'None specified',
-            }}
-            activities={activities}
-            getDisplayCO2={getDisplayCO2}
-            totals={totals}
-          />
-        </div>
+            <ReportActions
+              organization={{
+                name: organization,
+                period:
+                  reportingPeriod?.from && reportingPeriod?.to
+                    ? `${format(reportingPeriod.from, 'LLL dd, y')} - ${format(reportingPeriod.to, 'LLL dd, y')}`
+                    : 'Not specified',
+                offsets: separateOffsets || 'None specified',
+              }}
+              activities={activities}
+              getDisplayCO2={getDisplayCO2}
+              totals={totals}
+            />
+          </div>
+
+          {/* <CalculatorFAQ />
+          <PreFooter />
+          <Footer /> */}
+        </>
       )}
 
-     
+
     </div>
   );
 }

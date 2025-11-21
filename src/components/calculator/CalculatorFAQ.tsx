@@ -38,7 +38,7 @@ const faqData = [
     answer: "Check out CarbonLive — our enterprise API that provides real-time carbon emission API for reporting and enables automatic offsetting for your marketing activities as they run.",
     category: "integration"
   },
-   {
+  {
     question: "How accurate is the CarbonCut Marketing CO₂e Calculator?",
     answer: "Our methodology follows the GHG Protocol, SBTi Corporate Net-Zero Standard, and DIMPACT benchmarks. All emission factors are updated annually and regionally calibrated using data from IEA, DEFRA, and national grid intensities for 2025.",
     category: "integration"
@@ -66,50 +66,99 @@ const faqData = [
 
 export default function CalculatorFAQ() {
   return (
-    <div className="bg-white px-6 py-14 space-y-6">
+    <div className="bg-white px-6 lg:px-24 py-20 lg:py-28">
       {/* Header */}
-      <div className="text-center space-y-4">
-        <h2 className="text-3xl lg:text-5xl  text-gray-900">
-           <span className="text-tertiary"> About CarbonCut</span> Equivalent CO₂e
+      <div className="text-center space-y-6 mb-24">
+        <h2 className="text-4xl lg:text-6xl text-gray-900 font-light tracking-tight">
+          <span className="text-tertiary">About CarbonCut</span> Equivalent CO₂e
           <br />
           <span className="text-gray-900">Calculator</span>
         </h2>
 
-        <p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          The CarbonCut Calculator helps you understand the {" "} <strong className="text-orange-500">  true climate impact of your marketing activities. </strong> {" "} It uses independently verified emission factors and up-to-date environmental datasets to convert campaign inputs into accurate CO₂e estimates.
+        <p className="text-gray-600 max-w-4xl mx-auto leading-relaxed text-lg">
+          The CarbonCut Calculator helps you understand the{" "}
+          <strong className="text-orange-500 font-semibold">true climate impact of your marketing activities.</strong>{" "}
+          It uses independently verified emission factors and up-to-date environmental datasets to
+          convert campaign inputs into accurate CO₂e estimates.
         </p>
       </div>
 
-      {/* FAQ Accordion */}
-      <div className="max-w-4xl mx-auto">
-        <Accordion type="single" collapsible className="space-y-4">
-          {faqData.map((faq, index) => {
-            // const categoryInfo = getCategoryInfo(faq.category);
+      {/* FAQ Sections */}
+      <div className="max-w-[1400px] mx-auto space-y-24">
+        {/* SECTION 1: FAQ - GENERAL */}
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 lg:gap-0">
+          {/* Left Title - 20% */}
+          <div className="lg:col-span-2 flex items-start">
+            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 uppercase tracking-wider lg:text-right w-full lg:pr-8">
+              About CarbonCut Equivalent CO₂e
+              Calculator
+            </h3>
+          </div>
 
-            return (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-              >
-                <AccordionTrigger className="px-6 py-4 text-left hover:no-underline group">
-                  <div className="flex items-start gap-4 w-full">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-tertiary transition-colors">
+          {/* Middle Space - 30% */}
+          <div className="hidden lg:block lg:col-span-3"></div>
+
+          {/* Right Side FAQ Content - 50% */}
+          <div className="lg:col-span-5">
+            <div className="border-t-2 border-dotted border-gray-300 pt-8">
+              <Accordion type="single" collapsible className="space-y-0">
+                {faqData.slice(0, 3).map((faq, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`general-${index}`}
+                    className="border-b border-gray-200 transition-all"
+                  >
+                    <AccordionTrigger className="py-6 text-left hover:no-underline hover:bg-gray-50 px-4 -mx-4 rounded-lg transition-colors">
+                      <h4 className="text-lg lg:text-xl font-normal text-gray-900 pr-4">
                         {faq.question}
-                      </h3>
-                    </div>
-                  </div>
-                </AccordionTrigger>
+                      </h4>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-6 px-4 text-gray-600 leading-relaxed text-base lg:text-lg">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </div>
 
-                <AccordionContent className="px-6 pb-6">
-                  <p className="text-gray-600 leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            );
-          })}
-        </Accordion>
+        {/* SECTION 2: LA SOLUTION CARBONCUT */}
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 lg:gap-0">
+          {/* Left Section Title - 20% */}
+          <div className="lg:col-span-2 flex items-start">
+            <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 uppercase tracking-wider lg:text-right w-full lg:pr-8">
+              LA SOLUTION CARBONCUT
+            </h3>
+          </div>
+
+          {/* Middle Space - 30% */}
+          <div className="hidden lg:block lg:col-span-3"></div>
+
+          {/* Right Questions - 50% */}
+          <div className="lg:col-span-5">
+            <div className="border-t-2 border-dotted border-gray-300 pt-8">
+              <Accordion type="single" collapsible className="space-y-0">
+                {faqData.slice(3).map((faq, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`solution-${index}`}
+                    className="border-b border-gray-200 transition-all"
+                  >
+                    <AccordionTrigger className="py-6 text-left hover:no-underline hover:bg-gray-50 px-4 -mx-4 rounded-lg transition-colors">
+                      <h4 className="text-lg lg:text-xl font-normal text-gray-900 pr-4">
+                        {faq.question}
+                      </h4>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-6 px-4 text-gray-600 leading-relaxed text-base lg:text-lg">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

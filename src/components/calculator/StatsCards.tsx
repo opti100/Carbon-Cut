@@ -19,14 +19,15 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className=" rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          style={{ backgroundColor: '', border: '' }}
         >
           <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/total-activites.svg" alt="Total activities" width={80} height={0} />
+            <Image src="/impact-overview/total-activites.svg" alt="Total activities" width={120} height={120} />
           </div>
-          <div className="text-xs text-gray-600">
-            Total Activities <span className="text-gray-400">-</span>{' '}
-            <span className="text-xl font-semibold text-gray-900 block mt-1">{stats.totalActivities}</span>
+          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
+            Total Activities <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
+            <span className="text-xl font-semibold" style={{ color: '#6c5f31' }}>{stats.totalActivities}</span>
           </div>
         </motion.div>
 
@@ -34,14 +35,15 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className=" rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          style={{ backgroundColor: '', border: '' }}
         >
           <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/channels.svg" alt="Channels" width={60} height={60} />
+            <Image src="/impact-overview/channels.svg" alt="Channels" width={120} height={120} />
           </div>
-          <div className="text-xs text-gray-600">
-            Channels <span className="text-gray-400">-</span>{' '}
-            <span className="text-xl font-semibold text-gray-900 block mt-1">{stats.channels}</span>
+          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
+            Channels <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
+            <span className="text-xl font-semibold" style={{ color: '#6c5f31' }}>{stats.channels}</span>
           </div>
         </motion.div>
 
@@ -49,14 +51,15 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3 }}
-          className=" rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          style={{ backgroundColor: '', border: '' }}
         >
           <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/markets.svg" alt="Markets" width={60} height={60} />
+            <Image src="/impact-overview/markets.svg" alt="Markets" width={120} height={120} />
           </div>
-          <div className="text-xs text-gray-600">
-            Markets <span className="text-gray-400">-</span>{' '}
-            <span className="text-xl font-semibold text-gray-900 block mt-1">{stats.markets}</span>
+          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
+            Markets <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
+            <span className="text-xl font-semibold" style={{ color: '#6c5f31' }}>{stats.markets}</span>
           </div>
         </motion.div>
 
@@ -64,14 +67,15 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
-          className=" rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          style={{ backgroundColor: '', border: '' }}
         >
           <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/total-coe2.svg" alt="total CO₂e" width={60} height={60} />
+            <Image src="/impact-overview/total-coe2.svg" alt="total CO₂e" width={120} height={120} />
           </div>
-          <div className="text-xs text-gray-600">
-            Total CO₂e <span className="text-gray-400">-</span>{' '}
-            <span className="text-xl font-semibold text-gray-900 block mt-1">{stats.totalCO2e.toFixed(5)} kg</span>
+          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
+            Total CO₂e <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
+            <span className="text-xl font-semibold" style={{ color: '#b0ea1d' }}>{stats.totalCO2e.toFixed(5)} kg</span>
           </div>
         </motion.div>
       </div>

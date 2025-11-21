@@ -26,6 +26,14 @@ export default function OrganizationStep({
   separateOffsets,
   setSeparateOffsets,
 }: OrganizationStepProps) {
+  // Set default date to today if not already set
+  React.useEffect(() => {
+    if (!reportingPeriod) {
+      const today = new Date();
+      setReportingPeriod({ from: today, to: today });
+    }
+  }, [reportingPeriod, setReportingPeriod]);
+
   return (
     <motion.div
       key="step1"
@@ -33,7 +41,7 @@ export default function OrganizationStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 flex-1 overflow-y-auto"
+      className="space-y-6 flex-1"
     >
       <h2 className="text-3xl font-bold text-gray-900 mb-8">Organization Information</h2>
 
@@ -47,7 +55,7 @@ export default function OrganizationStep({
           placeholder="e.g., Acme Corporation"
           value={organization}
           onChange={(e) => setOrganization(e.target.value)}
-          className="text-lg p-6 border-2 focus:border-green-500 focus:ring-green-500/20"
+          className="text-lg p-6 border-2 hover:border-[#b0ea1d] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
         />
       </div>
 
@@ -57,7 +65,7 @@ export default function OrganizationStep({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left text-lg p-6 border-2 hover:border-green-500"
+              className="w-full justify-start text-left text-lg p-6 border-2 hover:border-[#b0ea1d] bg-[#fcfdf6]"
             >
               <Calendar className="mr-2 h-5 w-5" />
               {reportingPeriod?.from ? (
@@ -69,7 +77,7 @@ export default function OrganizationStep({
                   format(reportingPeriod.from, 'LLL dd, y')
                 )
               ) : (
-                <span className="text-gray-400">Select reporting period</span>
+                <span className="text-[#d1cebb] font-normal">e.g., jan 2024 - dec 2024</span>
               )}
             </Button>
           </PopoverTrigger>
@@ -96,7 +104,7 @@ export default function OrganizationStep({
           placeholder="Enter your offset amount"
           value={separateOffsets}
           onChange={(e) => setSeparateOffsets(e.target.value)}
-          className="text-lg p-6 border-2 focus:border-green-500 focus:ring-green-500/20"
+          className="text-lg p-6 border-2 hover:border-[#b0ea1d] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
         />
         <p className="text-sm text-gray-500 mt-2">
           Specify any carbon offsets you want to disclose separately from total emissions

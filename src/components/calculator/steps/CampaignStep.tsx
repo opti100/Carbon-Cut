@@ -33,6 +33,14 @@ export default function CampaignStep({
   loadingCountries,
   channels,
 }: CampaignStepProps) {
+  // Set default date to today if not already set
+  React.useEffect(() => {
+    if (!campaignPeriod) {
+      const today = new Date();
+      setCampaignPeriod({ from: today, to: today });
+    }
+  }, [campaignPeriod, setCampaignPeriod]);
+
   return (
     <motion.div
       key="step2"
@@ -40,7 +48,7 @@ export default function CampaignStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 flex-1 overflow-y-auto"
+      className="space-y-6 flex-1"
     >
       <h2 className="text-3xl font-bold text-gray-900 mb-8">Campaign Details</h2>
 
@@ -50,7 +58,7 @@ export default function CampaignStep({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left text-lg p-6 border-2 hover:border-green-500"
+              className="w-full justify-start text-left text-lg p-6 border-2 hover:border-[#b0ea1d]  bg-[#fcfdf6]"
             >
               <Calendar className="mr-2 h-5 w-5" />
               {campaignPeriod?.from ? (
@@ -62,7 +70,7 @@ export default function CampaignStep({
                   format(campaignPeriod.from, 'LLL dd, y')
                 )
               ) : (
-                <span className="text-gray-400">Select campaign period</span>
+                <span className="text-[#d1cebb] font-normal">e.g., jan 2024 - mar 2024</span>
               )}
             </Button>
           </PopoverTrigger>
@@ -74,6 +82,7 @@ export default function CampaignStep({
               selected={campaignPeriod}
               onSelect={setCampaignPeriod}
               numberOfMonths={2}
+              className=''
             />
           </PopoverContent>
         </Popover>
@@ -84,7 +93,7 @@ export default function CampaignStep({
           Market
         </Label>
         <Select value={market} onValueChange={setMarket} disabled={loadingCountries}>
-          <SelectTrigger className="text-lg p-6 border-2 focus:border-green-500">
+          <SelectTrigger className="text-lg p-6 border-2 hover:border-[#b0ea1d]">
             <SelectValue placeholder={loadingCountries ? 'Loading markets...' : 'Select market'} />
           </SelectTrigger>
           <SelectContent>
@@ -102,7 +111,7 @@ export default function CampaignStep({
           Channel
         </Label>
         <Select value={channel} onValueChange={setChannel}>
-          <SelectTrigger className="text-lg p-6 border-2 focus:border-green-500">
+          <SelectTrigger className="text-lg p-6 border-2 hover:border-[#b0ea1d]">
             <SelectValue placeholder="Select channel" />
           </SelectTrigger>
           <SelectContent>

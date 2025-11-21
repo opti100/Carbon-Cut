@@ -52,7 +52,7 @@ export function EmissionsPieChart({
   }, [data])
 
   return (
-    <Card className="flex flex-col border-gray-200 shadow-sm">
+    <Card className="flex flex-col   bg-[#fcfdf6]">
       <CardHeader className="items-center pb-4">
         <CardTitle className="text-lg font-semibold text-gray-900 flex items-center gap-2">
           {icon}
@@ -87,8 +87,8 @@ export function EmissionsPieChart({
               dataKey="value"
               nameKey="name"
               innerRadius={80}
-              strokeWidth={5}
-              stroke="#ffffff"
+              strokeWidth={0}
+              stroke="none"
             >
               <Label
                 content={({ viewBox }) => {

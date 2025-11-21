@@ -1,9 +1,10 @@
 import { ActivityData, ChannelUnits, CountryData } from "@/types/types";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Circle, Loader2 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, Legend } from "recharts";
+import { PieChart, Pie, Cell } from "recharts";
+import { useEffect, useState } from "react";
 
 interface ActivityLogProps {
   activities: ActivityData[];
@@ -12,18 +13,20 @@ interface ActivityLogProps {
   calculatingEmissions: Record<number, boolean>;
   getDisplayCO2: (activity: ActivityData) => number;
   onUpdateActivity: (activityId: number, updates: Partial<ActivityData>) => void;
+  latestActivityId?: number | null;
 }
 
-// Color palette for pie chart
 const CHART_COLORS = [
-  "hsl(142, 76%, 36%)", // green-600
-  "hsl(142, 71%, 45%)", // green-500
-  "hsl(142, 76%, 55%)", // green-400
-  "hsl(142, 77%, 73%)", // green-300
-  "hsl(39, 100%, 57%)", // orange-500
-  "hsl(33, 100%, 50%)", // orange-600
-  "hsl(24, 95%, 53%)", // orange-700
-  "hsl(217, 91%, 60%)", // blue-500
+  "hsl(77, 83%, 35%)",
+  "hsl(77, 83%, 41%)",
+  "hsl(77, 83%, 46%)",
+  "hsl(77, 83%, 52%)",
+  "hsl(77, 83%, 57%)",
+  "hsl(77, 83%, 63%)",
+  "hsl(77, 83%, 68%)",
+  "hsl(77, 83%, 74%)",
+  "hsl(77, 83%, 79%)",
+  "hsl(77, 83%, 85%)"
 ];
 
 export default function ActivityLog({
@@ -32,42 +35,57 @@ export default function ActivityLog({
   channels,
   calculatingEmissions,
   getDisplayCO2,
-  onUpdateActivity
+  onUpdateActivity,
+  latestActivityId
 }: ActivityLogProps) {
-  
-  const formatEmissions = (value: number) => {
-    return value.toFixed(5);
-  };
 
-  if (activities.length === 0) {
-    return (
-      <div> </div>
-    );
-  }
+  const formatEmissions = (value: number) => value.toFixed(5);
+
+  // Controlled accordion value that updates when latestActivityId changes
+  const [openAccordion, setOpenAccordion] = useState<string | undefined>(
+    latestActivityId ? `activity-${latestActivityId}` : undefined
+  );
+
+  // Update open accordion when latestActivityId changes
+  useEffect(() => {
+    if (latestActivityId) {
+      setOpenAccordion(`activity-${latestActivityId}`);
+    }
+  }, [latestActivityId]);
+
+  if (activities.length === 0) return <div></div>;
 
   return (
-    <div className="bg-gray-50 px-6 py-8 space-y-6">
+    <div className="px-6 py-8 space-y-6" style={{ backgroundColor: '#fcfdf6' }}>
+
       {/* Header */}
       <div>
-        <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
+        <h2 className="text-2xl lg:text-3xl font-semibold" style={{ color: '#080c04' }}>
           Impact Overview
         </h2>
-        <p className="text-gray-600 mt-2 max-w-3xl">
+        <p className="mt-2 max-w-3xl" style={{ color: '#6c5f31' }}>
           Review and edit your marketing activities. Changes are automatically saved.
-          We use <strong className="text-orange-500">verified emission factors</strong> for accurate calculations.
+          We use <strong style={{ color: '#F0db18' }}>verified emission factors</strong> for accurate calculations.
         </p>
       </div>
 
       {/* Activities Accordion */}
-      <Accordion type="single" className="space-y-4" collapsible>
+      <Accordion
+        type="single"
+        className="space-y-4"
+        collapsible
+        value={openAccordion}
+        onValueChange={setOpenAccordion}
+      >
         {activities.map((activity, index) => {
-          // Prepare pie chart data from activity quantities
-          const pieChartData = activity.quantities 
-            ? Object.entries(activity.quantities).map(([key, data]: [string, any]) => ({
+
+          const pieChartData =
+            activity.quantities
+              ? Object.entries(activity.quantities).map(([key, data]: [string, any]) => ({
                 name: data.label,
                 value: data.value,
               }))
-            : [];
+              : [];
 
           const chartConfig = pieChartData.reduce((acc, item, idx) => ({
             ...acc,
@@ -80,135 +98,171 @@ export default function ActivityLog({
           return (
             <AccordionItem
               key={activity.id}
-              value={Math.random().toString()}
-              className="border border-gray-200 rounded-lg bg-white overflow-hidden hover:border-tertiary/30 transition-colors duration-200"
+              value={`activity-${activity.id}`}
+              className="rounded-lg overflow-hidden transition-colors duration-200"
+              style={{ border: '1px solid #d1cebb', backgroundColor: '#fcfdf6' }}
             >
-              <AccordionTrigger className="hover:no-underline px-6 py-4 bg-white border-b border-gray-200 [&[data-state=closed]]:border-b-0">
+              <AccordionTrigger
+                className="hover:no-underline px-6 py-4"
+                style={{ backgroundColor: '#d1cebb' }}
+              >
                 <div className="flex items-center gap-3 w-full">
-                  <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-                    <div className="w-3 h-3 rounded-full border-2 border-green-600"></div>
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#080c04' }}>
+                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ffffff' }}></div>
                   </div>
-                  <h3 className="font-semibold text-gray-900">
+                  <h3 className="font-semibold" style={{ color: '#080c04' }}>
                     #{String(index + 1).padStart(3, '0')}: {activity.campaign || 'Log'}
                   </h3>
                 </div>
               </AccordionTrigger>
 
-              <AccordionContent className="px-6 pb-6 bg-gray-50/50">
-                {/* 3 Column Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6">
-                  
-                  {/* Column 1: Activity Details */}
-                  <div className="space-y-6">
+              <AccordionContent className="px-6 pb-6" style={{ backgroundColor: '#fcfdf620' }}>
+
+                {/* Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6 items-start">
+
+                  {/* Column 1 – Activity Details */}
+                  <div className="flex flex-col h-full space-y-6">
                     <div>
-                      <Label className="text-sm font-semibold text-gray-700 mb-2 block">Activity Details</Label>
-                      
+                      <Label className="text-2xl font-semibold mb-2 block" style={{ color: '#6c5f31' }}>
+                        Activity Details
+                      </Label>
+
                       <div className="space-y-4">
                         <div>
-                          <Label className="text-xs text-gray-500 mb-1 block">Date</Label>
-                          <p className="text-sm text-gray-900">
-                            {new Date(activity.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          <Label className="text-xs mb-1 block" style={{ color: '#6c5f31' }}>Date</Label>
+                          <p className="text-sm" style={{ color: '#080c04' }}>
+                            {new Date(activity.date).toLocaleDateString('en-GB', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric',
+                            })}
                           </p>
                         </div>
 
                         <div>
-                          <Label className="text-xs text-gray-500 mb-1 block">Country</Label>
-                          <p className="text-sm text-gray-900">{activity.market}</p>
-                        </div>
-
-                        <div>
-                          <Label className="text-xs text-gray-500 mb-1 block">Channel</Label>
-                          <p className="text-sm text-gray-900">{activity.channel}</p>
-                        </div>
-
-                        <div>
-                          <Label className="text-xs text-gray-500 mb-1 block">Scope</Label>
-                          <p className="text-sm text-gray-900">
-                            Scope {activity.scope} ({activity.scope === 1 ? 'direct emissions' : activity.scope === 2 ? 'indirect energy' : 'value chain'})
+                          <Label className="text-xs mb-1 block" style={{ color: '#6c5f31' }}>Country</Label>
+                          <p className="text-sm" style={{ color: '#080c04' }}>
+                            {activity.market}
                           </p>
                         </div>
 
                         <div>
-                          <Label className="text-xs text-gray-500 mb-1 block">Campaign</Label>
-                          <p className="text-sm text-gray-900">{activity.campaign || '-'}</p>
+                          <Label className="text-xs mb-1 block" style={{ color: '#6c5f31' }}>Channel</Label>
+                          <p className="text-sm" style={{ color: '#080c04' }}>
+                            {activity.channel}
+                          </p>
                         </div>
 
                         <div>
-                          <Label className="text-xs text-gray-500 mb-1 block">Notes</Label>
-                          <p className="text-sm text-gray-500 leading-relaxed">
+                          <Label className="text-xs mb-1 block" style={{ color: '#6c5f31' }}>Scope</Label>
+                          <p className="text-sm" style={{ color: '#080c04' }}>
+                            Scope {activity.scope} (
+                            {activity.scope === 1 ? 'direct emissions' :
+                              activity.scope === 2 ? 'indirect energy' : 'value chain'}
+                            )
+                          </p>
+                        </div>
+
+                        <div>
+                          <Label className="text-xs mb-1 block" style={{ color: '#6c5f31' }}>Campaign</Label>
+                          <p className="text-sm" style={{ color: '#080c04' }}>
+                            {activity.campaign || '-'}
+                          </p>
+                        </div>
+
+                        <div>
+                          <Label className="text-xs mb-1 block" style={{ color: '#6c5f31' }}>Notes</Label>
+                          <p className="text-sm leading-relaxed" style={{ color: '#6c5f31' }}>
                             {activity.notes || 'No notes available'}
                           </p>
                         </div>
+
                       </div>
                     </div>
                   </div>
 
-                  {/* Column 2: Pie Chart */}
-                  <div className="flex flex-col items-center justify-center">
-                    <Label className="text-sm font-semibold text-gray-700 mb-4 block">Activity Type Distribution</Label>
-                    
+                  {/* Column 2 – Fixed Pie Chart */}
+                  <div className="flex flex-col h-full items-center justify-start overflow-visible">
+                    {/* <Label className="text-sm font-semibold mb-4 block" style={{ color: '#6c5f31' }}>
+                      Activity Type Distribution
+                    </Label> */}
+
                     {pieChartData.length > 0 ? (
-                      <ChartContainer config={chartConfig} className="h-[300px] w-full">
-                        <PieChart>
-                          <ChartTooltip content={<ChartTooltipContent />} />
-                          <Pie
-                            data={pieChartData}
-                            cx="50%"
-                            cy="50%"
-                            labelLine={false}
-                            outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
-                          >
-                            {pieChartData.map((entry, index) => (
-                              <Cell key={`cell- ${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
-                            ))}
-                          </Pie>
-                        
-                        </PieChart>
-                      </ChartContainer>
+                      <div className="overflow-visible w-full flex items-center justify-center min-h-[360px]">
+
+                        <ChartContainer
+                          config={chartConfig}
+                          className="overflow-visible flex items-center justify-center"
+                          style={{ width: "100%", height: "360px" }}
+                        >
+                          <PieChart width={360} height={360}>
+                            <ChartTooltip content={<ChartTooltipContent />} />
+
+                            <Pie
+                              data={pieChartData}
+                              cx="50%"
+                              cy="50%"
+                              outerRadius={120}   // FIXED → NO CUTTING
+                              dataKey="value"
+                              labelLine={false}
+                            >
+                              {pieChartData.map((entry, idx) => (
+                                <Cell key={idx} fill={CHART_COLORS[idx % CHART_COLORS.length]} />
+                              ))}
+                            </Pie>
+                          </PieChart>
+                        </ChartContainer>
+
+                      </div>
                     ) : (
-                      <div className="flex items-center justify-center h-[300px] text-gray-400">
+                      <div className="flex items-center justify-center py-10 text-gray-400">
                         <p>No activity data available</p>
                       </div>
                     )}
                   </div>
 
-                  {/* Column 3: Emissions */}
-                  <div className="flex flex-col items-center justify-center">
-                    <Label className="text-sm font-semibold text-gray-700 mb-4 block">Carbon Emissions</Label>
-                    
+                  {/* Column 3 – Emissions */}
+                  <div className="flex flex-col h-full items-center justify-start">
+                    {/* <Label className="text-sm font-semibold mb-4 block" style={{ color: '#6c5f31' }}>
+                      Carbon Emissions
+                    </Label> */}
+
                     {calculatingEmissions[activity.id] ? (
-                      <div className="flex flex-col items-center justify-center gap-3 text-tertiary h-[300px]">
+                      <div className="flex flex-col items-center justify-center gap-3 py-10">
                         <Loader2 className="h-8 w-8 animate-spin" />
                         <span className="text-sm">Calculating emissions...</span>
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center h-[300px] space-y-6">
+                      <div className="flex flex-col items-center justify-start space-y-6 py-10">
                         <div className="text-center">
-                          <div className="text-5xl font-bold text-orange-600 mb-2">
+                          <div className="text-5xl font-bold mb-2" style={{ color: '#b0ea1d' }}>
                             {formatEmissions(getDisplayCO2(activity))}
                           </div>
-                          <div className="text-lg text-gray-600">kg CO₂e</div>
+                          <div className="text-lg" style={{ color: '#6c5f31' }}>
+                            kg CO₂e
+                          </div>
                         </div>
-                        
-                        <div className="text-center pt-4 border-t border-gray-200 w-full">
-                          <div className="text-xs text-gray-500 mb-1">Equivalent to</div>
-                          <div className="text-2xl font-semibold text-gray-700">
+
+                        <div className="text-center pt-4 w-full" style={{ borderTop: '1px solid #d1cebb' }}>
+                          <div className="text-xs mb-1" style={{ color: '#6c5f31' }}>Equivalent to</div>
+                          <div className="text-2xl font-semibold" style={{ color: '#6c5f31' }}>
                             {(getDisplayCO2(activity) / 1000).toFixed(6)}
                           </div>
-                          <div className="text-sm text-gray-500">tCO₂e</div>
+                          <div className="text-sm" style={{ color: '#6c5f31' }}>tCO₂e</div>
                         </div>
                       </div>
                     )}
                   </div>
 
                 </div>
+
               </AccordionContent>
             </AccordionItem>
           );
         })}
       </Accordion>
+
     </div>
   );
 }

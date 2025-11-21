@@ -26,7 +26,7 @@ export default function ActivitiesStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 flex-1 overflow-y-auto"
+      className="space-y-6 flex-1"
     >
       <h2 className="text-3xl font-bold text-gray-900 mb-8">Select Activities & Enter Quantities</h2>
 
@@ -61,8 +61,8 @@ export default function ActivitiesStep({
                   p-4 rounded-lg border-2 cursor-pointer transition-all duration-200
                   ${
                     selectedActivities.has(unitKey)
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
+                      ? 'border-[#F0db18]  hover:border-[#d1cebb]'
+                      : 'border-gray-200  hover:border-[#b0ea1d]'
                   }
                 `}
               >
@@ -102,9 +102,7 @@ export default function ActivitiesStep({
             <Label className="text-lg font-semibold text-gray-700 mb-2 block">
               Enter quantities for selected activities
             </Label>
-            <p className="text-sm text-gray-600 mb-4">
-              Fill in the quantities you know. Other values will be calculated automatically.
-            </p>
+          
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 rounded-lg  ">
@@ -124,7 +122,7 @@ export default function ActivitiesStep({
                       placeholder={`${label.toLowerCase()}`}
                       value={activityQuantities[unitKey] || ''}
                       onChange={(e) => handleQuantityChange(unitKey, e.target.value)}
-                      className="text-base p-4"
+                      className="text-base p-4 border border-[#d1cebb] focus:border-[#F0db18] focus:ring-[#F0db18] outline-none w-full"
                     />
                   </div>
                 ))}

@@ -28,7 +28,7 @@ export default function DetailsStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 flex-1 overflow-y-auto"
+      className="space-y-6 flex-1"
     >
       <h2 className="text-3xl font-bold text-gray-900 mb-8">Additional Details</h2>
 
@@ -37,7 +37,7 @@ export default function DetailsStep({
           Emission Scope
         </Label>
         <Select value={emissionScope} onValueChange={setEmissionScope}>
-          <SelectTrigger className="text-lg p-6 border-2 focus:border-green-500">
+          <SelectTrigger className="text-lg p-6 border-2  hover:border-[#b0ea1d] focus:border-[#b0ea1d] bg-[#fcfdf6]">
             <SelectValue placeholder="Select emission scope" />
           </SelectTrigger>
           <SelectContent>
@@ -61,7 +61,7 @@ export default function DetailsStep({
           placeholder="e.g., Summer Sale 2025"
           value={campaignName}
           onChange={(e) => setCampaignName(e.target.value)}
-          className="text-lg p-6 border-2 focus:border-green-500 focus:ring-green-500/20"
+          className="text-lg p-6 border-2 hover:border-[#b0ea1d] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20 bg-[#fcfdf6]"
         />
         <p className="text-sm text-gray-500 mt-2">Give your campaign a memorable name for easy tracking</p>
       </div>
@@ -76,7 +76,7 @@ export default function DetailsStep({
           value={note}
           onChange={(e) => setNote(e.target.value)}
           rows={4}
-          className="w-full text-lg p-4 border-2 rounded-md focus:border-green-500 focus:ring-green-500/20 focus:outline-none resize-none"
+          className="w-full text-lg p-4 border-2 rounded-md hover:border-[#b0ea1d] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20 bg-[#fcfdf6]"
         />
       </div>
     </motion.div>

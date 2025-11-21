@@ -11,9 +11,9 @@ const page = () => {
     <div>
       <Header/>
       <CalculatorLanding/>
-      {/* <CalculatorFAQ/> */}
-       {/* <PreFooter/> */}
-      {/* <Footer /> */}
+      <CalculatorFAQ/> 
+       <PreFooter/>
+       <Footer />
     </div>
   )
 }
