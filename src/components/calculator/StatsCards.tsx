@@ -1,6 +1,7 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
+import React from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { ChartColumn, Globe, Recycle, SplitIcon } from "lucide-react";
 
 interface StatsCardsProps {
   stats: {
@@ -20,65 +21,154 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
           className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
-          style={{ backgroundColor: '', border: '' }}
+          style={{ backgroundColor: "", border: "" }}
         >
-          <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/total-activites.svg" alt="Total activities" width={120} height={120} />
+          {/* Circle with ChartColumn inside */}
+          <div
+            className="flex items-center justify-center mb-3 rounded-full"
+            style={{
+              width: "120px",
+              height: "120px",
+              backgroundColor: "#d1cebb",
+            }}
+          >
+            <div className="flex items-center justify-center">
+              <ChartColumn width={50} height={50} className="text-[#6c5f31]" />
+            </div>
           </div>
-          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
-            Total Activities <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
-            <span className="text-xl font-semibold" style={{ color: '#6c5f31' }}>{stats.totalActivities}</span>
+
+          <div
+            className="flex items-center justify-center flex-nowrap whitespace-nowrap"
+            style={{ color: "#6c5f31" }}
+          >
+            Total Activities
+            <span style={{ color: "#d1cebb" }} className="mx-1">
+              -
+            </span>
+            <span
+              className="text-xl font-semibold"
+              style={{ color: "#6c5f31" }}
+            >
+              {stats.totalActivities}
+            </span>
           </div>
         </motion.div>
 
-        <motion.div
+       <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.1 }}
           className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
-          style={{ backgroundColor: '', border: '' }}
+          style={{ backgroundColor: "", border: "" }}
         >
-          <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/channels.svg" alt="Channels" width={120} height={120} />
+          {/* Circle with ChartColumn inside */}
+          <div
+            className="flex items-center justify-center mb-3 rounded-full"
+            style={{
+              width: "120px",
+              height: "120px",
+              backgroundColor: "#d1cebb",
+            }}
+          >
+            <div className="flex items-center justify-center">
+              <SplitIcon width={50} height={50} className="text-[#6c5f31]" />
+            </div>
           </div>
-          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
-            Channels <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
-            <span className="text-xl font-semibold" style={{ color: '#6c5f31' }}>{stats.channels}</span>
+
+          <div
+            className="flex items-center justify-center flex-nowrap whitespace-nowrap"
+            style={{ color: "#6c5f31" }}
+          >
+            Channels
+            <span style={{ color: "#d1cebb" }} className="mx-1">
+              -
+            </span>
+            <span
+              className="text-xl font-semibold"
+              style={{ color: "#6c5f31" }}
+            >
+              {stats.channels}
+            </span>
           </div>
         </motion.div>
 
-        <motion.div
+         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.1 }}
           className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
-          style={{ backgroundColor: '', border: '' }}
+          style={{ backgroundColor: "", border: "" }}
         >
-          <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/markets.svg" alt="Markets" width={120} height={120} />
+          {/* Circle with ChartColumn inside */}
+          <div
+            className="flex items-center justify-center mb-3 rounded-full"
+            style={{
+              width: "120px",
+              height: "120px",
+              backgroundColor: "#d1cebb",
+            }}
+          >
+            <div className="flex items-center justify-center">
+              <Globe width={50} height={50} className="text-[#6c5f31]" />
+            </div>
           </div>
-          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
-            Markets <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
-            <span className="text-xl font-semibold" style={{ color: '#6c5f31' }}>{stats.markets}</span>
+
+          <div
+            className="flex items-center justify-center flex-nowrap whitespace-nowrap"
+            style={{ color: "#6c5f31" }}
+          >
+            Markets
+            <span style={{ color: "#d1cebb" }} className="mx-1">
+              -
+            </span>
+            <span
+              className="text-xl font-semibold"
+              style={{ color: "#6c5f31" }}
+            >
+              {stats.markets}
+            </span>
           </div>
         </motion.div>
 
-        <motion.div
+         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.1 }}
           className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
-          style={{ backgroundColor: '', border: '' }}
+          style={{ backgroundColor: "", border: "" }}
         >
-          <div className="flex items-center justify-center mb-3">
-            <Image src="/impact-overview/total-coe2.svg" alt="total CO₂e" width={120} height={120} />
+          {/* Circle with ChartColumn inside */}
+          <div
+            className="flex items-center justify-center mb-3 rounded-full"
+            style={{
+              width: "120px",
+              height: "120px",
+              backgroundColor: "#d1cebb",
+            }}
+          >
+            <div className="flex items-center justify-center">
+              <Recycle width={50} height={50} className="text-[#6c5f31]" />
+            </div>
           </div>
-          <div className="flex items-center justify-center flex-nowrap whitespace-nowrap" style={{ color: '#6c5f31' }}>
-            Total CO₂e <span style={{ color: '#d1cebb' }} className="mx-1">-</span>
-            <span className="text-xl font-semibold" style={{ color: '#b0ea1d' }}>{stats.totalCO2e.toFixed(5)} kg</span>
+
+          <div
+            className="flex items-center justify-center flex-nowrap whitespace-nowrap"
+            style={{ color: "#6c5f31" }}
+          >
+            Total  CO <sub>2</sub>e
+            <span style={{ color: "#d1cebb" }} className="mx-1">
+              -
+            </span>
+            <span
+              className="text-xl font-semibold"
+              style={{ color: "#b0ea1d" }}
+            >
+              {stats.totalCO2e.toFixed(5)} kg
+            </span>
           </div>
         </motion.div>
       </div>
     </div>
+   
   );
 }

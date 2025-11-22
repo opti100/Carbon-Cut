@@ -41,12 +41,12 @@ export default function OrganizationStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 flex-1"
+      className="space-y-4 sm:space-y-6 flex-1"
     >
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">Organization Information</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8" style={{ color: '#080c04' }}>Organization Information</h2>
 
       <div className="space-y-2">
-        <Label htmlFor="organization" className="text-lg font-semibold text-gray-700">
+        <Label htmlFor="organization" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Organization/Brand
         </Label>
         <Input
@@ -55,17 +55,17 @@ export default function OrganizationStep({
           placeholder="e.g., Acme Corporation"
           value={organization}
           onChange={(e) => setOrganization(e.target.value)}
-          className="text-lg p-6 border-2 hover:border-[#b0ea1d] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
+          className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
         />
       </div>
 
       <div className="space-y-2">
-        <Label className="text-lg font-semibold text-gray-700">Reporting Period</Label>
+        <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Reporting Period</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left text-lg p-6 border-2 hover:border-[#b0ea1d] bg-[#fcfdf6]"
+              className="w-full justify-start text-left text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] bg-[#fcfdf6]"
             >
               <Calendar className="mr-2 h-5 w-5" />
               {reportingPeriod?.from ? (
@@ -81,7 +81,7 @@ export default function OrganizationStep({
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className="w-auto p-0 bg-[#fcfdf6]" align="start">
             <CalendarComponent
               initialFocus
               mode="range"
@@ -95,7 +95,7 @@ export default function OrganizationStep({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="offsets" className="text-lg font-semibold text-gray-700">
+        <Label htmlFor="offsets" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Offsets to Disclose Separately
         </Label>
         <Input
@@ -104,9 +104,9 @@ export default function OrganizationStep({
           placeholder="Enter your offset amount"
           value={separateOffsets}
           onChange={(e) => setSeparateOffsets(e.target.value)}
-          className="text-lg p-6 border-2 hover:border-[#b0ea1d] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
+          className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
         />
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-sm mt-2" style={{ color: '#6c5f31', opacity: 0.7 }}>
           Specify any carbon offsets you want to disclose separately from total emissions
         </p>
       </div>

@@ -1,6 +1,6 @@
 import { ActivityData, ChannelUnits, CountryData } from "@/types/types";
 import { Label } from "@/components/ui/label";
-import { Circle, Loader2 } from "lucide-react";
+import { Circle, Loader2, SquareEqual } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell } from "recharts";
@@ -107,8 +107,9 @@ export default function ActivityLog({
                 style={{ backgroundColor: '#d1cebb' }}
               >
                 <div className="flex items-center gap-3 w-full">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#080c04' }}>
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ffffff' }}></div>
+                  <div className="w-6 h-6  flex items-center justify-center" >
+                    {/* <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#ffffff' }}></div> */}
+                    <SquareEqual  className="text-[#080c04]" />
                   </div>
                   <h3 className="font-semibold" style={{ color: '#080c04' }}>
                     #{String(index + 1).padStart(3, '0')}: {activity.campaign || 'Log'}

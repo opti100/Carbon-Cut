@@ -400,7 +400,7 @@ export default function MarketingCalculator({ onStatsUpdate, initialData }: Mark
   return (
     <div className="min-h-screen bg-white" >
       {!initialData && (
-        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" >
+        <div className="bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" >
           <div className="absolute inset-0 opacity-20">
             <div className="h-full w-full" style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -423,7 +423,7 @@ export default function MarketingCalculator({ onStatsUpdate, initialData }: Mark
         {/* Show summary if initialData is provided */}
         {initialData && (
           <div className="pb-8 pt-8">
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 border-2 border-green-200">
+            <div className="bg-linear-to-r from-green-50 to-blue-50 rounded-lg p-6 border-2 border-green-200">
               <h3 className="text-xl font-bold text-gray-900 mb-4">Campaign Summary</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                 <div>

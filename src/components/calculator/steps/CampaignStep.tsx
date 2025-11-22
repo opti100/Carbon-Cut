@@ -48,17 +48,17 @@ export default function CampaignStep({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 flex-1"
+      className="space-y-4 sm:space-y-6 flex-1"
     >
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">Campaign Details</h2>
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8" style={{ color: '#080c04' }}>Campaign Details</h2>
 
       <div className="space-y-2">
-        <Label className="text-lg font-semibold text-gray-700">Campaign Period</Label>
+        <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Campaign Period</Label>
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left text-lg p-6 border-2 hover:border-[#b0ea1d]  bg-[#fcfdf6]"
+              className="w-full justify-start text-left text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]  bg-[#fcfdf6]"
             >
               <Calendar className="mr-2 h-5 w-5" />
               {campaignPeriod?.from ? (
@@ -74,7 +74,7 @@ export default function CampaignStep({
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent className="w-auto p-0 bg-[#fcfdf6]" align="start">
             <CalendarComponent
               initialFocus
               mode="range"
@@ -89,14 +89,14 @@ export default function CampaignStep({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="market" className="text-lg font-semibold text-gray-700">
+        <Label htmlFor="market" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Market
         </Label>
         <Select value={market} onValueChange={setMarket} disabled={loadingCountries}>
-          <SelectTrigger className="text-lg p-6 border-2 hover:border-[#b0ea1d]">
+          <SelectTrigger className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]">
             <SelectValue placeholder={loadingCountries ? 'Loading markets...' : 'Select market'} />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent  className='bg-[#fcfdf6]'>
             {availableCountries.map((country) => (
               <SelectItem key={country.code} value={country.name}>
                 {country.name}
@@ -107,14 +107,14 @@ export default function CampaignStep({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="channel" className="text-lg font-semibold text-gray-700">
+        <Label htmlFor="channel" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Channel
         </Label>
         <Select value={channel} onValueChange={setChannel}>
-          <SelectTrigger className="text-lg p-6 border-2 hover:border-[#b0ea1d]">
+          <SelectTrigger className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] " >
             <SelectValue placeholder="Select channel" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className='bg-[#fcfdf6]'>
             {Object.keys(channels).map((channelKey) => (
               <SelectItem key={channelKey} value={channelKey}>
                 {channelKey}

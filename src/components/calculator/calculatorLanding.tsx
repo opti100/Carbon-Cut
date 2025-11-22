@@ -215,67 +215,69 @@ export default function CalculatorLanding() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
       <div
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-30 pb-0 flex flex-col"
-        style={{ height: 'calc(100vh - 5rem)' }}
+        className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 lg:pt-30 pb-4 sm:pb-6 md:pb-8 flex flex-col"
+        style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
         <StepperProgress currentStep={currentStep} />
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 min-h-0">
-          <div className="lg:col-span-2 rounded-xl p-8 flex flex-col min-h-[600px]" style={{ backgroundColor: '', border: '' }}>
-            <AnimatePresence mode="wait">
-              {currentStep === 1 && (
-                <OrganizationStep 
-                  organization={organization}
-                  setOrganization={setOrganization}
-                  reportingPeriod={reportingPeriod}
-                  setReportingPeriod={setReportingPeriod}
-                  separateOffsets={separateOffsets}
-                  setSeparateOffsets={setSeparateOffsets}
-                />
-              )}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 min-h-0">
+          <div className="lg:col-span-2 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col h-auto min-h-[500px] sm:h-auto md:h-[500px] lg:h-[600px]" style={{ backgroundColor: '', border: '' }}>
+            <div className="flex-1 overflow-y-auto pb-4 min-h-0">
+              <AnimatePresence mode="wait">
+                {currentStep === 1 && (
+                  <OrganizationStep 
+                    organization={organization}
+                    setOrganization={setOrganization}
+                    reportingPeriod={reportingPeriod}
+                    setReportingPeriod={setReportingPeriod}
+                    separateOffsets={separateOffsets}
+                    setSeparateOffsets={setSeparateOffsets}
+                  />
+                )}
 
-              {currentStep === 2 && (
-                <CampaignStep
-                  campaignPeriod={campaignPeriod}
-                  setCampaignPeriod={setCampaignPeriod}
-                  market={market}
-                  setMarket={setMarket}
-                  channel={channel}
-                  setChannel={setChannel}
-                  availableCountries={availableCountries}
-                  loadingCountries={loadingCountries}
-                  channels={CHANNELS}
-                />
-              )}
+                {currentStep === 2 && (
+                  <CampaignStep
+                    campaignPeriod={campaignPeriod}
+                    setCampaignPeriod={setCampaignPeriod}
+                    market={market}
+                    setMarket={setMarket}
+                    channel={channel}
+                    setChannel={setChannel}
+                    availableCountries={availableCountries}
+                    loadingCountries={loadingCountries}
+                    channels={CHANNELS}
+                  />
+                )}
 
-              {currentStep === 3 && (
-                <ActivitiesStep
-                  channel={channel}
-                  selectedActivities={selectedActivities}
-                  setSelectedActivities={setSelectedActivities}
-                  activityQuantities={activityQuantities}
-                  handleQuantityChange={handleQuantityChange}
-                />
-              )}
+                {currentStep === 3 && (
+                  <ActivitiesStep
+                    channel={channel}
+                    selectedActivities={selectedActivities}
+                    setSelectedActivities={setSelectedActivities}
+                    activityQuantities={activityQuantities}
+                    handleQuantityChange={handleQuantityChange}
+                  />
+                )}
 
-              {currentStep === 4 && (
-                <DetailsStep
-                  emissionScope={emissionScope}
-                  setEmissionScope={setEmissionScope}
-                  campaignName={campaignName}
-                  setCampaignName={setCampaignName}
-                  note={note}
-                  setNote={setNote}
-                />
-              )}
-            </AnimatePresence>
+                {currentStep === 4 && (
+                  <DetailsStep
+                    emissionScope={emissionScope}
+                    setEmissionScope={setEmissionScope}
+                    campaignName={campaignName}
+                    setCampaignName={setCampaignName}
+                    note={note}
+                    setNote={setNote}
+                  />
+                )}
+              </AnimatePresence>
+            </div>
 
-            <div className="flex justify-between items-center pt-6 mt-auto" style={{ borderTop: '1px solid #d1cebb' }}>
+            <div className="flex justify-between items-center pt-4 sm:pt-6 shrink-0 gap-2 sm:gap-4" style={{ borderTop: '1px solid #d1cebb' }}>
               {currentStep > 1 ? (
                 <Button
                   onClick={handleBack}
                   variant="outline"
-                  className="px-8 text-white"
+                  className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base"
                   style={{
                     borderColor: "#d1cebb",
                     backgroundColor: "#6c5f31"
@@ -290,21 +292,21 @@ export default function CalculatorLanding() {
 
 
               {currentStep === 4 ? (
-                <div className="flex gap-3">
+                <div className="flex gap-2 sm:gap-3">
                   <Button
                     onClick={handleAddActivityAndReset}
                     variant="outline"
-                    className="px-8"
+                    className="px-3 sm:px-6 md:px-8 text-sm sm:text-base"
                     style={{ borderColor: '#b0ea1d', color: '#6c5f31', backgroundColor: '#fcfdf6' }}
                   >
                     Add Activity
                   </Button>
-                  <Button onClick={handleNext} className="px-8 text-white" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
+                  <Button onClick={handleNext} className="px-3 sm:px-6 md:px-8 text-white text-sm sm:text-base" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
                     Next Step
                   </Button>
                 </div>
               ) : (
-                <Button onClick={handleNext} className="px-8 text-white" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
+                <Button onClick={handleNext} className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
                   Next Step
                 </Button>
               )}
@@ -317,8 +319,8 @@ export default function CalculatorLanding() {
 
       {activities.length > 0 && (
         <>
-          <div id="activity-log-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" style={{ backgroundColor: '#fcfdf6' }}>
-            <h2 className="text-3xl font-bold mb-6" style={{ color: '#080c04' }}>Activity Log</h2>
+          <div id="activity-log-section" className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8" style={{ backgroundColor: '#fcfdf6' }}>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6" style={{ color: '#080c04' }}>Activity Log</h2>
 
             <ActivityLog
               activities={activities}
@@ -347,9 +349,9 @@ export default function CalculatorLanding() {
             />
           </div>
 
-          {/* <CalculatorFAQ />
-          <PreFooter />
-          <Footer /> */}
+          <CalculatorFAQ />
+           <PreFooter /> 
+          <Footer />
         </>
       )}
 
