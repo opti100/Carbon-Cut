@@ -96,14 +96,24 @@ export default function OrganizationStep({
 
       <div className="space-y-2">
         <Label htmlFor="offsets" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
-          Offsets to Disclose Separately
+          Offsets to Disclose Separately (kg CO₂e)
         </Label>
         <Input
           id="offsets"
           type="text"
-          placeholder="Enter your offset amount"
+          placeholder="Enter your offset amount in kg"
           value={separateOffsets}
-          onChange={(e) => setSeparateOffsets(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value === '' || /^\d*\.?\d*$/.test(value)) {
+              setSeparateOffsets(value);
+            }
+          }}
+          onKeyPress={(e) => {
+            if (!/[0-9.]/.test(e.key)) {
+              e.preventDefault();
+            }
+          }}
           className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
         />
         <p className="text-sm mt-2" style={{ color: '#6c5f31', opacity: 0.7 }}>

@@ -14,18 +14,18 @@ interface StatsCardsProps {
 
 export default function StatsCards({ stats }: StatsCardsProps) {
   return (
-    <div className="lg:col-span-1 h-full">
-      <div className="grid grid-cols-2 gap-4 h-full">
+    <div className="lg:col-span-1 h-full pt-15">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-20" >
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-2 text-center flex flex-col items-center justify-center"
           style={{ backgroundColor: "", border: "" }}
         >
           {/* Circle with ChartColumn inside */}
           <div
-            className="flex items-center justify-center mb-3 rounded-full"
+            className="flex items-center justify-center mb-2 rounded-full"
             style={{
               width: "120px",
               height: "120px",
@@ -58,12 +58,12 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-2 text-center flex flex-col items-center justify-center"
           style={{ backgroundColor: "", border: "" }}
         >
           {/* Circle with ChartColumn inside */}
           <div
-            className="flex items-center justify-center mb-3 rounded-full"
+            className="flex items-center justify-center mb-2 rounded-full"
             style={{
               width: "120px",
               height: "120px",
@@ -96,12 +96,12 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-2 text-center flex flex-col items-center justify-center"
           style={{ backgroundColor: "", border: "" }}
         >
           {/* Circle with ChartColumn inside */}
           <div
-            className="flex items-center justify-center mb-3 rounded-full"
+            className="flex items-center justify-center mb-2 rounded-full"
             style={{
               width: "120px",
               height: "120px",
@@ -134,12 +134,12 @@ export default function StatsCards({ stats }: StatsCardsProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.1 }}
-          className="rounded-lg p-4 text-center flex flex-col items-center justify-center"
+          className="rounded-lg p-2 text-center flex flex-col items-center justify-center"
           style={{ backgroundColor: "", border: "" }}
         >
           {/* Circle with ChartColumn inside */}
           <div
-            className="flex items-center justify-center mb-3 rounded-full"
+            className="flex items-center justify-center mb-2 rounded-full"
             style={{
               width: "120px",
               height: "120px",
@@ -163,7 +163,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
               className="text-xl font-semibold"
               style={{ color: "#b0ea1d" }}
             >
-              {stats.totalCO2e.toFixed(5)} kg
+              {stats.totalCO2e.toFixed(2)} kg
             </span>
           </div>
         </motion.div>

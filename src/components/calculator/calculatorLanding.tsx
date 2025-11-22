@@ -172,7 +172,7 @@ export default function CalculatorLanding() {
     setCampaignName('');
     setNote('');
 
-    setCurrentStep(1);
+    setCurrentStep(2);
   };
 
   const handleNext = () => {
@@ -196,7 +196,8 @@ export default function CalculatorLanding() {
       setTimeout(() => {
         const activityLogSection = document.getElementById('activity-log-section');
         if (activityLogSection) {
-          activityLogSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          activityLogSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          window.scrollTo({ top: activityLogSection.offsetTop - 80, behavior: 'smooth' });
         }
       }, 300);
     }
@@ -218,7 +219,7 @@ export default function CalculatorLanding() {
         className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 lg:pt-30 pb-4 sm:pb-6 md:pb-8 flex flex-col"
         style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
-        <StepperProgress currentStep={currentStep} />
+        {currentStep <= 4 && <StepperProgress currentStep={currentStep} />}
 
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 min-h-0">
           <div className="lg:col-span-2 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col h-auto min-h-[500px] sm:h-auto md:h-[500px] lg:h-[600px]" style={{ backgroundColor: '', border: '' }}>
@@ -235,21 +236,20 @@ export default function CalculatorLanding() {
                   />
                 )}
 
-                {currentStep === 2 && (
-                  <CampaignStep
-                    campaignPeriod={campaignPeriod}
-                    setCampaignPeriod={setCampaignPeriod}
-                    market={market}
-                    setMarket={setMarket}
-                    channel={channel}
-                    setChannel={setChannel}
-                    availableCountries={availableCountries}
-                    loadingCountries={loadingCountries}
-                    channels={CHANNELS}
-                  />
-                )}
-
-                {currentStep === 3 && (
+              {currentStep === 2 && (
+                <CampaignStep
+                  campaignPeriod={campaignPeriod}
+                  setCampaignPeriod={setCampaignPeriod}
+                  market={market}
+                  setMarket={setMarket}
+                  channel={channel}
+                  setChannel={setChannel}
+                  availableCountries={availableCountries}
+                  loadingCountries={loadingCountries}
+                  channels={CHANNELS}
+                  reportingPeriod={reportingPeriod}
+                />
+              )}                {currentStep === 3 && (
                   <ActivitiesStep
                     channel={channel}
                     selectedActivities={selectedActivities}
@@ -277,7 +277,7 @@ export default function CalculatorLanding() {
                 <Button
                   onClick={handleBack}
                   variant="outline"
-                  className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base"
+                  className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base hover:border-[#F0db18]"
                   style={{
                     borderColor: "#d1cebb",
                     backgroundColor: "#6c5f31"
@@ -296,17 +296,17 @@ export default function CalculatorLanding() {
                   <Button
                     onClick={handleAddActivityAndReset}
                     variant="outline"
-                    className="px-3 sm:px-6 md:px-8 text-sm sm:text-base"
+                    className="px-3 sm:px-6 md:px-8 text-sm sm:text-base hover:border-[#F0db18]"
                     style={{ borderColor: '#b0ea1d', color: '#6c5f31', backgroundColor: '#fcfdf6' }}
                   >
                     Add Activity
                   </Button>
-                  <Button onClick={handleNext} className="px-3 sm:px-6 md:px-8 text-white text-sm sm:text-base" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
+                  <Button onClick={handleNext} className="px-3 sm:px-6 md:px-8 text-white text-sm sm:text-base hover:bg-[#F0db18]" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
                     Next Step
                   </Button>
                 </div>
               ) : (
-                <Button onClick={handleNext} className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
+                <Button onClick={handleNext} className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base hover:bg-[#F0db18]" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
                   Next Step
                 </Button>
               )}
@@ -319,34 +319,40 @@ export default function CalculatorLanding() {
 
       {activities.length > 0 && (
         <>
-          <div id="activity-log-section" className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8" style={{ backgroundColor: '#fcfdf6' }}>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6" style={{ color: '#080c04' }}>Activity Log</h2>
+          <div id="activity-log-section" className="w-full px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
+            <div className="max-w-7xl mx-auto">
+              
+              <ActivityLog
+                activities={activities}
+                countries={availableCountries}
+                channels={CHANNELS}
+                calculatingEmissions={calculatingEmissions}
+                getDisplayCO2={getDisplayCO2}
+                onUpdateActivity={updateActivity}
+                latestActivityId={latestActivityId}
+              />
+            </div>
+            <div className="w-full mt-20" style={{ borderTop: "1px solid #d1cebb" }}></div>
+          </div>
 
-            <ActivityLog
-              activities={activities}
-              countries={availableCountries}
-              channels={CHANNELS}
-              calculatingEmissions={calculatingEmissions}
-              getDisplayCO2={getDisplayCO2}
-              onUpdateActivity={updateActivity}
-              latestActivityId={latestActivityId}
-            />
+          <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
+            <div className="max-w-7xl mx-auto">
+              <EmissionsBreakdown totals={totals} />
 
-            <EmissionsBreakdown totals={totals} />
-
-            <ReportActions
-              organization={{
-                name: organization,
-                period:
-                  reportingPeriod?.from && reportingPeriod?.to
-                    ? `${format(reportingPeriod.from, 'LLL dd, y')} - ${format(reportingPeriod.to, 'LLL dd, y')}`
-                    : 'Not specified',
-                offsets: separateOffsets || 'None specified',
-              }}
-              activities={activities}
-              getDisplayCO2={getDisplayCO2}
-              totals={totals}
-            />
+              <ReportActions
+                organization={{
+                  name: organization,
+                  period:
+                    reportingPeriod?.from && reportingPeriod?.to
+                      ? `${format(reportingPeriod.from, 'LLL dd, y')} - ${format(reportingPeriod.to, 'LLL dd, y')}`
+                      : 'Not specified',
+                  offsets: separateOffsets || 'None specified',
+                }}
+                activities={activities}
+                getDisplayCO2={getDisplayCO2}
+                totals={totals}
+              />
+            </div>
           </div>
 
           <CalculatorFAQ />

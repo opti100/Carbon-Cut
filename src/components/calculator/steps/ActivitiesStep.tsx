@@ -70,12 +70,12 @@ export default function ActivitiesStep({
       </div>
 
       {/* Step 3b: Enter Quantities for Selected Activities */}
-      <div className="space-y-2">
+      <div className="space-y-2 ">
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Enter quantities for selected activities
         </Label>
         
-        <div className="h-48 sm:h-56">
+        <div className="h-48 sm:h-56 pt-4">
           {selectedActivities.size > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 h-full">
               {channel &&
@@ -91,9 +91,22 @@ export default function ActivitiesStep({
                         id={unitKey}
                         type="number"
                         step="0.01"
+                        min="0"
                         placeholder={`Enter ${label.toLowerCase()}`}
                         value={activityQuantities[unitKey] || ''}
-                        onChange={(e) => handleQuantityChange(unitKey, e.target.value)}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Only allow numbers and decimal point
+                          if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                            handleQuantityChange(unitKey, value);
+                          }
+                        }}
+                        onKeyPress={(e) => {
+                          // Prevent non-numeric characters except decimal
+                          if (!/[0-9.]/.test(e.key)) {
+                            e.preventDefault();
+                          }
+                        }}
                         className="text-sm sm:text-base p-3 sm:p-4 border-2 hover:border-[#F0db18] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
                       />
                     </div>

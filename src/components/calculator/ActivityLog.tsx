@@ -60,12 +60,13 @@ export default function ActivityLog({
 
       {/* Header */}
       <div>
-        <h2 className="text-2xl lg:text-3xl font-semibold" style={{ color: '#080c04' }}>
+         <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 " style={{ color: '#080c04' }}>Activity Log</h1>
+        <h2 className="text-2xl lg:text-3xl font-semibold " style={{ color: '#080c04' }}>
           Impact Overview
         </h2>
-        <p className="mt-2 max-w-3xl" style={{ color: '#6c5f31' }}>
+        <p className="mt-2 max-w-3xl mb-4 sm:mb-6" style={{ color: '#6c5f31' }}>
           Review and edit your marketing activities. Changes are automatically saved.
-          We use <strong style={{ color: '#F0db18' }}>verified emission factors</strong> for accurate calculations.
+          We use <strong style={{ color: '#080c04' }}>verified emission factors</strong> for accurate calculations.
         </p>
       </div>
 
@@ -117,10 +118,10 @@ export default function ActivityLog({
                 </div>
               </AccordionTrigger>
 
-              <AccordionContent className="px-6 pb-6" style={{ backgroundColor: '#fcfdf620' }}>
+              <AccordionContent className="px-6 pb-6 flex" style={{ backgroundColor: '#fcfdf620' }}>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6 items-stretch flex-1">
 
                   {/* Column 1 – Activity Details */}
                   <div className="flex flex-col h-full space-y-6">
@@ -246,7 +247,7 @@ export default function ActivityLog({
                         </div>
 
                         <div className="text-center pt-4 w-full" style={{ borderTop: '1px solid #d1cebb' }}>
-                          <div className="text-xs mb-1" style={{ color: '#6c5f31' }}>Equivalent to</div>
+                          <div className="text-sm mb-1" style={{ color: '#6c5f31' }}>Equivalent to</div>
                           <div className="text-2xl font-semibold" style={{ color: '#6c5f31' }}>
                             {(getDisplayCO2(activity) / 1000).toFixed(6)}
                           </div>

@@ -20,6 +20,7 @@ interface CampaignStepProps {
   availableCountries: CountryData[];
   loadingCountries: boolean;
   channels: Record<string, Array<[string, string]>>;
+  reportingPeriod?: DateRange | undefined;
 }
 
 export default function CampaignStep({
@@ -32,6 +33,7 @@ export default function CampaignStep({
   availableCountries,
   loadingCountries,
   channels,
+  reportingPeriod,
 }: CampaignStepProps) {
   // Set default date to today if not already set
   React.useEffect(() => {
@@ -83,6 +85,12 @@ export default function CampaignStep({
               onSelect={setCampaignPeriod}
               numberOfMonths={2}
               className=''
+              disabled={(date) => {
+                if (!reportingPeriod?.from || !reportingPeriod?.to) return false;
+                return date < reportingPeriod.from || date > reportingPeriod.to;
+              }}
+              fromDate={reportingPeriod?.from}
+              toDate={reportingPeriod?.to}
             />
           </PopoverContent>
         </Popover>

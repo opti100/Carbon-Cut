@@ -84,12 +84,10 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     <div className="bg-[#fcfdf6] px-6 py-8 space-y-8">
       {/* Header */}
       <div>
-        <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
-          Emissions Breakdown
-        </h2>
+         <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 " style={{ color: '#080c04' }}>Emissions Breakdown</h1>
         <p className="text-gray-600 mt-2 max-w-3xl">
           Breakdown of your marketing-related CO₂e emissions across different channels, markets, and scopes.
-          Calculated using <strong className="text-[#b0ea1d]">verified emission factors</strong>.
+          Calculated using <strong className="text-[#080c04]">verified emission factors</strong>.
         </p>
       </div>
 
