@@ -68,7 +68,7 @@ export default function CampaignStep({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]  bg-[#fcfdf6]"
+              className="w-full justify-start text-left text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]  bg-[#fcfdf6] text-[#6c5f31] hover:bg-[#fcfdf6] hover:text-[#6c5f31]"
             >
               <Calendar className="mr-2 h-5 w-5" />
               {campaignPeriod?.from ? (
@@ -84,7 +84,7 @@ export default function CampaignStep({
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 bg-[#fcfdf6]" align="start">
+          <PopoverContent className="w-auto p-0 bg-[#fcfdf6] " align="start">
             <CalendarComponent
               initialFocus
               mode="range"
