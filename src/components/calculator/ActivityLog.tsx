@@ -80,12 +80,28 @@ export default function ActivityLog({
       >
         {activities.map((activity, index) => {
 
+          // Calculate total emission for this activity
+          const totalActivityEmission = getDisplayCO2(activity);
+          
+          // Calculate total quantity units
+          const totalQuantity = activity.quantities 
+            ? Object.values(activity.quantities).reduce((sum, data: any) => sum + data.value, 0)
+            : 0;
+
+          // Calculate emission-based pie chart data
           const pieChartData =
-            activity.quantities
-              ? Object.entries(activity.quantities).map(([key, data]: [string, any]) => ({
-                name: data.label,
-                value: data.value,
-              }))
+            activity.quantities && totalQuantity > 0
+              ? Object.entries(activity.quantities).map(([key, data]: [string, any]) => {
+                  // Calculate proportional emission for each activity type
+                  const proportionalEmission = (data.value / totalQuantity) * totalActivityEmission;
+                  const percentage = (proportionalEmission / totalActivityEmission) * 100;
+                  
+                  return {
+                    name: data.label,
+                    value: proportionalEmission,
+                    percentage: percentage,
+                  };
+                })
               : [];
 
           const chartConfig = pieChartData.reduce((acc, item, idx) => ({
@@ -199,15 +215,31 @@ export default function ActivityLog({
                           style={{ width: "100%", height: "360px" }}
                         >
                           <PieChart width={360} height={360}>
-                            <ChartTooltip content={<ChartTooltipContent />} />
+                            <ChartTooltip 
+                              content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                  const data = payload[0].payload;
+                                  return (
+                                    <div className="rounded-lg border bg-white p-2 shadow-sm">
+                                      <div className="text-sm font-semibold">{data.name}</div>
+                                      <div className="text-sm" style={{ color: '#b0ea1d' }}>
+                                        {data.percentage.toFixed(1)}% of emissions
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              }}
+                            />
 
                             <Pie
                               data={pieChartData}
                               cx="50%"
                               cy="50%"
-                              outerRadius={120}   // FIXED → NO CUTTING
+                              outerRadius={120}
                               dataKey="value"
                               labelLine={false}
+                              
                             >
                               {pieChartData.map((entry, idx) => (
                                 <Cell key={idx} fill={CHART_COLORS[idx % CHART_COLORS.length]} />

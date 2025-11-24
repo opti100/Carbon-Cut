@@ -13,6 +13,21 @@ interface StatsCardsProps {
 }
 
 export default function StatsCards({ stats }: StatsCardsProps) {
+  const formatEmission = (value: number) => {
+    if (value > 999) {
+      return {
+        value: (value / 1000).toFixed(4),
+        unit: 't'
+      };
+    }
+    return {
+      value: value.toFixed(2),
+      unit: 'kg'
+    };
+  };
+
+  const emission = formatEmission(stats.totalCO2e);
+
   return (
     <div className="lg:col-span-1 h-full pt-15">
       <div className="grid grid-cols-2 gap-x-4 gap-y-20" >
@@ -163,7 +178,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
               className="text-xl font-semibold"
               style={{ color: "#b0ea1d" }}
             >
-              {stats.totalCO2e.toFixed(2)} kg
+              {emission.value} {emission.unit}
             </span>
           </div>
         </motion.div>

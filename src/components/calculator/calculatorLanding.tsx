@@ -23,6 +23,10 @@ import { useEmissionsCalculator } from './hooks/useEmissionsCalculator';
 
 export default function CalculatorLanding() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showActivityError, setShowActivityError] = useState(false);
+  const [showStep1Errors, setShowStep1Errors] = useState(false);
+  const [showStep2Errors, setShowStep2Errors] = useState(false);
+  const [showStep3QuantityError, setShowStep3QuantityError] = useState(false);
 
   // Step 1 State
   const [organization, setOrganization] = useState('');
@@ -133,6 +137,12 @@ export default function CalculatorLanding() {
       ...prev,
       [unitKey]: value,
     }));
+    if (showActivityError && selectedActivities.size > 0) {
+      setShowActivityError(false);
+    }
+    if (showStep3QuantityError && value && parseFloat(value) > 0) {
+      setShowStep3QuantityError(false);
+    }
   };
 
   const handleAddActivity = () => {
@@ -177,18 +187,31 @@ export default function CalculatorLanding() {
 
   const handleNext = () => {
     if (currentStep === 1) {
-      setCurrentStep(2);
-    } else if (currentStep === 2) {
-      if (!market || !channel) {
-        alert('Please select market and channel');
+      if (!organization || !reportingPeriod?.from || !reportingPeriod?.to) {
+        setShowStep1Errors(true);
         return;
       }
+      setShowStep1Errors(false);
+      setCurrentStep(2);
+    } else if (currentStep === 2) {
+      if (!market || !channel || !campaignPeriod?.from || !campaignPeriod?.to) {
+        setShowStep2Errors(true);
+        return;
+      }
+      setShowStep2Errors(false);
       setCurrentStep(3);
     } else if (currentStep === 3) {
       if (selectedActivities.size === 0) {
-        alert('Please select at least one activity you have data for');
+        setShowActivityError(true);
         return;
       }
+      const hasQuantities = Object.values(activityQuantities).some((q) => parseFloat(q) > 0);
+      if (!hasQuantities) {
+        setShowStep3QuantityError(true);
+        return;
+      }
+      setShowActivityError(false);
+      setShowStep3QuantityError(false);
       setCurrentStep(4);
     } else if (currentStep === 4) {
       handleAddActivity();
@@ -233,6 +256,7 @@ export default function CalculatorLanding() {
                     setReportingPeriod={setReportingPeriod}
                     separateOffsets={separateOffsets}
                     setSeparateOffsets={setSeparateOffsets}
+                    showErrors={showStep1Errors}
                   />
                 )}
 
@@ -248,6 +272,7 @@ export default function CalculatorLanding() {
                   loadingCountries={loadingCountries}
                   channels={CHANNELS}
                   reportingPeriod={reportingPeriod}
+                  showErrors={showStep2Errors}
                 />
               )}                {currentStep === 3 && (
                   <ActivitiesStep
@@ -256,6 +281,9 @@ export default function CalculatorLanding() {
                     setSelectedActivities={setSelectedActivities}
                     activityQuantities={activityQuantities}
                     handleQuantityChange={handleQuantityChange}
+                    showActivityError={showActivityError}
+                    onErrorClear={() => setShowActivityError(false)}
+                    showQuantityError={showStep3QuantityError}
                   />
                 )}
 

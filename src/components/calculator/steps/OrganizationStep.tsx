@@ -16,6 +16,7 @@ interface OrganizationStepProps {
   setReportingPeriod: (value: DateRange | undefined) => void;
   separateOffsets: string;
   setSeparateOffsets: (value: string) => void;
+  showErrors?: boolean;
 }
 
 export default function OrganizationStep({
@@ -25,6 +26,7 @@ export default function OrganizationStep({
   setReportingPeriod,
   separateOffsets,
   setSeparateOffsets,
+  showErrors = false,
 }: OrganizationStepProps) {
   // Set default date to today if not already set
   React.useEffect(() => {
@@ -49,6 +51,12 @@ export default function OrganizationStep({
         <Label htmlFor="organization" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Organization/Brand
         </Label>
+        {showErrors && !organization && (
+          <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
+            
+            <span>Please fill this field to proceed to next step</span>
+          </div>
+        )}
         <Input
           id="organization"
           type="text"
@@ -61,6 +69,12 @@ export default function OrganizationStep({
 
       <div className="space-y-2">
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Reporting Period</Label>
+        {showErrors && (!reportingPeriod?.from || !reportingPeriod?.to) && (
+          <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
+          
+            <span>Please select a date range to proceed to next step</span>
+          </div>
+        )}
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -89,6 +103,7 @@ export default function OrganizationStep({
               selected={reportingPeriod}
               onSelect={setReportingPeriod}
               numberOfMonths={2}
+              fixedWeeks
             />
           </PopoverContent>
         </Popover>

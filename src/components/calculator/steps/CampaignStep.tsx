@@ -21,6 +21,7 @@ interface CampaignStepProps {
   loadingCountries: boolean;
   channels: Record<string, Array<[string, string]>>;
   reportingPeriod?: DateRange | undefined;
+  showErrors?: boolean;
 }
 
 export default function CampaignStep({
@@ -34,6 +35,7 @@ export default function CampaignStep({
   loadingCountries,
   channels,
   reportingPeriod,
+  showErrors = false,
 }: CampaignStepProps) {
   // Set default date to today if not already set
   React.useEffect(() => {
@@ -56,6 +58,12 @@ export default function CampaignStep({
 
       <div className="space-y-2">
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Campaign Period</Label>
+        {showErrors && (!campaignPeriod?.from || !campaignPeriod?.to) && (
+          <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
+            <span>⚠</span>
+            <span>Please select a date range to proceed to next step</span>
+          </div>
+        )}
         <Popover>
           <PopoverTrigger asChild>
             <Button
@@ -91,6 +99,7 @@ export default function CampaignStep({
               }}
               fromDate={reportingPeriod?.from}
               toDate={reportingPeriod?.to}
+              fixedWeeks
             />
           </PopoverContent>
         </Popover>
@@ -100,6 +109,12 @@ export default function CampaignStep({
         <Label htmlFor="market" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Market
         </Label>
+        {showErrors && !market && (
+          <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
+            <span>⚠</span>
+            <span>Please select a market to proceed to next step</span>
+          </div>
+        )}
         <Select value={market} onValueChange={setMarket} disabled={loadingCountries}>
           <SelectTrigger className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]">
             <SelectValue placeholder={loadingCountries ? 'Loading markets...' : 'Select market'} />
@@ -118,6 +133,12 @@ export default function CampaignStep({
         <Label htmlFor="channel" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Channel
         </Label>
+        {showErrors && !channel && (
+          <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
+            <span>⚠</span>
+            <span>Please select a channel to proceed to next step</span>
+          </div>
+        )}
         <Select value={channel} onValueChange={setChannel}>
           <SelectTrigger className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] " >
             <SelectValue placeholder="Select channel" />

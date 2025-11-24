@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CHANNELS } from '@/constants/data';
+import { CircleAlert } from 'lucide-react';
 
 interface ActivitiesStepProps {
   channel: string;
@@ -10,6 +11,9 @@ interface ActivitiesStepProps {
   setSelectedActivities: (value: Set<string>) => void;
   activityQuantities: Record<string, string>;
   handleQuantityChange: (unitKey: string, value: string) => void;
+  showActivityError?: boolean;
+  onErrorClear?: () => void;
+  showQuantityError?: boolean;
 }
 
 export default function ActivitiesStep({
@@ -18,6 +22,9 @@ export default function ActivitiesStep({
   setSelectedActivities,
   activityQuantities,
   handleQuantityChange,
+  showActivityError = false,
+  onErrorClear,
+  showQuantityError = false,
 }: ActivitiesStepProps) {
   return (
     <motion.div
@@ -35,6 +42,7 @@ export default function ActivitiesStep({
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Which activities do you have data for?
         </Label>
+       
         
         <div className="flex flex-wrap gap-2 pt-1">
           {channel &&
@@ -49,6 +57,7 @@ export default function ActivitiesStep({
                     newSelected.delete(unitKey);
                   } else {
                     newSelected.add(unitKey);
+                    if (onErrorClear) onErrorClear();
                   }
                   setSelectedActivities(newSelected);
                 }}
@@ -63,9 +72,15 @@ export default function ActivitiesStep({
             ))}
           {!channel && (
             <div className="py-4" style={{ color: '#6c5f31', opacity: 0.7 }}>
-              Please select a channel in Step 2 to see available activity types
+             <CircleAlert /> Please select a channel in Step 2 to see available activity types
             </div>
           )}
+
+           {showActivityError && selectedActivities.size === 0 && (
+          <p className="text-sm font-medium" style={{ color: '#dc2626' }}>
+            Please select at least one activity you have data for
+          </p>
+        )}
         </div>
       </div>
 
@@ -74,6 +89,12 @@ export default function ActivitiesStep({
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
           Enter quantities for selected activities
         </Label>
+        {showQuantityError && selectedActivities.size > 0 && !Object.values(activityQuantities).some((q) => parseFloat(q) > 0) && (
+          <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
+            <span>⚠</span>
+            <span>Please enter at least one quantity value to proceed to next step</span>
+          </div>
+        )}
         
         <div className="h-48 sm:h-56 pt-4">
           {selectedActivities.size > 0 ? (
