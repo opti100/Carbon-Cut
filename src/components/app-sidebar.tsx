@@ -147,7 +147,7 @@ export function AppSidebar() {
   const showAccountSwitcher = status?.is_connected && accounts && accounts.length > 1;
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="">
       {showAccountSwitcher && (
         <SidebarHeader className="border-b border-sidebar-border p-4">
           <div className="space-y-2">
@@ -166,13 +166,13 @@ export function AppSidebar() {
 
             {accountsLoading ? (
               <Select disabled>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-[#fcfdf6]">
                   <SelectValue placeholder="Loading accounts..." />
                 </SelectTrigger>
               </Select>
             ) : accounts.length === 0 ? (
               <Select disabled>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-[#fcfdf6]">
                   <SelectValue placeholder="No accounts found" />
                 </SelectTrigger>
               </Select>
@@ -182,13 +182,13 @@ export function AppSidebar() {
                 onValueChange={setSelectedAccountId}
                 disabled={accountsLoading || isSwitchingAccount}
               >
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-[#fcfdf6]">
                   <SelectValue placeholder="Select an account" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#fcfdf6]">
                   {accounts.map((account) => (
                     <SelectItem key={account.id} value={account.id}>
-                      <div className="flex items-center justify-between gap-2 w-full">
+                      <div className="flex items-center justify-between gap-2 w-full  ">
                         <span className="truncate">{account.name}</span>
                         {account.id === status?.customer_id && (
                           <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />

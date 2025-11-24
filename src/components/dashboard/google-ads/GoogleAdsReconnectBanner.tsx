@@ -16,7 +16,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/a
   }
 
   return (
-    <Alert variant="destructive" className="mb-4">
+    <Alert variant="destructive" className=" bg-[#fcfdf6] border-none">
       <AlertCircle className="h-4 w-4" />
       <AlertDescription className="flex items-center justify-between">
         <span>{tokenStatus.message}</span>

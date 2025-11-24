@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
+import Header from "./calculator/Header"
 
 interface DashboardHeaderProps {
   breadcrumbs: {
@@ -20,7 +21,8 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ breadcrumbs }: DashboardHeaderProps) {
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border bg-background px-4">
+    <header className="flex h-16 shrink-0 items-center gap-2 border-b border-border  px-4 bg-[#fcfdf6] sm:px-6 lg:px-8">
+      
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mx-2 h-4" />
       <Breadcrumb>
