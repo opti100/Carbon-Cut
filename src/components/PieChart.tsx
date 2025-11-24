@@ -43,7 +43,7 @@ export function EmissionsPieChart({
       };
     }
     return {
-      value: value.toFixed(2),
+      value: value.toFixed(5),
       unit: 'kg'
     };
   };

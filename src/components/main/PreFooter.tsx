@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 
 const DOT_COLORS = ["#ff3b30", "#34c759", "#ffcc00", "#af52de", "#0fb9b1"];
@@ -13,13 +13,13 @@ const PreFooter = () => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024); // Hide dots below lg breakpoint
     };
-    
+
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Dot animation for desktop only
+  // Real-time scroll animation
   useEffect(() => {
     if (isMobile) return;
 
@@ -31,20 +31,25 @@ const PreFooter = () => {
       dotsRef.current.forEach((dot) => {
         if (!dot) return;
 
+        // Get current X translation from dataset
+        const currentX = parseFloat(dot.dataset.x || "0");
+
+        // Move in small steps for real-time animation
+        const newX = direction === "down" ? currentX - 8 : currentX + 8;
+
+        // Store new X value
+        dot.dataset.x = newX.toString();
+
+        // Animate
         dot.animate(
           [
-            { transform: dot.style.transform },
-            {
-              transform:
-                direction === "down"
-                  ? `${dot.style.transform} translateX(-30px)`
-                  : `${dot.style.transform} translateX(30px)`,
-            },
+            { transform: `translateX(${currentX}px)` },
+            { transform: `translateX(${newX}px)` }
           ],
           {
-            duration: 800,
-            easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
-            fill: "forwards",
+            duration: 100,
+            easing: "linear",
+            fill: "forwards"
           }
         );
       });
@@ -55,7 +60,7 @@ const PreFooter = () => {
   }, [isMobile]);
 
   const totalDots = 8;
-  const curveHeight = 350;
+  const curveHeight = 300;
 
   return (
     <div className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#fcfdf6]">
@@ -74,6 +79,7 @@ const PreFooter = () => {
                 ref={(el) => {
                   if (el) dotsRef.current[i] = el;
                 }}
+                data-x="0"
                 style={{
                   position: "absolute",
                   left: `${xPercent}%`,
@@ -83,7 +89,7 @@ const PreFooter = () => {
                   borderRadius: "50%",
                   background: DOT_COLORS[i % DOT_COLORS.length],
                   transform: "translateX(-50%)",
-                  opacity: 0.9,
+                  opacity: 0.9
                 }}
               />
             );

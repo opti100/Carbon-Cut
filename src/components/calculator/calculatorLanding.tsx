@@ -239,17 +239,17 @@ export default function CalculatorLanding() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
       <div
-        className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 pt-20 sm:pt-24 md:pt-28 lg:pt-30 pb-4 sm:pb-6 md:pb-8 flex flex-col"
+        className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 xl:px-10 pt-4 sm:pt-20 md:pt-28 lg:pt-30 pb-4 sm:pb-6 md:pb-8 flex flex-col"
         style={{ minHeight: 'calc(100vh - 5rem)' }}
       >
         {currentStep <= 4 && <StepperProgress currentStep={currentStep} />}
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 min-h-0">
-          <div className="lg:col-span-2 rounded-xl p-4 sm:p-6 md:p-8 flex flex-col h-auto min-h-[500px] sm:h-auto md:h-[500px] lg:h-[600px]" style={{ backgroundColor: '', border: '' }}>
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 min-h-0">
+          <div className="lg:col-span-2 rounded-xl p-3 sm:p-4 md:p-6 lg:p-8 flex flex-col h-auto min-h-[450px] sm:min-h-[500px] md:h-[500px] lg:h-[600px]" style={{ backgroundColor: '', border: '' }}>
             <div className="flex-1 overflow-y-auto pb-4 min-h-0">
               <AnimatePresence mode="wait">
                 {currentStep === 1 && (
-                  <OrganizationStep 
+                  <OrganizationStep
                     organization={organization}
                     setOrganization={setOrganization}
                     reportingPeriod={reportingPeriod}
@@ -260,21 +260,21 @@ export default function CalculatorLanding() {
                   />
                 )}
 
-              {currentStep === 2 && (
-                <CampaignStep
-                  campaignPeriod={campaignPeriod}
-                  setCampaignPeriod={setCampaignPeriod}
-                  market={market}
-                  setMarket={setMarket}
-                  channel={channel}
-                  setChannel={setChannel}
-                  availableCountries={availableCountries}
-                  loadingCountries={loadingCountries}
-                  channels={CHANNELS}
-                  reportingPeriod={reportingPeriod}
-                  showErrors={showStep2Errors}
-                />
-              )}                {currentStep === 3 && (
+                {currentStep === 2 && (
+                  <CampaignStep
+                    campaignPeriod={campaignPeriod}
+                    setCampaignPeriod={setCampaignPeriod}
+                    market={market}
+                    setMarket={setMarket}
+                    channel={channel}
+                    setChannel={setChannel}
+                    availableCountries={availableCountries}
+                    loadingCountries={loadingCountries}
+                    channels={CHANNELS}
+                    reportingPeriod={reportingPeriod}
+                    showErrors={showStep2Errors}
+                  />
+                )}                {currentStep === 3 && (
                   <ActivitiesStep
                     channel={channel}
                     selectedActivities={selectedActivities}
@@ -305,11 +305,8 @@ export default function CalculatorLanding() {
                 <Button
                   onClick={handleBack}
                   variant="outline"
-                  className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base hover:border-[#F0db18]"
-                  style={{
-                    borderColor: "#d1cebb",
-                    backgroundColor: "#6c5f31"
-                  }}
+                  className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base bg-[#6c5f31] hover:bg-[#b0ea1d] "
+                  
                 >
                   Back
                 </Button>
@@ -324,17 +321,24 @@ export default function CalculatorLanding() {
                   <Button
                     onClick={handleAddActivityAndReset}
                     variant="outline"
-                    className="px-3 sm:px-6 md:px-8 text-sm sm:text-base hover:border-[#F0db18]"
-                    style={{ borderColor: '#b0ea1d', color: '#6c5f31', backgroundColor: '#fcfdf6' }}
+                    className="px-3 sm:px-6 md:px-8 text-sm sm:text-base bg-[#fcfdf6] border-[#b0ea1d] text-[#6c5f31] hover:text-[#b0ea1d] hover:border-[#F0db18] hover:bg-[#fcfdf6]"
                   >
                     Add Activity
                   </Button>
-                  <Button onClick={handleNext} className="px-3 sm:px-6 md:px-8 text-white text-sm sm:text-base hover:bg-[#F0db18]" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
+                  <Button
+                    onClick={handleNext}
+                    className="px-4 sm:px-6 md:px-8  text-sm sm:text-base  
+             bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04]"
+                  >
                     Next Step
                   </Button>
                 </div>
               ) : (
-                <Button onClick={handleNext} className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base hover:bg-[#F0db18]" style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}>
+                <Button
+                  onClick={handleNext}
+                  className="rounded px-4 sm:px-6 md:px-8  text-sm sm:text-base 
+             bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04]"
+                >
                   Next Step
                 </Button>
               )}
@@ -349,7 +353,7 @@ export default function CalculatorLanding() {
         <>
           <div id="activity-log-section" className="w-full px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
             <div className="max-w-7xl mx-auto">
-              
+
               <ActivityLog
                 activities={activities}
                 countries={availableCountries}
@@ -384,7 +388,7 @@ export default function CalculatorLanding() {
           </div>
 
           <CalculatorFAQ />
-           <PreFooter /> 
+          <PreFooter />
           <Footer />
         </>
       )}

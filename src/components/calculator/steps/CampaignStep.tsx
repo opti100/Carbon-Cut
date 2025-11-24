@@ -60,7 +60,7 @@ export default function CampaignStep({
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Campaign Period</Label>
         {showErrors && (!campaignPeriod?.from || !campaignPeriod?.to) && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-            <span>⚠</span>
+          
             <span>Please select a date range to proceed to next step</span>
           </div>
         )}
@@ -111,7 +111,7 @@ export default function CampaignStep({
         </Label>
         {showErrors && !market && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-            <span>⚠</span>
+           
             <span>Please select a market to proceed to next step</span>
           </div>
         )}
@@ -135,7 +135,7 @@ export default function CampaignStep({
         </Label>
         {showErrors && !channel && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-            <span>⚠</span>
+           
             <span>Please select a channel to proceed to next step</span>
           </div>
         )}

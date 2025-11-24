@@ -21,7 +21,7 @@ export default function StatsCards({ stats }: StatsCardsProps) {
       };
     }
     return {
-      value: value.toFixed(2),
+      value: value.toFixed(5),
       unit: 'kg'
     };
   };

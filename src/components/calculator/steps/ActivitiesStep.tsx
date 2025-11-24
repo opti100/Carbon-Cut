@@ -91,7 +91,7 @@ export default function ActivitiesStep({
         </Label>
         {showQuantityError && selectedActivities.size > 0 && !Object.values(activityQuantities).some((q) => parseFloat(q) > 0) && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-            <span>⚠</span>
+            
             <span>Please enter at least one quantity value to proceed to next step</span>
           </div>
         )}

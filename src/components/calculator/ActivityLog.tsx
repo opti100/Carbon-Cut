@@ -120,7 +120,7 @@ export default function ActivityLog({
               style={{ border: '1px solid #d1cebb', backgroundColor: '#fcfdf6' }}
             >
               <AccordionTrigger
-                className="hover:no-underline px-6 py-4"
+                className="hover:no-underline px-6 py-4 rounded-t-lg"
                 style={{ backgroundColor: '#d1cebb' }}
               >
                 <div className="flex items-center gap-3 w-full">
@@ -134,7 +134,7 @@ export default function ActivityLog({
                 </div>
               </AccordionTrigger>
 
-              <AccordionContent className="px-6 pb-6 flex" style={{ backgroundColor: '#fcfdf620' }}>
+              <AccordionContent className="px-6 pb-6 flex " style={{ backgroundColor: '#fcfdf620' }}>
 
                 {/* Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-6 items-stretch flex-1">
