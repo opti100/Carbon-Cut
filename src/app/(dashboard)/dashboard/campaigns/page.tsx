@@ -58,21 +58,21 @@ export default function CampaignsPage() {
     <>
       <DashboardHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Campaigns" }]} />
       <GoogleAdsReconnectBanner/>
-      <div className="flex-1 overflow-auto p-8 bg-[#fcfdf6]">
-        <div className="mx-auto max-w-7xl space-y-8">
-          <div className="flex justify-between items-start gap-6">
-            <div className="space-y-2">
-              <h1 className="text-4xl font-bold tracking-tight text-balance">Campaigns</h1>
-              <p className="text-base text-muted-foreground">Manage your advertising campaigns with UTM tracking</p>
+      <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 bg-[#fcfdf6]">
+        <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
+            <div className="space-y-1 sm:space-y-2">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-balance">Campaigns</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">Manage your advertising campaigns with UTM tracking</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
               <GoogleAdsConnectDialog open={connectDialogOpen} onOpenChange={setConnectDialogOpen} />
               <Button
                 onClick={handleCreateClick}
                 disabled={!status?.is_connected || adsLoading || isSwitchingAccount}
-                className="bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04] font-medium transition-all duration-200 rounded-lg shadow-sm"
+                className="bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04] font-medium transition-all duration-200 rounded-lg shadow-sm flex-1 sm:flex-initial"
               >
-                <Plus className="mr-2 h-4 w-4" />
+                <Plus className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                 {isSwitchingAccount ? "Switching Account..." : "Create Campaign"}
               </Button>
             </div>
@@ -105,8 +105,8 @@ export default function CampaignsPage() {
                   <span className="font-medium">Google Ads is connected. Ready to track campaigns.</span>
                   {status.customer_name && (
                     <Badge
-                      variant="outline"
-                      className="bg-[#fcfdf6] border-[#d1cebb] text-[#6c5f31] font-mono text-xs shrink-0"
+                     
+                      className="bg-[#fcfdf6]  text-[#6c5f31] font-mono text-xs shrink-0"
                     >
                       {status.customer_name}
                     </Badge>
@@ -116,12 +116,12 @@ export default function CampaignsPage() {
             </Alert>
           )}
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] hover:border-[#F0db18] transition-all duration-200 shadow-sm">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">Total Campaigns</CardTitle>
-                  <div className="p-2 bg-[#b0ea1d]/20 rounded-lg">
+                  <div >
                     <TrendingUp className="h-4 w-4 text-[#6c5f31]" />
                   </div>
                 </div>
@@ -136,7 +136,7 @@ export default function CampaignsPage() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">UTM Parameters</CardTitle>
-                  <div className="p-2 bg-[#F0db18]/20 rounded-lg">
+                  <div >
                     <Link2 className="h-4 w-4 text-[#6c5f31]" />
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export default function CampaignsPage() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">Google Ads Linked</CardTitle>
-                  <div className="p-2 bg-[#6c5f31]/20 rounded-lg">
+                  <div >
                     <ExternalLink className="h-4 w-4 text-[#080c04]" />
                   </div>
                 </div>
@@ -170,7 +170,7 @@ export default function CampaignsPage() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">Tracking URLs</CardTitle>
-                  <div className="p-2 bg-[#b0ea1d]/20 rounded-lg">
+                  <div >
                     <Link2 className="h-4 w-4 text-[#6c5f31]" />
                   </div>
                 </div>
@@ -228,8 +228,8 @@ export default function CampaignsPage() {
                         </Badge>
                         <Button
                           size="sm"
-                          variant="destructive"
-                          className="h-7 w-7 p-0"
+                          
+                          className="h-7 w-7 p-0 text-[#6c5f31] bg-[#fcfdf6] border-none"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (confirm(`Are you sure you want to delete "${campaign.name}"?`)) {
@@ -238,7 +238,7 @@ export default function CampaignsPage() {
                           }}
                           disabled={deleteMutation.isPending}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 " />
                         </Button>
                       </div>
                     </div>
@@ -339,12 +339,12 @@ export default function CampaignsPage() {
           ) : (
             /* redesigned empty state with better visual hierarchy */
             <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] shadow-sm">
-              <CardContent className="flex flex-col items-center justify-center py-16">
-                <div className="p-4 bg-[#fcfdf6] border-2 border-[#d1cebb] rounded-full mb-4">
-                  <TrendingUp className="h-8 w-8 text-[#6c5f31]" />
+              <CardContent className="flex flex-col items-center justify-center py-12 sm:py-16 px-4">
+                <div className="p-3 sm:p-4 bg-[#fcfdf6] border-2 border-[#d1cebb] rounded-full mb-4">
+                  <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-[#6c5f31]" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-[#080c04]">No campaigns yet</h3>
-                <p className="text-[#6c5f31] text-center mb-6 max-w-md">
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-[#080c04]">No campaigns yet</h3>
+                <p className="text-sm sm:text-base text-[#6c5f31] text-center mb-6 max-w-md">
                   {status?.is_connected
                     ? "Create your first campaign with UTM parameters to start tracking your advertising performance"
                     : "Connect your Google Ads account to start creating campaigns"}

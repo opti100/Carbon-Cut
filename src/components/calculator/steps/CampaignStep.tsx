@@ -60,7 +60,7 @@ export default function CampaignStep({
         <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Campaign Period</Label>
         {showErrors && (!campaignPeriod?.from || !campaignPeriod?.to) && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-          
+           
             <span>Please select a date range to proceed to next step</span>
           </div>
         )}
@@ -68,7 +68,7 @@ export default function CampaignStep({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="w-full justify-start text-left text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]  bg-[#fcfdf6] text-[#6c5f31] hover:bg-[#fcfdf6] hover:text-[#6c5f31]"
+              className="w-full justify-start text-left text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18]  bg-[#fcfdf6]"
             >
               <Calendar className="mr-2 h-5 w-5" />
               {campaignPeriod?.from ? (
@@ -84,7 +84,7 @@ export default function CampaignStep({
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 bg-[#fcfdf6] " align="start">
+          <PopoverContent className="w-auto p-0 bg-[#fcfdf6]" align="start">
             <CalendarComponent
               initialFocus
               mode="range"
@@ -111,7 +111,7 @@ export default function CampaignStep({
         </Label>
         {showErrors && !market && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-           
+            
             <span>Please select a market to proceed to next step</span>
           </div>
         )}
@@ -135,7 +135,7 @@ export default function CampaignStep({
         </Label>
         {showErrors && !channel && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-           
+            
             <span>Please select a channel to proceed to next step</span>
           </div>
         )}
