@@ -22,6 +22,8 @@ interface MarketingActivityFormProps {
   onAddActivity: (activity: Omit<ActivityData, 'id'>) => void;
   calculatingEmissions: Record<number, boolean>;
   emissionResults: Record<number, number>;
+  prefilledMarket?: string;
+  prefilledChannel?: string;
 }
 
 export default function MarketingActivityForm({
@@ -33,11 +35,13 @@ export default function MarketingActivityForm({
   countries,
   loadingCountries,
   onAddActivity,
-  emissionResults
+  emissionResults,
+  prefilledMarket,
+  prefilledChannel,
 }: MarketingActivityFormProps) {
   const [formData, setFormData] = useState({
-    market: 'United Kingdom',
-    channel: 'Ad Production',
+    market: prefilledMarket || 'United Kingdom',
+    channel: prefilledChannel || 'Ad Production',
     scope: 3,
     campaign: '',
     notes: ''

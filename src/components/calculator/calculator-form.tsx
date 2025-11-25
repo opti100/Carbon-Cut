@@ -22,11 +22,32 @@ const getCookie = (name: string): string | null => {
   return null;
 };
 
-export default function MarketingCalculator() {
+interface MarketingCalculatorProps {
+  onStatsUpdate?: (stats: {
+    totalActivities: number;
+    channels: number;
+    markets: number;
+    totalCO2e: number;
+  }) => void;
+  initialData?: {
+    organization: string;
+    reportingPeriod?: any;
+    separateOffsets: boolean;
+    campaignPeriod?: any;
+    market: string;
+    channel: string;
+    emissionScope: number;
+    campaignName: string;
+    note: string;
+  };
+}
+
+export default function MarketingCalculator({ onStatsUpdate, initialData }: MarketingCalculatorProps = {}) {
   const [organization, setOrganization] = useState<OrganizationData>({
-    name: '',
-    period: '',
-    offsets: ''
+    name: initialData?.organization || '',
+    period: initialData?.reportingPeriod ? 
+      `${initialData.reportingPeriod.from ? new Date(initialData.reportingPeriod.from).toLocaleDateString() : ''} - ${initialData.reportingPeriod.to ? new Date(initialData.reportingPeriod.to).toLocaleDateString() : ''}` : '',
+    offsets: initialData?.separateOffsets ? 'Yes' : 'No'
   });
 
   const [activities, setActivities] = useState<ActivityData[]>([]);
@@ -50,6 +71,22 @@ export default function MarketingCalculator() {
 
     loadCountries();
   }, []);
+
+  // Update stats whenever activities or emissions change
+  useEffect(() => {
+    if (onStatsUpdate) {
+      const uniqueChannels = new Set(activities.map(a => a.channel)).size;
+      const uniqueMarkets = new Set(activities.map(a => a.market)).size;
+      const totalCO2e = Object.values(emissionResults).reduce((sum, val) => sum + val, 0);
+
+      onStatsUpdate({
+        totalActivities: activities.length,
+        channels: uniqueChannels,
+        markets: uniqueMarkets,
+        totalCO2e,
+      });
+    }
+  }, [activities, emissionResults, onStatsUpdate]);
 
   // Update calcCO2AI to handle combined activities
   const calcCO2AI = useCallback(async (activity: ActivityData): Promise<number> => {
@@ -362,21 +399,65 @@ export default function MarketingCalculator() {
 
   return (
     <div className="min-h-screen bg-white" >
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" >
-        <div className="absolute inset-0 opacity-20">
-          <div className="h-full w-full" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }}></div>
+      {!initialData && (
+        <div className="bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden" >
+          <div className="absolute inset-0 opacity-20">
+            <div className="h-full w-full" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            }}></div>
+          </div>
         </div>
-      </div>
+      )}
 
       <Card className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gray-50 mt-28 mb-16 shadow-lg ">
-        <div className="pb-8">
-          <OrganizationForm
-            organization={organization}
-            onOrganizationChange={setOrganization}
-          />
-        </div>
+        {/* Only show OrganizationForm if no initialData */}
+        {!initialData && (
+          <div className="pb-8">
+            <OrganizationForm
+              organization={organization}
+              onOrganizationChange={setOrganization}
+            />
+          </div>
+        )}
+
+        {/* Show summary if initialData is provided */}
+        {initialData && (
+          <div className="pb-8 pt-8">
+            <div className="bg-linear-to-r from-green-50 to-blue-50 rounded-lg p-6 border-2 border-green-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Campaign Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                <div>
+                  <span className="font-semibold text-gray-700">Organization:</span>
+                  <p className="text-gray-900">{initialData.organization}</p>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-700">Market:</span>
+                  <p className="text-gray-900">{initialData.market}</p>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-700">Channel:</span>
+                  <p className="text-gray-900">{initialData.channel}</p>
+                </div>
+                <div>
+                  <span className="font-semibold text-gray-700">Scope:</span>
+                  <p className="text-gray-900">Scope {initialData.emissionScope}</p>
+                </div>
+                {initialData.campaignName && (
+                  <div>
+                    <span className="font-semibold text-gray-700">Campaign:</span>
+                    <p className="text-gray-900">{initialData.campaignName}</p>
+                  </div>
+                )}
+                {initialData.note && (
+                  <div className="md:col-span-2 lg:col-span-3">
+                    <span className="font-semibold text-gray-700">Note:</span>
+                    <p className="text-gray-900">{initialData.note}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="pb-8">
           <MarketingActivityForm
@@ -388,7 +469,10 @@ export default function MarketingCalculator() {
             getDisplayCO2={getDisplayCO2}
             activities={activities}
             calculatingEmissions={calculatingEmissions} 
-            emissionResults={emissionResults}          />
+            emissionResults={emissionResults}
+            prefilledMarket={initialData?.market}
+            prefilledChannel={initialData?.channel}
+          />
         </div>
 
         <div className="space-y-8 pb-16">

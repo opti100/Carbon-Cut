@@ -468,7 +468,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
   };
 
   return (
-    <Card className="bg-white">
+    <Card className="mb-6 bg-[#fcfdf6] border-0">
       <CardContent className="p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="text-center md:text-left mb-4 md:mb-0">
           <h4 className="font-bold text-gray-900 text-base md:text-lg">Want to neutralise your impact?</h4>
@@ -486,7 +486,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
             <DialogTrigger asChild>
               <Button
                 variant="outline"
-                className="border-gray-300 text-gray-700 hover:bg-gray-50 text-sm px-3 py-2 h-auto"
+                className=" text-gray-700  text-sm px-3 py-2 h-auto"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Download PDF Report
@@ -642,7 +642,7 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
           </Dialog>
           <Link href="/offset">
             <Button
-              className="bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-4 py-2.5 h-auto rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
+              className="bg-[#b0ea1d] text-white font-medium text-sm px-4 py-2.5 h-auto rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
             >
               Offset with CarbonCut
             </Button>

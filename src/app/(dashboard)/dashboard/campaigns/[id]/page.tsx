@@ -137,17 +137,17 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
             { label: "Loading..." },
           ]}
         />
-        <div className="flex-1 overflow-auto p-6 bg-muted/40">
-          <div className="mx-auto max-w-7xl space-y-6">
+        <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 bg-muted/40">
+          <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
             {/* Header skeleton */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="space-y-2 flex-1">
-                <Skeleton className="h-10 w-96" />
-                <Skeleton className="h-4 w-80" />
+                <Skeleton className="h-8 sm:h-10 w-full sm:w-96" />
+                <Skeleton className="h-4 w-full sm:w-80" />
               </div>
-              <div className="flex gap-2">
-                <Skeleton className="h-10 w-32" />
-                <Skeleton className="h-10 w-32" />
+              <div className="flex gap-2 w-full sm:w-auto">
+                <Skeleton className="h-10 w-24 sm:w-32" />
+                <Skeleton className="h-10 w-24 sm:w-32" />
               </div>
             </div>
 
@@ -155,21 +155,21 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
             <Skeleton className="h-16 w-full rounded-lg" />
 
             {/* Key metrics skeleton */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
                 <MetricCardSkeleton key={i} />
               ))}
             </div>
 
             {/* Secondary metrics skeleton */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
                 <MetricCardSkeleton key={i} />
               ))}
             </div>
 
             {/* Charts skeleton */}
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
               <ChartSkeleton />
               <ChartSkeleton />
             </div>
@@ -253,44 +253,44 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
           { label: "Analytics" },
         ]}
       />
-      <div className="flex-1 overflow-auto p-6 bg-muted/40">
-        <div className="mx-auto max-w-7xl space-y-6">
+      <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 bg-muted/40">
+        <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
+            <div className="w-full sm:w-auto">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => router.push(`/dashboard/campaigns`)}
-                  className="hover:bg-muted"
+                  className="hover:bg-muted shrink-0"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-                <div>
-                  <h1 className="text-3xl font-bold tracking-tight">{campaign.name}</h1>
-                  <p className="text-muted-foreground text-sm mt-1">Campaign Analytics & Carbon Footprint</p>
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight truncate">{campaign.name}</h1>
+                  <p className="text-muted-foreground text-xs sm:text-sm mt-1">Campaign Analytics & Carbon Footprint</p>
                 </div>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleSync}
                 disabled={syncMutation.isPending}
-                className="border-0 hover:bg-muted bg-transparent"
+                className="border-0 hover:bg-muted bg-transparent flex-1 sm:flex-initial"
               >
                 {syncMutation.isPending ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2 animate-spin" />
                 ) : (
-                  <RefreshCw className="h-4 w-4 mr-2" />
+                  <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
                 )}
-                Sync Data
+                <span className="hidden sm:inline">Sync Data</span>
               </Button>
-              <Button variant="outline" size="sm" className="border-0 hover:bg-muted bg-transparent">
-                <Download className="h-4 w-4 mr-2" />
-                Export
+              <Button variant="outline" size="sm" className="border-0 hover:bg-muted bg-transparent flex-1 sm:flex-initial">
+                <Download className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
+                <span className="hidden sm:inline">Export</span>
               </Button>
             </div>
           </div>
@@ -309,7 +309,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
           </Card>
 
           {/* Key Metrics */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <MetricCard
               title="Total Impressions"
               value={analytics.totals.impressions.toLocaleString()}
@@ -350,7 +350,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
           </div>
 
           {/* Secondary Metrics */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="border-0 bg-card hover:shadow-sm transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Sessions</CardTitle>
@@ -404,7 +404,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
           </div>
 
           {/* Time Series Charts */}
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
             {analyticsLoading ? (
               <>
                 <ChartSkeleton />
@@ -423,7 +423,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
           </div>
 
           {/* Emissions & Device Breakdown */}
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
             {analyticsLoading ? (
               <>
                 <ChartSkeleton />

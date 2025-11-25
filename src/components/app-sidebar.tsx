@@ -25,6 +25,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -58,6 +59,7 @@ const LOCAL_STORAGE_KEY = "googleAdsCustomerId";
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { state } = useSidebar();
   const {
     status,
     isLoading: statusLoading,
@@ -87,7 +89,7 @@ export function AppSidebar() {
         localStorage.setItem(LOCAL_STORAGE_KEY, status.customer_id);
       }
     }
-  }, [status?.customer_id]);
+  }, [status?.customer_id, selectedAccountId]);
 
   const handleLogout = async () => {
     try {
@@ -144,10 +146,10 @@ export function AppSidebar() {
     }
   }, [selectedAccountId, status?.customer_id, switchAccount, checkConnection]);
 
-  const showAccountSwitcher = status?.is_connected && accounts && accounts.length > 1;
+  const showAccountSwitcher = state === "expanded" && status?.is_connected && accounts && accounts.length > 1;
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="border-r">
       {showAccountSwitcher && (
         <SidebarHeader className="border-b border-sidebar-border p-4">
           <div className="space-y-2">
@@ -166,13 +168,13 @@ export function AppSidebar() {
 
             {accountsLoading ? (
               <Select disabled>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-[#fcfdf6]">
                   <SelectValue placeholder="Loading accounts..." />
                 </SelectTrigger>
               </Select>
             ) : accounts.length === 0 ? (
               <Select disabled>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-[#fcfdf6]">
                   <SelectValue placeholder="No accounts found" />
                 </SelectTrigger>
               </Select>
@@ -182,13 +184,13 @@ export function AppSidebar() {
                 onValueChange={setSelectedAccountId}
                 disabled={accountsLoading || isSwitchingAccount}
               >
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-[#fcfdf6]">
                   <SelectValue placeholder="Select an account" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#fcfdf6]">
                   {accounts.map((account) => (
                     <SelectItem key={account.id} value={account.id}>
-                      <div className="flex items-center justify-between gap-2 w-full">
+                      <div className="flex items-center justify-between gap-2 w-full  ">
                         <span className="truncate">{account.name}</span>
                         {account.id === status?.customer_id && (
                           <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />
