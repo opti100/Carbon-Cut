@@ -28,32 +28,32 @@ export default function IntegrationsPage() {
           { label: "Integrations" },
         ]}
       />
-      <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6" style={{ backgroundColor: '#fcfdf6' }}>
-        <div className="mx-auto max-w-7xl space-y-6">
+      <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 bg-linear-to-br from-[#fcfdf6] via-[#f5f7e8] to-[#eef2d9]">
+        <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
           <div className="flex flex-col sm:flex-row justify-between items-start">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight" style={{ color: '#080c04' }}>Integrations</h1>
-              <p className="mt-2" style={{ color: '#6c5f31' }}>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[#080c04]">Integrations</h1>
+              <p className="mt-2 text-sm sm:text-base text-[#6c5f31]">
                 Connect and manage your third-party integrations
               </p>
             </div>
           </div>
 
           {isLoading ? (
-            <Card>
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl shadow-xl rounded-2xl">
               <CardContent className="p-12 text-center">
-                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" style={{ color: '#b0ea1d' }} />
-                <p className="text-sm" style={{ color: '#6c5f31' }}>Loading integrations...</p>
+                <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-[#b0ea1d]" />
+                <p className="text-sm text-[#6c5f31]">Loading integrations...</p>
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {/* Google Ads Integration */}
-              <Card className={`hover:shadow-md transition-all`} style={{ borderColor: isConnected ? '#b0ea1d' : '#d1cebb' }}>
+              <Card className="border border-white/40 hover:border-white/60 transition-all duration-300 bg-white/30 backdrop-blur-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] rounded-2xl group">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(176, 234, 29, 0.1)' }}>
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-white/30 backdrop-blur-lg border border-white/20 ckdrop-blur-lg border border-white/20 ckdrop-blur-lg border border-white/30">
                         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
                           <path
                             d="M12 2L2 7L12 12L22 7L12 2Z"
@@ -77,19 +77,19 @@ export default function IntegrationsPage() {
                         </svg>
                       </div>
                       <div>
-                        <CardTitle className="text-lg" style={{ color: '#080c04' }}>Google Ads</CardTitle>
-                        <CardDescription className="text-xs" style={{ color: '#6c5f31' }}>
+                        <CardTitle className="text-lg text-[#080c04]">Google Ads</CardTitle>
+                        <CardDescription className="text-xs text-[#6c5f31]">
                           Campaign tracking & analytics
                         </CardDescription>
                       </div>
                     </div>
                     {isConnected ? (
-                      <Badge className="border" style={{ backgroundColor: 'rgba(176, 234, 29, 0.2)', color: '#080c04', borderColor: 'rgba(176, 234, 29, 0.5)' }}>
+                      <Badge className="bg-white/40 backdrop-blur-lg text-[#6c5f31] border border-white/30 rounded-xl">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         Connected
                       </Badge>
                     ) : (
-                      <Badge variant="outline" style={{ borderColor: '#d1cebb', color: '#6c5f31' }}>
+                      <Badge variant="outline" className="border border-white/30 text-[#6c5f31] bg-white/30 backdrop-blur-lg rounded-xl">
                         Not Connected
                       </Badge>
                     )}
@@ -97,36 +97,36 @@ export default function IntegrationsPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {isConnected && status ? (
-                    <Alert className="border" style={{ backgroundColor: 'rgba(176, 234, 29, 0.1)', borderColor: 'rgba(176, 234, 29, 0.5)' }}>
-                      <CheckCircle className="h-4 w-4" style={{ color: '#b0ea1d' }} />
-                      <AlertDescription style={{ color: '#080c04' }}>
+                    <Alert className="bg-white/30 backdrop-blur-lg border border-white/30 rounded-xl">
+                      <CheckCircle className="h-4 w-4 text-[#6c5f31]" />
+                      <AlertDescription className="text-[#080c04]">
                         <div className="space-y-1 text-sm">
-                          <p className="font-medium" style={{ color: '#080c04' }}>{status.customer_name}</p>
-                          <p className="text-xs" style={{ color: '#6c5f31' }}>ID: {status.customer_id}</p>
-                          <p className="text-xs" style={{ color: '#6c5f31' }}>Email: {status.email}</p>
+                          <p className="font-medium text-[#080c04]">{status.customer_name}</p>
+                          <p className="text-xs text-[#6c5f31]">ID: {status.customer_id}</p>
+                          <p className="text-xs text-[#6c5f31]">Email: {status.email}</p>
                         </div>
                       </AlertDescription>
                     </Alert>
                   ) : (
-                    <Alert className="border" style={{ backgroundColor: 'rgba(240, 219, 24, 0.1)', borderColor: 'rgba(240, 219, 24, 0.5)' }}>
-                      <AlertCircle className="h-4 w-4" style={{ color: '#F0db18' }} />
-                      <AlertDescription className="text-sm" style={{ color: '#080c04' }}>
+                    <Alert className="bg-white/30 backdrop-blur-lg border border-white/30 rounded-xl">
+                      <AlertCircle className="h-4 w-4 text-[#6c5f31]" />
+                      <AlertDescription className="text-sm text-[#080c04]">
                         Connect your Google Ads account to start tracking campaigns and carbon emissions.
                       </AlertDescription>
                     </Alert>
                   )}
 
                   <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2" style={{ color: '#6c5f31' }}>
-                      <CheckCircle className="h-4 w-4" style={{ color: '#b0ea1d' }} />
+                    <div className="flex items-center gap-2 text-[#6c5f31]">
+                      <CheckCircle className="h-4 w-4 text-[#6c5f31]" />
                       <span>Campaign performance tracking</span>
                     </div>
-                    <div className="flex items-center gap-2" style={{ color: '#6c5f31' }}>
-                      <CheckCircle className="h-4 w-4" style={{ color: '#b0ea1d' }} />
+                    <div className="flex items-center gap-2 text-[#6c5f31]">
+                      <CheckCircle className="h-4 w-4 text-[#6c5f31]" />
                       <span>Automated UTM generation</span>
                     </div>
-                    <div className="flex items-center gap-2" style={{ color: '#6c5f31' }}>
-                      <CheckCircle className="h-4 w-4" style={{ color: '#b0ea1d' }} />
+                    <div className="flex items-center gap-2 text-[#6c5f31]">
+                      <CheckCircle className="h-4 w-4 text-[#6c5f31]" />
                       <span>Carbon footprint analytics</span>
                     </div>
                   </div>
@@ -137,10 +137,7 @@ export default function IntegrationsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="flex-1 hover:scale-105 active:scale-95 transition-all duration-200"
-                          style={{ borderColor: '#b0ea1d', color: '#080c04' }}
-                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F0db18')}
-                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                          className="flex-1 border border-white/40 hover:border-white/60 text-[#080c04] bg-white/30 backdrop-blur-lg transition-all duration-300 hover:shadow-lg rounded-xl"
                           onClick={() => setConnectDialogOpen(true)}
                         >
                           <Settings className="h-4 w-4 mr-2" />
@@ -149,10 +146,7 @@ export default function IntegrationsPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="hover:scale-105 active:scale-95 transition-all duration-200"
-                          style={{ borderColor: '#d1cebb', color: '#080c04' }}
-                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F0db18')}
-                          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                          className="border border-white/40 hover:border-white/60 text-[#080c04] bg-white/30 backdrop-blur-lg transition-all duration-300 hover:shadow-lg rounded-xl"
                           asChild
                         >
                           <a href="https://ads.google.com" target="_blank" rel="noopener noreferrer">
@@ -164,10 +158,7 @@ export default function IntegrationsPage() {
                     ) : (
                       <Button
                         onClick={() => setConnectDialogOpen(true)}
-                        className="w-full hover:scale-105 active:scale-95 transition-all duration-200 text-white"
-                        style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F0db18')}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#b0ea1d')}
+                        className="w-full bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 rounded-xl shadow-lg hover:shadow-2xl border border-white/20"
                       >
                         <Link2 className="h-4 w-4 mr-2" />
                         Connect Google Ads
@@ -178,7 +169,7 @@ export default function IntegrationsPage() {
               </Card>
 
               {/* Coming Soon Cards */}
-              <Card className="opacity-60 hover:opacity-100 transition-opacity" style={{ borderColor: '#d1cebb' }}>
+              <Card className="border border-white/30 bg-white/20 backdrop-blur-xl opacity-60 hover:opacity-100 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl shadow-xl hover:shadow-2xl rounded-2xl">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
@@ -188,13 +179,13 @@ export default function IntegrationsPage() {
                         </svg>
                       </div>
                       <div>
-                        <CardTitle className="text-lg" style={{ color: '#080c04' }}>Meta Ads</CardTitle>
-                        <CardDescription className="text-xs" style={{ color: '#6c5f31' }}>
+                        <CardTitle className="text-lg text-[#080c04]">Meta Ads</CardTitle>
+                        <CardDescription className="text-xs text-[#6c5f31]">
                           Facebook & Instagram campaigns
                         </CardDescription>
                       </div>
                     </div>
-                    <Badge variant="outline" style={{ borderColor: '#d1cebb', color: '#6c5f31' }}>
+                    <Badge variant="outline" className="border-2 border-[#d1cebb] text-[#6c5f31] bg-[#fcfdf6]">
                       Coming Soon
                     </Badge>
                   </div>
@@ -203,13 +194,13 @@ export default function IntegrationsPage() {
                   <p className="text-sm" style={{ color: '#6c5f31' }}>
                     Track your Facebook and Instagram advertising campaigns and their environmental impact.
                   </p>
-                  <Button disabled className="w-full" variant="outline" style={{ borderColor: '#d1cebb', color: '#6c5f31' }}>
+                  <Button disabled className="w-full border border-white/40 text-[#6c5f31] bg-white/30 backdrop-blur-lg rounded-xl" variant="outline">
                     Coming Soon
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="opacity-60 hover:opacity-100 transition-opacity" style={{ borderColor: '#d1cebb' }}>
+              <Card className="border border-white/30 bg-white/20 backdrop-blur-xl opacity-60 hover:opacity-100 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
@@ -219,22 +210,22 @@ export default function IntegrationsPage() {
                         </svg>
                       </div>
                       <div>
-                        <CardTitle className="text-lg" style={{ color: '#080c04' }}>LinkedIn Ads</CardTitle>
-                        <CardDescription className="text-xs" style={{ color: '#6c5f31' }}>
+                        <CardTitle className="text-lg text-[#080c04]">LinkedIn Ads</CardTitle>
+                        <CardDescription className="text-xs text-[#6c5f31]">
                           B2B campaign tracking
                         </CardDescription>
                       </div>
                     </div>
-                    <Badge variant="outline" style={{ borderColor: '#d1cebb', color: '#6c5f31' }}>
+                    <Badge variant="outline" className="border-2 border-[#d1cebb] text-[#6c5f31] bg-[#edede2]">
                       Coming Soon
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-sm" style={{ color: '#6c5f31' }}>
+                  <p className="text-sm text-[#6c5f31]">
                     Monitor LinkedIn advertising campaigns and measure their carbon footprint.
                   </p>
-                  <Button disabled className="w-full" variant="outline" style={{ borderColor: '#d1cebb', color: '#6c5f31' }}>
+                  <Button disabled className="w-full border border-white/40 text-[#6c5f31] bg-white/30 backdrop-blur-lg rounded-xl" variant="outline">
                     Coming Soon
                   </Button>
                 </CardContent>
