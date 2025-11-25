@@ -23,16 +23,19 @@ import { blogFourData } from './blogs/blogfour-data';
 import { blogFiveData } from './blogs/blogfive-data';
 import { blogThreeeData } from './blogs/blogthree-data';
 import { blogSixData } from './blogs/blogsix-data';
+import { blogSevenData } from './blogs/blogSeven-data';
+
 
 
 // Blog posts data
 export const blogPosts: BlogPost[] = [
   blogOneData,
   blogTwoData,
-  blogThreeeData, // Fixed typo here
+  blogThreeeData, 
   blogFourData,
   blogFiveData,
-  blogSixData
+  blogSixData,
+  blogSevenData
 ];
 
 // Utility functions for blog data
