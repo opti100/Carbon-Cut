@@ -144,7 +144,7 @@ export const blogSevenData: BlogPost = {
   category: 'Carbon Analytics',
   title: 'Carbon Footprint Calculator 2.0: Why Real-Time Data Beats Annual Reports Every Single Time',
   excerpt: 'Move beyond annual estimates to real-time carbon intelligence. Discover how live data transforms compliance, uncovers hidden inefficiencies, and drives meaningful climate action.',
-  date: '2025-11-25',
+  date: '2025-11-24',
   author: {
     name: '',
     avatar: '/people/person1.jpg'

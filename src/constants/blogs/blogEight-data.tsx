@@ -180,7 +180,7 @@ export const BlogEightContent = () => {
               CARBON TECH INTERNATIONAL LIMITED has created the infrastructure required for a world where carbon data is live, verified, and instantly usable. Through CarbonCut — from the carbon footprint calculator to CarbonLive and the carboncut real time tracker — CTIL is redefining what modern carbon intelligence looks like.
             </p>
 
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-10 my-16 shadow-xl">
+            <div className="bg-gradient-to-br from-gray-50 to-gray-100 text-black rounded-2xl p-10 my-16 shadow-xl">
               <p className="text-xl leading-relaxed opacity-95">
                 For teams exploring how real-time carbon visibility works, a helpful starting point is to try the calculator or view the live CarbonLive demo. It&apos;s a simple way to see how real-time CO₂e data transforms decision-making.
               </p>
@@ -199,9 +199,9 @@ export const blogEightData: BlogPost = {
   category: 'Company News',
   title: 'How CARBON TECH INTERNATIONAL LIMITED Is Redefining Real-Time Carbon Intelligence Through CarbonCut',
   excerpt: 'Discover how the parent company behind CarbonCut is transforming carbon measurement from delayed reporting to real-time intelligence, enabling teams to act on emissions as they happen.',
-  date: '2025-11-26',
+  date: '2025-11-25',
   author: {
-    name: 'CarbonCut Team',
+    name: '',
     avatar: '/people/person1.jpg'
   },
   readTime: '7 min read',
