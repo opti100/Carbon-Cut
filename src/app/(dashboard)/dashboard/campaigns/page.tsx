@@ -57,7 +57,7 @@ export default function CampaignsPage() {
   return (
     <>
       <DashboardHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Campaigns" }]} />
-      <GoogleAdsReconnectBanner/>
+      <GoogleAdsReconnectBanner />
       <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 bg-[#fcfdf6]">
         <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
@@ -70,16 +70,17 @@ export default function CampaignsPage() {
               <Button
                 onClick={handleCreateClick}
                 disabled={!status?.is_connected || adsLoading || isSwitchingAccount}
-                className="bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04] font-medium transition-all duration-200 rounded-lg shadow-sm flex-1 sm:flex-initial"
+                 className="rounded px-4 sm:px-6 md:px-8  text-sm sm:text-base 
+             bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04]"
               >
-                <Plus className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
                 {isSwitchingAccount ? "Switching Account..." : "Create Campaign"}
               </Button>
             </div>
           </div>
 
           {!status?.is_connected && !adsLoading && (
-            <Alert className="bg-[#fcfdf6] border-2 border-[#d1cebb] rounded-lg">
+            <Alert className="bg-white/40 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg">
               <AlertCircle className="h-5 w-5 text-[#6c5f31] shrink-0" />
               <AlertDescription className="text-[#080c04] ml-2">
                 <div className="flex items-center justify-between gap-4">
@@ -87,7 +88,7 @@ export default function CampaignsPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="ml-auto border-2 border-[#d1cebb] hover:border-[#F0db18] text-[#6c5f31] whitespace-nowrap bg-[#fcfdf6] transition-all duration-200"
+                    className="ml-auto border border-white/40 hover:border-white/60 text-[#6c5f31] whitespace-nowrap bg-white/30 backdrop-blur-lg transition-all duration-300 hover:shadow-lg rounded-xl"
                     onClick={() => router.push("/live")}
                   >
                     Connect Now
@@ -97,10 +98,10 @@ export default function CampaignsPage() {
             </Alert>
           )}
 
-          {status?.is_connected && (
+          {/* {status?.is_connected && (
             <Alert className="bg-[#fcfdf6] border-2 border-[#d1cebb] rounded-lg">
               <CheckCircle className="h-5 w-5 text-[#6c5f31] shrink-0" />
-              <AlertDescription className="text-[#080c04] ml-2">
+              <AlertDescription className="text-[#080c04] ">
                 <div className="flex items-center justify-between gap-4">
                   <span className="font-medium">Google Ads is connected. Ready to track campaigns.</span>
                   {status.customer_name && (
@@ -114,10 +115,10 @@ export default function CampaignsPage() {
                 </div>
               </AlertDescription>
             </Alert>
-          )}
+          )} */}
 
           <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] hover:border-[#F0db18] transition-all duration-200 shadow-sm">
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">Total Campaigns</CardTitle>
@@ -132,7 +133,7 @@ export default function CampaignsPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] hover:border-[#F0db18] transition-all duration-200 shadow-sm">
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">UTM Parameters</CardTitle>
@@ -149,7 +150,7 @@ export default function CampaignsPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] hover:border-[#F0db18] transition-all duration-200 shadow-sm">
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">Google Ads Linked</CardTitle>
@@ -166,7 +167,7 @@ export default function CampaignsPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] hover:border-[#F0db18] transition-all duration-200 shadow-sm">
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-sm font-medium text-[#6c5f31]">Tracking URLs</CardTitle>
@@ -194,13 +195,13 @@ export default function CampaignsPage() {
           {isLoading ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {[1, 2, 3].map((i) => (
-                <Card key={i} className="border-2 border-[#d1cebb] animate-pulse bg-[#fcfdf6] shadow-sm">
+                <Card key={i} className="border border-white/30 animate-pulse bg-white/20 backdrop-blur-xl shadow-xl rounded-2xl">
                   <CardHeader>
-                    <div className="h-5 bg-[#d1cebb] rounded w-2/3"></div>
+                    <div className="h-5 bg-white/30 rounded-xl w-2/3"></div>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-4 bg-[#d1cebb] rounded w-1/2 mb-3"></div>
-                    <div className="h-3 bg-[#d1cebb] rounded w-2/3"></div>
+                    <div className="h-4 bg-white/30 rounded-xl w-1/2 mb-3"></div>
+                    <div className="h-3 bg-white/30 rounded-xl w-2/3"></div>
                   </CardContent>
                 </Card>
               ))}
@@ -211,10 +212,10 @@ export default function CampaignsPage() {
               {campaigns.map((campaign) => (
                 <Card
                   key={campaign.id}
-                  className="border-2 border-[#d1cebb] hover:border-[#F0db18] transition-all duration-200 cursor-pointer bg-[#fcfdf6] shadow-sm"
+                  className="border border-white/40 hover:border-white/60 transition-all duration-300 cursor-pointer bg-white/30 backdrop-blur-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] rounded-2xl group"
                   onClick={() => router.push(`/dashboard/campaigns/${campaign.id}`)}
                 >
-                  <CardHeader className="pb-4">
+                  <CardHeader className="">
                     <div className="flex justify-between items-start gap-3">
                       <div className="flex-1 min-w-0">
                         <CardTitle className="text-lg line-clamp-2 font-semibold">{campaign.name}</CardTitle>
@@ -222,14 +223,14 @@ export default function CampaignsPage() {
                       <div className="flex items-center gap-2">
                         <Badge
                           variant="secondary"
-                          className="shrink-0 bg-[#fcfdf6] text-[#6c5f31] border-2 border-[#d1cebb] font-mono text-xs"
+                          className="shrink-0 bg-white/40 backdrop-blur-lg text-[#6c5f31] font-mono text-xs border border-white/30 rounded-xl"
                         >
                           #{campaign.id}
                         </Badge>
                         <Button
-                          size="sm"
-                          
-                          className="h-7 w-7 p-0 text-[#6c5f31] bg-[#fcfdf6] border-none"
+
+
+                          className="h-7 w-7 p-0 text-[#6c5f31] bg-white/30 backdrop-blur-lg border border-white/30 shadow-none hover:bg-white/50 hover:shadow-lg transition-all duration-300 rounded-xl"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (confirm(`Are you sure you want to delete "${campaign.name}"?`)) {
@@ -244,8 +245,7 @@ export default function CampaignsPage() {
                     </div>
                     {campaign.google_ads_campaign_id && (
                       <Badge
-                        variant="outline"
-                        className="w-fit text-xs font-medium border-2 border-[#d1cebb] bg-[#fcfdf6] text-[#6c5f31] mt-2"
+                        className="w-fit text-xs font-medium bg-white/40 backdrop-blur-lg text-[#6c5f31] mt-2 border border-white/30 rounded-xl"
                       >
                         <ExternalLink className="h-3 w-3 mr-1.5" />
                         Google Ads
@@ -254,7 +254,7 @@ export default function CampaignsPage() {
                   </CardHeader>
 
                   <CardContent className="space-y-4">
-                    {campaign.google_ads_campaign_id && (
+                    {/* {campaign.google_ads_campaign_id && (
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center justify-between">
                           <span className="text-[#6c5f31]">Campaign ID</span>
@@ -271,30 +271,30 @@ export default function CampaignsPage() {
                           </div>
                         )}
                       </div>
-                    )}
+                    )} */}
 
                     {campaign.utm_params && campaign.utm_params.length > 0 && (
-                      <div className="space-y-2 border-t border-[#d1cebb] pt-4">
+                      <div className="space-y-2 ">
                         <div className="flex items-center gap-2 text-sm font-semibold text-[#080c04]">
-                          <Link2 className="h-4 w-4 text-[#b0ea1d]" />
+                          <Link2 className="h-4 w-4 text-[#6c5f31]" />
                           <span>UTM Parameters ({campaign.utm_params.length})</span>
                         </div>
                         <div className="space-y-1.5">
-                          {campaign.utm_params.slice(0, 3).map((utm, idx) => (
+                          {campaign.utm_params.map((utm, idx) => (
                             <div
                               key={idx}
-                              className="flex items-center gap-2 text-xs font-mono bg-[#fcfdf6] p-2 rounded border-2 border-[#d1cebb]"
+                              className="flex items-center gap-2 text-xs font-mono bg-white/30 backdrop-blur-lg p-2 rounded-xl border border-white/20"
                             >
-                              <span className="text-[#b0ea1d] font-bold">{utm.key}</span>
+                              <span className="text-[#6c5f31] font-bold">{utm.key}</span>
                               <span className="text-[#6c5f31]">=</span>
                               <span className="text-[#080c04] truncate">{utm.value}</span>
                             </div>
                           ))}
-                          {campaign.utm_params.length > 3 && (
-                            <Badge variant="secondary" className="text-xs bg-[#fcfdf6] text-[#6c5f31] border-2 border-[#d1cebb]">
+                          {/* {campaign.utm_params.length > 3 && (
+                            <Badge variant="secondary" className="text-xs bg-[#edede2] text-[#6c5f31] border-2 border-[#d1cebb]">
                               +{campaign.utm_params.length - 3} more
                             </Badge>
-                          )}
+                          )} */}
                         </div>
                       </div>
                     )}
@@ -302,17 +302,17 @@ export default function CampaignsPage() {
                     {campaign.tracking_url_example && (
                       <div className="space-y-2 border-t border-[#d1cebb] pt-4">
                         <div className="text-sm font-semibold flex items-center gap-2 text-[#080c04]">
-                          <Link2 className="h-4 w-4 text-[#b0ea1d]" />
+                          <Link2 className="h-4 w-4 text-[#6c5f31]" />
                           <span>Tracking URL</span>
                         </div>
-                        <div className="flex items-center gap-2 bg-[#fcfdf6] p-2 rounded border-2 border-[#d1cebb]">
+                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white/20 backdrop-blur-lg border border-white/20">
                           <code className="text-xs truncate flex-1 text-[#080c04]">
                             {campaign.tracking_url_example}
                           </code>
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 w-7 p-0 hover:bg-[#fcfdf6] hover:text-[#6c5f31] shrink-0 transition-all duration-200"
+                            className="h-7 w-7 p-0 hover:bg-white/40 hover:text-[#6c5f31] shrink-0 transition-all duration-300 rounded-xl backdrop-blur-lg border border-white/20"
                             onClick={(e) => copyTrackingUrl(campaign.tracking_url_example!, e)}
                           >
                             <Copy className="h-3.5 w-3.5" />
@@ -322,7 +322,7 @@ export default function CampaignsPage() {
                     )}
 
                     {(!campaign.utm_params || campaign.utm_params.length === 0) && !campaign.tracking_url_example && (
-                      <div className="text-sm text-[#6c5f31] italic p-3 bg-[#fcfdf6] rounded border-2 border-[#d1cebb]">
+                      <div className="text-sm text-[#6c5f31] italic p-3 bg-white/20 backdrop-blur-lg rounded-xl border border-white/30">
                         No UTM parameters configured yet
                       </div>
                     )}
@@ -338,9 +338,9 @@ export default function CampaignsPage() {
             </div>
           ) : (
             /* redesigned empty state with better visual hierarchy */
-            <Card className="border-2 border-[#d1cebb] bg-[#fcfdf6] shadow-sm">
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl shadow-xl rounded-2xl">
               <CardContent className="flex flex-col items-center justify-center py-12 sm:py-16 px-4">
-                <div className="p-3 sm:p-4 bg-[#fcfdf6] border-2 border-[#d1cebb] rounded-full mb-4">
+                <div className="p-3 sm:p-4 bg-white/40 backdrop-blur-xl border border-white/30 rounded-full mb-4">
                   <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-[#6c5f31]" />
                 </div>
                 <h3 className="text-lg sm:text-xl font-semibold mb-2 text-[#080c04]">No campaigns yet</h3>
@@ -352,7 +352,7 @@ export default function CampaignsPage() {
                 {status?.is_connected ? (
                   <Button
                     onClick={() => setIsCreateDialogOpen(true)}
-                    className="bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04] transition-all duration-200 rounded-lg shadow-sm"
+                    className="bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 rounded-xl shadow-lg hover:shadow-2xl border border-white/20"
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Create Your First Campaign
@@ -360,7 +360,7 @@ export default function CampaignsPage() {
                 ) : (
                   <Button
                     onClick={() => router.push("/dashboard/integrations")}
-                    className="bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04] transition-all duration-200 rounded-lg shadow-sm"
+                    className="bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 rounded-xl shadow-lg hover:shadow-2xl border border-white/20"
                   >
                     <Link2 className="mr-2 h-4 w-4" />
                     Connect Google Ads

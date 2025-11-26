@@ -14,6 +14,7 @@ export const GoogleAdsReconnectBanner = () => {
 
   const handleReconnect = () => {
     window.location.href = `${API_BASE_URL}/impressions/google/redirect/`;
+    // window.location.href = `https://ads.google.com`;
   };
 
   return (
@@ -26,7 +27,10 @@ export const GoogleAdsReconnectBanner = () => {
       <AlertDescription className="flex w-full  items-center justify-between">
         <span className="">{tokenStatus.message}</span>
 
-        <Button onClick={handleReconnect} variant="outline" size="sm">
+        <Button onClick={handleReconnect} size="sm"
+         className="rounded px-4 sm:px-6 md:px-4  text-sm sm:text-base 
+             hover:bg-[#b0ea1d] bg-[#6c5f31] text-white hover:text-[#080c04]"
+        >
           Reconnect Google Ads
         </Button>
       </AlertDescription>

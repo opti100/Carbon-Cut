@@ -81,7 +81,7 @@ export default function ProfilePage() {
     }
     return 'U';
   };
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL 
+  const BASE_URL = process.env.NEXT_PUBLIC_API_URL
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
@@ -139,30 +139,28 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen" style={{ backgroundColor: '#fcfdf6' }}>
-      <div className="flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6">
+    <div className="flex flex-col md:flex-row min-h-screen bg-linear-to-br from-[#fcfdf6] via-[#f5f7e8] to-[#eef2d9]">
+      <div className="flex-1 px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
         <div className="container mx-auto max-w-4xl">
-          <div className="grid gap-6">
-            <Card>
+          <div className="grid gap-6 sm:gap-8 m:gap-8">
+            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl shadow-xl hover:shadow-2xl transition-all duration-300 rounded-2xl">
               <CardHeader>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle style={{ color: '#080c04' }}>Profile Information</CardTitle>
-                    <CardDescription style={{ color: '#6c5f31' }}>
+                    <CardTitle className="text-[#080c04]">Profile Information</CardTitle>
+                    <CardDescription className="text-[#6c5f31]">
                       Your personal details and contact information
                     </CardDescription>
                   </div>
-                 
+
                   {!isEditing && (
                     <Button
-                      variant="outline"
+                      
                       onClick={() => setIsEditing(true)}
-                      className="w-full sm:w-auto hover:scale-105 active:scale-95 transition-all duration-200"
-                      style={{ borderColor: '#b0ea1d', color: '#080c04' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F0db18')}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                      className="rounded px-4 sm:px-6 md:px-8 
+             bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04]"
                     >
-                      <Edit2 className="h-4 w-4 mr-2" />
+                      <Edit2 className="h-3 w-3" />
                       Edit Profile
                     </Button>
                   )}
@@ -171,9 +169,9 @@ export default function ProfilePage() {
 
               <CardContent>
                 {updateProfileMutation.isSuccess && (
-                  <Alert className="mb-6" style={{ backgroundColor: 'rgba(176, 234, 29, 0.1)', borderColor: 'rgba(176, 234, 29, 0.5)' }}>
-                    <CheckCircle className="h-4 w-4" style={{ color: '#b0ea1d' }} />
-                    <AlertDescription style={{ color: '#080c04' }}>
+                  <Alert className="mb-6 bg-white/40 backdrop-blur-lg border border-white/30 rounded-xl">
+                    <CheckCircle className="h-4 w-4 text-[#6c5f31]" />
+                    <AlertDescription className="text-[#080c04]">
                       Profile updated successfully!
                     </AlertDescription>
                   </Alert>
@@ -189,17 +187,17 @@ export default function ProfilePage() {
 
                 <div className="flex items-center gap-3 mb-4 sm:mb-0">
                   <Avatar className="h-12 w-12 sm:h-14 sm:w-14">
-                    <AvatarFallback className="text-white text-xl sm:text-2xl font-semibold" style={{ backgroundColor: '#b0ea1d' }}>
+                    <AvatarFallback className="text-white text-xl sm:text-2xl font-semibold bg-[#6c5f31]">
                       {getInitials(user?.name, user?.email)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start">
                     <div className="flex flex-col items-start">
-                      <span className="font-semibold mt-4" style={{ color: '#080c04' }}>
+                      <span className="font-semibold mt-4 text-[#080c04]">
                         {user?.name || 'User'}
                       </span>
-                      <span style={{ color: '#6c5f31' }}>{user?.email}</span>
-                      <span className="flex" style={{ color: '#b0ea1d' }}> <Image src="/verifiedTick.svg" alt="Verified" width={16} height={16} className="mr-1" />  Verified Account </span>
+                      <span className="text-[#6c5f31]">{user?.email}</span>
+                      <span className="flex text-[#6c5f31]"> <Image src="/verifiedTick.svg" alt="Verified" width={16} height={16} className="mr-1" />  Verified Account </span>
                     </div>
                   </div>
                 </div>
@@ -208,20 +206,20 @@ export default function ProfilePage() {
                   <div className="space-y-6">
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="email" style={{ color: '#080c04' }}>Email Address</Label>
-                        <div className="flex items-center gap-2 px-3 py-2 border rounded-md" style={{ backgroundColor: 'rgba(209, 206, 187, 0.2)', borderColor: '#d1cebb' }}>
-                          <Mail className="h-4 w-4" style={{ color: '#6c5f31' }} />
-                          <span className="break-all" style={{ color: '#080c04' }}>
+                        <Label htmlFor="email" className="text-[#080c04]">Email Address</Label>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-[#edede2] border border-white/30 backdrop-blur-lg">
+                          <Mail className="h-4 w-4 text-[#6c5f31]" />
+                          <span className="break-all text-[#080c04]">
                             {user?.email}
                           </span>
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="name" style={{ color: '#080c04' }}>Full Name</Label>
+                        <Label htmlFor="name" className="text-[#080c04]">Full Name</Label>
                         {isEditing ? (
                           <div className="flex items-center gap-2 relative">
-                            <User className="h-4 w-4 absolute left-3" style={{ color: '#6c5f31' }} />
+                            <User className="h-4 w-4 absolute left-3 text-[#6c5f31]" />
                             <Input
                               id="name"
                               value={formData.name}
@@ -231,14 +229,14 @@ export default function ProfilePage() {
                                   name: e.target.value,
                                 })
                               }
-                              className="pl-10"
+                              className="pl-10 border border-white/30 hover:border-white/50 bg-white/20 backdrop-blur-lg rounded-xl"
                               placeholder="Enter your name"
                             />
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 px-3 py-2 border rounded-md" style={{ backgroundColor: 'rgba(209, 206, 187, 0.2)', borderColor: '#d1cebb' }}>
-                            <User className="h-4 w-4" style={{ color: '#6c5f31' }} />
-                            <span className="break-all" style={{ color: '#080c04' }}>
+                          <div className="flex items-center gap-2 px-3 py-2 border-2 border-[#d1cebb] rounded-md bg-[#edede2]">
+                            <User className="h-4 w-4 text-[#6c5f31]" />
+                            <span className="break-all text-[#080c04]">
                               {user?.name || "Not set"}
                             </span>
                           </div>
@@ -248,10 +246,10 @@ export default function ProfilePage() {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-2">
-                        <Label htmlFor="phoneNumber" style={{ color: '#080c04' }}>Phone Number</Label>
+                        <Label htmlFor="phoneNumber" className="text-[#080c04]">Phone Number</Label>
                         {isEditing ? (
                           <div className="flex items-center gap-2 relative">
-                            <Phone className="h-4 w-4 absolute left-3" style={{ color: '#6c5f31' }} />
+                            <Phone className="h-4 w-4 absolute left-3 text-[#6c5f31]" />
                             <Input
                               id="phoneNumber"
                               value={formData.phoneNumber}
@@ -261,14 +259,14 @@ export default function ProfilePage() {
                                   phoneNumber: e.target.value,
                                 })
                               }
-                              className="pl-10"
+                              className="pl-10 border border-white/30 hover:border-white/50 bg-white/20 backdrop-blur-lg rounded-xl"
                               placeholder="Enter phone number"
                             />
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 px-3 py-2 border rounded-md" style={{ backgroundColor: 'rgba(209, 206, 187, 0.2)', borderColor: '#d1cebb' }}>
-                            <Phone className="h-4 w-4" style={{ color: '#6c5f31' }} />
-                            <span className="break-all" style={{ color: '#080c04' }}>
+                          <div className="flex items-center gap-2 px-3 py-2 border-2 border-[#d1cebb] rounded-md bg-[#fcfdf6]">
+                            <Phone className="h-4 w-4 text-[#6c5f31]" />
+                            <span className="break-all text-[#080c04]">
                               {user?.phoneNumber || "Not set"}
                             </span>
                           </div>
@@ -276,10 +274,10 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="companyName" style={{ color: '#080c04' }}>Company Name</Label>
+                        <Label htmlFor="companyName" className="text-[#080c04]">Company Name</Label>
                         {isEditing ? (
                           <div className="flex items-center gap-2 relative">
-                            <Building2 className="h-4 w-4 absolute left-3" style={{ color: '#6c5f31' }} />
+                            <Building2 className="h-4 w-4 absolute left-3 text-[#6c5f31]" />
                             <Input
                               id="companyName"
                               value={formData.companyName}
@@ -289,14 +287,14 @@ export default function ProfilePage() {
                                   companyName: e.target.value,
                                 })
                               }
-                              className="pl-10"
+                              className="pl-10 border border-white/30 hover:border-white/50 bg-white/20 backdrop-blur-lg rounded-xl"
                               placeholder="Enter company name"
                             />
                           </div>
                         ) : (
-                          <div className="flex items-center gap-2 px-3 py-2 border rounded-md" style={{ backgroundColor: 'rgba(209, 206, 187, 0.2)', borderColor: '#d1cebb' }}>
-                            <Building2 className="h-4 w-4" style={{ color: '#6c5f31' }} />
-                            <span className="break-all" style={{ color: '#080c04' }}>
+                          <div className="flex items-center gap-2 px-3 py-2 border-2 border-[#d1cebb] rounded-md bg-[#fcfdf6]">
+                            <Building2 className="h-4 w-4 text-[#6c5f31]" />
+                            <span className="break-all text-[#080c04]">
                               {user?.companyName || "Not set"}
                             </span>
                           </div>
@@ -305,14 +303,11 @@ export default function ProfilePage() {
                     </div>
 
                     {isEditing && (
-                      <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t" style={{ borderColor: '#d1cebb' }}>
+                      <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t-2 border-[#d1cebb]">
                         <Button
                           type="submit"
                           disabled={updateProfileMutation.isPending}
-                          className="w-full sm:w-auto hover:scale-105 active:scale-95 transition-all duration-200"
-                          style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
-                          onMouseEnter={(e) => !updateProfileMutation.isPending && (e.currentTarget.style.backgroundColor = '#F0db18')}
-                          onMouseLeave={(e) => !updateProfileMutation.isPending && (e.currentTarget.style.backgroundColor = '#b0ea1d')}
+                          className="w-full sm:w-auto bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 rounded-xl shadow-lg hover:shadow-2xl border border-white/20"
                         >
                           {updateProfileMutation.isPending && (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -324,10 +319,7 @@ export default function ProfilePage() {
                           variant="outline"
                           onClick={handleCancel}
                           disabled={updateProfileMutation.isPending}
-                          className="w-full sm:w-auto hover:scale-105 active:scale-95 transition-all duration-200"
-                          style={{ borderColor: '#d1cebb', color: '#080c04' }}
-                          onMouseEnter={(e) => !updateProfileMutation.isPending && (e.currentTarget.style.backgroundColor = '#F0db18')}
-                          onMouseLeave={(e) => !updateProfileMutation.isPending && (e.currentTarget.style.backgroundColor = 'transparent')}
+                          className="w-full sm:w-auto border border-white/40 hover:border-white/60 text-[#080c04] bg-white/30 backdrop-blur-lg transition-all duration-300 hover:shadow-lg rounded-xl"
                         >
                           <X className="mr-2 h-4 w-4" />
                           Cancel
@@ -341,8 +333,8 @@ export default function ProfilePage() {
               <div className="border-b w-[95%] mx-auto" />
 
               <CardHeader>
-                <CardTitle style={{ color: '#080c04' }}>Account Details</CardTitle>
-                <CardDescription style={{ color: '#6c5f31' }}>
+                <CardTitle className="text-[#080c04]">Account Details</CardTitle>
+                <CardDescription className="text-[#6c5f31]">
                   Additional information about your account
                 </CardDescription>
               </CardHeader>
@@ -350,12 +342,12 @@ export default function ProfilePage() {
               <CardContent className="pt-2">
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5" style={{ color: '#6c5f31' }} />
+                    <Calendar className="h-5 w-5 text-[#6c5f31]" />
                     <div>
-                      <p className="text-sm font-medium" style={{ color: '#080c04' }}>
+                      <p className="text-sm font-medium text-[#080c04]">
                         Member Since
                       </p>
-                      <p className="text-sm" style={{ color: '#6c5f31' }}>
+                      <p className="text-sm text-[#6c5f31]">
                         {new Date().toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
@@ -366,12 +358,12 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <User className="h-5 w-5" style={{ color: '#6c5f31' }} />
+                    <User className="h-5 w-5 text-[#6c5f31]" />
                     <div>
-                      <p className="text-sm font-medium" style={{ color: '#080c04' }}>
+                      <p className="text-sm font-medium text-[#080c04]">
                         User ID
                       </p>
-                      <p className="text-sm font-mono break-all" style={{ color: '#6c5f31' }}>
+                      <p className="text-sm font-mono break-all text-[#6c5f31]">
                         {user?.id}
                       </p>
                     </div>
@@ -384,19 +376,18 @@ export default function ProfilePage() {
               <CardHeader>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div>
-                    <CardTitle className="flex items-center gap-2" style={{ color: '#080c04' }}>
+                    <CardTitle className="flex items-center gap-2 text-[#080c04]">
                       <Key className="h-5 w-5" />
                       API Keys
                     </CardTitle>
-                    <CardDescription style={{ color: '#6c5f31' }}>
+                    <CardDescription className="text-[#6c5f31]">
                       Manage your API key for programmatic access
                     </CardDescription>
                   </div>
                   {hasApiKey ? (
                     <Button
                       disabled
-                      className="rounded cursor-not-allowed w-full sm:w-auto opacity-60"
-                      style={{ backgroundColor: '#d1cebb', color: '#6c5f31' }}
+                      className="rounded-xl cursor-not-allowed w-full sm:w-auto opacity-60 bg-white/30 backdrop-blur-lg text-[#6c5f31] border border-white/30"
                       title="You can only have one API key"
                     >
                       <AlertTriangle className="h-4 w-4 mr-2" />
@@ -405,10 +396,7 @@ export default function ProfilePage() {
                   ) : (
                     <Button
                       onClick={handleCreateKeyClick}
-                      className="rounded w-full sm:w-auto hover:scale-105 active:scale-95 transition-all duration-200"
-                      style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#F0db18')}
-                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#b0ea1d')}
+                      className="rounded-xl w-full sm:w-auto bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 shadow-lg hover:shadow-2xl border border-white/20"
                     >
                       <Plus className="h-4 w-4 mr-2" />
                       Create API Key
@@ -419,9 +407,9 @@ export default function ProfilePage() {
 
               <CardContent className="pt-2 overflow-x-auto">
                 {hasApiKey && (
-                  <Alert className="mb-4 border" style={{ backgroundColor: 'rgba(240, 219, 24, 0.1)', borderColor: 'rgba(240, 219, 24, 0.5)' }}>
-                    <AlertTriangle className="h-4 w-4" style={{ color: '#F0db18' }} />
-                    <AlertDescription style={{ color: '#080c04' }}>
+                  <Alert className="mb-4  backdrop-blur-lg bg-[#fcfdf6] border border-white/30 rounded-xl">
+                    <AlertTriangle className=" h-4 w-4 text-[#6c5f31]" />
+                    <AlertDescription className="text-[#080c04]">
                       <p className="font-medium">Single API Key Policy</p>
                       <p className="text-sm mt-1">
                         For security reasons, you can only have one active API key at a time. Delete your existing key to create a new one.

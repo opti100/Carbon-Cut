@@ -485,8 +485,8 @@ export default function ReportActions({ organization, activities, getDisplayCO2,
           }}>
             <DialogTrigger asChild>
               <Button
-                variant="outline"
-                className=" text-gray-700  text-sm px-3 py-2 h-auto"
+                
+                className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base bg-[#6c5f31] hover:bg-[#b0ea1d] "
               >
                 <Download className="mr-2 h-4 w-4" />
                 Download PDF Report
