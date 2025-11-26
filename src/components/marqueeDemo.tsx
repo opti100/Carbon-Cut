@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import Brex from "../../public/companies/Brex"
+// import Brex from "../../public/companies/Brex"
 import Univison from "../../public/companies/univison"
 import { Marquee } from "./ui/marquee"
 import { useState, ReactNode } from "react"

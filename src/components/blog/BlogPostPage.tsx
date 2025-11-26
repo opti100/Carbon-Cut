@@ -17,6 +17,7 @@ import { BlogFourContent } from '@/constants/blogs/blogfour-data';
 import { blogFiveContent } from '@/constants/blogs/blogfive-data';
 import { BlogSixContent } from '@/constants/blogs/blogsix-data';
 import { BlogSevenContent } from '@/constants/blogs/blogSeven-data';
+import { BlogEightContent } from '@/constants/blogs/blogEight-data';
 
 // Blog content component mapping
 const blogContentComponents: Record<string, React.ComponentType> = {
@@ -26,7 +27,8 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   '4': BlogFourContent,
   '5': blogFiveContent,
   '6': BlogSixContent,
-  '7': BlogSevenContent
+  '7': BlogSevenContent,
+  '8': BlogEightContent,
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };

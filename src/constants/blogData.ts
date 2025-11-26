@@ -24,6 +24,7 @@ import { blogFiveData } from './blogs/blogfive-data';
 import { blogThreeeData } from './blogs/blogthree-data';
 import { blogSixData } from './blogs/blogsix-data';
 import { blogSevenData } from './blogs/blogSeven-data';
+import { blogEightData } from './blogs/blogEight-data';
 
 
 
@@ -35,7 +36,8 @@ export const blogPosts: BlogPost[] = [
   blogFourData,
   blogFiveData,
   blogSixData,
-  blogSevenData
+  blogSevenData,
+  blogEightData,
 ];
 
 // Utility functions for blog data
