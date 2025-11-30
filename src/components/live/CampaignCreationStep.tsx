@@ -201,12 +201,12 @@ export default function CampaignCreationStep({ onComplete }: CampaignCreationSte
 
   return (
     <form onSubmit={handleSubmit}>
-      <p className="text-xs text-tertiary font-semibold mb-3">STEP 3 OF 3</p>
+      {/* <p className="text-xs text-tertiary font-semibold mb-3">STEP 3 OF 3</p>
       <h2 className="text-3xl font-bold text-gray-900 mb-4">Campaign Creation</h2>
       <p className="text-gray-600 text-sm mb-8 leading-relaxed">
         Select a campaign from your Google Ads account. We&apos;ll automatically generate UTM parameters and campaign
         name based on your selection.
-      </p>
+      </p> */}
 
       {isSwitchingAccount && (
         <Alert className="mb-4">

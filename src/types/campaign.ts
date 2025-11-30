@@ -50,8 +50,15 @@ export interface Campaign {
   tracking_url_example: string;
   created_at?: string;
   updated_at?: string;
+  // Lifetime Totals
+  total_emissions_kg?: string;
+  total_impressions?: number;
+  total_clicks?: number;
+  // Recent Activity
+  today_impressions: number;
+  last_24h_clicks: number;
+  today_emissions_kg: number;
 }
-
 export interface CreateCampaignData {
   name: string;
   google_ads_campaign_id: string;
@@ -68,8 +75,13 @@ export interface CampaignAnalytics {
   campaign_id: string;
   campaign_name: string;
   date_range: {
-    start: string;
+    start: string; 
     end: string;
+  };
+  last_24_hours: {
+    impressions: number; 
+    clicks: number;      
+    emissions_g: string; 
   };
   totals: {
     impressions: number;
@@ -83,22 +95,23 @@ export interface CampaignAnalytics {
     cost: number;
     cpc: number;
     cpa: number;
-    total_emissions_kg: number;
-    emissions_per_conversion_kg: number;
+    total_emissions_kg: string;
+    emissions_per_conversion_kg: string;
   };
   emissions_breakdown: {
-    impressions_g: number;
-    page_views_g: number;
-    clicks_g: number;
-    conversions_g: number;
-    total_g: number;
+    impressions_g: string;
+    page_views_g: string;
+    clicks_g: string;
+    conversions_g: string;
+    total_g: string;
   };
   by_region: Array<{
     country: string;
     impressions: number;
     sessions: number;
     conversions: number;
-    emissions_kg: number;
+    emissions_kg: string;
+    emissions_g: string;
     cost: number;
   }>;
   by_device: Array<{
@@ -106,7 +119,8 @@ export interface CampaignAnalytics {
     impressions: number;
     sessions: number;
     conversions: number;
-    emissions_kg: number;
+    emissions_kg: string;
+    emissions_g: string;
     cost: number;
   }>;
   time_series: Array<{
@@ -115,11 +129,11 @@ export interface CampaignAnalytics {
     impressions: number;
     sessions: number;
     conversions: number;
-    emissions_kg: number;
+    emissions_kg: string;
+    emissions_g: string;
     cost: number;
   }>;
 }
-
 export interface SyncImpressionsData {
   start_date: string;
   end_date: string;

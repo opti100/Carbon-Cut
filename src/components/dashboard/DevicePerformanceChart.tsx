@@ -52,10 +52,12 @@ export function DevicePerformanceChart({ data }: DevicePerformanceChartProps) {
   const totalEmissions = data.reduce((sum, item) => sum + item.emissions, 0)
 
   return (
-    <Card className="border-0 bg-card">
-      <CardHeader>
-        <CardTitle>Performance by Device</CardTitle>
-        <CardDescription>Sessions and conversions by device type</CardDescription>
+    <Card className="border bg-white rounded-md">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b  sm:flex-row">
+        <div className="grid flex-1 gap-1">
+          <CardTitle>Performance by Device</CardTitle>
+          <CardDescription>Sessions and conversions by device type</CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-64 w-full">

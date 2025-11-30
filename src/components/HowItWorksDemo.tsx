@@ -19,7 +19,7 @@ export default function HowItWorks() {
     },
     {
       step: 2,
-      title: "Monitor",
+      title: "Monitor & Reduce",
       subtitle: "Real-time insights you can act on",
       description: "View live CO₂e totals, forecasted footprints, and AI-agent recommendations for immediate emission reduction — all mapped to GHG Protocol categories.",
 

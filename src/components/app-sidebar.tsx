@@ -14,19 +14,18 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar";
+// import {
+//   Sidebar,
+//   SidebarContent,
+//   SidebarFooter,
+//   SidebarGroup,
+//   SidebarGroupContent,
+//   SidebarGroupLabel,
+//   SidebarHeader,
+//   SidebarMenu,
+//   SidebarMenuButton,
+//   SidebarMenuItem,
+// } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
@@ -149,9 +148,17 @@ export function AppSidebar() {
   const showAccountSwitcher = state === "expanded" && status?.is_connected && accounts && accounts.length > 1;
 
   return (
-    <Sidebar collapsible="icon" className="border-r-2 border-r-[#d1cebb] bg-[#fcfdf6] backdrop-blur-2xl">
-      {showAccountSwitcher && (
-        <SidebarHeader className="border-b border-white/20 p-4 bg-white/20 backdrop-blur-lg">
+    <div>
+
+
+    </div>
+  );
+}
+
+
+// <Sidebar collapsible="icon">
+      {/* {showAccountSwitcher && (
+        <SidebarHeader className="border-b border-sidebar-border p-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-sm font-medium">Switch Account</label>
@@ -218,9 +225,9 @@ export function AppSidebar() {
             {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
           </div>
         </SidebarHeader>
-      )}
+      )} */}
 
-      <SidebarContent className="hover:bg-none">
+      {/* <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -237,7 +244,7 @@ export function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
 
         {/* <SidebarGroup>
           <SidebarGroupLabel>Settings</SidebarGroupLabel>
@@ -254,9 +261,9 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup> */}
-      </SidebarContent>
+      {/* </SidebarContent> */}
 
-      <SidebarFooter className="border-t border-white/20 bg-white/20 backdrop-blur-lg">
+      {/* <SidebarFooter className="border-t border-sidebar-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
@@ -303,7 +310,5 @@ export function AppSidebar() {
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
-  );
-}
+      </SidebarFooter> */}
+    {/* </Sidebar> */}

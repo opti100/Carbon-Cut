@@ -421,7 +421,7 @@ function DisconnectedState({ error }: { error: string | null }) {
         </AlertDescription>
       </Alert>
 
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <h4 className="font-medium text-sm">What we track:</h4>
         <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
           <li>Campaign performance metrics</li>
@@ -429,7 +429,7 @@ function DisconnectedState({ error }: { error: string | null }) {
           <li>Carbon emissions per campaign</li>
           <li>Geographic distribution</li>
         </ul>
-      </div>
+      </div> */}
 
       {error && (
         <Alert variant="destructive">
@@ -498,7 +498,7 @@ function DisconnectedFooter({ onClose, onConnect, isConnecting }: DisconnectedFo
       <Button
         onClick={onConnect}
         disabled={isConnecting}
-        className="w-full sm:w-auto bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700"
+        className="w-full sm:w-auto "
       >
         {isConnecting ? (
           <>

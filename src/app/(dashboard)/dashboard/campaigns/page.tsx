@@ -9,18 +9,23 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Plus, Trash2, Edit, TrendingUp, AlertCircle, Link2, CheckCircle, ExternalLink, Copy } from "lucide-react"
+import { Plus, Trash2, Edit, TrendingUp, AlertCircle, Link2, CheckCircle, ExternalLink, Copy, Info, Search, MoreVertical, ArrowUp } from "lucide-react"
 import { campaignApi } from "@/services/campaign/campaign"
 import { CreateCampaignDialog } from "@/components/dashboard/campaign/CreateCampaignsDialog"
-import { DashboardHeader } from "@/components/DashboardHeader"
-import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog"
-import { GoogleAdsReconnectBanner } from "@/components/dashboard/google-ads/GoogleAdsReconnectBanner"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import Image from "next/image"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function CampaignsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const queryClient = useQueryClient()
   const router = useRouter()
-  const [connectDialogOpen, setConnectDialogOpen] = useState(false)
   const { status, isLoading: adsLoading, isSwitchingAccount } = useGoogleAds()
 
   const {
@@ -55,129 +60,90 @@ export default function CampaignsPage() {
   }
 
   return (
-    <>
-      <DashboardHeader breadcrumbs={[{ label: "Dashboard", href: "/dashboard" }, { label: "Campaigns" }]} />
-      <GoogleAdsReconnectBanner />
-      <div className="flex-1 overflow-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 md:py-8 bg-[#fcfdf6]">
-        <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
-            <div className="space-y-1 sm:space-y-2">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-balance">Campaigns</h1>
-              <p className="text-sm sm:text-base text-muted-foreground">Manage your advertising campaigns with UTM tracking</p>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-              <GoogleAdsConnectDialog open={connectDialogOpen} onOpenChange={setConnectDialogOpen} />
-              <Button
-                onClick={handleCreateClick}
-                disabled={!status?.is_connected || adsLoading || isSwitchingAccount}
-                 className="rounded px-4 sm:px-6 md:px-8  text-sm sm:text-base 
-             bg-[#b0ea1d] hover:bg-[#6c5f31] hover:text-white text-[#080c04]"
-              >
-                <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
-                {isSwitchingAccount ? "Switching Account..." : "Create Campaign"}
-              </Button>
+    <div className="flex-1 overflow-auto bg-background">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">Campaigns</h1>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              {/* Tabs */}
+              <Tabs defaultValue="google" className="w-full sm:w-auto">
+                <TabsList className="bg-muted/50 rounded-lg p-1">
+                  <TabsTrigger
+                    value="google"
+                    className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  >
+                    Google
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="meta"
+                    className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  >
+                    Meta
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="linkedin"
+                    className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  >
+                    LinkedIn
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="snapchat"
+                    className="rounded-md data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                  >
+                    Snapchat
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="relative w-full sm:w-auto">
+                  <Input
+                    type="text"
+                    placeholder="Search campaigns..."
+                    className="border-border bg-background focus:ring-ring pl-10"
+                  />
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground">
+                    <Search className="h-5 w-5" />
+                  </div>
+                </div>
+
+                <Button onClick={handleCreateClick} className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Plus className="mr-1 h-4 w-4" /> New Campaign
+                </Button>
+              </div>
             </div>
           </div>
 
-          {!status?.is_connected && !adsLoading && (
-            <Alert className="bg-white/40 backdrop-blur-xl border border-white/30 rounded-2xl shadow-lg">
-              <AlertCircle className="h-5 w-5 text-[#6c5f31] shrink-0" />
-              <AlertDescription className="text-[#080c04] ml-2">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-medium">Complete Your Onboarding to connect your Google Ads account</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="ml-auto border border-white/40 hover:border-white/60 text-[#6c5f31] whitespace-nowrap bg-white/30 backdrop-blur-lg transition-all duration-300 hover:shadow-lg rounded-xl"
-                    onClick={() => router.push("/live")}
-                  >
-                    Connect Now
-                  </Button>
-                </div>
-              </AlertDescription>
-            </Alert>
-          )}
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <Card className="border-border  rounded-sm h-24 bg-white text-card-foreground">
 
-          {/* {status?.is_connected && (
-            <Alert className="bg-[#fcfdf6] border-2 border-[#d1cebb] rounded-lg">
-              <CheckCircle className="h-5 w-5 text-[#6c5f31] shrink-0" />
-              <AlertDescription className="text-[#080c04] ">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="font-medium">Google Ads is connected. Ready to track campaigns.</span>
-                  {status.customer_name && (
-                    <Badge
-                     
-                      className="bg-[#fcfdf6]  text-[#6c5f31] font-mono text-xs shrink-0"
-                    >
-                      {status.customer_name}
-                    </Badge>
-                  )}
-                </div>
-              </AlertDescription>
-            </Alert>
-          )} */}
-
-          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-sm font-medium text-[#6c5f31]">Total Campaigns</CardTitle>
-                  <div >
-                    <TrendingUp className="h-4 w-4 text-[#6c5f31]" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="text-3xl font-bold text-[#6c5f31]">{campaigns?.length || 0}</div>
-                <p className="text-xs text-[#6c5f31]/70">Active campaigns tracking</p>
+              <CardContent>
+                <div className="text-3xl font-bold">{campaigns?.length || 0}</div>
+                <p className="text-xs text-muted-foreground">Active and draft campaigns</p>
               </CardContent>
             </Card>
+            <Card className="border-border rounded-sm h-24 bg-white text-card-foreground">
 
-            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-sm font-medium text-[#6c5f31]">UTM Parameters</CardTitle>
-                  <div >
-                    <Link2 className="h-4 w-4 text-[#6c5f31]" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="text-3xl font-bold text-[#6c5f31]">
+              <CardContent>
+                <div className="text-3xl font-bold">
                   {campaigns?.reduce((sum, c) => sum + (c.utm_params?.length || 0), 0) || 0}
                 </div>
                 <p className="text-xs text-[#6c5f31]/70">Across all campaigns</p>
               </CardContent>
             </Card>
-
-            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-sm font-medium text-[#6c5f31]">Google Ads Linked</CardTitle>
-                  <div >
-                    <ExternalLink className="h-4 w-4 text-[#080c04]" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="text-3xl font-bold text-[#6c5f31]">
+            <Card className="border-border rounded-sm h-24 bg-white text-card-foreground">
+              <CardContent>
+                <div className="text-3xl font-bold">
                   {campaigns?.filter((c) => c.google_ads_campaign_id).length || 0}
                 </div>
                 <p className="text-xs text-[#6c5f31]/70">Synced campaigns</p>
               </CardContent>
             </Card>
-
-            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl hover:border-white/60 transition-all duration-300 shadow-xl hover:shadow-2xl rounded-2xl">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-sm font-medium text-[#6c5f31]">Tracking URLs</CardTitle>
-                  <div >
-                    <Link2 className="h-4 w-4 text-[#6c5f31]" />
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                <div className="text-3xl font-bold text-[#6c5f31]">
+            <Card className="border-border rounded-sm h-24 bg-white text-card-foreground">
+              <CardContent>
+                <div className="text-3xl font-bold">
                   {campaigns?.filter((c) => c.tracking_url_example).length || 0}
                 </div>
                 <p className="text-xs text-[#6c5f31]/70">Ready to use</p>
@@ -192,187 +158,235 @@ export default function CampaignsPage() {
             </Alert>
           )}
 
-          {isLoading ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((i) => (
-                <Card key={i} className="border border-white/30 animate-pulse bg-white/20 backdrop-blur-xl shadow-xl rounded-2xl">
-                  <CardHeader>
-                    <div className="h-5 bg-white/30 rounded-xl w-2/3"></div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-4 bg-white/30 rounded-xl w-1/2 mb-3"></div>
-                    <div className="h-3 bg-white/30 rounded-xl w-2/3"></div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : campaigns && campaigns.length > 0 ? (
-            /* redesigned campaign cards with improved visual hierarchy and hover effects */
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {campaigns.map((campaign) => (
-                <Card
-                  key={campaign.id}
-                  className="border border-white/40 hover:border-white/60 transition-all duration-300 cursor-pointer bg-white/30 backdrop-blur-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] rounded-2xl group"
-                  onClick={() => router.push(`/dashboard/campaigns/${campaign.id}`)}
-                >
-                  <CardHeader className="">
-                    <div className="flex justify-between items-start gap-3">
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg line-clamp-2 font-semibold">{campaign.name}</CardTitle>
+          <div className="pb-8">
+            {isLoading ? (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i} className="border-0 animate-pulse bg-muted/30">
+                    <CardHeader>
+                      <div className="h-5 bg-muted-foreground/20 rounded w-2/3"></div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-4 bg-muted-foreground/20 rounded w-1/2 mb-3"></div>
+                      <div className="h-3 bg-muted-foreground/20 rounded w-2/3"></div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : campaigns && campaigns.length > 0 ? (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {campaigns.map((campaign) => (
+                  <Card
+                    key={campaign.id}
+                    className="hover:shadow-lg bg-white rounded-md hover:border-[#ff8904]/20 transition-all duration-200 cursor-pointer border"
+                    onClick={() => router.push(`/dashboard/campaigns/${campaign.id}`)}
+                  >
+                    <CardHeader className="pb-3">
+                      <div className="flex justify-between items-start gap-3">
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="text-lg line-clamp-1 font-semibold text-foreground">{campaign.name}</CardTitle>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {campaign.utm_params?.length || 0} UTM parameters
+                          </p>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0"
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                router.push(`/dashboard/campaigns/${campaign.id}`)
+                              }}
+                            >
+                              <Edit className="mr-2 h-4 w-4" />
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="text-destructive focus:text-destructive"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                if (confirm(`Are you sure you want to delete "${campaign.name}"?`)) {
+                                  deleteMutation.mutate(campaign.id)
+                                }
+                              }}
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
-                      <div className="flex items-center gap-2">
+                    </CardHeader>
+
+                    {/* <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">Campaign ID</span>
                         <Badge
                           variant="secondary"
-                          className="shrink-0 bg-white/40 backdrop-blur-lg text-[#6c5f31] font-mono text-xs border border-white/30 rounded-xl"
+                          className="bg-muted text-muted-foreground border-0 font-mono text-xs"
                         >
                           #{campaign.id}
                         </Badge>
-                        <Button
-
-
-                          className="h-7 w-7 p-0 text-[#6c5f31] bg-white/30 backdrop-blur-lg border border-white/30 shadow-none hover:bg-white/50 hover:shadow-lg transition-all duration-300 rounded-xl"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (confirm(`Are you sure you want to delete "${campaign.name}"?`)) {
-                              deleteMutation.mutate(campaign.id);
-                            }
-                          }}
-                          disabled={deleteMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4 " />
-                        </Button>
                       </div>
-                    </div>
-                    {campaign.google_ads_campaign_id && (
-                      <Badge
-                        className="w-fit text-xs font-medium bg-white/40 backdrop-blur-lg text-[#6c5f31] mt-2 border border-white/30 rounded-xl"
-                      >
-                        <ExternalLink className="h-3 w-3 mr-1.5" />
-                        Google Ads
-                      </Badge>
-                    )}
-                  </CardHeader>
 
-                  <CardContent className="space-y-4">
-                    {/* {campaign.google_ads_campaign_id && (
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[#6c5f31]">Campaign ID</span>
-                          <code className="bg-[#fcfdf6] border-2 border-[#d1cebb] px-2 py-1 rounded text-xs text-[#6c5f31] font-mono font-medium">
-                            {campaign.google_ads_campaign_id}
-                          </code>
-                        </div>
-                        {campaign.google_ads_customer_id && (
-                          <div className="flex items-center justify-between">
-                            <span className="text-[#6c5f31]">Customer ID</span>
-                            <code className="bg-[#fcfdf6] border-2 border-[#d1cebb] px-2 py-1 rounded text-xs text-[#6c5f31] font-mono font-medium">
-                              {campaign.google_ads_customer_id}
-                            </code>
+                      <div className="pt-3 border-t border-border">
+                        <div className="grid grid-cols-3 gap-2 text-center">
+                          <div>
+                            <p className="font-semibold text-sm text-foreground">
+                              {new Intl.NumberFormat().format(campaign.total_impressions || 0)}
+                              <Badge variant="secondary" className="bg-green-100 text-green-600">
+                                +{campaign.last_24h_impressions}
+                              </Badge>
+                            </p>
+                            <p className="text-xs text-muted-foreground">Impressions</p>
                           </div>
-                        )}
-                      </div>
-                    )} */}
-
-                    {campaign.utm_params && campaign.utm_params.length > 0 && (
-                      <div className="space-y-2 ">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-[#080c04]">
-                          <Link2 className="h-4 w-4 text-[#6c5f31]" />
-                          <span>UTM Parameters ({campaign.utm_params.length})</span>
-                        </div>
-                        <div className="space-y-1.5">
-                          {campaign.utm_params.map((utm, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-center gap-2 text-xs font-mono bg-white/30 backdrop-blur-lg p-2 rounded-xl border border-white/20"
-                            >
-                              <span className="text-[#6c5f31] font-bold">{utm.key}</span>
-                              <span className="text-[#6c5f31]">=</span>
-                              <span className="text-[#080c04] truncate">{utm.value}</span>
-                            </div>
-                          ))}
-                          {/* {campaign.utm_params.length > 3 && (
-                            <Badge variant="secondary" className="text-xs bg-[#edede2] text-[#6c5f31] border-2 border-[#d1cebb]">
-                              +{campaign.utm_params.length - 3} more
-                            </Badge>
-                          )} */}
+                          <div>
+                            <p className="font-semibold text-sm text-foreground">
+                                {new Intl.NumberFormat().format(campaign.total_clicks || 0)}
+                              <Badge variant="secondary" className="bg-green-100 text-green-600">
+                                +{campaign.last_24h_clicks}
+                              </Badge>
+                            </p>
+                            <p className="text-xs text-muted-foreground">Clicks</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm text-foreground">
+                              {campaign.total_emissions_kg } kg
+                              <Badge variant="secondary" className="bg-green-100 text-green-600">
+                                +{campaign.last_24h_emissions_kg} kg
+                              </Badge>
+                            </p>
+                            <p className="text-xs text-muted-foreground">Emissions</p>
+                          </div>
                         </div>
                       </div>
-                    )}
 
-                    {campaign.tracking_url_example && (
-                      <div className="space-y-2 border-t border-[#d1cebb] pt-4">
-                        <div className="text-sm font-semibold flex items-center gap-2 text-[#080c04]">
-                          <Link2 className="h-4 w-4 text-[#6c5f31]" />
-                          <span>Tracking URL</span>
-                        </div>
-                        <div className="flex items-center gap-2 p-2 rounded-xl bg-white/20 backdrop-blur-lg border border-white/20">
-                          <code className="text-xs truncate flex-1 text-[#080c04]">
-                            {campaign.tracking_url_example}
-                          </code>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-7 w-7 p-0 hover:bg-white/40 hover:text-[#6c5f31] shrink-0 transition-all duration-300 rounded-xl backdrop-blur-lg border border-white/20"
-                            onClick={(e) => copyTrackingUrl(campaign.tracking_url_example!, e)}
+                      {campaign.google_ads_campaign_id && (
+                        <div className="flex items-center justify-between pt-3 border-t border-border">
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src="/dsp/google-ads.svg"
+                              alt="Google Ads"
+                              width={20}
+                              height={20}
+                            />
+                            <span className="text-sm text-muted-foreground">Google Ads</span>
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className="text-xs font-medium border-border bg-muted/50 text-muted-foreground"
                           >
-                            <Copy className="h-3.5 w-3.5" />
-                          </Button>
+                            Synced
+                          </Badge>
+                        </div>
+                      )}
+                    </CardContent> */}
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">Campaign ID</span>
+                        <Badge variant="secondary" className="bg-muted text-muted-foreground border-0 font-mono text-xs">
+                          #{campaign.id}
+                        </Badge>
+                      </div>
+
+                      <div className="pt-3 border-t border-border">
+                        <div className="grid grid-cols-3 gap-2 text-center">
+                          <div>
+                            <p className="font-semibold text-sm text-foreground flex items-center justify-center gap-2">
+                              {new Intl.NumberFormat().format(campaign.total_impressions || 0)}
+                              {campaign.today_impressions > 0 && (
+                                <Badge variant="secondary" className="bg-green-100 text-green-600 font-medium">
+                                  +{new Intl.NumberFormat().format(campaign.today_impressions)}
+                                </Badge>
+                              )}
+                            </p>
+                            <p className="text-xs text-muted-foreground">Impressions</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm text-foreground flex items-center justify-center gap-2">
+                              {campaign.total_clicks}
+                              {campaign.last_24h_clicks > 0 && (
+                                <Badge variant="secondary" className="bg-green-100 text-green-600 font-medium">
+                                  +{new Intl.NumberFormat().format(campaign.last_24h_clicks)}
+                                </Badge>
+                              )}
+                            </p>
+                            <p className="text-xs text-muted-foreground">Clicks</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-sm text-foreground flex items-center justify-center gap-2">
+                              {parseFloat(campaign.total_emissions_kg || '0').toFixed(2)} kg
+                              {campaign.today_emissions_kg > 0 && (
+                                <Badge variant="secondary" className="bg-green-100 text-green-600 font-medium">
+                                  {/* +{(campaign.today_emissions_kg).toFixed(3)} kg */}
+                                </Badge>
+                              )}
+                            </p>
+                            <p className="text-xs text-muted-foreground">Emissions</p>
+                          </div>
                         </div>
                       </div>
-                    )}
 
-                    {(!campaign.utm_params || campaign.utm_params.length === 0) && !campaign.tracking_url_example && (
-                      <div className="text-sm text-[#6c5f31] italic p-3 bg-white/20 backdrop-blur-lg rounded-xl border border-white/30">
-                        No UTM parameters configured yet
-                      </div>
-                    )}
-
-                    {campaign.created_at && (
-                      <div className="text-xs text-[#6c5f31]/70 pt-3 border-t border-[#d1cebb]">
-                        Created: {new Date(campaign.created_at).toLocaleDateString()}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            /* redesigned empty state with better visual hierarchy */
-            <Card className="border border-white/40 bg-white/30 backdrop-blur-2xl shadow-xl rounded-2xl">
-              <CardContent className="flex flex-col items-center justify-center py-12 sm:py-16 px-4">
-                <div className="p-3 sm:p-4 bg-white/40 backdrop-blur-xl border border-white/30 rounded-full mb-4">
-                  <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-[#6c5f31]" />
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-2 text-[#080c04]">No campaigns yet</h3>
-                <p className="text-sm sm:text-base text-[#6c5f31] text-center mb-6 max-w-md">
-                  {status?.is_connected
-                    ? "Create your first campaign with UTM parameters to start tracking your advertising performance"
-                    : "Connect your Google Ads account to start creating campaigns"}
-                </p>
-                {status?.is_connected ? (
-                  <Button
-                    onClick={() => setIsCreateDialogOpen(true)}
-                    className="bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 rounded-xl shadow-lg hover:shadow-2xl border border-white/20"
-                  >
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create Your First Campaign
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => router.push("/dashboard/integrations")}
-                    className="bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl hover:text-white text-[#080c04] transition-all duration-300 rounded-xl shadow-lg hover:shadow-2xl border border-white/20"
-                  >
-                    <Link2 className="mr-2 h-4 w-4" />
-                    Connect Google Ads
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          <CreateCampaignDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} />
+                      {campaign.google_ads_campaign_id && (
+                        <div className="flex items-center justify-between pt-3 border-t border-border">
+                          <div className="flex items-center gap-2">
+                            <Image src="/dsp/google-ads.svg" alt="Google Ads" width={20} height={20} />
+                            <span className="text-sm text-muted-foreground">Google Ads</span>
+                          </div>
+                          <Badge variant="outline" className="text-xs font-medium border-border bg-muted/50 text-muted-foreground">
+                            Synced
+                          </Badge>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <Card className="border-border bg-card rounded-md">
+                <CardContent className="flex flex-col items-center  justify-center py-16">
+                  <div className="p-4 bg-muted rounded-full mb-4">
+                    <TrendingUp className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">No campaigns yet</h3>
+                  <p className="text-muted-foreground text-center mb-6 max-w-md">
+                    {status?.is_connected
+                      ? "Create your first campaign with UTM parameters to start tracking your advertising performance"
+                      : "Connect your Google Ads account to start creating campaigns"}
+                  </p>
+                  {status?.is_connected ? (
+                    <Button
+                      onClick={() => setIsCreateDialogOpen(true)}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create Your First Campaign
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => router.push("/dashboard/integrations")}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      <Link2 className="mr-2 h-4 w-4" />
+                      Connect Google Ads
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
-    </>
+
+      <CreateCampaignDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} />
+    </div>
   )
 }
