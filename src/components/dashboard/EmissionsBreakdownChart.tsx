@@ -62,10 +62,12 @@ export function EmissionsBreakdownChart({ data, totalEmissions }: EmissionsBreak
   }
 
   return (
-    <Card className="border-0 bg-card">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Emissions Breakdown</CardTitle>
-        <CardDescription>Carbon footprint by activity type</CardDescription>
+    <Card className="border bg-white rounded-md">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b  sm:flex-row  ">
+        <div className="grid flex-1 gap-1">
+          <CardTitle>Emissions Breakdown</CardTitle>
+          <CardDescription>Carbon footprint by activity type</CardDescription>
+        </div>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-64">

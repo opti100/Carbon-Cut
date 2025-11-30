@@ -45,72 +45,41 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function PerformanceOverTimeChart({ data, dateRange }: PerformanceOverTimeChartProps) {
-  const [timeRange, setTimeRange] = React.useState("all")
+  const [timeRange, setTimeRange] = React.useState("90d")
+  const [activeChart, setActiveChart] =
+    React.useState<keyof typeof chartConfig>("impressions")
 
-  const filteredData = React.useMemo(() => {
-    if (timeRange === "all") return data
-
-    const referenceDate = new Date(dateRange.end)
-    let daysToSubtract = 30
-
-    if (timeRange === "7d") {
-      daysToSubtract = 7
-    } else if (timeRange === "14d") {
-      daysToSubtract = 14
-    }
-
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-
-    return data.filter((item) => {
-      const itemDate = new Date(item.fullDate)
-      return itemDate >= startDate
-    })
-  }, [data, timeRange, dateRange.end])
-
-  if (!data || data.length === 0) {
-    return (
-      <Card className="border-0 bg-card">
-        <CardHeader>
-          <CardTitle>Performance Over Time</CardTitle>
-          <CardDescription>No data available for the selected period</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center h-64 text-muted-foreground">
-          No performance data to display
-        </CardContent>
-      </Card>
-    )
-  }
+  const filteredData = data.slice(-Number.parseInt(timeRange, 10))
 
   return (
-    <Card className="border-0 bg-card">
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+    <Card className="border bg-white rounded-sm">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b pb-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Performance Over Time</CardTitle>
           <CardDescription>Impressions, sessions, and conversions trend</CardDescription>
         </div>
         <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger className="w-40 rounded-lg border-0 bg-muted" aria-label="Select time range">
-            <SelectValue placeholder="All time" />
+          <SelectTrigger
+            className="w-[160px] rounded-lg sm:ml-auto"
+            aria-label="Select a value"
+          >
+            <SelectValue placeholder="Last 3 months" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            <SelectItem value="all" className="rounded-lg">
-              All time
-            </SelectItem>
             <SelectItem value="30d" className="rounded-lg">
               Last 30 days
             </SelectItem>
-            <SelectItem value="14d" className="rounded-lg">
-              Last 14 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
+            <SelectItem value="90d" className="rounded-lg">
+              Last 3 months
             </SelectItem>
           </SelectContent>
         </Select>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer config={chartConfig} className="aspect-auto h-64 w-full">
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
           <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillImpressions" x1="0" y1="0" x2="0" y2="1">
