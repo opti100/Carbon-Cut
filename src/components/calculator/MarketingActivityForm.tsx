@@ -1,5 +1,5 @@
 import { ActivityData, ChannelUnits, CountryData } from '@/types/types';
-import { useState } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -7,30 +7,41 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Loader2, Plus, Calendar as CalendarIcon, Globe, Target, Activity, Hash, FileText } from 'lucide-react';
+import { Loader2, Plus, Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { DateRange } from 'react-day-picker';
+import { ACTIVITY_CONVERSIONS } from '@/constants/data';
 
 interface MarketingActivityFormProps {
+  activities: ActivityData[];
+  getDisplayCO2: (activity: ActivityData) => number;
   channels: ChannelUnits;
   defaultScope: Record<string, number>;
   countries: CountryData[];
   loadingCountries: boolean;
   onAddActivity: (activity: Omit<ActivityData, 'id'>) => void;
+  calculatingEmissions: Record<number, boolean>;
+  emissionResults: Record<number, number>;
+  prefilledMarket?: string;
+  prefilledChannel?: string;
 }
 
 export default function MarketingActivityForm({
   channels,
+  activities,
+  getDisplayCO2,
+  calculatingEmissions,
   defaultScope,
   countries,
   loadingCountries,
-  onAddActivity
+  onAddActivity,
+  emissionResults,
+  prefilledMarket,
+  prefilledChannel,
 }: MarketingActivityFormProps) {
   const [formData, setFormData] = useState({
-    market: 'United Kingdom',
-    channel: 'Ad Production',
-    unit: 'Travel (km)',
-    qty: '',
+    market: prefilledMarket || 'United Kingdom',
+    channel: prefilledChannel || 'Ad Production',
     scope: 3,
     campaign: '',
     notes: ''
@@ -41,31 +52,152 @@ export default function MarketingActivityForm({
     to: new Date()
   });
 
+  // Store quantities for each activity type
+  const [quantities, setQuantities] = useState<Record<string, string>>({});
+  // Track which units have been manually edited by the user
+  const [manuallyEditedUnits, setManuallyEditedUnits] = useState<Set<string>>(new Set());
   const [addingActivity, setAddingActivity] = useState(false);
-  const availableUnits = channels[formData.channel] || [];
 
-  const handleChange = (field: string, value: string | number) => {
-    setFormData(prev => {
-      const updated = { ...prev, [field]: value };
+  // Use ref to prevent infinite loops
+  const isCalculatingRef = useRef(false);
 
-      // Update scope and unit when channel changes
-      if (field === 'channel') {
-        const newUnits = channels[value as string];
-        return {
-          ...updated,
-          unit: newUnits ? newUnits[0][1] : prev.unit,
-          scope: defaultScope[value as string] || 3
-        };
+  // Use useMemo to stabilize the availableUnits array
+  const availableUnits = useMemo(() => {
+    return channels[formData.channel] || [];
+  }, [channels, formData.channel]);
+
+  // Calculate value for a target unit based on multiple source units (weighted average)
+  const calculateFromMultipleSources = useCallback((
+    targetUnit: string,
+    sourceUnits: { unit: string; value: number }[]
+  ): number | null => {
+    const validConversions: number[] = [];
+
+    sourceUnits.forEach(({ unit: sourceUnit, value: sourceValue }) => {
+      if (sourceValue <= 0) return;
+
+      // Try direct conversion
+      const directFactor = ACTIVITY_CONVERSIONS[sourceUnit]?.[targetUnit];
+      if (directFactor !== undefined) {
+        validConversions.push(sourceValue * directFactor);
+        return;
       }
 
-      return updated;
+      // Try reverse conversion
+      const reverseFactor = ACTIVITY_CONVERSIONS[targetUnit]?.[sourceUnit];
+      if (reverseFactor !== undefined && reverseFactor !== 0) {
+        validConversions.push(sourceValue / reverseFactor);
+        return;
+      }
     });
+
+    if (validConversions.length === 0) return null;
+
+    // Return weighted average of all valid conversions
+    const average = validConversions.reduce((sum, val) => sum + val, 0) / validConversions.length;
+    return average;
+  }, []);
+
+  // Handle quantity change for a specific unit
+  const handleQuantityChange = (unitKey: string, value: string) => {
+    const numValue = parseFloat(value);
+    
+    // Prevent calculation loop
+    if (isCalculatingRef.current) return;
+    isCalculatingRef.current = true;
+
+    // Update the quantity immediately
+    const newQuantities = { ...quantities, [unitKey]: value };
+    
+    const newManuallyEditedUnits = new Set(manuallyEditedUnits);
+
+    if (value === '' || isNaN(numValue) || numValue <= 0) {
+      // User cleared the field - remove from manually edited set
+      newManuallyEditedUnits.delete(unitKey);
+      
+      // If there are OTHER manually edited fields, recalculate this field
+      if (newManuallyEditedUnits.size > 0) {
+        const editedSources = Array.from(newManuallyEditedUnits)
+          .map(key => ({
+            unit: key,
+            value: parseFloat(newQuantities[key] || '0')
+          }))
+          .filter(source => source.value > 0);
+
+        // Calculate the cleared field based on other manual fields
+        const calculatedValue = calculateFromMultipleSources(unitKey, editedSources);
+        
+        if (calculatedValue !== null) {
+          newQuantities[unitKey] = calculatedValue.toFixed(2);
+        } else {
+          // If no conversion possible, leave it empty
+          newQuantities[unitKey] = '';
+        }
+      } else {
+        // No other fields filled, clear this field
+        newQuantities[unitKey] = '';
+      }
+    } else {
+      // User entered a value - add to manually edited set
+      newManuallyEditedUnits.add(unitKey);
+      
+      // Calculate other fields immediately
+      const editedSources = Array.from(newManuallyEditedUnits)
+        .map(key => ({
+          unit: key,
+          value: parseFloat(newQuantities[key] || '0')
+        }))
+        .filter(source => source.value > 0);
+
+      // Calculate non-manual fields
+      availableUnits.forEach(([label, targetKey]) => {
+        if (newManuallyEditedUnits.has(targetKey)) {
+          // Skip manually edited fields
+          return;
+        }
+
+        const calculatedValue = calculateFromMultipleSources(targetKey, editedSources);
+        
+        if (calculatedValue !== null) {
+          newQuantities[targetKey] = calculatedValue.toFixed(2);
+        }
+      });
+    }
+
+    // Update state once
+    setQuantities(newQuantities);
+    setManuallyEditedUnits(newManuallyEditedUnits);
+    
+    // Reset flag after state update
+    setTimeout(() => {
+      isCalculatingRef.current = false;
+    }, 0);
+  };
+
+  const handleChange = (field: string, value: string | number) => {
+    if (field === 'channel') {
+      // Clear quantities when channel changes
+      setQuantities({});
+      setManuallyEditedUnits(new Set());
+      
+      // Update channel and scope
+      setFormData(prev => ({
+        ...prev,
+        channel: value as string,
+        scope: defaultScope[value as string] || 3
+      }));
+      
+      return;
+    }
+
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
-    const qty = parseFloat(formData.qty);
-    if (!qty || qty < 0) {
-      alert('Please enter a valid quantity.');
+    // Check if at least one quantity is entered
+    const hasQuantity = Object.values(quantities).some(q => q && parseFloat(q) > 0);
+    if (!hasQuantity) {
+      alert('Please enter at least one quantity.');
       return;
     }
 
@@ -77,26 +209,47 @@ export default function MarketingActivityForm({
     setAddingActivity(true);
 
     try {
-      const activityLabel = availableUnits.find(([, key]) => key === formData.unit)?.[0] || formData.unit;
+      // Get all non-zero quantities
+      const filledActivities = availableUnits
+        .filter(([label, unitKey]) => quantities[unitKey] && parseFloat(quantities[unitKey]) > 0)
+        .map(([label, unitKey]) => ({
+          label,
+          unitKey,
+          value: parseFloat(quantities[unitKey])
+        }));
 
-      const activityData: Omit<ActivityData, 'id'> = {
-        date: dateRange.from.toISOString().slice(0, 10),
+      // ✅ Create ONE combined activity with all quantities
+      const combinedActivity = {
+        date: dateRange.from!.toISOString().slice(0, 10),
         market: formData.market,
         channel: formData.channel,
-        unit: formData.unit,
-        activityLabel,
-        qty,
+        // Use channel as the unit identifier
+        unit: formData.channel,
+        activityLabel: formData.channel,
+        // Use 1 for display purposes (actual quantities are in the quantities object)
+        qty: 1,
         scope: formData.scope,
         campaign: formData.campaign,
-        notes: formData.notes
+        notes: formData.notes,
+        // Store all quantities as additional data
+        quantities: Object.fromEntries(
+          filledActivities.map(({ label, unitKey, value }) => [
+            unitKey, 
+            { label, value }
+          ])
+        )
       };
 
-      onAddActivity(activityData);
+      console.log('✅ Adding Combined Activity:', combinedActivity);
+      
+      // ✅ Add ONLY ONE combined activity (not multiple)
+      onAddActivity(combinedActivity);
 
       // Reset form fields
+      setQuantities({});
+      setManuallyEditedUnits(new Set());
       setFormData(prev => ({
         ...prev,
-        qty: '',
         campaign: '',
         notes: ''
       }));
@@ -117,24 +270,15 @@ export default function MarketingActivityForm({
     }
   };
 
-  const getScopeIcon = (scope: number) => {
-    switch (scope) {
-      case 1: return "🔥";
-      case 2: return "⚡";
-      case 3: return "🌐";
-      default: return "📊";
-    }
-  };
-
   return (
-    <div className="bg-gray-50 px-6  space-y-6">
+    <div className="bg-gray-50 px-6 space-y-6">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
-          Add Marketing Activity
+          Add Marketing <span className="text-tertiary">Activity</span>
         </h2>
-        <p className="text-gray-600 mt-2 max-w-3xl">
-          Enter the details of your marketing activity to calculate its carbon footprint.
-          We use <strong className="text-orange-400">verified emission factors</strong> and real-time data for accurate calculations.
+        <p className="text-gray-600 mt-2 max-w-4xl">
+          Enter the details of your marketing activity to estimate its{" "}
+          <strong className="text-orange-400">Carbon Footprint</strong>
         </p>
       </div>
 
@@ -174,7 +318,7 @@ export default function MarketingActivityForm({
         </Popover>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="market" className="text-gray-700 font-medium">Market</Label>
           <Select
@@ -221,52 +365,46 @@ export default function MarketingActivityForm({
             </SelectContent>
           </Select>
         </div>
+      </div>
 
-        {/* Activity Type */}
-        <div className="space-y-2">
-          <Label htmlFor="activity-type" className="text-gray-700 font-medium">Activity type</Label>
-          <Select
-            value={formData.unit}
-            onValueChange={(value) => handleChange('unit', value)}
-          >
-            <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500/20">
-              <SelectValue placeholder="Select activity type" />
-            </SelectTrigger>
-            <SelectContent>
-              {availableUnits.map(([label, key]) => (
-                <SelectItem key={key} value={key}>
+      {/* Activity Type Quantities */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label className="text-gray-700 font-medium ">Activity Type </Label>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 bg-white rounded-lg border border-gray-200">
+          {availableUnits.map(([label, unitKey]) => {
+            const isManuallyEdited = manuallyEditedUnits.has(unitKey);
+            const hasValue = quantities[unitKey] && parseFloat(quantities[unitKey]) > 0;
+            const isAutoCalculated = hasValue && !isManuallyEdited;
+            
+            return (
+              <div key={unitKey} className="space-y-2">
+                <Label 
+                  htmlFor={unitKey} 
+                  className={`text-sm font-medium `}
+                >
                   {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+                
+                </Label>
+                <Input
+                  id={unitKey}
+                  type="number"
+                  step="0.01"
+                  value={quantities[unitKey] || ''}
+                  onChange={(e) => handleQuantityChange(unitKey, e.target.value)}
+                  placeholder={`Enter ${label.toLowerCase()}`}
+                  className={`bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 `}
+                />
+              
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Second Row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Quantity */}
-        <div className="space-y-2">
-          <Label htmlFor="quantity" className="text-gray-700 font-medium">
-            Quantity
-          </Label>
-          <Input
-            id="quantity"
-            type="number"
-            step="0.000001"
-            value={formData.qty}
-            onChange={(e) => handleChange('qty', e.target.value)}
-            placeholder="e.g., 5000000"
-            className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500/20"
-          />
-          {formData.unit && (
-            <p className="text-sm text-gray-500">
-              Unit: {availableUnits.find(([, key]) => key === formData.unit)?.[0] || formData.unit}
-            </p>
-          )}
-        </div>
-
-        {/* Emission Scope */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label className="text-gray-700 font-medium">Emission Scope</Label>
           <Select
@@ -279,19 +417,16 @@ export default function MarketingActivityForm({
             <SelectContent>
               <SelectItem value="1">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{getScopeIcon(1)}</span>
                   <span>Scope 1 - Direct emissions</span>
                 </div>
               </SelectItem>
               <SelectItem value="2">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{getScopeIcon(2)}</span>
                   <span>Scope 2 - Indirect energy</span>
                 </div>
               </SelectItem>
               <SelectItem value="3">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{getScopeIcon(3)}</span>
                   <span>Scope 3 - Value chain</span>
                 </div>
               </SelectItem>
@@ -299,13 +434,11 @@ export default function MarketingActivityForm({
           </Select>
           <div className="flex justify-start">
             <Badge variant="outline" className={getScopeColor(formData.scope)}>
-              <span className="mr-2">{getScopeIcon(formData.scope)}</span>
               Scope {formData.scope}
             </Badge>
           </div>
         </div>
 
-        {/* Campaign Name */}
         <div className="space-y-2">
           <Label htmlFor="campaign" className="text-gray-700 font-medium">
             Campaign name <span className="text-gray-400">(optional)</span>
@@ -321,7 +454,6 @@ export default function MarketingActivityForm({
         </div>
       </div>
 
-      {/* Notes - Full Width */}
       <div className="space-y-2">
         <Label htmlFor="notes" className="text-gray-700 font-medium">
           Notes <span className="text-gray-400">(optional)</span>
@@ -336,10 +468,10 @@ export default function MarketingActivityForm({
         />
       </div>
 
-      <div className="flex justify-end ">
+      <div className="flex justify-end">
         <Button
           onClick={handleSubmit}
-          disabled={addingActivity || !formData.qty || !dateRange?.from}
+          disabled={addingActivity || !Object.values(quantities).some(q => q && parseFloat(q) > 0) || !dateRange?.from}
           size="lg"
           className="bg-tertiary text-white shadow-lg hover:shadow-xl rounded-sm hover:bg-green-600 transition-all duration-200"
         >

@@ -16,14 +16,13 @@ export default function OrganizationForm({ organization, onOrganizationChange }:
   };
 
   return (
-    <div className="bg-gray-50 px-6 py-8 space-y-6 ">
+    <div className="bg-gray-50 px-6 py-8 space-y-6  ">
       <div>
         <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
-          Organization & Reporting Details
+          Organization & Reporting {" "}<span className="text-tertiary"> Details</span>
         </h2>
-        <p className="text-gray-600 mt-2 max-w-3xl">
-          We report <strong className="text-orange-400">gross emissions</strong> and disclose offsets separately (per GHG Protocol / SBTi). 
-          This tool uses latest 2025 emission factors and updated grid intensities.
+        <p className="text-gray-600 mt-2 max-w-4xl">
+          <strong className="text-orange-400"> We follow the GHG Protocol and SBTi </strong>  guidance to ensure transparent climate reporting.
         </p>
       </div>
 

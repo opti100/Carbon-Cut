@@ -1,9 +1,13 @@
-import Signup from "@/components/auth/signup/Signup"
 
+import dynamic from "next/dynamic";
+import { Suspense } from "react"
+const Signup = dynamic(() => import('../../components/auth/signup/Signup'));
 
 const page = () => {
     return (
-        <Signup/>
+        <Suspense fallback={<div>Loading...</div>}>
+            <Signup />
+        </Suspense>
     )
 }
 

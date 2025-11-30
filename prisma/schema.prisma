@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -8,79 +5,427 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
-  id          String    @id @default(cuid())
-  email       String    @unique
-  name        String?
-  phoneNumber String?
-  companyName String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  // OTP fields
-  otpCode     String?
-  otpExpiry   DateTime?
-  otpVerified Boolean   @default(false)
-  
-  // Relationships
-  reports     PdfReport[]
-  
+  id                      String                  @id @default(cuid())
+  email                   String                  @unique
+  name                    String?
+  phoneNumber             String?
+  companyName             String?
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  otpCode                 String?
+  otpExpiry               DateTime?
+  otpVerified             Boolean                 @default(false)
+  market                  Market?
+  complianceMarketCountry String?
+  campaign_credential     campaign_credential[]
+  campaign_utmparameter   campaign_utmparameter[]
+  campaigns               campaigns[]
+  reports                 PdfReport[]
+  project_views           project_views[]
+
   @@map("users")
 }
 
 model PdfReport {
-  id                String            @id @default(cuid())
-  
-  // User relationship
-  userId            String
-  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // User Information (denormalized for report)
-  userName          String
-  email             String
-  companyName       String
-  phoneNumber       String
-  
-  // Report Details
-  disclosureFormat  DisclosureFormat
-  
-  // Certification
-  isCertified       Boolean           @default(false)
-  certificationId   String?           @unique
-  certificationDate DateTime?
-  
-  // PDF Storage
-  pdfUrl            String?
+  id                 String           @id @default(cuid())
+  userName           String
+  email              String
+  companyName        String
+  phoneNumber        String
+  isCertified        Boolean          @default(false)
+  certificationId    String?          @unique
+  certificationDate  DateTime?
+  pdfUrl             String?
   cloudinaryPublicId String?
-  
-  // Report Metadata
-  totalEmissions    Float
-  activityCount     Int
-  reportPeriod      String?
-  
-  // Timestamps
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
-  
-  // Payment Information
-  paymentStatus     PaymentStatus     @default(PENDING)
-  paymentAmount     Float?
-  paymentDate       DateTime?
-  stripePaymentId   String?
-  
-  activities        ReportActivity[]  @relation("PdfReportActivities")
+  totalEmissions     Float
+  activityCount      Int
+  reportPeriod       String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  paymentAmount      Float?
+  paymentDate        DateTime?
+  stripePaymentId    String?
+  userId             String
+  disclosureFormat   DisclosureFormat
+  paymentStatus      PaymentStatus    @default(PENDING)
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activities         ReportActivity[] @relation("PdfReportActivities")
 
   @@map("pdf_reports")
+}
+
+model ReportActivity {
+  id            String    @id @default(cuid())
+  pdfReportId   String
+  date          String
+  market        String
+  channel       String
+  activityLabel String
+  quantity      Float
+  co2Emissions  Float
+  scope         Int
+  campaign      String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  pdfReport     PdfReport @relation("PdfReportActivities", fields: [pdfReportId], references: [id], onDelete: Cascade)
+
+  @@map("report_activities")
+}
+
+model auth_group {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique @db.VarChar(150)
+  auth_group_permissions auth_group_permissions[]
+  auth_user_groups       auth_user_groups[]
+
+  @@index([name], map: "auth_group_name_a6ea08ec_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_group_permissions {
+  id              BigInt          @id @default(autoincrement())
+  group_id        Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm")
+  auth_group      auth_group      @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id")
+
+  @@unique([group_id, permission_id], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
+  @@index([group_id], map: "auth_group_permissions_group_id_b120cbf9")
+  @@index([permission_id], map: "auth_group_permissions_permission_id_84c5c92e")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_permission {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  content_type_id            Int
+  codename                   String                       @db.VarChar(100)
+  auth_group_permissions     auth_group_permissions[]
+  django_content_type        django_content_type          @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_permission_content_type_id_2f476e4b_fk_django_co")
+  auth_user_user_permissions auth_user_user_permissions[]
+
+  @@unique([content_type_id, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
+  @@index([content_type_id], map: "auth_permission_content_type_id_2f476e4b")
+}
+
+model auth_user {
+  id                         Int                          @id @default(autoincrement())
+  password                   String                       @db.VarChar(128)
+  last_login                 DateTime?                    @db.Timestamptz(6)
+  is_superuser               Boolean
+  username                   String                       @unique @db.VarChar(150)
+  first_name                 String                       @db.VarChar(150)
+  last_name                  String                       @db.VarChar(150)
+  email                      String                       @db.VarChar(254)
+  is_staff                   Boolean
+  is_active                  Boolean
+  date_joined                DateTime                     @db.Timestamptz(6)
+  api_keys                   api_keys[]
+  auth_user_groups           auth_user_groups[]
+  auth_user_user_permissions auth_user_user_permissions[]
+  django_admin_log           django_admin_log[]
+
+  @@index([username], map: "auth_user_username_6821ab7c_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_user_groups {
+  id         BigInt     @id @default(autoincrement())
+  user_id    Int
+  group_id   Int
+  auth_group auth_group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_groups_group_id_97559544_fk_auth_group_id")
+  auth_user  auth_user  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id")
+
+  @@unique([user_id, group_id], map: "auth_user_groups_user_id_group_id_94350c0c_uniq")
+  @@index([group_id], map: "auth_user_groups_group_id_97559544")
+  @@index([user_id], map: "auth_user_groups_user_id_6a12ed8b")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_user_user_permissions {
+  id              BigInt          @id @default(autoincrement())
+  user_id         Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm")
+  auth_user       auth_user       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id")
+
+  @@unique([user_id, permission_id], map: "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq")
+  @@index([permission_id], map: "auth_user_user_permissions_permission_id_1fbb5f2c")
+  @@index([user_id], map: "auth_user_user_permissions_user_id_a95ead1b")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model django_admin_log {
+  id                  Int                  @id @default(autoincrement())
+  action_time         DateTime             @db.Timestamptz(6)
+  object_id           String?
+  object_repr         String               @db.VarChar(200)
+  action_flag         Int                  @db.SmallInt
+  change_message      String
+  content_type_id     Int?
+  user_id             Int
+  django_content_type django_content_type? @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_content_type_id_c4bce8eb_fk_django_co")
+  auth_user           auth_user            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_user_id_c564eba6_fk_auth_user_id")
+
+  @@index([content_type_id], map: "django_admin_log_content_type_id_c4bce8eb")
+  @@index([user_id], map: "django_admin_log_user_id_c564eba6")
+}
+
+model django_content_type {
+  id               Int                @id @default(autoincrement())
+  app_label        String             @db.VarChar(100)
+  model            String             @db.VarChar(100)
+  auth_permission  auth_permission[]
+  django_admin_log django_admin_log[]
+
+  @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+}
+
+model django_migrations {
+  id      BigInt   @id @default(autoincrement())
+  app     String   @db.VarChar(255)
+  name    String   @db.VarChar(255)
+  applied DateTime @db.Timestamptz(6)
+}
+
+model django_session {
+  session_key  String   @id @db.VarChar(40)
+  session_data String
+  expire_date  DateTime @db.Timestamptz(6)
+
+  @@index([expire_date], map: "django_session_expire_date_a5c62663")
+  @@index([session_key], map: "django_session_session_key_c0390e0f_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model project_views {
+  id               BigInt           @id @default(autoincrement())
+  viewed_at        DateTime         @db.Timestamptz(6)
+  user_agent       String?
+  ip_address       String?          @db.Inet
+  project_id       BigInt
+  user_id          String
+  projects_project projects_project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_views_project_id_1e3bd069_fk_projects_project_id")
+  users            User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "project_views_user_id_84b01397_fk_users_id")
+
+  @@index([project_id], map: "project_views_project_id_1e3bd069")
+  @@index([user_id], map: "project_views_user_id_84b01397")
+  @@index([user_id], map: "project_views_user_id_84b01397_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model projects_inventoryadjustment {
+  id                 BigInt           @id @default(autoincrement())
+  external_id        String           @unique @db.VarChar(64)
+  extras             Json
+  created_at         DateTime         @db.Timestamptz(6)
+  updated_at         DateTime         @db.Timestamptz(6)
+  reference_id       String           @db.VarChar(255)
+  reference_type     String           @db.VarChar(100)
+  adj_amt            Decimal          @db.Decimal(20, 2)
+  balance_before     Decimal          @db.Decimal(20, 2)
+  balance_after      Decimal          @db.Decimal(20, 2)
+  prev_adjustment_id String           @db.VarChar(255)
+  project_id         BigInt
+  projects_project   projects_project @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "projects_inventoryad_project_id_a4139479_fk_projects_")
+
+  @@unique([project_id, prev_adjustment_id], map: "unique_prev_ref")
+  @@unique([reference_id, reference_type, project_id], map: "unique_project_ref")
+  @@index([external_id], map: "projects_inventoryadjustment_external_id_bc9ab129_like")
+  @@index([project_id], map: "projects_inventoryadjustment_project_id_a4139479")
+}
+
+model projects_project {
+  id                           BigInt                         @id @default(autoincrement())
+  external_id                  String                         @unique @db.VarChar(64)
+  extras                       Json
+  created_at                   DateTime                       @db.Timestamptz(6)
+  updated_at                   DateTime                       @db.Timestamptz(6)
+  external_reference_id        String                         @unique @db.VarChar(255)
+  registry                     String                         @db.VarChar(100)
+  name                         String
+  developer                    String
+  description                  String?
+  issued_credits               Decimal                        @db.Decimal(20, 2)
+  available_credits            Decimal                        @db.Decimal(20, 2)
+  documents                    Json
+  region                       String                         @db.VarChar(100)
+  latest_adjustment            String                         @db.VarChar(100)
+  project_views                project_views[]
+  projects_inventoryadjustment projects_inventoryadjustment[]
+
+  @@unique([external_reference_id, registry], map: "unique_external_reference_id")
+  @@index([external_id], map: "projects_project_external_id_890dcb46_like")
+  @@index([external_reference_id], map: "projects_project_external_reference_id_f0bd10e9_like")
+  @@index([registry], map: "projects_project_registry_68303df1")
+  @@index([registry], map: "projects_project_registry_68303df1_like")
+}
+
+model projects_registryupdates {
+  id          BigInt   @id @default(autoincrement())
+  external_id String   @unique @db.VarChar(64)
+  extras      Json
+  created_at  DateTime @db.Timestamptz(6)
+  updated_at  DateTime @db.Timestamptz(6)
+  registry    String   @db.VarChar(100)
+  documents   Json
+
+  @@index([external_id], map: "projects_registryupdates_external_id_58988e86_like")
+  @@index([registry], map: "projects_registryupdates_registry_a13a713d")
+  @@index([registry], map: "projects_registryupdates_registry_a13a713d_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model api_keys {
+  id           BigInt     @id @default(autoincrement())
+  extras       Json
+  created_at   DateTime   @db.Timestamptz(6)
+  updated_at   DateTime   @db.Timestamptz(6)
+  external_id  String     @unique @db.VarChar(100)
+  key          String     @unique @db.VarChar(64)
+  name         String     @db.VarChar(200)
+  domain       String     @db.VarChar(255)
+  is_active    Boolean
+  last_used    DateTime?  @db.Timestamptz(6)
+  total_events Int
+  user_id      Int
+  auth_user    auth_user  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "api_keys_user_id_1367826c_fk_auth_user_id")
+  sessions     sessions[]
+
+  @@index([external_id], map: "api_keys_external_id_7469cde4_like")
+  @@index([key], map: "api_keys_key_4f507790_like")
+  @@index([user_id], map: "api_keys_user_id_1367826c")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model campaign_credential {
+  id               BigInt   @id @default(autoincrement())
+  external_id      String   @unique @db.VarChar(64)
+  extras           Json
+  created_at       DateTime @db.Timestamptz(6)
+  updated_at       DateTime @db.Timestamptz(6)
+  credential_type  String   @db.VarChar(50)
+  credential_value Json
+  is_archived      Boolean
+  user_id          String
+  users            User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "campaign_credential_user_id_789142a3_fk_users_id")
+
+  @@index([external_id], map: "campaign_credential_external_id_d3e356b7_like")
+  @@index([user_id], map: "campaign_credential_user_id_789142a3")
+  @@index([user_id], map: "campaign_credential_user_id_789142a3_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model campaign_utmparameter {
+  id          BigInt    @id @default(autoincrement())
+  value       String    @db.VarChar(50)
+  campaign_id BigInt
+  user_id     String
+  campaigns   campaigns @relation(fields: [campaign_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "campaign_utmparameter_campaign_id_d28b4907_fk_campaigns_id")
+  users       User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "campaign_utmparameter_user_id_efe424df_fk_users_id")
+
+  @@index([campaign_id], map: "campaign_utmparameter_campaign_id_d28b4907")
+  @@index([user_id], map: "campaign_utmparameter_user_id_efe424df")
+  @@index([user_id], map: "campaign_utmparameter_user_id_efe424df_like")
+  @@index([value], map: "campaign_utmparameter_value_1c07cb86")
+  @@index([value], map: "campaign_utmparameter_value_1c07cb86_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model campaigns {
+  id                            BigInt                          @id @default(autoincrement())
+  external_id                   String                          @unique @db.VarChar(64)
+  extras                        Json
+  created_at                    DateTime                        @db.Timestamptz(6)
+  updated_at                    DateTime                        @db.Timestamptz(6)
+  name                          String                          @db.VarChar(255)
+  is_archived                   Boolean
+  user_id                       String
+  campaign_utmparameter         campaign_utmparameter[]
+  users                         User                            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "campaigns_user_id_fd711d9e_fk_users_id")
+  impressions_impressiontracker impressions_impressiontracker[]
+
+  @@index([external_id], map: "campaigns_external_id_a935e2aa_like")
+  @@index([user_id], map: "campaigns_user_id_fd711d9e")
+  @@index([user_id], map: "campaigns_user_id_fd711d9e_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model impressions_impressionaudit {
+  id                            BigInt                        @id @default(autoincrement())
+  external_id                   String                        @unique @db.VarChar(64)
+  extras                        Json
+  created_at                    DateTime                      @db.Timestamptz(6)
+  updated_at                    DateTime                      @db.Timestamptz(6)
+  change                        Decimal                       @db.Decimal(20, 2)
+  before                        Decimal                       @db.Decimal(20, 2)
+  after                         Decimal                       @db.Decimal(20, 2)
+  tracker_id                    BigInt
+  impressions_impressiontracker impressions_impressiontracker @relation(fields: [tracker_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "impressions_impressi_tracker_id_6fac97f4_fk_impressio")
+
+  @@index([external_id], map: "impressions_impressionaudit_external_id_0e9377ad_like")
+  @@index([tracker_id], map: "impressions_impressionaudit_tracker_id_6fac97f4")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model impressions_impressiontracker {
+  id                          BigInt                        @id @default(autoincrement())
+  external_id                 String                        @unique @db.VarChar(64)
+  extras                      Json
+  created_at                  DateTime                      @db.Timestamptz(6)
+  updated_at                  DateTime                      @db.Timestamptz(6)
+  impressions                 Decimal                       @db.Decimal(20, 2)
+  campaign_id                 BigInt
+  impressions_impressionaudit impressions_impressionaudit[]
+  campaigns                   campaigns                     @relation(fields: [campaign_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "impressions_impressi_campaign_id_9b6f4026_fk_campaigns")
+
+  @@index([campaign_id], map: "impressions_impressiontracker_campaign_id_9b6f4026")
+  @@index([external_id], map: "impressions_impressiontracker_external_id_2515326b_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model sessions {
+  id               BigInt    @id @default(autoincrement())
+  extras           Json
+  created_at       DateTime  @db.Timestamptz(6)
+  updated_at       DateTime  @db.Timestamptz(6)
+  external_id      String    @unique @db.VarChar(100)
+  session_id       String    @db.VarChar(100)
+  campaign_id      String    @db.VarChar(100)
+  first_event      DateTime  @db.Timestamptz(6)
+  latest_event     DateTime  @db.Timestamptz(6)
+  conversion_event DateTime? @db.Timestamptz(6)
+  events           Json
+  user_agent       String
+  ip_address       String?   @db.Inet
+  country          String    @db.VarChar(100)
+  device_type      String    @db.VarChar(50)
+  api_key_id       BigInt
+  api_keys         api_keys  @relation(fields: [api_key_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sessions_api_key_id_066b0e41_fk_api_keys_id")
+
+  @@unique([session_id, api_key_id], map: "sessions_session_id_api_key_id_c4f7de23_uniq")
+  @@index([api_key_id], map: "sessions_api_key_id_066b0e41")
+  @@index([campaign_id], map: "sessions_campaign_id_ea604e9c")
+  @@index([campaign_id], map: "sessions_campaign_id_ea604e9c_like")
+  @@index([external_id], map: "sessions_external_id_0d1914e0_like")
+  @@index([session_id], map: "sessions_session_id_5cb0abd8")
+  @@index([session_id], map: "sessions_session_id_5cb0abd8_like")
+}
+
+enum Market {
+  COMPLIANCE
+  VOLUNTARY
 }
 
 enum DisclosureFormat {
   SECR
   CSRD
   SEC
-  
+
   @@map("disclosure_format")
 }
 
@@ -89,26 +434,6 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
-  
-  @@map("payment_status")
-}
 
-model ReportActivity {
-  id              String    @id @default(cuid())
-  pdfReportId     String
-  pdfReport       PdfReport @relation("PdfReportActivities", fields: [pdfReportId], references: [id], onDelete: Cascade)
-  
-  date            String
-  market          String
-  channel         String
-  activityLabel   String
-  quantity        Float
-  co2Emissions    Float
-  scope           Int
-  campaign        String?
-  notes           String?
-  
-  createdAt       DateTime  @default(now())
-  
-  @@map("report_activities")
+  @@map("payment_status")
 }

@@ -37,7 +37,7 @@ const CalculatorNav = () => {
               <Link href="/about" className="text-white hover:text-cyan-400 transition-colors text-sm">
                 Marketplace
               </Link>
-              <Link href="/blog" className="text-white hover:text-cyan-400 transition-colors text-sm">
+              <Link href="/blogs" className="text-white hover:text-cyan-400 transition-colors text-sm">
                 Blog
               </Link>
               <Link href="/contact" className="text-white hover:text-cyan-400 transition-colors text-sm">

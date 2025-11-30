@@ -19,14 +19,6 @@ export async function GET(request: NextRequest) {
     
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      include: {
-        reports: {
-          include: {
-            activities: true
-          },
-          orderBy: { createdAt: 'desc' }
-        }
-      }
     });
 
     if (!user) {
@@ -44,7 +36,7 @@ export async function GET(request: NextRequest) {
         name: user.name,
         companyName: user.companyName,
         phoneNumber: user.phoneNumber,
-        reports: user.reports
+        // reports: user.reports
       }
     });
   } catch (error) {

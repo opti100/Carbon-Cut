@@ -8,17 +8,17 @@ const WhyCarbonCut = () => {
     {
       icon: Calculator,
       title: "Accurate Carbon Calculation",
-      description: "Measure emissions with precision across campaigns and operations.",
+      description: "Quantify campaign and operational emissions with precision using methodologies aligned with GHG Protocol, ISO 14064, and verified by climate scientists.",
     },
     {
       icon: ClipboardList,
       title: "Transparent Reporting",
-      description: "Get clear, auditable reports aligned with ESG standards.",
+      description: "Generate clear, audit-ready reports designed for ESG, SECR, SEC, and CSRD disclosures.Built for finance, sustainability, and compliance teams, CarbonCut delivers numbers that stand up to regulatory and investor scrutiny.",
     },
     {
       icon: TreePine,
       title: "Verified Carbon Offsetting",
-      description: "Support certified projects that deliver real climate impact.",
+      description: "Neutralise every residual tonne through certified projects across nature, energy waste sectors and others. Each offset is backed by a verifiable certificate trail and an immutable smart-contract record, ensuring end-to-end trust and traceability.",
     },
   ];
 
@@ -31,7 +31,11 @@ const WhyCarbonCut = () => {
             Security, Reliability,<span className='text-tertiary'> Simplicity </span> 
           </h2>
           <p className="text-lg lg:text-xl max-w-4xl mx-auto text-gray-600 text-center font-normal mb-12">
-            A trusted platform to measure, report, and offset carbon emissions with reliable data, clear insights, and globally verified projects that drive real climate impact.
+           A platform built for leaders who demand carbon data they can trust   <span className="text-orange-500"> ON THE GO.</span>  {" "} 
+CarbonCut ensures your emissions are measured with accuracy, reported with transparency, and offset through globally verified credits — all in real time.
+
+           
+          
           </p>
         </BlurFade>
 

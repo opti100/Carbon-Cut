@@ -3,14 +3,19 @@
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ReduxProvider } from './ReduxProvider'
+import { QueryProvider } from './QueryProvider'
+import { GoogleAdsProvider } from '@/contexts/GoogleAdsContext'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, 
-      gcTime: 10 * 60 * 1000, 
-      retry: 3,
-      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 5 minutes default
+      gcTime: 10 * 60 * 1000, // 10 minutes in cache
+      retry: 1,
+      refetchOnWindowFocus: false, // Disable global refetch on focus
+      refetchOnMount: false, // Disable global refetch on mount
+      refetchOnReconnect: true, // Only refetch on reconnect
     },
     mutations: {
       retry: 1,
@@ -25,12 +30,15 @@ interface ProvidersProps {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        {children}
-      </AuthProvider>
-      {/* {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools initialIsOpen={false} />
-      )} */}
+      <ReduxProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <GoogleAdsProvider>
+              {children}
+            </GoogleAdsProvider>
+          </QueryProvider>
+        </AuthProvider>
+      </ReduxProvider>
     </QueryClientProvider>
   )
 }

@@ -1,301 +1,439 @@
 "use client"
-
 import React, { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Mail, Shield, Loader2, ArrowLeft, CheckCircle, User, Building, Phone } from "lucide-react"
+import { toast } from 'sonner'
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 
-const signupWithEmail = async ({ fullName, email, password }: { fullName: string; email: string; password: string }) => {
-    const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ fullName, email, password }),
+// Types
+interface SignupData {
+  name: string
+  email: string
+  companyName: string
+  phoneNumber: string
+}
+
+interface SignupOTPRequest extends SignupData {
+  otp: string
+}
+
+interface AuthResponse {
+  message: string
+  data?: any
+}
+
+type Step = 'form' | 'otp'
+
+// Constants
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
+
+// API functions with proper typing
+const signupAPI = {
+  sendOTP: async (data: SignupData): Promise<AuthResponse> => {
+    const response = await fetch(`${API_BASE_URL}/auth/send-otp/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     })
 
     if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Signup failed')
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to send OTP')
     }
 
     return response.json()
-}
+  },
 
-const signupWithGoogle = async () => {
-    const response = await fetch('/api/auth/google/signup', {
-        method: 'POST',
+  verifyOTP: async (data: SignupOTPRequest): Promise<AuthResponse> => {
+    const response = await fetch(`${API_BASE_URL}/auth/verify-otp/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     })
 
     if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Google signup failed')
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to verify OTP')
     }
 
     return response.json()
+  }
 }
 
-const Signup = () => {
-    const [fullName, setFullName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
-    const [agreedToTerms, setAgreedToTerms] = useState(false)
-    const router = useRouter()
+// Validation functions
+const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
 
-    // Email signup mutation
-    const emailSignupMutation = useMutation({
-        mutationFn: signupWithEmail,
-        onSuccess: (data) => {
-            console.log('Signup successful:', data)
-            router.push('/dashboard')
-            router.refresh()
-        },
-        onError: (error: Error) => {
-            console.error('Signup error:', error.message)
-        }
-    })
+const validateOTP = (otp: string): boolean => {
+  return /^\d{6}$/.test(otp)
+}
 
-    // Google signup mutation
-    const googleSignupMutation = useMutation({
-        mutationFn: signupWithGoogle,
-        onSuccess: (data) => {
-            console.log('Google signup successful:', data)
-            router.push('/dashboard')
-            router.refresh()
-        },
-        onError: (error: Error) => {
-            console.error('Google signup error:', error.message)
-        }
-    })
+const validatePhone = (phone: string): boolean => {
+  return phone.length >= 10
+}
 
-    const handleEmailSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        
-        if (password !== confirmPassword) {
-            alert('Passwords do not match')
-            return
-        }
-        
-        if (!agreedToTerms) {
-            alert('Please agree to the terms and conditions')
-            return
-        }
+// TanStack Query keys
+const signupKeys = {
+  all: ['signup'] as const,
+  sendOTP: () => [...signupKeys.all, 'send-otp'] as const,
+  verifyOTP: () => [...signupKeys.all, 'verify-otp'] as const,
+}
 
-        emailSignupMutation.mutate({ fullName, email, password })
+const SignupPage = () => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo') || '/live'
+
+  const [step, setStep] = useState<Step>('form')
+  const [formData, setFormData] = useState<SignupData>({
+    name: '',
+    email: '',
+    companyName: '',
+    phoneNumber: ''
+  })
+  const [otp, setOtp] = useState('')
+
+  // Mutations with proper typing
+  const sendOTPMutation = useMutation({
+    mutationKey: signupKeys.sendOTP(),
+    mutationFn: signupAPI.sendOTP,
+    onSuccess: (data: AuthResponse) => {
+      setStep('otp')
+      toast.success(data.message || 'Verification code sent to your email')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+  const verifyOTPMutation = useMutation({
+    mutationKey: signupKeys.verifyOTP(),
+    mutationFn: signupAPI.verifyOTP,
+    onSuccess: (data: AuthResponse) => {
+      toast.success(data.message || 'Signup successful!')
+      router.push(redirectTo)
+      router.refresh()
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+
+  // Event handlers
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!validateEmail(formData.email)) {
+      toast.error('Please enter a valid email address')
+      return
     }
 
-    const handleGoogleSignup = () => {
-        googleSignupMutation.mutate()
+    if (!validatePhone(formData.phoneNumber)) {
+      toast.error('Please enter a valid phone number')
+      return
     }
 
-    const isLoading = emailSignupMutation.isPending || googleSignupMutation.isPending
-    const error = emailSignupMutation.error || googleSignupMutation.error
+    sendOTPMutation.mutate(formData)
+  }
 
-    return (
-        <div className="min-h-screen flex flex-col lg:flex-row dark">
-            <div className="hidden lg:block w-1/2 relative min-h-screen">
-                <Image
-                    src="/auth-hero.jpg"
-                    alt="Authentication"
-                    fill
-                    className="object-cover"
-                    priority
-                />
-            </div>
-            <div className="w-full lg:w-1/2 flex flex-col bg-background dark:bg-background min-h-screen">
-                <div className="flex-1 flex items-center justify-center px-6 py-4 lg:p-8">
-                    <div className="w-full max-w-sm lg:max-w-md">
-                        <Card className="border-0 shadow-none bg-transparent">
-                            <CardContent className="space-y-4 lg:space-y-6 px-0">
-                                <div className="text-center mb-6 lg:mb-8">
-                                    <div className="flex items-center justify-start space-x-3 mb-2">
-                                        <Image
-                                            src="/logo.png"
-                                            alt="Carbon Cut Logo"
-                                            width={20}
-                                            height={20}
-                                            className="w-6 h-6 lg:w-8 lg:h-8"
-                                        />
-                                        <span className="text-xl lg:text-2xl font-bold text-foreground">
-                                            Carbon Cut
-                                        </span>
-                                    </div>
-                                    <p className="text-sm text-left lg:text-base text-muted-foreground">
-                                        Measure & Offset Your Marketing Carbon Emissions
-                                    </p>
-                                </div>
+  const handleOTPSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!validateOTP(otp)) {
+      toast.error('Please enter a valid 6-digit OTP')
+      return
+    }
 
-                                {error && (
-                                    <Alert variant="destructive">
-                                        <AlertDescription>
-                                            {error.message}
-                                        </AlertDescription>
-                                    </Alert>
-                                )}
+    verifyOTPMutation.mutate({ ...formData, otp })
+  }
 
-                                <form onSubmit={handleEmailSubmit} className="space-y-4 lg:space-y-6">
-                                    <div className='text-2xl lg:text-3xl font-bold text-foreground text-center lg:text-left mb-4 lg:mb-6'>
-                                        Sign up!
-                                    </div>
+  const handleBackToForm = () => {
+    setStep('form')
+    setOtp('')
+    sendOTPMutation.reset()
+  }
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="fullName" className="text-sm font-medium text-foreground">
-                                            Full Name
-                                        </Label>
-                                        <Input
-                                            type="text"
-                                            id="fullName"
-                                            name="fullName"
-                                            required
-                                            value={fullName}
-                                            onChange={(e) => setFullName(e.target.value)}
-                                            placeholder="Enter your full name"
-                                            className="w-full h-11 lg:h-12"
-                                            disabled={isLoading}
-                                        />
-                                    </div>
+  const handleResendOTP = () => {
+    if (validateEmail(formData.email)) {
+      sendOTPMutation.mutate(formData)
+    }
+  }
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="email" className="text-sm font-medium text-foreground">
-                                            Business Email
-                                        </Label>
-                                        <Input
-                                            type="email"
-                                            id="email"
-                                            name="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Enter your email"
-                                            className="w-full h-11 lg:h-12"
-                                            disabled={isLoading}
-                                        />
-                                    </div>
+  const handleInputChange = (field: keyof SignupData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="password" className="text-sm font-medium text-foreground">
-                                            Password
-                                        </Label>
-                                        <Input
-                                            type="password"
-                                            id="password"
-                                            name="password"
-                                            required
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Create a password"
-                                            className="w-full h-11 lg:h-12"
-                                            disabled={isLoading}
-                                        />
-                                    </div>
+  const handleOtpChange = (value: string) => {
+    setOtp(value.replace(/\D/g, '').slice(0, 6))
+  }
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
-                                            Confirm Password
-                                        </Label>
-                                        <Input
-                                            type="password"
-                                            id="confirmPassword"
-                                            name="confirmPassword"
-                                            required
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            placeholder="Confirm your password"
-                                            className="w-full h-11 lg:h-12"
-                                            disabled={isLoading}
-                                        />
-                                    </div>
+  // Derived state
+  const isLoading = sendOTPMutation.isPending || verifyOTPMutation.isPending
+  const error = sendOTPMutation.error || verifyOTPMutation.error
+  const isFormValid = formData.name && validateEmail(formData.email) && formData.companyName && validatePhone(formData.phoneNumber)
+  const isOTPValid = validateOTP(otp)
 
-                                    <div className="flex items-start space-x-2">
-                                        <Checkbox 
-                                            id="terms" 
-                                            required 
-                                            className="mt-1 flex-shrink-0" 
-                                            checked={agreedToTerms}
-                                            onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
-                                            disabled={isLoading}
-                                        />
-                                        <Label
-                                            htmlFor="terms"
-                                            className="text-sm text-foreground cursor-pointer leading-relaxed"
-                                        >
-                                            I agree to the{' '}
-                                            <Link
-                                                href="/terms"
-                                                className="text-primary hover:text-primary/80 transition-colors underline"
-                                            >
-                                                Terms of Service
-                                            </Link>{' '}
-                                            and{' '}
-                                            <Link
-                                                href="/privacy"
-                                                className="text-primary hover:text-primary/80 transition-colors underline"
-                                            >
-                                                Privacy Policy
-                                            </Link>
-                                        </Label>
-                                    </div>
-
-                                    <Button
-                                        type="submit"
-                                        className="w-full h-11 lg:h-12 text-base font-medium"
-                                        size="lg"
-                                        disabled={isLoading}
-                                    >
-                                        {emailSignupMutation.isPending ? 'Creating Account...' : 'Create Account'}
-                                    </Button>
-                                </form>
-
-                                <div className="text-center pt-4">
-                                    <p className="text-sm text-muted-foreground">
-                                        Already have an account?{' '}
-                                        <Link
-                                            href="/login"
-                                            className="font-medium text-primary hover:text-primary/80 transition-colors underline"
-                                        >
-                                            Sign in
-                                        </Link>
-                                    </p>
-                                </div>
-
-                                {/* Divider */}
-                                <div className="flex items-center my-6">
-                                    <div className="flex-1 border-t border-muted-foreground/30"></div>
-                                    <span className="px-3 text-muted-foreground text-sm">or</span>
-                                    <div className="flex-1 border-t border-muted-foreground/30"></div>
-                                </div>
-
-                                {/* Google Sign Up Button */}
-                                <Button 
-                                    type="button"
-                                    variant="outline"
-                                    onClick={handleGoogleSignup}
-                                    disabled={isLoading}
-                                    className="w-full h-11 lg:h-12 text-base font-medium bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 transition-colors"
-                                >
-                                    <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
-                                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                                    </svg>
-                                    {googleSignupMutation.isPending ? 'Signing Up...' : 'Sign up with Google'}
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="h-screen flex flex-col lg:flex-row overflow-hidden">
+      {/* Left Side - Hero Image */}
+      <div 
+        className="hidden lg:flex lg:w-1/2 relative bg-cover bg-center"
+        style={{ backgroundImage: "url('/login-hero.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-black/40 flex flex-col justify-end p-8 xl:p-12">
+          <div className="text-white">
+            <h1 className="text-xl lg:text-2xl xl:text-4xl font-bold mb-2 lg:mb-4 leading-tight">
+              CarbonCut has made it simple to track and offset our carbon Emissions.
+            </h1>
+            <p className="text-base xl:text-lg opacity-90">
+              Driving real-world sustainability outcomes.
+            </p>
+          </div>
         </div>
-    )
+      </div>
+
+      {/* Right Side - Form */}
+      <div className="w-full lg:w-1/2 flex flex-col bg-background overflow-auto">
+        {/* Main Form Container */}
+        <div className="flex-1 flex items-center justify-center px-4 lg:px-8 pb-6">
+          <div className="w-full max-w-md">
+            <Card className="border-0 shadow-none bg-transparent">
+              <CardHeader className="text-center pb-4 lg:pb-6 px-0 space-y-1">
+                <CardTitle className="text-xl lg:text-2xl font-bold text-foreground">
+                  {step === 'form' ? 'Create Your Account' : 'Verify Your Email'}
+                </CardTitle>
+                <CardDescription className="text-sm text-muted-foreground">
+                  {step === 'form'
+                    ? 'Enter your details to get started with CarbonCut'
+                    : `We've sent a 6-digit code to ${formData.email}`
+                  }
+                </CardDescription>
+              </CardHeader>
+
+              <CardContent className="space-y-4 px-0">
+                {/* Error Alert */}
+                {error && (
+                  <Alert variant="destructive" className="text-sm py-2">
+                    <AlertDescription>{error.message}</AlertDescription>
+                  </Alert>
+                )}
+
+                {/* Success Alert */}
+                {sendOTPMutation.isSuccess && step === 'otp' && (
+                  <Alert className="border-green-200 bg-green-50 py-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <AlertDescription className="text-green-700 text-sm">
+                      OTP sent successfully! Please check your email.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {/* Form Step */}
+                {step === 'form' ? (
+                  <form onSubmit={handleFormSubmit} className="space-y-3">
+                    {/* Name Field */}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="name" className="text-sm font-medium">
+                        Full Name
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          type="text"
+                          id="name"
+                          required
+                          value={formData.name}
+                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          placeholder="Enter your full name"
+                          className="w-full h-10 pl-9"
+                          disabled={isLoading}
+                          autoComplete="name"
+                        />
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      </div>
+                    </div>
+
+                    {/* Email Field */}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="email" className="text-sm font-medium">
+                        Email Address
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          type="email"
+                          id="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          placeholder="Enter your email address"
+                          className="w-full h-10 pl-9"
+                          disabled={isLoading}
+                          autoComplete="email"
+                        />
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      </div>
+                    </div>
+
+                    {/* Company Name Field */}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="companyName" className="text-sm font-medium">
+                        Company Name
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          type="text"
+                          id="companyName"
+                          required
+                          value={formData.companyName}
+                          onChange={(e) => handleInputChange('companyName', e.target.value)}
+                          placeholder="Enter your company name"
+                          className="w-full h-10 pl-9"
+                          disabled={isLoading}
+                          autoComplete="organization"
+                        />
+                        <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      </div>
+                    </div>
+
+                    {/* Phone Number Field */}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="phoneNumber" className="text-sm font-medium">
+                        Phone Number
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          type="tel"
+                          id="phoneNumber"
+                          required
+                          value={formData.phoneNumber}
+                          onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                          placeholder="Enter your phone number"
+                          className="w-full h-10 pl-9"
+                          disabled={isLoading}
+                          autoComplete="tel"
+                        />
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      </div>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full h-10 bg-orange-500 hover:bg-orange-600 text-white font-medium mt-4"
+                      disabled={isLoading || !isFormValid}
+                    >
+                      {sendOTPMutation.isPending ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Sending Code...
+                        </>
+                      ) : (
+                        <>
+                          <Mail className="mr-2 h-4 w-4" />
+                          Send Verification Code
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                ) : (
+                  /* OTP Step */
+                  <form onSubmit={handleOTPSubmit} className="space-y-4">
+                    <div className="space-y-1.5">
+                      {/* <Label htmlFor="otp" className="text-sm font-medium">
+                        Verification Code
+                      </Label> */}
+                      <div className="relative flex justify-center">
+                        <InputOTP
+                          id="otp"
+                          value={otp}
+                          onChange={setOtp}
+                          maxLength={6}
+                          disabled={isLoading}
+                        >
+                          <InputOTPGroup>
+                            <InputOTPSlot index={0} className='w-10 h-12 sm:h-14 text-lg sm:text-xl font-semibold' />
+                            <InputOTPSlot index={1} className='w-10 h-12 sm:h-14 text-lg sm:text-xl font-semibold'/>
+                            <InputOTPSlot index={2} className='w-10 h-12 sm:h-14 text-lg sm:text-xl font-semibold'/>
+                            <InputOTPSlot index={3} className='w-10 h-12 sm:h-14 text-lg sm:text-xl font-semibold'/>
+                            <InputOTPSlot index={4} className='w-10 h-12 sm:h-14 text-lg sm:text-xl font-semibold' />
+                            <InputOTPSlot index={5} className='w-10 h-12 sm:h-14 text-lg sm:text-xl font-semibold'/>
+                          </InputOTPGroup>
+                        </InputOTP>
+                      </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex  gap-2 sm:gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handleBackToForm}
+                        className="flex-1 h-10"
+                        disabled={isLoading}
+                      >
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="flex-1 h-10 bg-tertiary hover:bg-tertiary/90 text-white font-medium"
+                        disabled={isLoading || !isOTPValid}
+                      >
+                        {verifyOTPMutation.isPending ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Creating...
+                          </>
+                        ) : (
+                          <>
+                            <Shield className="mr-2 h-4 w-4" />
+                            Create Account
+                          </>
+                        )}
+                      </Button>
+                    </div>
+
+                    {/* Resend Button */}
+                    <div className="text-center">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleResendOTP}
+                        disabled={isLoading}
+                        className="text-primary hover:text-primary/80 h-8"
+                      >
+                        {sendOTPMutation.isPending ? 'Sending...' : 'Resend Code'}
+                      </Button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Login Link */}
+                <div className="text-center pt-2">
+                  <p className="text-sm text-muted-foreground">
+                    Already have an account?{' '}
+                    <Link
+                      href="/login"
+                      className="font-medium text-primary hover:text-primary/80 transition-colors underline"
+                    >
+                      Sign in
+                    </Link>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
-export default Signup
+export default SignupPage
