@@ -14,7 +14,6 @@ import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 
-// API configuration
 interface SendOTPRequest {
   email: string;
   isLogin?: boolean;
@@ -88,76 +87,76 @@ const authKeys = {
 }
 
 function LoginPage() {
-    const router = useRouter()
-    const searchParams = useSearchParams()
-    // Updated to use redirectTo parameter name
-    const redirectUrl = searchParams.get('redirectTo') || searchParams.get('redirect') || '/dashboard/campaigns'
-    
-    const [step, setStep] = useState<'email' | 'otp'>('email')
-    const [email, setEmail] = useState('')
-    const [otp, setOtp] = useState('')
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  // Updated to use redirectTo parameter name
+  const redirectUrl = searchParams.get('redirectTo') || searchParams.get('redirect') || '/dashboard/campaigns'
 
-    const sendOTPMutation = useMutation({
-        mutationKey: authKeys.sendOTP(),
-        mutationFn: authAPI.sendOTP,
-        onSuccess: (data: AuthResponse) => {
-            setStep('otp')
-            toast.success(data.message || 'Verification code sent to your email')
-        },
-        onError: (error: Error) => {
-            toast.error(error.message)
-        },
-    })
+  const [step, setStep] = useState<'email' | 'otp'>('email')
+  const [email, setEmail] = useState('')
+  const [otp, setOtp] = useState('')
 
-    const otpLoginMutation = useMutation({
-        mutationKey: authKeys.verifyOTP(),
-        mutationFn: authAPI.verifyOTP,
-        onSuccess: (data: AuthResponse) => {
-            toast.success(data.message || 'Login successful!')
-            router.push(redirectUrl) // This will now redirect to /live
-            router.refresh()
-        },
-        onError: (error: Error) => {
-            toast.error(error.message)
-        },
-    })
+  const sendOTPMutation = useMutation({
+    mutationKey: authKeys.sendOTP(),
+    mutationFn: authAPI.sendOTP,
+    onSuccess: (data: AuthResponse) => {
+      setStep('otp')
+      toast.success(data.message || 'Verification code sent to your email')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
 
-    const handleEmailSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!validateEmail(email)) {
-            toast.error('Please enter a valid email address')
-            return
-        }
-        sendOTPMutation.mutate({ email, isLogin: true })
+  const otpLoginMutation = useMutation({
+    mutationKey: authKeys.verifyOTP(),
+    mutationFn: authAPI.verifyOTP,
+    onSuccess: (data: AuthResponse) => {
+      toast.success(data.message || 'Login successful!')
+      router.push(redirectUrl) // This will now redirect to /live
+      router.refresh()
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validateEmail(email)) {
+      toast.error('Please enter a valid email address')
+      return
     }
+    sendOTPMutation.mutate({ email, isLogin: true })
+  }
 
-    const handleOTPSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!validateOTP(otp)) {
-            toast.error('Please enter a valid 6-digit OTP')
-            return
-        }
-        otpLoginMutation.mutate({ email, otp })
+  const handleOTPSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validateOTP(otp)) {
+      toast.error('Please enter a valid 6-digit OTP')
+      return
     }
+    otpLoginMutation.mutate({ email, otp })
+  }
 
-    const handleBackToEmail = () => {
-        setStep('email')
-        setOtp('')
-        sendOTPMutation.reset()
-        otpLoginMutation.reset()
-    }
+  const handleBackToEmail = () => {
+    setStep('email')
+    setOtp('')
+    sendOTPMutation.reset()
+    otpLoginMutation.reset()
+  }
 
-    const handleResendOTP = () => {
-        sendOTPMutation.mutate({ email, isLogin: true })
-    }
+  const handleResendOTP = () => {
+    sendOTPMutation.mutate({ email, isLogin: true })
+  }
 
-    const isLoading = sendOTPMutation.isPending || otpLoginMutation.isPending
-    const isOTPValid = validateOTP(otp)
+  const isLoading = sendOTPMutation.isPending || otpLoginMutation.isPending
+  const isOTPValid = validateOTP(otp)
 
-    return (
-      <div className="h-screen flex flex-col lg:flex-row overflow-hidden">
+  return (
+    <div className="h-screen flex flex-col lg:flex-row overflow-hidden">
       {/* Hero Image Section */}
-      <div 
+      <div
         className="hidden lg:flex lg:w-1/2 relative bg-cover bg-center"
         style={{ backgroundImage: "url('/login-hero.jpg')" }}
       >
@@ -204,7 +203,7 @@ function LoginPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="you@example.com"
-                          className="w-full h-10 sm:h-11 lg:h-12 pl-9 text-sm sm:text-base"
+                          className="w-full  pl-9 text-sm sm:text-base"
                           disabled={isLoading}
                         />
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -213,7 +212,7 @@ function LoginPage() {
 
                     <Button
                       type="submit"
-                      className="w-full h-10 sm:h-11 lg:h-12 bg-tertiary hover:bg-tertiary/90 text-white text-sm sm:text-base font-medium"
+                      className="w-full  hover:bg-tertiary/ text-sm sm:text-base font-medium"
                       disabled={isLoading || !email}
                     >
                       {sendOTPMutation.isPending ? (
@@ -230,11 +229,8 @@ function LoginPage() {
                     </Button>
                   </form>
                 ) : (
-                  <form onSubmit={handleOTPSubmit} className="space-y-4">
-                    <div className="space-y-2">
-                      {/* <Label htmlFor="otp" className="text-sm font-medium">
-                        Verification Code
-                      </Label> */}
+                  <form onSubmit={handleOTPSubmit} className="space-y-6">
+                    <div className="space-y-4">
                       <div className="relative flex justify-center">
                         <InputOTP
                           id="otp"
@@ -242,59 +238,76 @@ function LoginPage() {
                           onChange={setOtp}
                           maxLength={6}
                           disabled={isLoading}
+                          className="gap-2"
                         >
-                          <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
+                          <InputOTPGroup className="flex gap-2">
+                            <InputOTPSlot
+                              index={0}
+                              className="h-12 w-12 text-center text-lg font-semibold border border-border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
+                            <InputOTPSlot
+                              index={1}
+                              className="h-12 w-12 text-center text-lg font-semibold border border-border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
+                            <InputOTPSlot
+                              index={2}
+                              className="h-12 w-12 text-center text-lg font-semibold border border-border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
+                            <InputOTPSlot
+                              index={3}
+                              className="h-12 w-12 text-center text-lg font-semibold border border-border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
+                            <InputOTPSlot
+                              index={4}
+                              className="h-12 w-12 text-center text-lg font-semibold border border-border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
+                            <InputOTPSlot
+                              index={5}
+                              className="h-12 w-12 text-center text-lg font-semibold border border-border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
                           </InputOTPGroup>
                         </InputOTP>
                       </div>
                     </div>
-
-                    <div className="flex flex-col sm:flex-row gap-2">
+                    <div className="flex flex-col-reverse  sm:w-full gap-4">
                       <Button
                         type="button"
                         variant="outline"
                         onClick={handleBackToEmail}
-                        className="w-full sm:flex-1 h-10 sm:h-11 lg:h-12 text-xs sm:text-sm"
+                        className="w-full sm:w-auto text-sm font-medium border border-border rounded-md hover:bg-muted focus:ring-2 focus:ring-primary focus:outline-none"
                         disabled={isLoading}
                       >
-                        <ArrowLeft className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                        <ArrowLeft className="mr-2 h-4 w-4" />
                         Back
                       </Button>
                       <Button
                         type="submit"
-                        className="w-full sm:flex-1 h-10 sm:h-11 lg:h-12 bg-tertiary hover:bg-tertiary/90 text-white text-xs sm:text-sm font-medium"
+                        className="w-full sm:w-auto text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:outline-none"
                         disabled={isLoading || !isOTPValid}
                       >
                         {otpLoginMutation.isPending ? (
                           <>
-                            <Loader2 className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" />
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Verifying...
                           </>
                         ) : (
                           <>
-                            <Shield className="mr-1 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <Shield className="mr-2 h-4 w-4" />
                             Sign In
                           </>
                         )}
                       </Button>
                     </div>
-
-                    <div className="text-center pt-2">
+                    <div className="text-center pt-4">
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
                         onClick={handleResendOTP}
                         disabled={isLoading}
-                        className="text-primary hover:text-primary/80 text-xs sm:text-sm h-auto p-2"
+                        className="text-primary hover:text-primary/80 text-sm font-medium focus:ring-2 focus:ring-primary focus:outline-none"
                       >
-                        {sendOTPMutation.isPending ? 'Sending...' : 'Resend Code'}
+                        {sendOTPMutation.isPending ? "Sending..." : "Resend Code"}
                       </Button>
                     </div>
                   </form>
@@ -317,7 +330,7 @@ function LoginPage() {
         </div>
       </div>
     </div>
-    )
+  )
 }
 
 export default LoginPage
