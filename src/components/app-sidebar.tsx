@@ -58,6 +58,7 @@ const LOCAL_STORAGE_KEY = "googleAdsCustomerId";
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { state } = useSidebar();
   const {
     status,
     isLoading: statusLoading,
@@ -87,7 +88,7 @@ export function AppSidebar() {
         localStorage.setItem(LOCAL_STORAGE_KEY, status.customer_id);
       }
     }
-  }, [status?.customer_id]);
+  }, [status?.customer_id, selectedAccountId]);
 
   const handleLogout = async () => {
     try {
@@ -144,7 +145,7 @@ export function AppSidebar() {
     }
   }, [selectedAccountId, status?.customer_id, switchAccount, checkConnection]);
 
-  const showAccountSwitcher = status?.is_connected && accounts && accounts.length > 1;
+  const showAccountSwitcher = state === "expanded" && status?.is_connected && accounts && accounts.length > 1;
 
   return (
     <div>
@@ -174,13 +175,13 @@ export function AppSidebar() {
 
             {accountsLoading ? (
               <Select disabled>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-white/30 backdrop-blur-lg border border-white/30 rounded-xl">
                   <SelectValue placeholder="Loading accounts..." />
                 </SelectTrigger>
               </Select>
             ) : accounts.length === 0 ? (
               <Select disabled>
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-white/30 backdrop-blur-lg border border-white/30 rounded-xl">
                   <SelectValue placeholder="No accounts found" />
                 </SelectTrigger>
               </Select>
@@ -190,13 +191,13 @@ export function AppSidebar() {
                 onValueChange={setSelectedAccountId}
                 disabled={accountsLoading || isSwitchingAccount}
               >
-                <SelectTrigger className="bg-white">
+                <SelectTrigger className="bg-white/30 backdrop-blur-lg border border-white/30 rounded-xl">
                   <SelectValue placeholder="Select an account" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-[#fcfdf6] hover:bg-none backdrop-blur-2xl border border-white/30 rounded-xl">
                   {accounts.map((account) => (
                     <SelectItem key={account.id} value={account.id}>
-                      <div className="flex items-center justify-between gap-2 w-full">
+                      <div className="flex items-center justify-between gap-2 w-full  bg-none">
                         <span className="truncate">{account.name}</span>
                         {account.id === status?.customer_id && (
                           <CheckCircle className="h-4 w-4 text-green-600 shrink-0" />
@@ -209,7 +210,7 @@ export function AppSidebar() {
             )}
 
             {selectedAccountId && selectedAccountId !== status?.customer_id && (
-              <Button onClick={handleSwitchAccount} disabled={isSwitchingAccount} className="w-full" size="sm">
+              <Button onClick={handleSwitchAccount} disabled={isSwitchingAccount} className="w-full bg-[#b0ea1d]/90 hover:bg-[#6c5f31]/90 backdrop-blur-xl border border-white/20 rounded-xl" size="sm">
                 {isSwitchingAccount ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -230,13 +231,13 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="bg-[#fcfdf6]">
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}>
+                <SidebarMenuItem key={item.title} className="">
+                  <SidebarMenuButton asChild isActive={pathname === item.url} tooltip={item.title}   className="hover:bg-[#fcfdf6]/80 data-[active=true]:bg-[#fcfdf6] data-[active=true]:text-[#080c04] data-[active=true]:font-semibold">
                     <Link href={item.url}>
                       <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
+                      <span>{item.title} </span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -284,7 +285,7 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg bg-[#fcfdf6]"
                 side="top"
                 align="end"
                 sideOffset={4}

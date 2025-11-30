@@ -50,7 +50,7 @@ export default function HowItWorks() {
   return (
     <div className="relative z-20 py-10 max-w-7xl mx-auto">
       <div className="px-8">
-        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto  tracking-tight font-bold text-gray-800 mb-6">
+        <h2 className="text-3xl lg:text-6xl lg:leading-tight max-w-7xl mx-auto text-center  tracking-tight font-bold text-gray-800 mb-6">
           <span>How CarbonCut Works in{" "}
             <span className="text-orange-500">4 Simple Steps</span></span>
         </h2>

@@ -15,7 +15,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
   const hasChannelData = Object.values(totals.byChannel).some(value => value > 0)
   const hasMarketData = Object.values(totals.byMarket).some(value => value > 0)
   const hasScopeData = Object.values(totals.byScope).some(value => value > 0)
-  
+
   // If no data exists, render nothing
   if (!hasChannelData && !hasMarketData && !hasScopeData) {
     return null
@@ -23,31 +23,33 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
 
   // Color palettes for each chart type
   const channelPalette = [
-    "#374151", // Gray 700 - Dark Gray
-    "#4B5563", // Gray 600 - Medium Dark Gray
-    "#6B7280", // Gray 500 - Medium Gray
-    "#9CA3AF", // Gray 400 - Light Gray
-    "#D1D5DB", // Gray 300 - Very Light Gray
-    "#E5E7EB", // Gray 200 - Pale Gray
-    "#F3F4F6", // Gray 100 - Very Pale Gray
-    "#111827", // Gray 900 - Very Dark Gray
+    "#688b0d",
+    "#80ad10",
+    "#99ce13",
+    "#afe91c",
+    "#bbed3d",
+    "#c7f05f",
+    "#d2f380",
+    "#def6a1"
+
   ]
 
   const marketPalette = [
-    "#059669", // Green 600 - Dark Green
-    "#10B981", // Green 500 - Medium Green
-    "#34D399", // Green 400 - Light Green
-    "#6EE7B7", // Green 300 - Very Light Green
-    "#A7F3D0", // Green 200 - Pale Green
-    "#D1FAE5", // Green 100 - Very Pale Green
-    "#047857", // Green 700 - Very Dark Green
-    "#065F46", // Green 800 - Darkest Green
+    "#574d27",
+    "#706333",
+    "#89793e",
+    "#a28f49",
+    "#b5a15c",
+    "#c0af75",
+    "#cbbe8e",
+    "#d7cca7"
+
   ]
 
   const scopePalette: Record<number, string> = {
-    1: "#EA580C", // Dark Orange (Scope 1 - Direct)
-    2: "#F97316", // Orange (Scope 2 - Indirect Energy)
-    3: "#FB923C", // Light Orange (Scope 3 - Other Indirect)
+    1: "#8f8209", // Dark Orange (Scope 1 - Direct)
+    2: "#efd90f", // Orange (Scope 2 - Indirect Energy)
+    3: "#f5e86f", // Light Orange (Scope 3 - Other Indirect)
   }
 
   // Transform data for charts - only include data with values > 0
@@ -79,15 +81,13 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     }))
 
   return (
-    <div className="bg-gray-50 px-6 py-8 space-y-8">
+    <div className="bg-[#fcfdf6] px-6 py-8 space-y-8">
       {/* Header */}
       <div>
-        <h2 className="text-2xl lg:text-3xl font-semibold text-gray-900">
-          Emissions Breakdown
-        </h2>
+         <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 " style={{ color: '#080c04' }}>Emissions Breakdown</h1>
         <p className="text-gray-600 mt-2 max-w-3xl">
           Breakdown of your marketing-related CO₂e emissions across different channels, markets, and scopes.
-          Calculated using <strong className="text-orange-500">verified emission factors</strong>.
+          Calculated using <strong className="text-[#080c04]">verified emission factors</strong>.
         </p>
       </div>
 
@@ -99,7 +99,7 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
             title="By Channel"
             data={channelData}
             totalLabel="Total"
-            icon={<TrendingUp className="h-5 w-5 text-gray-600" />}
+            icon={<TrendingUp className="h-5 w-5 text-gray-600 " />}
           />
         )}
 

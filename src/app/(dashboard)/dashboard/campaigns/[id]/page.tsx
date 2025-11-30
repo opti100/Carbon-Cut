@@ -314,21 +314,21 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
             <Skeleton className="h-10 w-[300px] bg-muted-foreground/20" />
 
             {/* Key metrics skeleton */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
                 <MetricCardSkeleton key={i} />
               ))}
             </div>
 
             {/* Secondary metrics skeleton */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
                 <MetricCardSkeleton key={i} />
               ))}
             </div>
 
             {/* Charts skeleton */}
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
               <ChartSkeleton />
               <ChartSkeleton />
             </div>
@@ -408,13 +408,13 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
         <div className="mx-auto max-w-7xl space-y-6">
           {/* Header */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
+            <div className="w-full sm:w-auto">
+              <div className="flex items-center gap-2 sm:gap-3 mb-2">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => router.push(`/dashboard/campaigns`)}
-                  className="hover:bg-muted"
+                  className="hover:bg-muted shrink-0"
                 >
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
@@ -424,7 +424,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
                 </div>
               </div>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <Button
                 variant="outline"
                 size="sm"
@@ -433,11 +433,11 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
                 className="border-0 hover:bg-muted "
               >
                 {syncMutation.isPending ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2 animate-spin" />
                 ) : (
-                  <RefreshCw className="h-4 w-4 mr-2" />
+                  <RefreshCw className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2" />
                 )}
-                Sync Data
+                <span className="hidden sm:inline">Sync Data</span>
               </Button>
               <Button variant="outline" size="sm" className="border-0 hover:bg-muted ">
                 <Download className="h-4 w-4 mr-2" />

@@ -11,30 +11,30 @@ import {
   animate,
 } from "framer-motion"
 
- const navigationItems = [
-    {
-      label: 'Products',
-      hasDropdown: true,
-      items: [
-        { label: 'CarbonCalculator', href: '/calculator' },
-        { label: 'CarbonLive', href: '/live' },
-        { label: 'CarbonOffset', href: '/offset' },
-       
-      ]
-    },
-    { label: 'Solutions', href: '/solutions' },
-    { label: 'Blogs', href: '/blog' },
-    { label: 'Resources', href: '/resources' },
-  ]
+const navigationItems = [
+  {
+    label: 'Products',
+    hasDropdown: true,
+    items: [
+      { label: 'CarbonCalculator', href: '/calculator' },
+      { label: 'CarbonLive', href: '/live' },
+      { label: 'CarbonOffset', href: '/offset' },
+
+    ]
+  },
+  { label: 'Solutions', href: '/solutions' },
+  { label: 'Blogs', href: '/blog' },
+  { label: 'Resources', href: '/resources' },
+]
 
 
-   const AURORA_COLORS = [
-    "#00CC33",
-    "#00AA2B",
-    "#00EE3B",
-    "#009928",
-    "#00FF40",
-  ]
+const AURORA_COLORS = [
+  "#00CC33",
+  "#00AA2B",
+  "#00EE3B",
+  "#009928",
+  "#00FF40",
+]
 const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -51,7 +51,7 @@ const Header = () => {
       repeat: Infinity,
       repeatType: "mirror",
     })
-  }, [color,AURORA_COLORS])
+  }, [color, AURORA_COLORS])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,7 +63,7 @@ const Header = () => {
 
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 80%, #ffffff 50%, ${color})`
 
-   const navigationItems = [
+  const navigationItems = [
     {
       label: 'Products',
       hasDropdown: true,
@@ -71,7 +71,7 @@ const Header = () => {
         { label: 'CarbonCalculator', href: '/calculator' },
         { label: 'CarbonLive', href: '/live' },
         { label: 'CarbonOffset', href: '/offset' },
-      
+
       ]
     },
     { label: 'Solutions', href: '/solutions' },
@@ -81,8 +81,8 @@ const Header = () => {
   return (
     <div>
 
-   
-        <motion.header
+
+      <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed  top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md border-b border-gray-200/20 shadow-sm" : "bg-transparent"
@@ -96,8 +96,8 @@ const Header = () => {
                 src="/ccLogo.svg"
                 alt="CarbonCut Logo"
                 width={128}
-                height={64}
-                className="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48"
+                height={128}
+                className="w-32  sm:w-40  lg:w-48 "
               />
             </Link>
 

@@ -124,8 +124,8 @@ export function ApiKeysList() {
     <>
       <div className="space-y-4">
         {apiKeys.map((apiKey) => (
-          <Card key={apiKey.id}>
-            <CardContent className="p-6">
+          <Card key={apiKey.id} className='bg-[#fcfdf6] border-none'>
+            <CardContent className="p-6 ">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
@@ -179,7 +179,9 @@ export function ApiKeysList() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <Button onClick={() => setConversionRulesKeyId(apiKey.id)}>
+                  <Button 
+                   className='bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6] text-[#6c5f31]' 
+                  onClick={() => setConversionRulesKeyId(apiKey.id)}>
                     Manage Conversions
                   </Button>
 
@@ -194,7 +196,7 @@ export function ApiKeysList() {
                     }}
                   />
                   <Button
-                    variant="outline"
+                   className='bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6]' 
                     size="sm"
                     onClick={() => setVerifyKeyId(apiKey.id)}
                     title="Verify Installation"
@@ -202,7 +204,7 @@ export function ApiKeysList() {
                     <Shield className="h-4 w-4 text-blue-600" />
                   </Button>
                   <Button
-                    variant="outline"
+                   className='bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6]' 
                     size="sm"
                     onClick={() => toggleMutation.mutate(apiKey.id)}
                     disabled={toggleMutation.isPending}
@@ -214,7 +216,7 @@ export function ApiKeysList() {
                     />
                   </Button>
                   <Button
-                    variant="outline"
+                   className='bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6]/  '
                     size="sm"
                     onClick={() => setDeleteKeyId(apiKey.id)}
                     disabled={deleteMutation.isPending}

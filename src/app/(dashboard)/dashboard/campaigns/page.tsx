@@ -130,7 +130,7 @@ export default function CampaignsPage() {
                 <div className="text-3xl font-bold">
                   {campaigns?.reduce((sum, c) => sum + (c.utm_params?.length || 0), 0) || 0}
                 </div>
-                <p className="text-xs text-muted-foreground">Across all campaigns</p>
+                <p className="text-xs text-[#6c5f31]/70">Across all campaigns</p>
               </CardContent>
             </Card>
             <Card className="border-border rounded-sm h-24 bg-white text-card-foreground">
@@ -138,7 +138,7 @@ export default function CampaignsPage() {
                 <div className="text-3xl font-bold">
                   {campaigns?.filter((c) => c.google_ads_campaign_id).length || 0}
                 </div>
-                <p className="text-xs text-muted-foreground">Synced campaigns</p>
+                <p className="text-xs text-[#6c5f31]/70">Synced campaigns</p>
               </CardContent>
             </Card>
             <Card className="border-border rounded-sm h-24 bg-white text-card-foreground">
@@ -146,7 +146,7 @@ export default function CampaignsPage() {
                 <div className="text-3xl font-bold">
                   {campaigns?.filter((c) => c.tracking_url_example).length || 0}
                 </div>
-                <p className="text-xs text-muted-foreground">Ready to use</p>
+                <p className="text-xs text-[#6c5f31]/70">Ready to use</p>
               </CardContent>
             </Card>
           </div>

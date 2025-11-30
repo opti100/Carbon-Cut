@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
+import Header from "./calculator/Header"
 
 interface DashboardHeaderProps {
   breadcrumbs: {
@@ -25,13 +26,13 @@ export function DashboardHeader({ breadcrumbs }: DashboardHeaderProps) {
       <Breadcrumb>
         <BreadcrumbList>
           {breadcrumbs.map((breadcrumb, index) => (
-            <div key={index} className="flex items-center gap-2">
+            <div key={index} className="flex items-center gap-2 text-[#6c5f31]">
               {index > 0 && <BreadcrumbSeparator />}
               <BreadcrumbItem>
                 {index === breadcrumbs.length - 1 ? (
-                  <BreadcrumbPage className="font-medium">{breadcrumb.label}</BreadcrumbPage>
+                  <BreadcrumbPage className="font-medium text-[#6c5f31]">{breadcrumb.label}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={breadcrumb.href || "#"} className="transition-colors hover:text-foreground">
+                  <BreadcrumbLink href={breadcrumb.href || "#"} className="transition-colors  text-[#6c5f31] hover:text-[#4a4a23]">
                     {breadcrumb.label}
                   </BreadcrumbLink>
                 )}
