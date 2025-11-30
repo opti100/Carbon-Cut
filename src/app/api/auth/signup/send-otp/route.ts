@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
 
     const result = await OTPService.sendOTP(email, name, false) 
     
+    
     if (!result.success) {
       return NextResponse.json(
         { 
