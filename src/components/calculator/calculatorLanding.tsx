@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, act } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
@@ -11,8 +11,6 @@ import ReportActions from './ReportActions';
 import { loadCountriesFromScientificData, CHANNELS } from '@/constants/data';
 import { CountryData, ActivityData } from '@/types/types';
 import CalculatorFAQ from './CalculatorFAQ';
-import PreFooter from '@/components/main/PreFooter';
-import Footer from '@/components/main/Footer';
 import StepperProgress from './StepperProgress';
 import StatsCards from './StatsCards';
 import OrganizationStep from './steps/OrganizationStep';
@@ -20,6 +18,8 @@ import CampaignStep from './steps/CampaignStep';
 import ActivitiesStep from './steps/ActivitiesStep';
 import DetailsStep from './steps/DetailsStep';
 import { useEmissionsCalculator } from './hooks/useEmissionsCalculator';
+import PreFooter from '../NewLanding/PreFooter';
+import Footer from '../NewLanding/Footer';
 
 export default function CalculatorLanding() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -306,7 +306,7 @@ export default function CalculatorLanding() {
                   onClick={handleBack}
                   variant="outline"
                   className="px-4 sm:px-6 md:px-8 text-white text-sm sm:text-base bg-[#6c5f31] hover:bg-[#b0ea1d] "
-                  
+
                 >
                   Back
                 </Button>
@@ -347,7 +347,10 @@ export default function CalculatorLanding() {
 
           <StatsCards stats={stats} />
         </div>
+
       </div>
+
+
 
       {activities.length > 0 && (
         <>
@@ -384,9 +387,19 @@ export default function CalculatorLanding() {
                 getDisplayCO2={getDisplayCO2}
                 totals={totals}
               />
-            </div>
-          </div>
 
+            </div>
+
+          </div>
+          <CalculatorFAQ />
+          <PreFooter />
+          <Footer />
+
+        </>
+      )}
+
+      {activities.length === 0 && (
+        <>
           <CalculatorFAQ />
           <PreFooter />
           <Footer />

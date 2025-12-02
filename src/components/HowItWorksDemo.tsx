@@ -58,7 +58,7 @@ export default function HowItWorks() {
         <p className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-gray-600 text-center font-normal">
           CarbonLive  <span className="text-orange-500">measures, reduces, and offsets </span>  emissions in real time — starting with internet advertising and expanding to energy and gas sectors.
           {" "}
-         <p>   Our AI-driven agents identify reduction opportunities as they happen, while automation ensures every residual tonne is instantly offset with verified carbon credits. </p>
+         <span>   Our AI-driven agents identify reduction opportunities as they happen, while automation ensures every residual tonne is instantly offset with verified carbon credits. </span>
         </p>
       </div>
 

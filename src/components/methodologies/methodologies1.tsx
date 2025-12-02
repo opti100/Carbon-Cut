@@ -1,4 +1,5 @@
 import React from 'react';
+import Navbar from '../NewLanding/Navbar';
 
 const AppleTermsOfUse = () => {
   const html =`
@@ -183,14 +184,7 @@ const AppleTermsOfUse = () => {
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <h1>CarbonCut Methodologies</h1>
-                <p class="subtitle">Technical Framework for Marketing Emissions Measurement, Offsetting, and Tokenisation</p>
-            </div>
-        </div>
-    </header>
+    <Navbar />
 
     <main>
     

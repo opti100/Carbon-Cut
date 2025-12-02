@@ -57,8 +57,8 @@ export function useEmissionsCalculator() {
               },
             };
 
-            const apiUrl =  'http://localhost:8000/api/v1';
-            const response = await fetch(`${apiUrl}/inventory/calculate-carbon/`, {
+             const BASE_URL = process.env.NEXT_PUBLIC_API_URL ;
+            const response = await fetch(`${BASE_URL}/inventory/calculate-carbon/`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
