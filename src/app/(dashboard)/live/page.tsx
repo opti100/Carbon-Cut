@@ -12,6 +12,7 @@ import VerticalStepper from "@/components/live/Stepper"
 import { toast } from "sonner"
 import Image from "next/image"
 import { makeRequest } from "@/contexts/AuthContext"
+import Navbar from "@/components/NewLanding/Navbar"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1"
 
@@ -115,20 +116,11 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <h1 className="text-lg font-semibold text-gray-900">CarbonCut</h1>
-          <div className="flex items-center gap-3 sm:gap-5">
-             {/* <span className="text-xs text-gray-600 hidden sm:inline">Logged in as user@example.com</span> */}
-            <button className="text-xs text-gray-600 hover:text-gray-900">Help</button>
-            {/* <div className="w-px h-5 bg-gray-300 hidden sm:block" /> */}
-            {/* <button className="text-xs text-gray-600 hover:text-gray-900">Log out</button>  */}
-          </div>
-        </div>
-      </header>
+     <Navbar />
+        
 
       {/* Main Layout */}
-      <div className="flex-1 flex items-stretch p-4 sm:p-6 lg:p-8">
+      <div className="flex-1 flex items-stretch p-4 sm:p-6 lg:p-8 mt-10">
         <div className="flex flex-col lg:flex-row w-full max-w-7xl gap-6 lg:gap-8 h-full mx-auto">
           {/* Left Sidebar - Stepper */}
           <div className="lg:w-[45%] bg-white rounded-lg p-8 shadow-sm border border-gray-200 h-screen px-6 sm:px-8 lg:px-12 py-8 lg:py-10 relative min-h-[500px] lg:min-h-0 overflow-y-auto">

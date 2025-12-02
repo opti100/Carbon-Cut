@@ -8,7 +8,6 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BlogPost, blogPosts } from '@/constants/blogData';
 import { BlogOneContent } from '@/constants/blogs/blogone-data';
-import Header from '@/components/calculator/Header';
 import Footer from '@/components/main/Footer';
 import PreFooter from '../main/PreFooter';
 import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
@@ -19,6 +18,7 @@ import { BlogSixContent } from '@/constants/blogs/blogsix-data';
 import { BlogSevenContent } from '@/constants/blogs/blogSeven-data';
 import { BlogEightContent } from '@/constants/blogs/blogEight-data';
 import { BlogNineContent } from '@/constants/blogs/blogNine-data';
+import Navbar from '../NewLanding/Navbar';
 
 // Blog content component mapping
 const blogContentComponents: Record<string, React.ComponentType> = {
@@ -51,7 +51,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
   return (
     <div className="min-h-screen bg-white ">
-      <Header />
+      <Navbar />
       
       <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
         {/* Back Button */}
