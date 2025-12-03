@@ -117,8 +117,8 @@ const ImpactSection = () => {
     >
 
       <div className="mx-auto w-full px-6">
-        <p className="text-secondary/60 text-sm uppercase tracking-wider">By The Numbers</p>
-        <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb]'>
+        <p className="text-secondary/60 text-sm uppercase tracking-wider mb-4">By The Numbers</p>
+        <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] mb-16 leading-tight'>
           Our Impact
         </h2>
 

@@ -8,8 +8,8 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BlogPost, blogPosts } from '@/constants/blogData';
 import { BlogOneContent } from '@/constants/blogs/blogone-data';
-import Footer from '@/components/main/Footer';
-import PreFooter from '../main/PreFooter';
+import Footer from '../NewLanding/Footer';
+import PreFooter from '../NewLanding/PreFooter';
 import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
 import { BlogThreeContent } from '@/constants/blogs/blogthree-data';
 import { BlogFourContent } from '@/constants/blogs/blogfour-data';
@@ -20,6 +20,7 @@ import { BlogEightContent } from '@/constants/blogs/blogEight-data';
 import { BlogNineContent } from '@/constants/blogs/blogNine-data';
 import { BlogTenContent } from '@/constants/blogs/blogTen-data';
 import Navbar from '../NewLanding/Navbar';
+import { BlogElevenContent } from '@/constants/blogs/blogsEleven';
 
 
 // Blog content component mapping
@@ -34,6 +35,7 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'how-carbon-tech-international-limited-is-redefining-real-time-carbon-intelligence-through-carboncut': BlogEightContent,
   'the-science-behind-real-time-carbon-tracking': BlogNineContent,
   'your-carbon-footprint-calculator-is-lying-to-you': BlogTenContent,
+  'real-time-carbon-data-competitive-advantage': BlogElevenContent,
   
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
