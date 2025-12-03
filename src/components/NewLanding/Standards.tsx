@@ -169,7 +169,7 @@ const Standards = () => {
 
       <div className="mx-auto max-w-7xl px-6">
         <p className="text-secondary/60 text-sm uppercase tracking-wider">Standards</p>
-        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12">
+        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb]">
           Carbon Standards
         </h2>
 

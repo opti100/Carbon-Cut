@@ -371,7 +371,7 @@ export const BlogNineContent = () => {
 // Export blog data for the blog system
 export const blogNineData: BlogPost = {
   id: '9',
-  slug: '9',
+  slug: 'the-science-behind-real-time-carbon-tracking',
   category: 'Technology',
   title: 'The Science Behind Real-Time Carbon Tracking: How CarbonCut Measures What Others Miss',
   excerpt: 'Discover the scientific principles powering real-time carbon tracking and how CarbonCut transforms delayed reporting into immediate, actionable climate intelligence.',

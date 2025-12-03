@@ -195,7 +195,7 @@ export const BlogEightContent = () => {
 // Export blog data for the blog system
 export const blogEightData: BlogPost = {
   id: '8',
-  slug: '8',
+  slug: 'how-carbon-tech-international-limited-is-redefining-real-time-carbon-intelligence-through-carboncut',
   category: 'Company News',
   title: 'How CARBON TECH INTERNATIONAL LIMITED Is Redefining Real-Time Carbon Intelligence Through CarbonCut',
   excerpt: 'Discover how the parent company behind CarbonCut is transforming carbon measurement from delayed reporting to real-time intelligence, enabling teams to act on emissions as they happen.',

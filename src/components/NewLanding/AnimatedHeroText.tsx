@@ -7,17 +7,12 @@ const AnimatedHeroText = () => {
 
       {/* FIRST LINE */}
       <div className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-4 md:gap-6">
-        <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-          Carbon Emission
-        </span>
-      </div>
+         <span className="inline-flex leading-none bg-emerald-400/20 backdrop-blur-sm rounded-lg">
 
-      {/* SECOND LINE */}
-      <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight">
-        <span className="text-white/60">in</span>
-
-        <span className="bg-emerald-400/20 backdrop-blur-sm  rounded-lg">
           <ActionWordCarousel />
+        </span>
+        <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white ">
+          Carbon Emission
         </span>
       </div>
     </div>

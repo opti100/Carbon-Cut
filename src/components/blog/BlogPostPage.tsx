@@ -18,19 +18,23 @@ import { BlogSixContent } from '@/constants/blogs/blogsix-data';
 import { BlogSevenContent } from '@/constants/blogs/blogSeven-data';
 import { BlogEightContent } from '@/constants/blogs/blogEight-data';
 import { BlogNineContent } from '@/constants/blogs/blogNine-data';
+import { BlogTenContent } from '@/constants/blogs/blogTen-data';
 import Navbar from '../NewLanding/Navbar';
+
 
 // Blog content component mapping
 const blogContentComponents: Record<string, React.ComponentType> = {
-  '1': BlogOneContent,
-  '2': BlogTwoContent,
-  '3': BlogThreeContent,
-  '4': BlogFourContent,
-  '5': blogFiveContent,
-  '6': BlogSixContent,
-  '7': BlogSevenContent,
-  '8': BlogEightContent,
-  '9': BlogNineContent,
+  'how-marketing-is-killing-the-world-one-ad-at-a-time-and-what-to-do-about-it': BlogOneContent,
+  'carboncut-launches-worlds-first-climartech-platform': BlogTwoContent,
+  'introducing-carboncut-fast-accurate-authorised-real-time-marketing': BlogThreeContent,
+  'add-a-carbon-column-to-your-media-plan': BlogFourContent,
+  'are-sustainability-experts-still-experts-if-they-cant-measure-internet-emissions': blogFiveContent,
+  'ai-hidden-emissions-why-the-next-era-of-innovation-needs-carbon-intelligence': BlogSixContent,
+  'carbon-footprint-calculator-2-0': BlogSevenContent,
+  'how-carbon-tech-international-limited-is-redefining-real-time-carbon-intelligence-through-carboncut': BlogEightContent,
+  'the-science-behind-real-time-carbon-tracking': BlogNineContent,
+  'your-carbon-footprint-calculator-is-lying-to-you': BlogTenContent,
+  
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };

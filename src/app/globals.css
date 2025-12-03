@@ -4,6 +4,29 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Bounce Down */
+@keyframes icon-bounce-down {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+
+.icon-bounce-down {
+  animation: icon-bounce-down 0.35s ease-in-out;
+}
+
+/* Bounce Up */
+@keyframes icon-bounce-up {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+.icon-bounce-up {
+  animation: icon-bounce-up 0.35s ease-in-out;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

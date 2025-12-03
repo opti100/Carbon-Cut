@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SmoothCursor } from "@/components/ui/smooth-cursor"
 
 
@@ -53,7 +53,7 @@ const Card = ({ color, image, index, totalCards, activeIndex, dragOffset }: Card
                 zIndex: posStyle.z,
                 opacity: posStyle.opacity,
                 pointerEvents: posStyle.z === 20 ? 'auto' : 'none',
-                transitionDuration: dragOffset !== 0 ? '0ms' : '700ms'
+                transitionDuration: dragOffset !== 0 ? '0ms' : '500ms'
             }}
         >
             <div
@@ -82,6 +82,7 @@ export default function FeatureSection() {
     const [isHovering, setIsHovering] = useState(false);
     const dragStartX = useRef(0);
     const containerRef = useRef<HTMLDivElement>(null);
+    const animationFrameRef = useRef<number | null>(null);
 
     const cards = [
         { image: "/CarbonCut-fe/feature/Card_1.svg" },
@@ -90,75 +91,122 @@ export default function FeatureSection() {
         { image: "/CarbonCut-fe/feature/Card_4.svg" },
     ];
 
-    const handleMouseDown = (e: React.MouseEvent) => {
+    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
         setIsDragging(true);
         dragStartX.current = e.clientX;
-    };
+        setDragOffset(0);
+    }, []);
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = useCallback((e: MouseEvent) => {
         if (!isDragging) return;
+
+        // Cancel previous animation frame
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+        }
+
         const diff = e.clientX - dragStartX.current;
-        requestAnimationFrame(() => {
+        
+        animationFrameRef.current = requestAnimationFrame(() => {
             setDragOffset(diff);
         });
-    };
+    }, [isDragging]);
 
-    const handleMouseUp = () => {
+    const handleMouseUp = useCallback(() => {
         if (!isDragging) return;
+
+        // Cancel any pending animation frame
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
 
         const threshold = 50;
 
-        if (dragOffset < -threshold) {
-            setActiveIndex(prev => (prev + 1) % cards.length);
-        } else if (dragOffset > threshold) {
-            setActiveIndex(prev => (prev - 1 + cards.length) % cards.length);
+        if (Math.abs(dragOffset) > threshold) {
+            if (dragOffset < -threshold) {
+                setActiveIndex(prev => (prev + 1) % cards.length);
+            } else if (dragOffset > threshold) {
+                setActiveIndex(prev => (prev - 1 + cards.length) % cards.length);
+            }
         }
 
         setIsDragging(false);
         setDragOffset(0);
-    };
+    }, [isDragging, dragOffset, cards.length]);
 
-    const handleTouchStart = (e: React.TouchEvent) => {
+    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+        e.preventDefault();
         setIsDragging(true);
         dragStartX.current = e.touches[0].clientX;
-    };
+        setDragOffset(0);
+    }, []);
 
-    const handleTouchMove = (e: React.TouchEvent) => {
+    const handleTouchMove = useCallback((e: React.TouchEvent) => {
         if (!isDragging) return;
+
+        // Cancel previous animation frame
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+        }
 
         const diff = e.touches[0].clientX - dragStartX.current;
-        requestAnimationFrame(() => {
+        
+        animationFrameRef.current = requestAnimationFrame(() => {
             setDragOffset(diff);
         });
-    };
+    }, [isDragging]);
 
-    const handleTouchEnd = () => {
+    const handleTouchEnd = useCallback(() => {
         if (!isDragging) return;
+
+        // Cancel any pending animation frame
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
 
         const threshold = 50;
 
-        if (dragOffset < -threshold) {
-            setActiveIndex(prev => (prev + 1) % cards.length);
-        } else if (dragOffset > threshold) {
-            setActiveIndex(prev => (prev - 1 + cards.length) % cards.length);
+        if (Math.abs(dragOffset) > threshold) {
+            if (dragOffset < -threshold) {
+                setActiveIndex(prev => (prev + 1) % cards.length);
+            } else if (dragOffset > threshold) {
+                setActiveIndex(prev => (prev - 1 + cards.length) % cards.length);
+            }
         }
 
         setIsDragging(false);
         setDragOffset(0);
-    };
+    }, [isDragging, dragOffset, cards.length]);
 
     useEffect(() => {
-        window.addEventListener('mousemove', handleMouseMove);
-
         if (isDragging) {
-            window.addEventListener('mouseup', handleMouseUp);
+            window.addEventListener('mousemove', handleMouseMove, { passive: false });
+            window.addEventListener('mouseup', handleMouseUp, { passive: false });
         }
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
+            
+            // Cleanup animation frame on unmount
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+                animationFrameRef.current = null;
+            }
         };
-    }, [isDragging, dragOffset]);
+    }, [isDragging, handleMouseMove, handleMouseUp]);
+
+    // Cleanup on component unmount
+    useEffect(() => {
+        return () => {
+            if (animationFrameRef.current) {
+                cancelAnimationFrame(animationFrameRef.current);
+            }
+        };
+    }, []);
 
     return (
         <>
@@ -173,15 +221,18 @@ export default function FeatureSection() {
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+                style={{ 
+                    userSelect: 'none', 
+                    WebkitUserSelect: 'none',
+                    touchAction: 'pan-y' 
+                }}
             >
                 <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center min-h-full">
                     {/* Header */}
-                    <div className="text-center mb-8 sm:mb-12 md:mb-16 lg:mb-20 xl:mb-24">
-                        <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold tracking-tight text-[#080c04] leading-tight'>
-                            Powerful Features for{" "}
-                            <br className="hidden sm:block" />
-                            <span className="text-[#F0db18]"> Carbon Reduction </span>
+                     <div className="text-right mb-16">
+                        <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider mb-4">Powerful Features for {" "}</p>
+                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#d1cebb]">
+                            Carbon Reduction
                         </h2>
                     </div>
 

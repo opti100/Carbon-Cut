@@ -7,43 +7,53 @@ const Footer = () => {
 
       {/* ================= TOP SECTION - LINKS ================= */}
       <div className="flex-1 flex items-center lg:justify-end justify-center px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-20 lg:text-right text-left w-full sm:w-auto max-w-2xl lg:max-w-none">
+        {/* make grid full width so columns don't get squashed/centered */}
+        <div className="w-full max-w-7xl">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-20 w-full">
 
-          {/* Useful Links */}
-          <div>
-            <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg" style={{ color: "#6c5f31" }}>Useful Links</h3>
-            <div className="space-y-1.5 md:space-y-2">
-              <a href="/content" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Content</a>
-              <a href="/how-it-works" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>How it Works</a>
-              <a href="/create" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Create</a>
-              <a href="/explore" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Explore</a>
-              <a href="/terms" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Terms & Services</a>
+            {/* Left column - left aligned */}
+            <div className="w-full justify-self-start text-left">
+              <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg text-left" style={{ color: "#6c5f31" }}>
+                Useful Links
+              </h3>
+              <div className="space-y-1.5 md:space-y-2">
+                <a href="/content" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Content</a>
+                <a href="/how-it-works" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>How it Works</a>
+                <a href="/create" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Create</a>
+                <a href="/explore" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Explore</a>
+                <a href="/terms" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Terms & Services</a>
+              </div>
             </div>
-          </div>
 
-          {/* Community */}
-          <div>
-            <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg" style={{ color: "#6c5f31" }}>Community</h3>
-            <div className="space-y-1.5 md:space-y-2">
-              <a href="/help-center" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Help Center</a>
-              <a href="/partners" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Partners</a>
-              <a href="/suggestions" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Suggestions</a>
-              <a href="/blog" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Blog</a>
-              <a href="/newsletters" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Newsletters</a>
+            {/* Middle column - center aligned */}
+            <div className="w-full justify-self-center text-center">
+              <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg text-center" style={{ color: "#6c5f31" }}>
+                Community
+              </h3>
+              <div className="space-y-1.5 md:space-y-2">
+                <a href="/help-center" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Help Center</a>
+                <a href="/partners" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Partners</a>
+                <a href="/suggestions" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Suggestions</a>
+                <a href="/blog" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Blog</a>
+                <a href="/newsletters" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Newsletters</a>
+              </div>
             </div>
-          </div>
 
-          {/* Partner */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg" style={{ color: "#6c5f31" }}>Partner</h3>
-            <div className="space-y-1.5 md:space-y-2">
-              <a href="/our-partner" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Our Partner</a>
-              <a href="/become-partner" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Become a Partner</a>
+            {/* Right column - right aligned */}
+            <div className="w-full sm:col-span-2 lg:col-span-1 justify-self-end text-right">
+              <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg text-right" style={{ color: "#6c5f31" }}>
+                Partnerr
+              </h3>
+              <div className="space-y-1.5 md:space-y-2">
+                <a href="/our-partner" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Our Partner</a>
+                <a href="/become-partner" className="block text-sm md:text-base hover:underline" style={{ color: "#080c04" }}>Become a Partner</a>
+              </div>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
+
 
       {/* ================= COPYRIGHT + SOCIAL ================= */}
       <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 flex flex-col sm:flex-row items-center justify-between py-4 md:py-6 gap-4">

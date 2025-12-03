@@ -63,9 +63,11 @@ const Navbar = () => {
       <div className="relative z-20 bg-transparent backdrop-blur-sm transition-all duration-300">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-2 py-2 h-12">
           {/* Logo */}
+          <Link href="/">
           <div className="flex items-center gap-2 cursor-pointer">
             <Image src="/CarbonCut-fe/CC.svg" alt="CarbonCut Logo" height={50} width={50} />
           </div>
+          </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-10">
