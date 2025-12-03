@@ -269,7 +269,7 @@ export const blogElevenData: BlogPost = {
   id: '11',
   slug: 'real-time-carbon-data-competitive-advantage',
   category: 'Carbon Intelligence',
-  title: 'You Cannot Fix Yesterday&apos;s Emissions Tomorrow: The 2025-2030 Shift to Real-Time Carbon Data',
+  title: 'You cannot fix yesterday’s emissions tomorrow in 2025 - 2030.',
   excerpt: 'Why businesses that monitor emissions in real time will outperform those stuck in annual reporting cycles',
   date: '2025-12-3',
   author: {
