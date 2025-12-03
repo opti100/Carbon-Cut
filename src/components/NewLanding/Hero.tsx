@@ -66,7 +66,7 @@ const Hero = () => {
                 data-scroll
                 data-scroll-speed="0.5"
             >
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white text-center mb-8 leading-tight">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white text-center mb-12 leading-tight">
                     <AnimatedHeroText />
                 </h1>
 

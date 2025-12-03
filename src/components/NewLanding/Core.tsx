@@ -105,7 +105,7 @@ const Core = () => {
       <div className="w-full px-0">
         <div className="max-w-7xl mx-auto px-6 mb-16">
           <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">Core Values</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#d1cebb] text-right">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] text-right leading-tight">
             Delivering Results
           </h2>
         </div>

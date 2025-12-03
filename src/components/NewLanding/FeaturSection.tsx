@@ -230,8 +230,8 @@ export default function FeatureSection() {
                 <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center min-h-full">
                     {/* Header */}
                      <div className="text-right mb-16">
-                        <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider mb-4">Powerful Features for {" "}</p>
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#d1cebb]">
+                        <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">Powerful Features for {" "}</p>
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] text-right leading-tight">
                             Carbon Reduction
                         </h2>
                     </div>

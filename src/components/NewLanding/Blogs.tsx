@@ -6,9 +6,22 @@ import { blogNineData } from '@/constants/blogs/blogNine-data'
 import { blogEightData } from '@/constants/blogs/blogEight-data'
 import { blogSevenData } from '@/constants/blogs/blogSeven-data'
 import { blogTenData } from '@/constants/blogs/blogTen-data'
+import { blogElevenData } from '@/constants/blogs/blogsEleven'
 
 const blogs = [
-   {
+  {
+    image: blogElevenData.image || '/blogs/blogEleven.png',
+    date: new Date(blogElevenData.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    }),
+
+    readTime: blogElevenData.readTime,
+    title: blogElevenData.title,
+    slug: blogElevenData.slug,
+  },
+  {
     image: blogTenData.image || '/blogs/blogTen.png',
     date: new Date(blogTenData.date).toLocaleDateString('en-US', {
       month: 'short',
@@ -20,7 +33,7 @@ const blogs = [
     title: blogTenData.title,
     slug: blogTenData.slug,
   }
-      ,{
+  , {
     image: blogNineData.image || '/blogs/blogNine.png',
     date: new Date(blogNineData.date).toLocaleDateString('en-US', {
       month: 'short',
@@ -32,19 +45,8 @@ const blogs = [
     title: blogNineData.title,
     slug: blogNineData.slug,
   },
-  {
-    image: blogEightData.image || '/blogs/blogEight.png',
-    date: new Date(blogEightData.date).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    }),
 
-    readTime: blogEightData.readTime,
-    title: blogEightData.title,
-    slug: blogEightData.slug,
-  },
- 
+
 ];
 
 const Blogs = () => {
@@ -66,9 +68,9 @@ const Blogs = () => {
 
       <div className="w-full ">
         <div className="mx-auto max-w-8xl  px-20">
-          <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb]'>
-          Blogs
-        </h2>
+          <h2 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] mb-16 leading-tight'>
+            Latest Insights
+          </h2>
         </div>
 
         <div className=' rounded-2xl w-full'>
@@ -85,16 +87,16 @@ const Blogs = () => {
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                <div className="overflow-hidden relative aspect-video">
+                <div className="overflow-hidden relative aspect-[4/3] w-full">
                   <Image
                     src={blog.image}
                     alt={blog.title}
                     fill
-                    className="object-cover transition-all duration-700 ease-out group-hover:scale-110"
+                    className="object-contain transition-all duration-700 ease-out"
                   />
-                  {/* Overlay for better text readability */}
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+               
                 </div>
+
 
                 <div className='flex flex-col gap-2 px-2 sm:px-4'>
                   <div className='text-xs text-[#6c5f31]/80 flex flex-wrap items-center gap-2'>
@@ -104,8 +106,8 @@ const Blogs = () => {
                   </div>
 
                   <h3 className={`font-medium text-[#080c04] leading-tight transition-all duration-700 ${hoveredIndex === index
-                      ? 'text-lg sm:text-xl lg:text-2xl'
-                      : 'text-base sm:text-lg'
+                    ? 'text-lg sm:text-xl lg:text-2xl'
+                    : 'text-base sm:text-lg'
                     }`}>
                     {blog.title}
                   </h3>
