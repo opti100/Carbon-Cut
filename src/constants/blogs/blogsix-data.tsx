@@ -321,7 +321,7 @@ export const BlogSixContent = () => {
 // Export blog data for the blog system
 export const blogSixData: BlogPost = {
   id: '6',
-  slug: '6',
+  slug: 'ai-hidden-emissions-why-the-next-era-of-innovation-needs-carbon-intelligence',
   category: 'AI & Sustainability',
   title: 'AI\'s Hidden Emissions: Why the Next Era of Innovation Needs Carbon Intelligence',
   excerpt: 'Exploring the environmental cost of AI and how real-time carbon tracking can make intelligent systems climate-accountable.',

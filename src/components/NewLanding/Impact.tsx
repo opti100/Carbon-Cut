@@ -113,13 +113,12 @@ const ImpactSection = () => {
   return (
     <section 
       ref={containerRef} 
-      className="relative pt-14 pb-20 mx-4 md:mx-8 bg-background border-r border-l border-dashed border-opacity-10"
+      className="relative pt-20 pb-20 mt-20 mx-4 md:mx-8 bg-background border-r border-l border-dashed border-opacity-10"
     >
-      <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
 
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto w-full px-6">
         <p className="text-secondary/60 text-sm uppercase tracking-wider">By The Numbers</p>
-        <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12'>
+        <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb]'>
           Our Impact
         </h2>
 

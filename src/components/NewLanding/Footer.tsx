@@ -13,35 +13,35 @@ const Footer = () => {
       </div>
  
       <div className="relative z-10 w-full min-h-screen flex flex-col">
-        <div className=" flex items-center lg:justify-between justify-center px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-12">
+        <div className="flex items-start lg:justify-between justify-center px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-12">
           <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="text-left space-y-3">
+            <div className="flex flex-col items-start text-left space-y-3">
               <h3 className="font-semibold text-base md:text-lg text-white">Useful Links</h3>
-              <div className="space-y-1.5 md:space-y-2">
-                <Link004 href="/content" className=" text-sm md:text-base  text-white hover:text-white" >Content</Link004>
-                <Link004 href="/how-it-works" className=" text-sm md:text-base  text-white hover:text-white">How it Works</Link004>
-                <Link004 href="/create" className=" text-sm md:text-base  text-white hover:text-white">Create</Link004>
-                <Link004 href="/explore" className=" text-sm md:text-base  text-white hover:text-white">Explore</Link004>
-                <Link004 href="/terms" className="text-sm md:text-base  text-white hover:text-white">Terms & Services</Link004>
+              <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
+                <Link004 href="/content" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Content</Link004>
+                <Link004 href="/how-it-works" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">How it Works</Link004>
+                <Link004 href="/create" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Create</Link004>
+                <Link004 href="/explore" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Explore</Link004>
+                <Link004 href="/terms" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Terms & Services</Link004>
               </div>
             </div>
 
-            <div className="text-center space-y-3">
+            <div className="flex flex-col items-start text-left space-y-3">
               <h3 className="font-semibold text-base md:text-lg text-white">Community</h3>
-              <div className="space-y-1.5 md:space-y-2">
-                <Link004 href="/help-center" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Help Center</Link004>
-                <Link004 href="/partners" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Partners</Link004>
-                <Link004 href="/suggestions" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Suggestions</Link004>
-                <Link004 href="/blog" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Blog</Link004>
-                <Link004 href="/newsletters" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Newsletters</Link004>
+              <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
+                <Link004 href="/help-center" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Help Center</Link004>
+                <Link004 href="/partners" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Partners</Link004>
+                <Link004 href="/suggestions" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Suggestions</Link004>
+                <Link004 href="/blog" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Blog</Link004>
+                <Link004 href="/newsletters" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Newsletters</Link004>
               </div>
             </div>
 
-            <div className="text-right space-y-3">
+            <div className="flex flex-col items-start text-left space-y-3">
               <h3 className="font-semibold text-base md:text-lg text-white">Partner</h3>
-              <div className="space-y-1.5 md:space-y-2">
-                <Link004 href="/our-partner" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Our Partner</Link004>
-                <Link004 href="/become-partner" className=" text-sm md:text-base hover:underline text-white/80 hover:text-white">Become a Partner</Link004>
+              <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
+                <Link004 href="/our-partner" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Our Partner</Link004>
+                <Link004 href="/become-partner" className="text-sm md:text-base text-white/80 hover:text-white transition-colors">Become a Partner</Link004>
               </div>
             </div>
           </div>
@@ -66,8 +66,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* ================= LINE ================= */}
-        {/* <div className="w-full border-t border-white/20"></div> */}
         {/* ================= BOTTOM IMAGE ================= */}
         <div className="flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-12">
           <Image
@@ -78,25 +76,6 @@ const Footer = () => {
             className="w-full h-auto object-contain max-w-full inverted-colors:invert"
             style={{ maxHeight: "400px", filter: "brightness(0) invert(1)" }}
           />
-          {/* <Noir7TextAnimation 
-          {/* <Noir7TextAnimation 
-  text="STUDIO"
-  fontSize="clamp(4rem, 10vw, 10rem)"
-  color="#ffffff"
-  backgroundColor="#000000"
-  animationDelay={1}
-  staggerDelay={0.15}
-  holdDuration={1.5}
-/> */}
-{/* <Noir7TextAnimation 
-              text="CARBONCUT"
-              fontSize="clamp(12rem, 8vw, 12rem)"
-              color="#ffffff"
-              backgroundColor="transparent"
-              animationDelay={1}
-              staggerDelay={0.1}
-              holdDuration={2}
-            /> */}
         </div>
 
       </div>

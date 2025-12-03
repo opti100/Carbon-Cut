@@ -140,7 +140,7 @@ export const BlogSevenContent = () => {
 // Export blog data for the blog system
 export const blogSevenData: BlogPost = {
   id: '7',
-  slug: '7',
+  slug: 'carbon-footprint-calculator-2-0',
   category: 'Carbon Analytics',
   title: 'Carbon Footprint Calculator 2.0: Why Real-Time Data Beats Annual Reports Every Single Time',
   excerpt: 'Move beyond annual estimates to real-time carbon intelligence. Discover how live data transforms compliance, uncovers hidden inefficiencies, and drives meaningful climate action.',

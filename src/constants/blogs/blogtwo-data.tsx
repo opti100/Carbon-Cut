@@ -145,7 +145,7 @@ export const BlogTwoContent = () => {
 // Export blog data for the blog system
 export const blogTwoData: BlogPost = {
   id: '2',
-  slug: '2',
+  slug: 'carboncut-launches-worlds-first-climartech-platform',
   category: 'CliMarTech platform',
   title: ' CarbonCut launches world\'s first CliMarTech platform to make marketing measurable and net-zero ready',
   excerpt: 'Built for modern marketing teams, CarbonCut quantifies Scope 3 CO₂e and links every tonne to a verifiable certificate trail.',

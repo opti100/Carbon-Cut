@@ -209,7 +209,7 @@ export const BlogOneContent = () => {
 // Export blog data for the blog system
 export const blogOneData: BlogPost = {
   id: '1',
-  slug: '1',
+  slug: 'how-marketing-is-killing-the-world-one-ad-at-a-time-and-what-to-do-about-it',
   category: 'Sustainable Marketing',
   title: 'How Marketing Is Killing the World One Ad at a Time (And What To Do About It)',
   excerpt: 'Discover why CO₂e should be your next core KPI and how to measure marketing carbon emissions alongside performance metrics like ROAS and CPA.',

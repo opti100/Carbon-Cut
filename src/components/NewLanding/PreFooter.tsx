@@ -129,9 +129,9 @@ const PreFooter = () => {
       )}
 
       {/* ================= CENTER CONTENT ================= */}
-      <div className="relative z-10 flex flex-col justify-center items-center flex-1 text-center px-4 sm:px-6 md:px-8 py-12 md:py-16">
+      <div className="relative z-10 flex flex-col justify-center items-center flex-1 text-center px-4 sm:px-6 md:px-8 pt-12 md:pt-16">
 
-        <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04] mb-12'>
+        <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04] '>
           Get in Contact with <br />
           <span className="text-[#F0db18]">our team</span>
         </h2>
@@ -156,7 +156,7 @@ const PreFooter = () => {
         </a>
       </div>
 
-      <div className="w-full" style={{ borderTop: "1px solid #d1cebb" }}></div>
+      
     </div>
   );
 };

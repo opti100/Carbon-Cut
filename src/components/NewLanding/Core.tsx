@@ -97,7 +97,7 @@ const Core = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="relative pt-20 pb-40 bg-[#fcfdf6] border-r border-l border-dashed border-[#6c5f31]/20 shadow" 
+      className="relative pt-20  bg-[#fcfdf6] border-r border-l border-dashed border-[#6c5f31]/20 shadow" 
       data-scroll-section
     >
       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mb-8"></div>
@@ -105,7 +105,7 @@ const Core = () => {
       <div className="w-full px-0">
         <div className="max-w-7xl mx-auto px-6 mb-16">
           <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">Core Values</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#080c04] text-right">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#d1cebb] text-right">
             Delivering Results
           </h2>
         </div>
@@ -155,7 +155,9 @@ const Core = () => {
         </div>
       </div>
 
-      <div className="w-full border-t border-dashed border-[#6c5f31]/20 mt-8"></div>
+       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mt-8"></div>
+
+     
     </section>
   )
 }

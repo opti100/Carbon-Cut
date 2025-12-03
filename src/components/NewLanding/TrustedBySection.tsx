@@ -42,19 +42,19 @@ const TrustedBySection = () => {
 
     return (
         <div
+        className="mt-20"
             ref={sectionRef}
             style={{
                 opacity: opacity,
                 transition: "opacity 0.3s ease-out"
             }}
         >
-            <div>
-              
-
-                <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-center  text-[#080c04] my-12'>
-                    Trusted by Leading Companies
-                </h2>
-            </div>
+             <div className="max-w-7xl mx-auto px-6 mb-16 text-end">
+          <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-2">Trusted by</p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-[#d1cebb] text-right">
+            Leading Companies
+          </h2>
+        </div>
 
             <div className="relative flex h-[400px] md:h-[600px] lg:h-[850px] w-full items-center justify-center overflow-hidden bg-[#fcfdf6]">
                 {/* Gradient overlay to hide bottom of semi-circles */}
