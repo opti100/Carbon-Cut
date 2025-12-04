@@ -151,9 +151,7 @@ const BlogDashboard = () => {
                 <span className="text-orange-500"> in {selectedCategory}</span>
               )}
             </h2>
-            <span className="text-gray-500">
-              {filteredPosts.length} article{filteredPosts.length !== 1 ? 's' : ''}
-            </span>
+           
           </div>
           
           {filteredPosts.length > 0 ? (

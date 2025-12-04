@@ -1,15 +1,13 @@
 
 import CalculatorLanding from '@/components/calculator/calculatorLanding'
-import CalculatorFAQ from '@/components/calculator/CalculatorFAQ';
-import Header from '@/components/calculator/Header';
-import Footer from '@/components/main/Footer';
-import PreFooter from '@/components/main/PreFooter';
+
 import React from 'react'
+import Navbar from '@/components/NewLanding/Navbar';
 
 const page = () => {
   return (
     <div>
-      <Header/>
+      <Navbar/>
       <CalculatorLanding/>
       {/* <CalculatorFAQ/>  */}
        {/* <PreFooter/> */}

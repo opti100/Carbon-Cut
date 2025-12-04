@@ -8,9 +8,8 @@ import { ArrowLeft, Calendar, Clock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BlogPost, blogPosts } from '@/constants/blogData';
 import { BlogOneContent } from '@/constants/blogs/blogone-data';
-import Header from '@/components/calculator/Header';
-import Footer from '@/components/main/Footer';
-import PreFooter from '../main/PreFooter';
+import Footer from '../NewLanding/Footer';
+import PreFooter from '../NewLanding/PreFooter';
 import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
 import { BlogThreeContent } from '@/constants/blogs/blogthree-data';
 import { BlogFourContent } from '@/constants/blogs/blogfour-data';
@@ -19,18 +18,25 @@ import { BlogSixContent } from '@/constants/blogs/blogsix-data';
 import { BlogSevenContent } from '@/constants/blogs/blogSeven-data';
 import { BlogEightContent } from '@/constants/blogs/blogEight-data';
 import { BlogNineContent } from '@/constants/blogs/blogNine-data';
+import { BlogTenContent } from '@/constants/blogs/blogTen-data';
+import Navbar from '../NewLanding/Navbar';
+import { BlogElevenContent } from '@/constants/blogs/blogsEleven';
+
 
 // Blog content component mapping
 const blogContentComponents: Record<string, React.ComponentType> = {
-  '1': BlogOneContent,
-  '2': BlogTwoContent,
-  '3': BlogThreeContent,
-  '4': BlogFourContent,
-  '5': blogFiveContent,
-  '6': BlogSixContent,
-  '7': BlogSevenContent,
-  '8': BlogEightContent,
-  '9': BlogNineContent,
+  'how-marketing-is-killing-the-world-one-ad-at-a-time-and-what-to-do-about-it': BlogOneContent,
+  'carboncut-launches-worlds-first-climartech-platform': BlogTwoContent,
+  'introducing-carboncut-fast-accurate-authorised-real-time-marketing': BlogThreeContent,
+  'add-a-carbon-column-to-your-media-plan': BlogFourContent,
+  'are-sustainability-experts-still-experts-if-they-cant-measure-internet-emissions': blogFiveContent,
+  'ai-hidden-emissions-why-the-next-era-of-innovation-needs-carbon-intelligence': BlogSixContent,
+  'carbon-footprint-calculator-2-0': BlogSevenContent,
+  'how-carbon-tech-international-limited-is-redefining-real-time-carbon-intelligence-through-carboncut': BlogEightContent,
+  'the-science-behind-real-time-carbon-tracking': BlogNineContent,
+  'your-carbon-footprint-calculator-is-lying-to-you': BlogTenContent,
+  'real-time-carbon-data-competitive-advantage': BlogElevenContent,
+  
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
@@ -51,7 +57,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
   return (
     <div className="min-h-screen bg-white ">
-      <Header />
+      <Navbar />
       
       <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
         {/* Back Button */}

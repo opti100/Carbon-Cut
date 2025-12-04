@@ -4,7 +4,7 @@ import { BlogPost } from '../blogData';
 
 export const blogFiveData: BlogPost = {
   id: '5',
-  slug: '5',
+  slug: 'are-sustainability-experts-still-experts-if-they-cant-measure-internet-emissions',
   category: 'Sustainable',
   title: 'Are Sustainability Experts Still Experts If They Can\'t Measure Internet Emissions?',
   excerpt: 'Why digital carbon literacy is now essential for ESG credibility',

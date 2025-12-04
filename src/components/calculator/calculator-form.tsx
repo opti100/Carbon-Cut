@@ -151,8 +151,8 @@ export default function MarketingCalculator({ onStatsUpdate, initialData }: Mark
             realTimeData: true,
             requirePrecision: true
           };
-
-          const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+        
+          const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
           const response = await fetch(`${BASE_URL}/inventory/calculate-carbon/`, {
             method: 'POST',
             credentials: 'include',
@@ -247,7 +247,7 @@ export default function MarketingCalculator({ onStatsUpdate, initialData }: Mark
         requirePrecision: true
       };
 
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL ;
       const response = await fetch(`${BASE_URL}/inventory/calculate-carbon/`, {
         method: 'POST',
         credentials: 'include',
@@ -361,7 +361,7 @@ export default function MarketingCalculator({ onStatsUpdate, initialData }: Mark
       return activity;
     }));
   }, [calcCO2AI]);
-
+ 
   const addActivity = useCallback(async (activityData: Omit<ActivityData, 'id'>) => {
     const newActivity: ActivityData = {
       ...activityData,

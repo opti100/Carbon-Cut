@@ -353,7 +353,7 @@ export const BlogFourContent = () => {
 
 export const blogFourData: BlogPost = {
   id: '4',
-  slug: '4',
+  slug: 'add-a-carbon-column-to-your-media-plan',
   category: 'Sustainable Marketing',
   title: 'Add a Carbon Column to Your Media Plan',
   excerpt: 'The Hidden Metric Missing From Every Campaign',
