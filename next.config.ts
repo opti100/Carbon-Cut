@@ -2,31 +2,38 @@ import type { NextConfig } from "next";
 import { Protocol } from "puppeteer";
 
 const nextConfig: NextConfig = {
-  images:{
-    remotePatterns:[
+  images: {
+
+     domains: [
+          "api.microlink.io", // Microlink Image Preview
+        ],
+    remotePatterns: [
       {
-        protocol:"https",
-        hostname:"i.pravatar.cc",
-        port:'',
-        pathname:"/**"
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+        port: '',
+        pathname: "/**"
       },
       {
-        protocol:"https",
-        hostname:"images.unsplash.com",
-        port:'',
-        pathname:"/**"
-      }
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: '',
+        pathname: "/**"
+      },
+    
+       
+   
     ]
   },
   async rewrites() {
-      return [
+    return [
       {
         source: '/api/:path*',
         destination: 'http://127.0.0.1:8000/api/:path*',
       },
     ];
   },
-   async headers() {
+  async headers() {
     return [
       {
         source: '/:path*',

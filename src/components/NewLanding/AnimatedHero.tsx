@@ -44,13 +44,13 @@ const ActionWordCarousel = () => {
   return (
     <div
       ref={containerRef}
-      className="relative inline-flex h-10 md:h-14 lg:h-16 overflow-hidden items-center justify-center min-w-[120px] md:min-w-[180px] lg:min-w-[200px]"
+      className="relative inline-flex  h-20 md:h-24 lg:h-28  overflow-hidden items-center justify-center min-w-[120px] md:min-w-[180px] lg:min-w-[300px]"
     >
       {words.map((word, i) => (
         <span
           key={i}
           data-word
-          className="absolute inset-0 flex items-center justify-center text-2xl md:text-4xl lg:text-5xl font-bold text-emerald-300 rounded-lg"
+          className="absolute inset-0 flex items-center justify-center text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white  leading-none  "
         >
           {word}
         </span>
