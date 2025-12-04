@@ -97,17 +97,17 @@ const Core = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="relative pt-20  bg-[#fcfdf6] border-r border-l border-dashed border-[#6c5f31]/20 shadow" 
+      className="relative pt-20  bg-[#fcfdf6] " 
       data-scroll-section
     >
       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mb-8"></div>
 
       <div className="w-full px-0">
-        <div className="max-w-7xl mx-auto px-6 mb-16">
-          <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">Core Values</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] text-right leading-tight">
-            Delivering Results
-          </h2>
+        <div className="max-w-7xl mx-auto px-6 mb-16 ">
+             <p className="text-secondary/60 text-sm uppercase tracking-wider text-right">Core Values</p>
+        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb] text-right">
+          Delivering Results
+        </h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-0">
@@ -155,7 +155,7 @@ const Core = () => {
         </div>
       </div>
 
-       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mt-8"></div>
+     
 
      
     </section>

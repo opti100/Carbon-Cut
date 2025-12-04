@@ -168,10 +168,22 @@ const Standards = () => {
       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
 
       <div className="mx-auto max-w-7xl px-6">
-        <p className="text-secondary/60 text-sm uppercase tracking-wider">Standards</p>
-        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb]">
-          Carbon Standards
-        </h2>
+        <div>
+          <p className="text-secondary/60 text-xs sm:text-sm uppercase tracking-wider text-right">
+            Standards
+          </p>
+
+          <h2
+            className="
+              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
+              font-semibold tracking-tight 
+              text-[#d1cebb] text-right mb-10
+            "
+          >
+            Carbon Standards
+          </h2>
+        </div>
+
 
         <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory scroll-smooth ">
           {standards.map((standard, index) => (

@@ -34,6 +34,8 @@ const LogoItem = ({ logo }: { logo: string | ReactNode }) => {
       <div className="flex items-center justify-center w-28 h-28 mx-6">
         {!imgError ? (
           <Image
+           height={200}
+            width={200}
             src={logo}
             alt="logo"
             className="max-h-16 max-w-24 object-contain filter grayscale brightness-0"

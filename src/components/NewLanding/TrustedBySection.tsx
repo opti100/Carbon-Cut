@@ -1,60 +1,27 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import { useFadeInOnScroll } from "./fadeIn";
 
 const TrustedBySection = () => {
-    const [opacity, setOpacity] = useState(0);
-    const sectionRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            if (!sectionRef.current) return;
-
-            const rect = sectionRef.current.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-
-            // Calculate opacity based on scroll position
-            const fadeStart = windowHeight * 0.8; // Start fading in when section is 80% from top
-            const fadeEnd = windowHeight * 0.2;   // Fully visible when section is 20% from top
-
-            if (rect.top <= fadeStart && rect.top >= fadeEnd) {
-                // Fade in
-                const progress = (fadeStart - rect.top) / (fadeStart - fadeEnd);
-                setOpacity(Math.min(progress, 1));
-            } else if (rect.top < fadeEnd && rect.bottom > windowHeight * 0.3) {
-                // Fully visible
-                setOpacity(1);
-            } else if (rect.bottom <= windowHeight * 0.3) {
-                // Fade out
-                const progress = rect.bottom / (windowHeight * 0.3);
-                setOpacity(Math.max(progress, 0));
-            } else {
-                // Not visible yet
-                setOpacity(0);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        handleScroll(); // Initial check
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    const { sectionRef, opacity } = useFadeInOnScroll();
 
     return (
         <div
-        className="mt-20"
+            className="mt-20"
             ref={sectionRef}
             style={{
                 opacity: opacity,
                 transition: "opacity 0.3s ease-out"
             }}
         >
-             <div className="max-w-7xl mx-auto px-6 mb-16 text-end">
-          <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">Trusted by</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] text-right leading-tight">
-            Leading Companies
-          </h2>
-        </div>
+               <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
+            <div className="max-w-7xl mx-auto px-6 mb-16 text-end">
+                <p className="text-secondary/60 text-sm uppercase tracking-wider text-right">Trusted by</p>
+                <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb] text-right">
+                    Leading Companies
+                </h2>
+            </div>
 
             <div className="relative flex h-[400px] md:h-[600px] lg:h-[850px] w-full items-center justify-center overflow-hidden bg-[#fcfdf6]">
                 {/* Gradient overlay to hide bottom of semi-circles */}

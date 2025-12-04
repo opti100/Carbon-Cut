@@ -161,10 +161,10 @@ export const BlogTenContent = () => {
                   CarbonCut offers a modern suite of tools, including:
                 </p>
                 <div className="space-y-2 ml-6">
-                  <p className="text-lg text-gray-800 leading-relaxed">the carboncut carbon calculator</p>
-                  <p className="text-lg text-gray-800 leading-relaxed">the carboncut carbon footprint calculator</p>
-                  <p className="text-lg text-gray-800 leading-relaxed">modules to carboncut estimate carbon footprint</p>
-                  <p className="text-lg text-gray-800 leading-relaxed">the carboncut carbon emissions calculator</p>
+                  <p className="text-lg text-gray-800 leading-relaxed">The carboncut carbon calculator</p>
+                  <p className="text-lg text-gray-800 leading-relaxed">The carboncut carbon footprint calculator</p>
+                  <p className="text-lg text-gray-800 leading-relaxed">Modules to carboncut estimate carbon footprint</p>
+                  <p className="text-lg text-gray-800 leading-relaxed">The carboncut carbon emissions calculator</p>
                 </div>
                 <p className="text-lg text-gray-800 leading-relaxed mt-4">
                   These tools capture real operational complexity and provide GHG Protocol–aligned accuracy.
