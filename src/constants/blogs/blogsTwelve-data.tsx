@@ -71,7 +71,7 @@ export const BlogTwelveContent = () => {
 
             <div className="bg-gray-50 p-6 rounded-lg my-8">
               <p className="text-lg leading-relaxed mb-4">
-                <Link href="/blog/real-time-carbon-data-competitive-advantage" className="text-tertiary hover:text-black underline font-semibold">
+                <Link href="/blogs/real-time-carbon-data-competitive-advantage" className="text-tertiary hover:text-black underline font-semibold">
                   Also check: &ldquo;You Cannot Fix Yesterday&apos;s Emissions Tomorrow in 2025–2030.&rdquo;
                 </Link>
               </p>
@@ -208,7 +208,7 @@ export const blogTwelveData: BlogPost = {
   category: 'Carbon Intelligence',
   title: 'Google Is Building Data Centres in Space, So Why Are We Still Measuring Carbon Emissions Like It’s 2010?',
   excerpt: 'As compute infrastructure moves to orbit, carbon measurement must evolve beyond spreadsheets and annual reports',
-  date: '2025-12-5',
+  date: '2025-12-4',
   author: {
     name: '',
     avatar: '/team/carboncut-insights.jpg'
