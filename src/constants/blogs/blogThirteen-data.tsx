@@ -196,7 +196,7 @@ export const blogThirteenData: BlogPost = {
   id: '13',
   slug: 'the-carbon-illusion-why-companies-think-theyre-greener',
   category: 'Carbon Intelligence',
-  title: 'The Carbon Illusion: Why Companies Think They&apos;re Greener Than They Actually Are',
+  title: 'The Carbon Illusion: Why Companies Think They\'re Greener Than They Actually Are',
   excerpt: 'How outdated measurement tools create false sustainability perceptions and what real-time intelligence reveals',
   date: '2025-12-5',
   author: {
