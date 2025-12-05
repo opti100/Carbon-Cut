@@ -42,7 +42,7 @@ const BlogDashboard = () => {
 
   const BlogCard = ({ post }: { post: BlogPost }) => (
     <Link href={`/blogs/${post.slug}`} className="group block">
-      <Card className="h-full hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-orange-300 group-hover:scale-[1.02]">
+      <Card className="h-full hover:shadow-lg transition-all duration-300 border border-gray-200 hover:border-[#b0ea1d] group-hover:scale-[1.02]">
         <CardHeader className="p-0">
           <div className="relative h-48 w-full overflow-hidden rounded-t-lg">
             <Image
@@ -83,7 +83,7 @@ const BlogDashboard = () => {
               <span className="text-sm text-gray-700">{post.author.name}</span>
             </div>
             
-            <div className="flex items-center gap-1 hover:text-orange-600 font-medium text-sm group-hover:gap-2 group-hover:text-orange-600 transition-all">
+            <div className="flex items-center gap-1 hover:text-[#6c5f31] font-medium text-sm group-hover:gap-2 group-hover:text-[#6c5f31] transition-all">
               Read More
               <ArrowRight className="w-4 h-4" />
             </div>
@@ -100,7 +100,7 @@ const BlogDashboard = () => {
   // Show all filtered posts in the latest articles section
 
   return (
-    <div className="min-h-screen  mt-12">
+    <div className="min-h-screen  mt-12 bg-[#fcfdf6]">
       {/* Header */}
       
 
@@ -117,7 +117,7 @@ const BlogDashboard = () => {
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#b0ea1d] focus:border-transparent"
               />
             </div>
             
@@ -148,7 +148,7 @@ const BlogDashboard = () => {
             <h2 className="text-2xl font-bold text-gray-900">
               Latest Articles
               {selectedCategory !== 'All' && (
-                <span className="text-orange-500"> in {selectedCategory}</span>
+                <span className="text-[#b0ea1d]"> in {selectedCategory}</span>
               )}
             </h2>
            

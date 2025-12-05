@@ -388,7 +388,7 @@ export default function HowItWorks() {
             <div className="hidden lg:block">
                 {/* Desktop Header */}
                 <div className="max-w-7xl mx-auto px-6 mb-16">
-                    <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">  How It Works</p>
+                    <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right ">  How It Works</p>
                     <h2 className="text-6xl md:text-7xl font-semibold  tracking-tight text-[#d1cebb] text-right leading-tight">
                       Measure,Reduce,Offset
                     </h2>

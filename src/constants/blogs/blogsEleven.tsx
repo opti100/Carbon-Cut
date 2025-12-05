@@ -275,7 +275,7 @@ export const blogElevenData: BlogPost = {
   excerpt: 'Why businesses that monitor emissions in real time will outperform those stuck in annual reporting cycles',
   date: '2025-12-3',
   author: {
-    name: 'CarbonCut Insights Team',
+    name: '',
     avatar: '/team/carboncut-insights.jpg'
   },
   readTime: '7 min read',
