@@ -1,137 +1,117 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DOT_COLORS = ["#ff3b30", "#34c759", "#ffcc00", "#af52de", "#0fb9b1"];
+const DOT_COLORS = ["#b0ea1d", "#6c5f31", "#F0db18", "#d1cebb", "#f8fceb"];
 
-const PreFooter = () => {
+export default function PreFooter() {
   const dotsRef = useRef<HTMLDivElement[]>([]);
+  const pathRef = useRef<SVGPathElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check if device is mobile/tablet
+  const totalDots = 5;
+  const dotSize = 14;
+
+  // Detect Mobile
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-    
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Smooth dot animation for desktop only using ScrollTrigger
+  // ⭐ PERFECT RESPONSIVE CURVE POSITIONING
+  useEffect(() => {
+    if (isMobile || !pathRef.current) return;
+
+    const path = pathRef.current;
+    const length = path.getTotalLength();
+
+    // ⭐ 5 dots → equal spacing 0%, 25%, 50%, 75%, 100%
+    const spacing = length / (totalDots - 1);
+
+    for (let i = 0; i < totalDots; i++) {
+      const p = path.getPointAtLength(i * spacing);
+      const dot = dotsRef.current[i];
+      if (dot) {
+        dot.style.left = `${p.x}px`; // full width responsive
+        dot.style.top = `${p.y}px`;
+      }
+    }
+  }, [isMobile]);
+
+  // Scroll Animation Left/Right
   useEffect(() => {
     if (isMobile || !containerRef.current) return;
 
-    const dots = dotsRef.current.filter(Boolean) as HTMLDivElement[];
-    if (dots.length === 0) return;
+    const dots = dotsRef.current.filter(Boolean);
 
-    // Set initial state - dots slightly transparent
-    gsap.set(dots, {
-      opacity: 0.6,
-      scale: 0.8,
-    });
-
-    // Create animation for each dot with stagger
-    dots.forEach((dot, index) => {
-      const staggerDelay = index * 0.1;
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          scrub: 1, // Smooth scrubbing
-          toggleActions: "play none none reverse",
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 1.2,
+        onUpdate: (self) => {
+          gsap.to(dots, {
+            x: self.direction === 1 ? 60 : -60,
+            duration: 1,
+            ease: "power1.out",
+            overwrite: "auto",
+          });
         },
-      });
-
-      // Animate dot properties smoothly
-      tl.to(dot, {
-        x: () => (index % 2 === 0 ? -25 : 25), // Alternate directions
-        y: () => (index % 3 === 0 ? -20 : 15), // Different Y movements
-        scale: 1,
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-        delay: staggerDelay,
-      });
-
-      // Add subtle rotation for some dots
-      if (index % 4 === 0) {
-        tl.to(dot, {
-          rotation: 360,
-          duration: 2,
-          ease: "power2.inOut",
-        }, "-=1");
-      }
+      },
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+    return () => ScrollTrigger.killAll();
   }, [isMobile]);
 
-  const totalDots = 8;
-  const curveHeight = 350;
-
-  // Create a proper upward curve (parabolic curve)
-  const getCurvePosition = (index: number, total: number) => {
-    const t = index / (total - 1);
-    // Parabolic curve: y = a(x - h)² + k
-    // We want an upward opening parabola
-    const x = t; // 0 to 1
-    const y = 4 * (x - 0.5) ** 2; // Creates upward curve with vertex at center
-    
-    const xPercent = t * 100;
-    const yPosition = curveHeight * y;
-    
-    return { xPercent, yPosition };
-  };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#fcfdf6]"
     >
-
-      {/* ================= UPWARD ARC DOTS (Desktop Only) ================= */}
+      {/* ================= RESPONSIVE FULL WIDTH CURVE ================= */}
       {!isMobile && (
-        <div className="absolute top-[12%] w-full left-0 pointer-events-none">
-          {Array.from({ length: totalDots }).map((_, i) => {
-            const { xPercent, yPosition } = getCurvePosition(i, totalDots);
+        <div className="absolute top-[10%] left-0 w-full h-[300px] pointer-events-none">
 
-            return (
-              <div
-                key={i}
-                ref={(el) => {
-                  if (el) dotsRef.current[i] = el;
-                }}
-                style={{
-                  position: "absolute",
-                  left: `${xPercent}%`,
-                  top: `${yPosition}px`,
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "50%",
-                  background: DOT_COLORS[i % DOT_COLORS.length],
-                  transform: "translateX(-50%)",
-                  opacity: 0.9,
-                }}
-              />
-            );
-          })}
+          <svg width="100%" height="300">
+            {/* ⭐ Responsive curve using viewBox */}
+            <path
+              ref={pathRef}
+              d="M 0 220 C 500 0, 1500 0, 2000 220"
+              stroke="transparent"
+              fill="none"
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+
+          {/* 5 Equal Spaced Dots */}
+          {Array.from({ length: totalDots }).map((_, i) => (
+            <div
+              key={i}
+              ref={(el) => { if (el) dotsRef.current[i] = el; }}
+              style={{
+                position: "absolute",
+                width: dotSize,
+                height: dotSize,
+                borderRadius: "50%",
+                background: DOT_COLORS[i % DOT_COLORS.length],
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+          ))}
         </div>
       )}
 
       {/* ================= CENTER CONTENT ================= */}
-      <div className="relative z-10 flex flex-col justify-center items-center flex-1 text-center px-4 sm:px-6 md:px-8 pt-12 md:pt-16">
-
-        <h2 className='text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04] '>
+      <div className="relative z-10 flex flex-col justify-center items-center flex-1 text-center px-4 py-20">
+        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04]">
           Get in Contact with <br />
           <span className="text-[#F0db18]">our team</span>
         </h2>
@@ -139,26 +119,15 @@ const PreFooter = () => {
         <a
           href="/demo"
           className="
-            bg-[#b0ea1d] text-[#080c04] 
-            mt-8 sm:mt-12 md:mt-16 lg:mt-20
-            px-6 py-3 text-base
-            sm:px-7 sm:py-4 sm:text-lg
-            md:px-8 md:py-5 md:text-xl
-            lg:px-6 lg:py-2 lg:text-2xl
-            rounded-3xl
-            font-semibold
-            hover:bg-[#6c5f31] hover:text-[#d1cebb] 
+            bg-[#b0ea1d] text-[#080c04]
+            mt-12 px-8 py-4 text-xl rounded-3xl
+            font-semibold hover:bg-[#6c5f31] hover:text-[#d1cebb]
             transition-colors duration-300
-            inline-block
           "
         >
           Contact CarbonCut
         </a>
       </div>
-
-      
     </div>
   );
-};
-
-export default PreFooter;
+}

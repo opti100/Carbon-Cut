@@ -21,6 +21,7 @@ import { BlogNineContent } from '@/constants/blogs/blogNine-data';
 import { BlogTenContent } from '@/constants/blogs/blogTen-data';
 import Navbar from '../NewLanding/Navbar';
 import { BlogElevenContent } from '@/constants/blogs/blogsEleven';
+import { BlogTwelveContent } from '@/constants/blogs/blogsTwelve-data';
 
 
 // Blog content component mapping
@@ -36,7 +37,8 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'the-science-behind-real-time-carbon-tracking': BlogNineContent,
   'your-carbon-footprint-calculator-is-lying-to-you': BlogTenContent,
   'real-time-carbon-data-competitive-advantage': BlogElevenContent,
-  
+  'google-space-data-centres-carbon-measurement': BlogTwelveContent,
+
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
@@ -58,12 +60,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
   return (
     <div className="min-h-screen bg-white ">
       <Navbar />
-      
+
       <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
         {/* Back Button */}
         <div className="mb-2 -mt-6">
-          <Link 
-            href="/blogs" 
+          <Link
+            href="/blogs"
             className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -83,15 +85,15 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
               </span>
             )}
           </div>
-          
+
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-         {post.title}
+            {post.title}
           </h1>
-          
+
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
             {post.excerpt}
           </p>
-          
+
           <div className="flex flex-wrap items-center gap-6 text-gray-500 mb-8">
             <div className="flex items-center gap-2">
               {/* <User className="w-5 h-5" /> */}
@@ -99,10 +101,10 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />
-              <span>{new Date(post.date).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
+              <span>{new Date(post.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
               })}</span>
             </div>
             <div className="flex items-center gap-2">
@@ -114,17 +116,18 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         </header>
 
         {/* Featured Image */}
-      <div className="relative w-full mb-12 rounded-xl overflow-hidden">
-  <div className="aspect-video relative"> {/* 16:9 aspect ratio */}
-    <Image
-      src={post.image || '/blogs/blogsOne.png'}
-      alt={post.title}
-      fill
-      className="object-cover"
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-    />
-  </div>
-</div>
+        <div className="relative w-full mb-12">
+          <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[620px] rounded-xl overflow-hidden">
+            <Image
+              src={post.image || "/blogs/blogsOne.png"}
+              alt={post.title}
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+
+
 
         {/* Article Content */}
         <div className="prose prose-lg max-w-none mb-12">
@@ -172,9 +175,9 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
           </div>
         )}
 
-      
+
       </article>
-      <PreFooter/>
+      <PreFooter />
       <Footer />
     </div>
   );
