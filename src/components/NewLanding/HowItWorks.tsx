@@ -309,7 +309,7 @@ export default function HowItWorks() {
                         How it works
                     </h2>
                     <p className="text-sm sm:text-base text-[#6c5f31] text-center max-w-2xl mx-auto">
-                        CarbonLive measures, reduces, and offsets emissions in real time
+                        Measure, Reduce , Offset
                     </p>
                 </div>
 
@@ -325,7 +325,7 @@ export default function HowItWorks() {
                                         <div className="shrink-0 font-bold font-mono text-base lg:text-lg text-[#6c5f31]">
                                             0{step.step}
                                         </div>
-                                        
+
                                         {/* Icon Component - Mobile */}
                                         <div className="relative h-6 w-6 lg:h-8 lg:w-8">
                                             <svg
@@ -336,9 +336,9 @@ export default function HowItWorks() {
                                             >
                                                 <path d="M1 32.653V39h6.347v1H0v-7.347zm39 0V40h-7.347v-1H39v-6.347zM7.347 0v1H1v6.347H0V0zM40 0v7.347h-1V1h-6.347V0z" />
                                             </svg>
-                                            
+
                                             {/* Sliding Icon */}
-                                            <div 
+                                            <div
                                                 className="absolute inset-0 inline-flex overflow-hidden transition-transform duration-500"
                                                 style={{
                                                     transform: "translateX(0)",
@@ -350,7 +350,7 @@ export default function HowItWorks() {
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div className="flex-1">
                                             <h3 className="text-base lg:text-lg font-bold text-[#080c04]">
                                                 {step.title}
@@ -360,11 +360,11 @@ export default function HowItWorks() {
                                             </p>
                                         </div>
                                     </div>
-                                    
+
                                     <p className="text-xs lg:text-sm text-[#6c5f31]/80 leading-relaxed mb-2 lg:mb-3">
                                         {step.description}
                                     </p>
-                                    
+
                                     <div className="inline-block bg-[#b0ea1d]/10 border border-[#b0ea1d]/30 rounded-full px-2.5 lg:px-3 py-1">
                                         <span className="text-[10px] lg:text-xs font-semibold text-[#6c5f31]">
                                             {step.metrics.label}
@@ -381,9 +381,17 @@ export default function HowItWorks() {
                     })}
                 </div>
             </div>
-
+            <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
             {/* Desktop Layout - Original Parallax */}
             <div className="hidden lg:block">
+                {/* Desktop Header */}
+                <div className="max-w-7xl mx-auto px-6 mb-16">
+                    <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right ">  How It Works</p>
+                    <h2 className="text-6xl md:text-7xl font-semibold  tracking-tight text-[#d1cebb] text-right leading-tight">
+                      Measure,Reduce,Offset
+                    </h2>
+                </div>
+
                 <div className="prllx-wrapper relative flex h-[1600lvh] flex-row overflow-clip">
                     {/* Left Side - Sticky Fields */}
                     <div className="fields-sticky sticky top-0 z-10 h-lvh w-1/2 flex items-center justify-center">
@@ -437,9 +445,9 @@ export default function HowItWorks() {
                                                         >
                                                             <path d="M1 32.653V39h6.347v1H0v-7.347zm39 0V40h-7.347v-1H39v-6.347zM7.347 0v1H1v6.347H0V0zM40 0v7.347h-1V1h-6.347V0z" />
                                                         </svg>
-                                                        
+
                                                         {/* Sliding Icon */}
-                                                        <div 
+                                                        <div
                                                             className="absolute inset-0 inline-flex overflow-hidden transition-transform duration-500"
                                                             style={{
                                                                 transform: isActive ? "translateX(0)" : "translateX(-100%)",
@@ -492,17 +500,15 @@ export default function HowItWorks() {
 
                     {/* Right Side - Sticky Animation/Image Panel */}
                     <div className="absolute top-0 right-0 z-0 h-full w-1/2">
-                        <div className="w-full flex justify-end px-6 xl:px-10 py-8 xl:py-12">
-                            <div className="max-w-lg xl:max-w-2xl text-end">
-                                <h2 className="text-4xl xl:text-6xl font-bold tracking-tight text-[#d1cebb] leading-tight mb-3 xl:mb-4">
-                                    How it works
-                                </h2>
+                        <div className="w-full flex  px-6 xl:px-10 py-8 xl:py-12">
 
-                                <p className="text-base xl:text-lg text-[#080c04]/80 leading-relaxed">
-                                    CarbonLive measures, reduces, and offsets emissions in real time — starting with
-                                    internet advertising and expanding to energy and gas sectors.
-                                </p>
-                            </div>
+         {/* <div className="max-w-7xl mx-auto px-6 mb-16 ">
+             <p className="text-secondary/60 text-sm uppercase tracking-wider text-right">How it's Works</p>
+        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb] text-right">
+         Measure,Reduce,Offset
+        </h2>
+        </div> */}
+
                         </div>
 
                         <div className="anim-wrapper sticky top-0 left-0 h-lvh w-full">

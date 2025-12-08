@@ -1,3 +1,4 @@
+import { MarqueeDemo } from "@/components/marqueeDemo";
 import Blogs from "@/components/NewLanding/Blogs";
 import Core from "@/components/NewLanding/Core";
 import FeatureSection from "@/components/NewLanding/FeaturSection";
@@ -31,7 +32,9 @@ export default function Home() {
          {/* ✅ Each section must be wrapped in data-scroll-section */}
          <div data-scroll-section>
            <Hero />
+          
          </div>
+
 
          <div data-scroll-section>
            <Standards />
@@ -45,14 +48,13 @@ export default function Home() {
 
      <div data-scroll-section> 
        <TrustedBySection />
-     
      </div>
 
      <div data-scroll-section>
         <Core />
-   
      </div>
 
+{/* staks  */}
        {/* <div data-scroll-section>
            <Stacking />
          </div> */}

@@ -29,6 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="preload" href="/LandingPage.mp4" as="video" type="video/mp4" />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Script
           async
