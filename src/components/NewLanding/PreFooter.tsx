@@ -111,19 +111,18 @@ export default function PreFooter() {
 
       {/* ================= CENTER CONTENT ================= */}
       <div className="relative z-10 flex flex-col justify-center items-center flex-1 text-center px-4 py-20">
-        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04]">
+        <h2
+          className="text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04]"
+
+        >
           Get in Contact with <br />
           <span className="text-[#F0db18]">our team</span>
         </h2>
 
         <a
           href="/demo"
-          className="
-            bg-[#b0ea1d] text-[#080c04]
-            mt-12 px-8 py-4 text-xl rounded-3xl
-            font-semibold hover:bg-[#6c5f31] hover:text-[#d1cebb]
-            transition-colors duration-300
-          "
+          className="flex items-center justify-between mt-10 text-2xl px-6 py-3 rounded-lg font-medium shadow-sm border transition"
+          style={{ backgroundColor: "#b0ea1d", color: "#080c04", borderColor: "#b0ea1d" }}
         >
           Contact CarbonCut
         </a>

@@ -5,11 +5,46 @@ import AnimatedHeroText from './AnimatedHeroText';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { LinkPreview } from '../ui/link-preview';
 
+function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
+  return (
+    <div className="w-full h-full overflow-hidden rounded-xl">
+      <video
+        src="/LandingPage.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        onLoadedData={onLoad}
+        onCanPlay={onLoad}
+        className="w-full h-full object-cover"
+      />
+    </div>
+  );
+}
+
 const Hero = () => {
     const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+    const [showContent, setShowContent] = useState(false);
 
     const dropdown1Ref = useRef<HTMLDivElement>(null);
     const dropdown2Ref = useRef<HTMLDivElement>(null);
+
+    // Handle video load
+    const handleVideoLoad = () => {
+        setIsVideoLoaded(true);
+    };
+
+    // Show content with animation after video loads
+    useEffect(() => {
+        if (isVideoLoaded) {
+            const timer = setTimeout(() => {
+                setShowContent(true);
+            }, 100); // Small delay for smooth transition
+            return () => clearTimeout(timer);
+        }
+    }, [isVideoLoaded]);
 
     const toggleDropdown = (id: number) => {
         setOpenDropdown(openDropdown === id ? null : id);
@@ -52,18 +87,27 @@ const Hero = () => {
 
     return (
         <section className="relative h-screen w-full" data-scroll-section>
-            <div className="absolute inset-0 -z-10">
-                <video
-                    src="/CarbonCut-fe/LandingPage.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    className="object-cover w-full h-full"
+            {/* Loading Screen */}
+            {!isVideoLoaded && (
+               <div className="w-full h-full overflow-hidden rounded-xl  ">
+                <Image
+                    src="/CarbonCut-fe/hero3.jpg"
+                    alt="Carbon Cut Logo"
+                    fill
+                    className="object-cover"
                 />
+                {/* <div className="text-white text-xl">Loading...</div> */}
+            </div>
+        )}
+
+            <div className="absolute inset-0 -z-10">
+                <LandingPageVideo onLoad={handleVideoLoad} />
             </div>
 
             <div
-                className="flex flex-col items-center justify-center h-full px-6 max-w-5xl mx-auto"
+                className={`flex flex-col items-center justify-center h-full px-6 max-w-5xl mx-auto transition-opacity duration-1000 ${
+                    showContent ? 'opacity-100' : 'opacity-0'
+                }`}
                 data-scroll
                 data-scroll-speed="0.5"
             >
@@ -123,19 +167,8 @@ const Hero = () => {
 
                 {/* ---------- FOOTER SECTION ---------- */}
                 <div className="absolute bottom-12 left-0 right-0 px-6">
-                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-                        <div className="flex items-center gap-3">
-                            <span className="text-white/60 text-sm">Backed by industry leaders</span>
-                            <div className="flex items-center gap-6 opacity-70">
-                                <span className="text-white text-sm font-semibold">MERCURY</span>
-                                <span className="text-white text-sm font-semibold">ANTHROPIC</span>
-                                <span className="text-white text-sm font-semibold">yahoo!</span>
-                            </div>
-                        </div>
-
-                      
-
-                        <div className="text-xs text-white">
+                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-end gap-6">
+                        <div className="text-xs text-white ">
                             <div className="font-bold">#1</div>
                             <div className="text-white/60">The future of CO₂e starts here.</div>
                         </div>
