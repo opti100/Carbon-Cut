@@ -4,6 +4,7 @@ export interface ApiKey {
   key?: string;
   prefix: string;
   domain?: string;
+  source_type?: 'web' | 'ads'; 
   created_at: string;
   last_used_at: string | null;
   is_active: boolean;
@@ -14,6 +15,11 @@ export interface ApiKey {
 export interface CreateApiKeyRequest {
   name: string;
   domain: string;
+  source_type?: 'web' | 'ads';
+  extras?: {
+    website_url?: string;
+    description?: string;
+  };
 }
 
 export interface CreateApiKeyResponse {
@@ -140,4 +146,43 @@ export interface ConversionRulesResponse {
     rules: ConversionRule[];
     total_count: number;
   };
+}
+// Add to your /services/apikey/apikey.ts file
+
+export interface WebsiteAnalyticsResponse {
+  success: boolean
+  data: {
+    has_data: boolean
+    period_days: number
+    message?: string
+    stats: {
+      total_visitors: number
+      total_page_views: number
+      total_emissions_kg: number
+      total_emissions_g: number
+      avg_emissions_per_visit_g: number
+      total_sessions: number
+      api_keys_count: number
+    }
+    daily_breakdown: Array<{
+      date: string
+      sessions: number
+      emissions_g: number
+      emissions_kg: number
+    }>
+    device_breakdown: Array<{
+      device: string
+      count: number
+      percentage: number
+    }>
+    country_breakdown: Array<{
+      country: string
+      count: number
+      percentage: number
+    }>
+    top_pages: Array<{
+      url: string
+      views: number
+    }>
+  }
 }

@@ -226,69 +226,6 @@ export default function CampaignsPage() {
                       </div>
                     </CardHeader>
 
-                    {/* <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">Campaign ID</span>
-                        <Badge
-                          variant="secondary"
-                          className="bg-muted text-muted-foreground border-0 font-mono text-xs"
-                        >
-                          #{campaign.id}
-                        </Badge>
-                      </div>
-
-                      <div className="pt-3 border-t border-border">
-                        <div className="grid grid-cols-3 gap-2 text-center">
-                          <div>
-                            <p className="font-semibold text-sm text-foreground">
-                              {new Intl.NumberFormat().format(campaign.total_impressions || 0)}
-                              <Badge variant="secondary" className="bg-green-100 text-green-600">
-                                +{campaign.last_24h_impressions}
-                              </Badge>
-                            </p>
-                            <p className="text-xs text-muted-foreground">Impressions</p>
-                          </div>
-                          <div>
-                            <p className="font-semibold text-sm text-foreground">
-                                {new Intl.NumberFormat().format(campaign.total_clicks || 0)}
-                              <Badge variant="secondary" className="bg-green-100 text-green-600">
-                                +{campaign.last_24h_clicks}
-                              </Badge>
-                            </p>
-                            <p className="text-xs text-muted-foreground">Clicks</p>
-                          </div>
-                          <div>
-                            <p className="font-semibold text-sm text-foreground">
-                              {campaign.total_emissions_kg } kg
-                              <Badge variant="secondary" className="bg-green-100 text-green-600">
-                                +{campaign.last_24h_emissions_kg} kg
-                              </Badge>
-                            </p>
-                            <p className="text-xs text-muted-foreground">Emissions</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {campaign.google_ads_campaign_id && (
-                        <div className="flex items-center justify-between pt-3 border-t border-border">
-                          <div className="flex items-center gap-2">
-                            <Image
-                              src="/dsp/google-ads.svg"
-                              alt="Google Ads"
-                              width={20}
-                              height={20}
-                            />
-                            <span className="text-sm text-muted-foreground">Google Ads</span>
-                          </div>
-                          <Badge
-                            variant="outline"
-                            className="text-xs font-medium border-border bg-muted/50 text-muted-foreground"
-                          >
-                            Synced
-                          </Badge>
-                        </div>
-                      )}
-                    </CardContent> */}
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">Campaign ID</span>
