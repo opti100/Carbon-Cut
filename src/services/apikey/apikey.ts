@@ -5,7 +5,8 @@ import {
   InstallationGuideResponse, 
   ConversionRulesResponse,
   CreateConversionRuleRequest,
-  ConversionRule
+  ConversionRule,
+  WebsiteAnalyticsResponse
 } from "@/types/api-key";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
@@ -54,18 +55,32 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
 export class ApiKeyService {
   private static baseUrl = `${API_BASE_URL}/keys`;
 
-  static async getApiKeys(): Promise<ApiKeysListResponse> {
-    return fetchWithAuth(`${this.baseUrl}/`, {
+  static async getApiKeys(sourceType?: 'web' | 'ads'): Promise<ApiKeysListResponse> {
+    const params = sourceType ? `?source_type=${sourceType}` : '';
+    return fetchWithAuth(`${this.baseUrl}/${params}`, {
       method: 'GET',
     });
   }
 
-  static async createApiKey(name: string, domain?: string): Promise<CreateApiKeyResponse> {
+  static async createApiKey(
+    name: string, 
+    domain?: string, 
+    sourceType?: 'web' | 'ads',
+    extras?: {
+      website_url?: string;
+      description?: string;
+    }
+  ): Promise<CreateApiKeyResponse> {
     return fetchWithAuth(`${this.baseUrl}/`, {
       method: 'POST',
-      body: JSON.stringify({ name, domain: domain || '*' }),
+      body: JSON.stringify({ 
+        name, 
+        domain: domain || '*',
+        source_type: sourceType || 'web', 
+      }),
     });
   }
+
 
   static async deleteApiKey(keyId: string): Promise<{ success: boolean }> {
     return fetchWithAuth(`${this.baseUrl}/${keyId}/`, {
@@ -145,6 +160,14 @@ export class ApiKeyService {
 
   static async toggleConversionRule(keyId: string, ruleId: string, isActive: boolean): Promise<{ success: boolean }> {
     return this.updateConversionRule(keyId, ruleId, { is_active: isActive });
+  }
+
+  static async getWebsiteAnalytics(days: number = 30): Promise<WebsiteAnalyticsResponse> {
+    console.log(` Fetching website analytics for last ${days} days`);
+    
+    return fetchWithAuth(`${this.baseUrl}/website-analytics?days=${days}`, {
+      method: 'GET',
+    });
   }
 
 }
