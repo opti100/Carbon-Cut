@@ -1,30 +1,45 @@
 import type { NextConfig } from "next";
-import { Protocol } from "puppeteer";
 
 const nextConfig: NextConfig = {
   images: {
-
-     domains: [
-          "api.microlink.io", // Microlink Image Preview
-        ],
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "api.microlink.io",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "i.pravatar.cc",
-        port: '',
-        pathname: "/**"
+        pathname: "/**",
       },
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-        port: '',
-        pathname: "/**"
+        pathname: "/**",
       },
-    
-       
-   
-    ]
+    ],
   },
+
+  experimental: {
+    serverComponentsExternalPackages: ['puppeteer', 'puppeteer-core'],
+  },
+  
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [
+        ...config.externals,
+        'puppeteer',
+        'puppeteer-core',
+        '@react-three/fiber',
+        '@react-three/drei',
+        'three',
+        'three-globe',
+      ]
+    }
+    return config
+  },
+  
   async rewrites() {
     return [
       {
@@ -33,6 +48,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  
   async headers() {
     return [
       {
