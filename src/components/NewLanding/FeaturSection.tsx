@@ -107,7 +107,7 @@ export default function FeatureSection() {
         }
 
         const diff = e.clientX - dragStartX.current;
-        
+
         animationFrameRef.current = requestAnimationFrame(() => {
             setDragOffset(diff);
         });
@@ -152,7 +152,7 @@ export default function FeatureSection() {
         }
 
         const diff = e.touches[0].clientX - dragStartX.current;
-        
+
         animationFrameRef.current = requestAnimationFrame(() => {
             setDragOffset(diff);
         });
@@ -190,7 +190,7 @@ export default function FeatureSection() {
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('mouseup', handleMouseUp);
-            
+
             // Cleanup animation frame on unmount
             if (animationFrameRef.current) {
                 cancelAnimationFrame(animationFrameRef.current);
@@ -221,18 +221,28 @@ export default function FeatureSection() {
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
-                style={{ 
-                    userSelect: 'none', 
+                style={{
+                    userSelect: 'none',
                     WebkitUserSelect: 'none',
-                    touchAction: 'pan-y' 
+                    touchAction: 'pan-y'
                 }}
             >
+                <div className="w-full border-t border-dashed border-text/10 mb-20 "></div>
                 <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center min-h-full">
                     {/* Header */}
-                     <div className="text-right mb-16">
-                        <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right mb-4">Powerful Features for {" "}</p>
-                        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-[#d1cebb] text-right leading-tight">
-                            Carbon Reduction
+                    <div className="text-right">
+                        <p className="text-secondary/60 text-xs sm:text-sm uppercase tracking-wider">
+                          Powerful Features for
+                        </p>
+
+                        <h2
+                            className="
+              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
+              font-semibold tracking-tight 
+              text-[#d1cebb] mb-12
+            "
+                        >
+                           Carbon Reduction
                         </h2>
                     </div>
 

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Menu } from "lucide-react";
+import { Calculator, ChevronDown, ChevronRight, Menu, Radio, Scale } from "lucide-react";
 import { usePathname } from "next/dist/client/components/navigation";
 
 const Navbar = () => {
@@ -64,9 +64,9 @@ const Navbar = () => {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-2 py-2 h-12">
           {/* Logo */}
           <Link href="/">
-          <div className="flex items-center gap-2 cursor-pointer">
-            <Image src="/CarbonCut-fe/CC.svg" alt="CarbonCut Logo" height={50} width={50} />
-          </div>
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Image src="/CarbonCut-fe/CC.svg" alt="CarbonCut Logo" height={50} width={50} />
+            </div>
           </Link>
 
           {/* Desktop Menu */}
@@ -78,19 +78,31 @@ const Navbar = () => {
                 onMouseEnter={() => setHoveredItem(item)}
                 onMouseLeave={() => setHoveredItem(null)}
               >
-                {/* if the background is light , then text-black */}
-                <Link
-                  href={`${item.toLowerCase()}`}
-                  className={`text-sm font-medium transition-colors ${isHome
-                      ? "text-white hover:text-black" // home page styles
-                      : "text-black hover:text-gray-700" // other pages
-                    }`}
-                >
-                  {item}
-                </Link>
-
+                {item === "Product" ? (
+                  // ❌ Not a link — no redirect on click
+                  <button
+                    className={`text-sm font-medium transition-colors ${isHome
+                      ? "text-white hover:text-black"
+                      : "text-black hover:text-gray-700"
+                      }`}
+                  >
+                    {item}
+                  </button>
+                ) : (
+                  // ✅ Normal navigation for others
+                  <Link
+                    href={`/${item.toLowerCase()}`}
+                    className={`text-sm font-medium transition-colors ${isHome
+                      ? "text-white hover:text-black"
+                      : "text-black hover:text-gray-700"
+                      }`}
+                  >
+                    {item}
+                  </Link>
+                )}
               </div>
             ))}
+
           </div>
 
           {/* CTA */}
@@ -116,38 +128,36 @@ const Navbar = () => {
             onMouseEnter={() => setHoveredItem("Product")}
             onMouseLeave={() => setHoveredItem(null)}
           >
-            <div className="mx-auto max-w-7xl px-6 py-6">
-              <div className="grid grid-cols-[25%,35%,1fr] gap-8">
-                <div className="text-3xl font-bold">Products</div>
-
-                <div className="border-l border-black pl-6 space-y-6">
-                  <div>
-                    <Link href="/calculator" className="font-semibold">
-                      <div className="font-semibold">CarbonCalculator</div>
-
-                    </Link>
+            <div className="mx-auto w-full px-6 py-6">
+              <div className="text-3xl font-bold mb-8">Products</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Carbon Calculator */}
+                <Link href="/calculator">
+                  <div className=" p-8 rounded-xl  transition bg-[#b0ea1d] opacity-70 cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80">
+                    <Calculator />
+                    <div className="font-semibold text-xl mt-6 flex justify-between">CarbonCalculator <span> <ChevronRight /> </span></div>
                   </div>
+                </Link>
 
-                  <div>
-                    <Link href="/live" className="font-semibold">
-                      <div className="font-semibold">CarbonLive</div>
-
-                    </Link>
+                {/* Carbon live */}
+                <Link href="/live">
+                  <div className="p-8 opacity-70 rounded-xl  transition bg-[#b0ea1d] cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80">
+                    <Radio />
+                    <div className="font-semibold text-xl mt-6 flex justify-between">CarbonLive  <span> <ChevronRight /> </span></div>
                   </div>
+                </Link>
 
-                  <div>
-                    <Link href="/offset" className="font-semibold">
-                      <div className="font-semibold">CarbonOffset</div>
-
-                    </Link>
+                {/* Carbon offset */}
+                <Link href="/offset">
+                  <div className="p-8 opacity-70 rounded-xl bg-[#b0ea1d] transition cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80">
+                    <Scale />
+                    <div className="font-semibold text-xl mt-6 flex justify-between"> CarbonOffset <span> <ChevronRight /> </span></div>
                   </div>
-                </div>
-
-                <div className="border-l border-black pl-6">
-                  <div className="h-full w-full rounded-xl bg-amber-50"></div>
-                </div>
+                </Link>
               </div>
             </div>
+
+
           </motion.div>
         )}
       </AnimatePresence>

@@ -4,11 +4,11 @@ import Link from 'next/link';
 
 export const BlogElevenContent = () => {
   return (
-    <div> 
+    <div>
       <div className="bg-white">
         <article className="">
           <div className="prose prose-lg max-w-none">
-           
+
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">The Real-Time Paradox</h3>
             <p className="text-lg leading-relaxed mb-6">
               Most organisations today rely heavily on real time analytics to guide everyday decisions. Marketing teams watch campaigns perform hour by hour. Cloud engineers track compute usage through live analytics dashboards. Operations teams monitor performance and output with real time insights. Speed has become the norm.
@@ -43,6 +43,10 @@ export const BlogElevenContent = () => {
               </p>
             </blockquote>
 
+            <p className='text-lg leading-relaxed mb-8 font-semibold'>Read our previous blog to see why traditional calculators miss the real emissions —
+              <Link href="/blogs/your-carbon-footprint-calculator-is-lying-to-you" className='underline'>Your Carbon Footprint Calculator Is Lying to You: Here’s What It Misses.
+              </Link></p>
+
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">Modern Businesses Generate Emissions Every Second</h3>
             <p className="text-lg leading-relaxed mb-6">
               Every part of the modern enterprise produces real-time carbon emission, even if it is invisible:
@@ -75,21 +79,21 @@ export const BlogElevenContent = () => {
                   The EU&apos;s CSRD requires detailed, auditable Scope 1, 2, and 3 reporting. The UK&apos;s SECR mandates transparent disclosure. The US SEC Climate Rule demands accuracy from listed companies.
                 </p>
               </div>
-              
+
               <div className="bg-white border-2 border-blue-200 p-6 rounded-xl hover:border-blue-400 transition-colors">
                 <h4 className="text-xl font-bold text-gray-900 mb-3">Investors Prioritise Traceability</h4>
                 <p className="text-gray-700 text-base leading-relaxed">
                   61% of global investors now evaluate the accuracy of environmental data when making decisions, according to CIO Insights.
                 </p>
               </div>
-              
+
               <div className="bg-white border-2 border-purple-200 p-6 rounded-xl hover:border-purple-400 transition-colors">
                 <h4 className="text-xl font-bold text-gray-900 mb-3">Customers Expect Evidence</h4>
                 <p className="text-gray-700 text-base leading-relaxed">
                   Annual net-zero claims or broad commitments no longer build trust. People want transparency grounded in live proof, not optimistic language.
                 </p>
               </div>
-              
+
               <div className="bg-white border-2 border-orange-200 p-6 rounded-xl hover:border-orange-400 transition-colors">
                 <h4 className="text-xl font-bold text-gray-900 mb-3">Technology Enables Visibility</h4>
                 <p className="text-gray-700 text-base leading-relaxed">
@@ -244,18 +248,16 @@ export const BlogElevenContent = () => {
             </p>
 
             <div className="bg-gray-100 text-black rounded-2xl p-10 my-16 shadow-xl">
-              <h2 className="text-3xl font-bold mb-6">
-                Ready to Move Beyond Yesterday&apos;s Emissions Data?
+              <h2 className="text-2xl font-bold mb-6">
+                   Ready to see the real footprint behind your operations, campaigns, cloud workloads, and daily decisions?
               </h2>
-              <p className="text-xl mb-6 leading-relaxed opacity-95">
-                Start monitoring your carbon footprint in real-time with CarbonCut&apos;s advanced carbon intelligence platform.
-              </p>
+             
               <p className="text-xl leading-relaxed opacity-95">
-                Discover how {" "}
-                <Link href="/live" className='text-tertiary hover:text-black underline'>CarbonLive</Link>
-                {" "} and {" "}
-               CarbonReduce
-                {" "} can transform your sustainability reporting from a backward-looking exercise into a forward-driving competitive advantage.
+           Try the {" "}
+                <Link href="/calculator" className='text-tertiary hover:text-black underline'>CarbonCalculator</Link>
+                {" "} - it&apos;s free, fast, and built for real-time accuracy.
+
+               
               </p>
             </div>
           </div>
@@ -273,7 +275,7 @@ export const blogElevenData: BlogPost = {
   excerpt: 'Why businesses that monitor emissions in real time will outperform those stuck in annual reporting cycles',
   date: '2025-12-3',
   author: {
-    name: 'CarbonCut Insights Team',
+    name: '',
     avatar: '/team/carboncut-insights.jpg'
   },
   readTime: '7 min read',
