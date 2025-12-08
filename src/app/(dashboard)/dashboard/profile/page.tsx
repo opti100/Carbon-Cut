@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { useRouter } from "next/navigation"
 import {
   Card,
   CardContent,
@@ -37,6 +36,7 @@ import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/Google
 import { ApiKeyService } from "@/services/apikey/apikey"
 import { DashboardHeader } from "@/components/DashboardHeader"
 import { useGoogleAds } from "@/contexts/GoogleAdsContext"
+import { useRouter } from "next/dist/client/components/navigation"
 
 export default function ProfilePage() {
   const { user, logout } = useAuth()
