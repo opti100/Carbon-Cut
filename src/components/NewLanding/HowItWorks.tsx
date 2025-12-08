@@ -15,8 +15,6 @@ interface Step {
     icon: React.ComponentType<LucideProps>;
 }
 
-
-
 const steps: Step[] = [
     {
         step: 1,
