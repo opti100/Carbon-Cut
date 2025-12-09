@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from "react"
 import { useAuth } from "@/contexts/AuthContext"
-import { useRouter } from "next/navigation"
 import {
   Card,
   CardContent,
@@ -37,6 +36,7 @@ import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/Google
 import { ApiKeyService } from "@/services/apikey/apikey"
 import { DashboardHeader } from "@/components/DashboardHeader"
 import { useGoogleAds } from "@/contexts/GoogleAdsContext"
+import { useRouter } from "next/dist/client/components/navigation"
 
 export default function ProfilePage() {
   const { user, logout } = useAuth()
@@ -54,7 +54,7 @@ export default function ProfilePage() {
 
   const { data: apiKeysData } = useQuery({
     queryKey: ["apiKeys"],
-    queryFn: ApiKeyService.getApiKeys,
+    queryFn: () => ApiKeyService.getApiKeys(),
     retry: 1,
     staleTime: 30000,
   })
@@ -223,20 +223,21 @@ export default function ProfilePage() {
                 <AlertTriangle className="h-4 w-4 mr-2" /> Limit Reached
               </Button>
             ) : (
-              <Button onClick={handleCreateKeyClick} className="w-full sm:w-auto">
-                <Plus className="h-4 w-4 mr-2" /> Create API Key
-              </Button>
+              
             )} */}
+            <Button onClick={handleCreateKeyClick} className="w-full sm:w-auto">
+              <Plus className="h-4 w-4 mr-2" /> Create API Key
+            </Button>
           </CardHeader>
           <CardContent>
-            {hasApiKey && (
+            {/* {hasApiKey && (
               <Alert variant="default" className="mb-4">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertDescription>
                   For security, only one active API key is allowed. To generate a new one, please delete the existing key.
                 </AlertDescription>
               </Alert>
-            )}
+            )} */}
             <ApiKeysList />
           </CardContent>
         </Card>

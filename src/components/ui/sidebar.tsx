@@ -7,8 +7,11 @@ import { Badge } from "@/components/ui/badge"
 import {
   Blocks,
   Boxes,
+  ChevronDown,
+  ChevronRight,
   ChevronsUpDown,
   FileClock,
+  Globe,
   GraduationCap,
   Layout,
   LayoutDashboard,
@@ -22,6 +25,8 @@ import {
   UserCog,
   UserSearch,
   X,
+  Megaphone,
+  Monitor,
 } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -89,6 +94,8 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const router = useRouter();
+  const [dashboardExpanded, setDashboardExpanded] = useState(true);
+  
   const getInitials = (name?: string, email?: string) => {
     if (name) {
       return name
@@ -103,6 +110,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
     }
     return "U";
   };
+  
   const handleLogout = async () => {
     try {
       await logout();
@@ -177,21 +185,54 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
           <div className="flex grow flex-col gap-4">
             <ScrollArea className="h-16 grow p-2">
               <div className={cn("flex w-full flex-col gap-1")}>
+                {/* Dashboard Overview Link */}
                 <Link
                   href="/dashboard"
                   className={cn(
                     "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("campaign") &&
-                    "bg-muted ",
+                    pathname === "/dashboard" && "bg-muted",
                   )}
                 >
                   <LayoutDashboard className="h-4 w-4" />
-                  <motion.li variants={variants}>
+                  <motion.span variants={variants}>
                     {!isCollapsed && (
                       <p className="ml-2 text-sm font-medium">Dashboard</p>
                     )}
-                  </motion.li>
+                  </motion.span>
                 </Link>
+
+                {/* Ads Link */}
+                <Link
+                  href="/dashboard/campaigns"
+                  className={cn(
+                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
+                    pathname?.includes("/dashboard/campaigns") && "bg-muted",
+                  )}
+                >
+                  <Megaphone className="h-4 w-4" />
+                  <motion.span variants={variants}>
+                    {!isCollapsed && (
+                      <p className="ml-2 text-sm font-medium">Ads</p>
+                    )}
+                  </motion.span>
+                </Link>
+
+                {/* Website/App Link */}
+                <Link
+                  href="/dashboard/website"
+                  className={cn(
+                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
+                    pathname === "/dashboard/website" && "bg-muted",
+                  )}
+                >
+                  <Monitor className="h-4 w-4" />
+                  <motion.span variants={variants}>
+                    {!isCollapsed && (
+                      <p className="ml-2 text-sm font-medium">Website/App</p>
+                    )}
+                  </motion.span>
+                </Link>
+
                 <Link
                   href="/dashboard/integrations"
                   className={cn(
@@ -209,23 +250,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                     )}
                   </motion.li>
                 </Link>
-                <Link
-                  href="/dashboard/reports"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("reports") &&
-                    "bg-muted text-blue-600",
-                  )}
-                >
-                  <FileClock className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <div className="flex items-center gap-2">
-                        <p className="ml-2 text-sm font-medium">Reports</p>
-                      </div>
-                    )}
-                  </motion.li>
-                </Link>
+                
                 <Link
                   href="/dashboard/profile"
                   className={cn(
@@ -243,119 +268,6 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                     )}
                   </motion.li>
                 </Link>
-                {/* <Link
-                  href="/chat"
-                  className={cn(
-                    "flex h-8 flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("chat") && "bg-muted text-blue-600",
-                  )}
-                >
-                  <MessagesSquare className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <div className="ml-2 flex items-center gap-2">
-                        <p className="text-sm font-medium">Chat</p>
-                      </div>
-                    )}
-                  </motion.li>
-                </Link>
-                <Separator className="w-full" />
-                <Link
-                  href="/deals"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("deals") && "bg-muted text-blue-600",
-                  )}
-                >
-                  <Layout className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">Deals</p>
-                    )}
-                  </motion.li>
-                </Link>
-                <Link
-                  href="/accounts"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("accounts") &&
-                      "bg-muted text-blue-600",
-                  )}
-                >
-                  <UserCircle className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">Accounts</p>
-                    )}
-                  </motion.li>
-                </Link>
-                <Link
-                  href="/competitors"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("competitors") &&
-                      "bg-muted text-blue-600",
-                  )}
-                >
-                  <UserSearch className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">
-                        Competitors
-                      </p>
-                    )}
-                  </motion.li>
-                </Link>
-                <Separator className="w-full" />
-                <Link
-                  href="/library/knowledge"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("library") &&
-                      "bg-muted text-blue-600",
-                  )}
-                >
-                  <GraduationCap className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">
-                        Knowledge Base
-                      </p>
-                    )}
-                  </motion.li>
-                </Link>
-                <Link
-                  href="/feedback"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("feedback") &&
-                      "bg-muted text-blue-600",
-                  )}
-                >
-                  <MessageSquareText className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">Feedback</p>
-                    )}
-                  </motion.li>
-                </Link>
-                <Link
-                  href="/review"
-                  className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("review") &&
-                      "bg-muted text-blue-600",
-                  )}
-                >
-                  <FileClock className="h-4 w-4" />
-                  <motion.li variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">
-                        Document Review
-                      </p>
-                    )}
-                  </motion.li>
-                </Link> */}
               </div>
             </ScrollArea>
           </div>
@@ -395,11 +307,6 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                 </DropdownMenuTrigger>
                 <DropdownMenuContent sideOffset={5}>
                   <div className="flex flex-row items-center gap-2 p-2">
-                    {/* <Avatar className="size-6">
-                      <AvatarFallback>
-                        AL
-                      </AvatarFallback>
-                    </Avatar> */}
                     <Avatar className="h-8 w-8">
                       <AvatarFallback className="bg-[#ff8904] text-white text-xs font-semibold">
                         {getInitials(user?.name, user?.email)}
@@ -424,6 +331,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
+                    onClick={handleLogout}
                     className="flex items-center gap-2"
                   >
                     <LogOut className="h-4 w-4" /> Sign out

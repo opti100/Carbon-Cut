@@ -315,7 +315,7 @@ export default function CampaignCreationStep({ onComplete }: CampaignCreationSte
          <Button
         type="submit"
         disabled={isFormDisabled || !selectedGoogleAdsCampaign || selectedCount === 0}
-        className="bg-tertiary hover:bg-tertiary/90"
+        className=" "
       >
         {createMutation.isPending ? (
           <>
@@ -324,7 +324,6 @@ export default function CampaignCreationStep({ onComplete }: CampaignCreationSte
           </>
         ) : (
           <>
-            <Sparkles className="mr-2 h-4 w-4" />
             Create Campaign 
           </>
         )}
