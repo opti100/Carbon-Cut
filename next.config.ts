@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { Protocol } from "puppeteer";
 
 const nextConfig: NextConfig = {
   images: {
