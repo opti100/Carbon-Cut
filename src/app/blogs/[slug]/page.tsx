@@ -5,14 +5,15 @@ import { generateBlogMetadata } from '@/utils/blogMetadata';
 import BlogPostPage from '@/components/blog/BlogPostPage';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = getPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
   
   if (!post) {
     return {
@@ -33,8 +34,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function BlogPage({ params }: PageProps) {
-  const post = getPostBySlug(params.slug);
+export default async function BlogPage({ params }: PageProps) {
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     notFound();
