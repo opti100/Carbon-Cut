@@ -1,6 +1,7 @@
 import React from 'react';
 import { BlogPost } from '../blogData';
 import Link from 'next/link';
+import { time } from 'motion/react';
 
 export const BlogFourteenContent = () => {
   return (
@@ -219,12 +220,12 @@ export const blogFourteenData: BlogPost = {
   excerpt: 'Why traditional carbon calculators fail and how real-time data reveals your true environmental impact',
   date: '2025-12-08',
   author: {
-    name: '',
+    name: 'CarbonCut Insights Team',
     avatar: '/team/carboncut-insights.jpg'
   },
   readTime: '8 min read',
-  image: '/blogs/blogFourteen.png',
+  image: '/blogs/blogFourteen.png', 
   featured: true,
   metaTitle: 'Before You Use a Carbon Footprint Calculator | CarbonCut',
-  metaDescription: 'Most carbon footprint calculators rely on assumptions, not real data. Learn what they miss and how CarbonCut’s real-time approach delivers accurate, actionable CO₂e insights.',
+  metaDescription: `Most carbon footprint calculators rely on assumptions, not real data. Learn what they miss and how CarbonCut's real-time approach delivers accurate, actionable CO₂e insights.`,
 };
