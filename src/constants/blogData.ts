@@ -15,6 +15,7 @@ export interface BlogPost {
   featured?: boolean;
   metaTitle?: string;
   metaDescription?: string;
+  content?: React.ReactNode;
 }
 
 
@@ -33,6 +34,7 @@ import { blogElevenData } from './blogs/blogsEleven';
 import { blogTwelveData } from './blogs/blogsTwelve-data';
 import { blogThirteenData } from './blogs/blogThirteen-data';
 import { blogFourteenData } from './blogs/blogFourteen-data';
+import { blogFifteenData } from './blogs/blogFiveteen-data';
 
 
 
@@ -51,7 +53,8 @@ export const blogPosts: BlogPost[] = [
   blogElevenData,
   blogTwelveData,
   blogThirteenData,
-  blogFourteenData
+  blogFourteenData,
+  blogFifteenData,
 ];
 
 // Utility functions for blog data
