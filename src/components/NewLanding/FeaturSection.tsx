@@ -214,7 +214,7 @@ export default function FeatureSection() {
 
             <div
                 ref={containerRef}
-                className="w-full min-h-screen lg:min-h-[120vh] bg-[#fcfdf6] flex flex-col justify-center overflow-hidden relative py-8 sm:py-12 md:py-16 lg:py-20"
+                className="w-full min-h-screen lg:min-h-[120vh]  flex flex-col justify-center overflow-hidden relative py-8 sm:py-12 md:py-16 lg:py-20"
                 onMouseDown={handleMouseDown}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}

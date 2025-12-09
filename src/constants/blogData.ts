@@ -13,6 +13,8 @@ export interface BlogPost {
   readTime: string;
   image?: string;
   featured?: boolean;
+  metaTitle?: string;
+  metaDescription?: string;
 }
 
 
@@ -30,6 +32,7 @@ import { blogTenData } from './blogs/blogTen-data';
 import { blogElevenData } from './blogs/blogsEleven';
 import { blogTwelveData } from './blogs/blogsTwelve-data';
 import { blogThirteenData } from './blogs/blogThirteen-data';
+import { blogFourteenData } from './blogs/blogFourteen-data';
 
 
 
@@ -37,7 +40,7 @@ import { blogThirteenData } from './blogs/blogThirteen-data';
 export const blogPosts: BlogPost[] = [
   blogOneData,
   blogTwoData,
-  blogThreeeData, 
+  blogThreeeData,
   blogFourData,
   blogFiveData,
   blogSixData,
@@ -48,6 +51,7 @@ export const blogPosts: BlogPost[] = [
   blogElevenData,
   blogTwelveData,
   blogThirteenData,
+  blogFourteenData
 ];
 
 // Utility functions for blog data

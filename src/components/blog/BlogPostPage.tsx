@@ -23,6 +23,7 @@ import Navbar from '../NewLanding/Navbar';
 import { BlogElevenContent } from '@/constants/blogs/blogsEleven';
 import { BlogTwelveContent } from '@/constants/blogs/blogsTwelve-data';
 import { BlogThirteenContent } from '@/constants/blogs/blogThirteen-data';
+import { BlogFourteenContent } from '@/constants/blogs/blogFourteen-data';
 
 
 // Blog content component mapping
@@ -40,6 +41,7 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'real-time-carbon-data-competitive-advantage': BlogElevenContent,
   'google-space-data-centres-carbon-measurement': BlogTwelveContent,
   'the-carbon-illusion-why-companies-think-theyre-greener': BlogThirteenContent,
+  'before-you-calculate-your-carbon-footprint': BlogFourteenContent,
 
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,

@@ -4,43 +4,43 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { blogNineData } from "@/constants/blogs/blogNine-data";
-import { blogTenData } from "@/constants/blogs/blogTen-data";
-import { blogElevenData } from "@/constants/blogs/blogsEleven";
+import { blogThirteenData } from "@/constants/blogs/blogThirteen-data";
+import { blogTwelveData } from "@/constants/blogs/blogsTwelve-data";
+import { blogFourteenData }  from "@/constants/blogs/blogFourteen-data";
 
 const blogs = [
   {
-    image: blogElevenData.image || "/blogs/blogEleven.png",
-    date: new Date(blogElevenData.date).toLocaleDateString("en-US", {
+    image: blogThirteenData.image || "/blogs/blogThirteen.png",
+    date: new Date(blogThirteenData.date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    readTime: blogElevenData.readTime,
-    title: blogElevenData.title,
-    slug: blogElevenData.slug,
+    readTime: blogThirteenData.readTime,
+    title: blogThirteenData.title,
+    slug: blogThirteenData.slug,
   },
   {
-    image: blogTenData.image || "/blogs/blogTen.png",
-    date: new Date(blogTenData.date).toLocaleDateString("en-US", {
+    image: blogTwelveData.image || "/blogs/blogTwelve.png",
+    date: new Date(blogTwelveData.date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    readTime: blogTenData.readTime,
-    title: blogTenData.title,
-    slug: blogTenData.slug,
+    readTime: blogTwelveData.readTime,
+    title: blogTwelveData.title,
+    slug: blogTwelveData.slug,
   },
   {
-    image: blogNineData.image || "/blogs/blogNine.png",
-    date: new Date(blogNineData.date).toLocaleDateString("en-US", {
+    image: blogFourteenData.image || "/blogs/blogFourteen.png",
+    date: new Date(blogFourteenData.date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    readTime: blogNineData.readTime,
-    title: blogNineData.title,
-    slug: blogNineData.slug,
+    readTime: blogFourteenData.readTime,
+    title: blogFourteenData.title,
+    slug: blogFourteenData.slug,
   },
 ];
 
