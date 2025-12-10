@@ -58,7 +58,7 @@ const steps: Step[] = [
 const SkeletonOne = () => {
     return (
         <div className="relative flex items-center justify-center h-full w-full">
-            <div className="w-[90%] max-w-md p-3 lg:p-6 mx-auto bg-[#fcfdf6] shadow-xl rounded-xl border border-[#d1cebb]">
+            <div className="w-[90%] max-w-md p-3 lg:p-6 mx-auto rounded-xl border ">
                 <div className="flex flex-col space-y-3 lg:space-y-4">
                     <div className="bg-[#d1cebb]/20 rounded-lg p-3 lg:p-4 border border-[#d1cebb]/40">
                         <div className="flex items-center gap-2 mb-2 lg:mb-3">

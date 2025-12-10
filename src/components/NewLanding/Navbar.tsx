@@ -27,11 +27,9 @@ const Navbar = () => {
       if (currentScrollY < 10) {
         setIsVisible(true);
       } else if (currentScrollY > lastScrollY.current) {
-        // scrolling down → hide
         setIsVisible(false);
         setHoveredItem(null);
       } else {
-        // scrolling up → show
         setIsVisible(true);
       }
 
@@ -71,46 +69,59 @@ const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-10">
-            {["Product", "Solutions", "Blogs", "About"].map((item) => (
-              <div
-                key={item}
-                className="relative h-full py-2"
-                onMouseEnter={() => setHoveredItem(item)}
-                onMouseLeave={() => setHoveredItem(null)}
+            <div
+              className="relative h-full py-2"
+              onMouseEnter={() => setHoveredItem("Product")}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              <span
+                className={`text-sm font-medium transition-colors cursor-pointer ${isHome
+                  ? "text-white hover:text-black"
+                  : "text-black hover:text-gray-700"
+                  }`}
               >
-                {item === "Product" ? (
-                  // ❌ Not a link — no redirect on click
-                  <button
-                    className={`text-sm font-medium transition-colors ${isHome
-                      ? "text-white hover:text-black"
-                      : "text-black hover:text-gray-700"
-                      }`}
-                  >
-                    {item}
-                  </button>
-                ) : (
-                  // ✅ Normal navigation for others
-                  <Link
-                    href={`/${item.toLowerCase()}`}
-                    className={`text-sm font-medium transition-colors ${isHome
-                      ? "text-white hover:text-black"
-                      : "text-black hover:text-gray-700"
-                      }`}
-                  >
-                    {item}
-                  </Link>
-                )}
-              </div>
-            ))}
+                Product
+              </span>
+            </div>
 
+            <Link
+              href="/methodology"
+              className={`text-sm font-medium transition-colors ${isHome
+                ? "text-white hover:text-black"
+                : "text-black hover:text-gray-700"
+                }`}
+            >
+              Solutions
+            </Link>
+
+            <Link
+              href="/blogs"
+              className={`text-sm font-medium transition-colors ${isHome
+                ? "text-white hover:text-black"
+                : "text-black hover:text-gray-700"
+                }`}
+            >
+              Blogs
+            </Link>
+
+            <Link
+              href="/about"
+              className={`text-sm font-medium transition-colors ${isHome
+                ? "text-white hover:text-black"
+                : "text-black hover:text-gray-700"
+                }`}
+            >
+              About
+            </Link>
           </div>
 
           {/* CTA */}
           <div className="flex items-center space-x-4">
-            <Link href="/signup">
-              <button className="rounded-full bg-black px-5 py-2 text-sm font-medium text-white transition hover:bg-gray-800">
-                Sign Up
-              </button>
+            <Link
+              href="/signup"
+              className="rounded-full bg-black px-5 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
+            >
+              Sign Up
             </Link>
           </div>
         </div>
@@ -132,32 +143,42 @@ const Navbar = () => {
               <div className="text-3xl font-bold mb-8">Products</div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Carbon Calculator */}
-                <Link href="/calculator">
-                  <div className=" p-8 rounded-xl  transition bg-[#b0ea1d] opacity-70 cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80">
-                    <Calculator />
-                    <div className="font-semibold text-xl mt-6 flex justify-between">CarbonCalculator <span> <ChevronRight /> </span></div>
+                <Link
+                  href="/calculator"
+                  className="p-8 rounded-xl transition bg-[#b0ea1d] opacity-70 cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80 block"
+                >
+                  <Calculator />
+                  <div className="font-semibold text-xl mt-6 flex justify-between">
+                    CarbonCalculator
+                    <span><ChevronRight /></span>
                   </div>
                 </Link>
 
                 {/* Carbon live */}
-                <Link href="/live">
-                  <div className="p-8 opacity-70 rounded-xl  transition bg-[#b0ea1d] cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80">
-                    <Radio />
-                    <div className="font-semibold text-xl mt-6 flex justify-between">CarbonLive  <span> <ChevronRight /> </span></div>
+                <Link
+                  href="/live"
+                  className="p-8 opacity-70 rounded-xl transition bg-[#b0ea1d] cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80 block"
+                >
+                  <Radio />
+                  <div className="font-semibold text-xl mt-6 flex justify-between">
+                    CarbonLive
+                    <span><ChevronRight /></span>
                   </div>
                 </Link>
 
                 {/* Carbon offset */}
-                <Link href="/offset">
-                  <div className="p-8 opacity-70 rounded-xl bg-[#b0ea1d] transition cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80">
-                    <Scale />
-                    <div className="font-semibold text-xl mt-6 flex justify-between"> CarbonOffset <span> <ChevronRight /> </span></div>
+                <Link
+                  href="/offset"
+                  className="p-8 opacity-70 rounded-xl bg-[#b0ea1d] transition cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80 block"
+                >
+                  <Scale />
+                  <div className="font-semibold text-xl mt-6 flex justify-between">
+                    CarbonOffset
+                    <span><ChevronRight /></span>
                   </div>
                 </Link>
               </div>
             </div>
-
-
           </motion.div>
         )}
       </AnimatePresence>
