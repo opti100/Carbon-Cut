@@ -54,9 +54,9 @@ const WhoUses = () => {
         opacity: 1,
         y: 0,
         rotation: 0,
-        duration: 0.8,
+        duration: 0.4,
         ease: "power3.out",
-        stagger: 0.08,
+        stagger: 0.04,
       });
 
       (descriptions[index] as any)._splitText = splitInstance;
