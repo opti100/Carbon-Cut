@@ -25,6 +25,7 @@ import { BlogTwelveContent } from '@/constants/blogs/blogsTwelve-data';
 import { BlogThirteenContent } from '@/constants/blogs/blogThirteen-data';
 import { BlogFourteenContent } from '@/constants/blogs/blogFourteen-data';
 import { BlogFifteenContent } from '@/constants/blogs/blogFiveteen-data';
+import { BlogSixteenContent } from '@/constants/blogs/blogSixteen-data';
 
 
 // Blog content component mapping
@@ -44,6 +45,7 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'the-carbon-illusion-why-companies-think-theyre-greener': BlogThirteenContent,
   'before-you-calculate-your-carbon-footprint': BlogFourteenContent,
   'what-is-real-time-carbon-intelligence': BlogFifteenContent,
+  'fastest-way-reduce-carbon-emissions-real-time-tracking': BlogSixteenContent,
 
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
