@@ -1,212 +1,278 @@
 "use client";
+
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
+import Image from "next/image";
+import { CountryDropdown } from "../NewLanding/ui/country-dropdown";
 
-export default function ContactUs() {
-    const [submitted, setSubmitted] = useState(false);
+export default function LubricantCO2Form() {
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [formData, setFormData] = useState({
+    name: "",
+    company: "",
+    email: "",
+    country: "",
+    volume: "",
+    category: "",
+    message: "",
+  });
 
-    const [formData, setFormData] = useState({
-        name: "",
-        company: "",
-        email: "",
-        country: "",
-        volume: "",
-        category: "",
-        message: "",
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+
+    if (errors[id]) {
+      setErrors((prev) => ({ ...prev, [id]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.company.trim()) newErrors.company = "Company is required";
+    if (!formData.email.trim()) newErrors.email = "Email is required";
+    if (!formData.country.trim()) newErrors.country = "Country is required";
+    if (!formData.volume.trim()) newErrors.volume = "Production volume is required";
+    if (!formData.category) newErrors.category = "Please select a category";
+
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    return newErrors;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+    console.log("Form submitted:", formData);
+    setSubmitted(true);
+
+    setTimeout(() => setSubmitted(false), 3000);
+
+    setFormData({
+      name: "",
+      company: "",
+      email: "",
+      country: "",
+      volume: "",
+      category: "",
+      message: "",
     });
+  };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("Form submitted:", formData);
+  const getInputClassName = (fieldName: string) => {
+    const baseClass =
+      "w-full h-12 rounded-lg border px-4 text-gray-900 transition-all duration-200 bg-[#fcfdf6]";
+    const errorClass = "border-red-500 focus:ring-2 focus:ring-red-500";
+    const normalClass = "border-gray-300 focus:ring-2 focus:ring-[#6c5f31] hover:border-[#6c5f31]";
+    return `${baseClass} ${errors[fieldName] ? errorClass : normalClass}`;
+  };
 
-        setSubmitted(true);
+  return (
+    <>
+      <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
 
-        setFormData({
-            name: "",
-            company: "",
-            email: "",
-            country: "",
-            volume: "",
-            category: "",
-            message: "",
-        });
+      <section className="py-20 bg-[#fcfdf6]">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
+          {/* ------------------------- LEFT CONTENT ------------------------- */}
+          <div className="space-y-8">
+            <h1 className="text-4xl font-semibold leading-tight text-black">
+              Start Your Lubricants CO₂e Calculation
+            </h1>
 
-        setTimeout(() => setSubmitted(false), 3000);
-    };
+            <p className="text-xl text-gray-700">
+              Get a free customised CO₂e breakdown for your top 5 lubricant SKUs.
+            </p>
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => {
-        const { id, value } = e.target;
-        setFormData((prev) => ({ ...prev, [id]: value }));
-    };
+            <ul className="space-y-4">
+              {["Accuracy", "Automation", "Real-time visibility"].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <Check className="text-[#6c5f31] mt-1" size={20} />
+                  <p className="text-gray-700 text-lg">{item}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-    return (
-        <div>
-            <div className="shadow-input mx-auto w-full max-w-md rounded-none bg-white p-4 md:rounded-2xl dark:bg-black">
-                <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
-                    Start Your Lubricants<br />CO₂e Calculation
-                </h2>
-                <p className="text-xl text-[#080c04]/70">
-                    Get a free customised CO₂e breakdown for your top 5 lubricant SKUs.
-                </p>
-
-                <form className="my-8" onSubmit={handleSubmit}>
-
-                    {/* Name */}
-                    <LabelInputContainer className="mb-4">
-                        <Label htmlFor="name">Name</Label>
-                        <Input
-                            id="name"
-                            placeholder="Your name"
-                            type="text"
-                            value={formData.name}
-                            onChange={handleChange}
-                        />
-                    </LabelInputContainer>
-
-                    {/* Company */}
-                    <LabelInputContainer className="mb-4">
-                        <Label htmlFor="company">Company</Label>
-                        <Input
-                            id="company"
-                            placeholder="Company name"
-                            type="text"
-                            value={formData.company}
-                            onChange={handleChange}
-                        />
-                    </LabelInputContainer>
-
-                    {/* Email */}
-                    <LabelInputContainer className="mb-4">
-                        <Label htmlFor="email">Email Address</Label>
-                        <Input
-                            id="email"
-                            placeholder="abc@gmail.com"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                    </LabelInputContainer>
-
-                    {/* Country */}
-                    <LabelInputContainer className="mb-4">
-                        <Label htmlFor="country">Country</Label>
-                        <Input
-                            id="country"
-                            placeholder="Your country"
-                            type="text"
-                            value={formData.country}
-                            onChange={handleChange}
-                        />
-                    </LabelInputContainer>
-
-                    {/* Production Volume */}
-                    <LabelInputContainer className="mb-4">
-                        <Label htmlFor="volume">Annual Production Volume</Label>
-                        <Input
-                            id="volume"
-                            placeholder="e.g., 10,000 Litres"
-                            type="text"
-                            value={formData.volume}
-                            onChange={handleChange}
-                        />
-                    </LabelInputContainer>
-
-                    {/* Lubricant Category Dropdown */}
-                    <LabelInputContainer className="mb-4">
-                        <Label htmlFor="category">Lubricant Category</Label>
-                        <select
-                            id="category"
-                            value={formData.category}
-                            onChange={handleChange}
-                            className="w-full h-[45px] rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-900 
-                            dark:border-gray-700 dark:bg-black dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-tertiary"
-                        >
-                            <option value="" disabled>Select category</option>
-                            <option value="engine-oil">Engine Oil</option>
-                            <option value="hydraulic-oil">Hydraulic Oil</option>
-                            <option value="gear-oil">Gear Oil</option>
-                            <option value="grease">Grease</option>
-                            <option value="industrial-lubes">Industrial Lubricants</option>
-                        </select>
-                    </LabelInputContainer>
-
-                    {/* Message */}
-                    <LabelInputContainer className="mb-6">
-                        <Label htmlFor="message">Message / Requirements</Label>
-                        <textarea
-                            id="message"
-                            placeholder="Share additional requirements..."
-                            value={formData.message}
-                            onChange={handleChange}
-                            className="w-full h-[150px] resize-none rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm text-gray-900 
-                            dark:border-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-tertiary"
-                        />
-                    </LabelInputContainer>
-
-                    {/* Submit */}
-                    <button
-                        className="group/btn relative block h-10 w-full rounded-md bg-tertiary font-medium text-black shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]"
-                        type="submit"
-                    >
-                        Get My CO₂e Report →
-                        <BottomGradient />
-                    </button>
-
-                    <div className="my-8 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-                </form>
+          {/* ------------------------- RIGHT FORM ------------------------- */}
+          <form
+            onSubmit={handleSubmit}
+            className="bg-[#fcfdf6] shadow-xl p-10 rounded-2xl border border-gray-200 space-y-6"
+          >
+            {/* NAME */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                className={getInputClassName("name")}
+              />
+              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
             </div>
 
-            {/* Success message */}
-            <div className="flex flex-row justify-center items-start">
-                <AnimatePresence>
-                    {submitted && (
-                        <motion.p
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.6 }}
-                            className="text-xl pt-4 text-neutral-800 dark:text-neutral-200"
-                        >
-                            Thanks, your response was submitted...
-                        </motion.p>
-                    )}
-                </AnimatePresence>
+            {/* COMPANY */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Company <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="company"
+                value={formData.company}
+                onChange={handleChange}
+                placeholder="Company name"
+                className={getInputClassName("company")}
+              />
+              {errors.company && <p className="text-red-500 text-sm">{errors.company}</p>}
             </div>
+
+            {/* EMAIL + COUNTRY */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* EMAIL */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="abc@gmail.com"
+                  className={getInputClassName("email")}
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+              </div>
+
+              {/* COUNTRY */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Country <span className="text-red-500">*</span>
+                </label>
+
+                <div
+                  className={`rounded-lg border w-full h-12 transition-all duration-200 bg-[#fcfdf6] ${
+                    errors.country
+                      ? "border-red-500 focus-within:ring-2 focus-within:ring-red-500"
+                      : "border-gray-300 focus-within:ring-2 focus-within:ring-[#6c5f31] hover:border-[#6c5f31]"
+                  }`}
+                >
+                  <CountryDropdown
+                    placeholder="Select country"
+                    onChange={(value) =>
+                      setFormData((prev) => ({ ...prev, country: String(value) }))
+                    }
+                    className="w-full h-full bg-transparent text-gray-900 px-3 flex items-center justify-between"
+                  />
+                </div>
+
+                {errors.country && (
+                  <p className="text-red-500 text-sm">{errors.country}</p>
+                )}
+              </div>
+            </div>
+
+            {/* PRODUCTION VOLUME */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Annual Production Volume <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="volume"
+                value={formData.volume}
+                onChange={handleChange}
+                placeholder="e.g. 10,000 Litres"
+                className={getInputClassName("volume")}
+              />
+              {errors.volume && (
+                <p className="text-red-500 text-sm">{errors.volume}</p>
+              )}
+            </div>
+
+            {/* CATEGORY */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Lubricant Category <span className="text-red-500">*</span>
+              </label>
+
+              <select
+                id="category"
+                value={formData.category}
+                onChange={handleChange}
+                className={`${getInputClassName("category")} cursor-pointer`}
+              >
+                <option value="" disabled>Select category</option>
+                <option value="engine-oil">Engine Oil</option>
+                <option value="hydraulic-oil">Hydraulic Oil</option>
+                <option value="gear-oil">Gear Oil</option>
+                <option value="grease">Grease</option>
+                <option value="industrial-lubes">Industrial Lubricants</option>
+              </select>
+
+              {errors.category && (
+                <p className="text-red-500 text-sm">{errors.category}</p>
+              )}
+            </div>
+
+            {/* MESSAGE */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Message / Requirements <span className="text-gray-400">(Optional)</span>
+              </label>
+              <textarea
+                id="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Share additional requirements..."
+                className="w-full min-h-[130px] rounded-lg border border-gray-300 px-4 py-3 resize-none text-gray-900 transition-all duration-200 focus:ring-2 focus:ring-[#6c5f31] hover:border-[#6c5f31] bg-[#fcfdf6]"
+              />
+            </div>
+
+            {/* SUBMIT BUTTON */}
+            <button
+              type="submit"
+              className="w-full h-12 rounded-lg bg-[#6c5f31] text-white font-semibold shadow-lg hover:opacity-90 transition-all duration-200 hover:bg-[#5a4e2a] transform hover:scale-[1.02]"
+            >
+              Get My CO₂e Report →
+            </button>
+
+            {/* SUCCESS MESSAGE */}
+            <AnimatePresence>
+              {submitted && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                  className="text-center p-4 bg-green-50 border border-green-200 rounded-lg"
+                >
+                  <p className="text-green-700 font-medium">
+                    ✅ Thanks! Your response has been submitted successfully.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </form>
         </div>
-    );
+      </section>
+    </>
+  );
 }
-
-/* Reusable Components */
-const BottomGradient = () => {
-    return (
-        <>
-            <span className="absolute inset-x-0 -bottom-px block h-px w-full 
-                bg-gradient-to-r from-transparent via-cyan-500 to-transparent 
-                opacity-0 transition duration-500 group-hover/btn:opacity-100"
-            />
-            <span className="absolute inset-x-10 -bottom-px mx-auto block h-px 
-                w-1/2 bg-gradient-to-r from-transparent via-indigo-500 to-transparent 
-                opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100"
-            />
-        </>
-    );
-};
-
-const LabelInputContainer = ({
-    children,
-    className,
-}: {
-    children: React.ReactNode;
-    className?: string;
-}) => {
-    return (
-        <div className={cn("flex w-full flex-col space-y-2", className)}>
-            {children}
-        </div>
-    );
-};

@@ -102,9 +102,7 @@ const BlogDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
         {/* ----------------------------- SECTION 1: LATEST INSIGHTS ----------------------------- */}
         <div className="text-center mb-16">
-          <p className="text-sm tracking-wide uppercase mb-2 text-gray-600">
-            Blog Page
-          </p>
+         
 
           <h1 className="text-4xl md:text-5xl font-bold" style={{ color: colors.text }}>
             Get The Latest Insights
@@ -134,25 +132,71 @@ const BlogDashboard = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* LEFT: BIG FEATURED CARD */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-8">
+              {/* FIRST CARD */}
               <Link href={`/blogs/${popularPosts[0].slug}`} className="group block">
                 <div className="relative h-[340px] rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-all">
+
+                  {/* IMAGE */}
                   <Image
                     src={popularPosts[0].image || "/blogs/blogsOne.png"}
                     alt={popularPosts[0].title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-contain "
                   />
 
-                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
+                  {/* HIDDEN TEXT → APPEARS ON HOVER */}
+                  <div className="
+        absolute inset-0 
+        bg-gradient-to-t from-black/70 to-transparent 
+        opacity-0 group-hover:opacity-100 
+        translate-y-6 group-hover:translate-y-0
+        transition-all duration-500 ease-out 
+        p-6 flex flex-col justify-end
+      ">
                     <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">
                       {popularPosts[0].title}
                     </h3>
-                    <p className="text-gray-200 line-clamp-2">{popularPosts[0].excerpt}</p>
+                    <p className="text-gray-200 line-clamp-2">
+                      {popularPosts[0].excerpt}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+
+
+              {/* SECOND CARD */}
+              <Link href={`/blogs/${popularPosts[1].slug}`} className="group block">
+                <div className="relative h-[340px] rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-all">
+
+                  {/* IMAGE */}
+                  <Image
+                    src={popularPosts[1].image || "/blogs/blogsOne.png"}
+                    alt={popularPosts[1].title}
+                    fill
+                    className="object-contain "
+                  />
+
+                  {/* HIDDEN TEXT → APPEARS ON HOVER */}
+                  <div className="
+        absolute inset-0 
+        bg-gradient-to-t from-black/70 to-transparent 
+        opacity-0 group-hover:opacity-100 
+        translate-y-6 group-hover:translate-y-0 
+        transition-all duration-500 ease-out
+        p-6 flex flex-col justify-end
+      ">
+                    <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">
+                      {popularPosts[1].title}
+                    </h3>
+                    <p className="text-gray-200 line-clamp-2">
+                      {popularPosts[1].excerpt}
+                    </p>
                   </div>
                 </div>
               </Link>
             </div>
+
 
             {/* RIGHT: STACK OF SMALL CARDS */}
             <div className="flex flex-col gap-6">

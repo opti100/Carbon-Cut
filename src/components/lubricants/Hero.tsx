@@ -10,7 +10,7 @@ function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
     return (
         <div className="w-full h-full overflow-hidden rounded-xl">
             <video
-                src="/LandingPage.mp4"
+                src="/Lubricants.mp4"
                 autoPlay
                 loop
                 muted
@@ -87,12 +87,14 @@ const Hero = () => {
     }, [openDropdown]);
 
     return (
+        <>
+       
         <section className="relative h-screen w-full" data-scroll-section>
             {/* Loading Screen */}
             {!isVideoLoaded && (
                 <div className="w-full h-full overflow-hidden rounded-xl  ">
                     <Image
-                        src="/CarbonCut-fe/hero3.jpg"
+                        src="/CarbonCut-fe/Lubricant.png"
                         alt="Carbon Cut Logo"
                         fill
                         className="object-cover"
@@ -122,7 +124,13 @@ const Hero = () => {
 
                
             </div>
+
+            
         </section>
+        
+        {/* Bottom Divider */}
+        <div className="w-full border-t border-dashed border-text/10 mt-4 sm:mt-6 md:mt-8"></div>
+         </>
     );
 };
 

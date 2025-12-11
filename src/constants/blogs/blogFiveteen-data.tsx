@@ -219,9 +219,9 @@ export const BlogFifteenContent = () => {
               </div>
               
               <div className="bg-white p-6 rounded-xl shadow-sm">
-                <h4 className="text-xl font-bold text-gray-900 mb-3">CarbonReduce</h4>
+                <h4 className="text-xl font-bold text-gray-900 mb-3">CarbonCalculator</h4>
                 <p className="text-gray-700 text-base leading-relaxed">
-                  For AI-driven reduction recommendations and operational optimisation.
+                  For Accurate, Real-Time Emission Quantification
                 </p>
               </div>
               

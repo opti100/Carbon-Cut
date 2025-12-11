@@ -12,29 +12,16 @@ const WhoUses = () => {
   const descriptionsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const Numbers = [
-    {
-      description: "Lubricant manufacturers",
-    },
-    {
-      description: "Industrial oil suppliers",
-    },
-    {
-      description: "Automotive OEM partnerships",
-    },
-    {
-      description: "Fuel & energy distributors",
-    },
-    {
-      description: "B2B clients & tender-facing teams",
-    },
-    {
-      description: "Sustainability & reporting teams",
-    },
-    {
-      description: "Supply chain & procurement",
-    },
+    { description: "Lubricant manufacturers" },
+    { description: "Industrial oil suppliers" },
+    { description: "Automotive OEM partnerships" },
+    { description: "Fuel & energy distributors" },
+    { description: "B2B clients & tender-facing teams" },
+    { description: "Sustainability & reporting teams" },
+    { description: "Supply chain & procurement" },
   ];
 
+  /* ---------------- GSAP ANIMATION ---------------- */
   useEffect(() => {
     const items = itemsRef.current.filter(Boolean) as HTMLDivElement[];
     const descriptions = descriptionsRef.current.filter(Boolean) as HTMLDivElement[];
@@ -56,7 +43,7 @@ const WhoUses = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: item,
-          start: "top 80%",
+          start: "top 85%",
           end: "top 50%",
           toggleActions: "play none none reverse",
           markers: false,
@@ -72,12 +59,11 @@ const WhoUses = () => {
         stagger: 0.08,
       });
 
-      // Store split instance for cleanup
       (descriptions[index] as any)._splitText = splitInstance;
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      ScrollTrigger.getAll().forEach((t) => t.kill());
       descriptionsRef.current.forEach((desc) => {
         const inst = (desc as any)?._splitText;
         inst && inst.revert();
@@ -86,52 +72,46 @@ const WhoUses = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative bg-background py-20">
-      {/* TOP BORDER */}
-      <div className="w-full border-t border-dashed border-text/10 mb-10"></div>
+    <section ref={containerRef} className="relative bg-background">
+      
+      {/* Top Border */}
+      <div className="w-full border-t border-dashed border-text/10 mb-4 sm:mb-6 md:mb-8"></div>
 
-      <div className="mx-auto max-w-7xl w-full px-6">
-        {/* ---------------- HEADER ---------------- */}
-        <div className="text-right">
-          <h2
-            className="
-              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
-              font-semibold tracking-tight 
-              text-[#d1cebb] mb-12
-            "
-          >
-            Who Uses
-          </h2>
-        </div>
+      <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
+        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
+          
+          {/* ---------- HEADER ---------- */}
+          <div className="text-center lg:text-right mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-[#d1cebb]">
+              Who Uses CarbonCut
+            </h2>
+          </div>
 
-        {/* ---------------- DESCRIPTIONS LIST ---------------- */}
-        <div className="space-y-14 sm:space-y-16 md:space-y-20">
-          {Numbers.map((item, index) => (
-            <div
-              key={index}
-              ref={(el) => { itemsRef.current[index] = el; }}
-              className="
-                py-10 
-                border-b border-dashed border-text/10 
-                last:border-b-0
-              "
-            >
-              {/* Description */}
-              <div className="overflow-visible">
-                <div
-                  ref={(el) => { descriptionsRef.current[index] = el; }}
-                  className="
-                    text-3xl sm:text-4xl md:text-5xl lg:text-6xl 
-                    font-bold text-text tracking-tight leading-none inline-block
-                  "
-                >
-                  {item.description}
+          {/* ---------- LIST ---------- */}
+          <div className="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
+            {Numbers.map((item, index) => (
+              <div
+                key={index}
+                ref={(el) => { itemsRef.current[index] = el; }}
+                className="py-4 sm:py-6 md:py-8 lg:py-10 border-b border-dashed border-text/10 last:border-b-0"
+              >
+                <div className="overflow-visible">
+                  <div
+                    ref={(el) => { descriptionsRef.current[index] = el; }}
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-text tracking-tight leading-tight inline-block"
+                  >
+                    {item.description}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
         </div>
       </div>
+      
+      {/* Bottom Border */}
+      <div className="w-full border-t border-dashed border-text/10 mt-4 sm:mt-6 md:mt-8"></div>
     </section>
   );
 };

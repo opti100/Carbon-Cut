@@ -1,6 +1,7 @@
 import BusinessImpact from '@/components/lubricants/BusinessImpact'
 import CarbonCutFix from '@/components/lubricants/CarbonCutFix'
 import Comparision from '@/components/lubricants/Comparision'
+import ContactSection from '@/components/lubricants/Contact'
 import ContactUs from '@/components/lubricants/ContactUs'
 import Hero from '@/components/lubricants/Hero'
 import LubricantHowWorks from '@/components/lubricants/LubricantHowWorks'
@@ -24,6 +25,7 @@ const page = () => {
       <BusinessImpact />
       <Comparision />
       <TechnicalEngine />
+      <ContactSection />
       <ContactUs />
 
 
