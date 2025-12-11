@@ -1,6 +1,15 @@
-import React from 'react'
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const LubricantHowWorks = () => {
+  const containerRef = useRef(null);
+  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+
   const steps = [
     {
       title: "Integrate once — get real-time emission data forever.",
@@ -26,45 +35,62 @@ ESRS • CSRD • SEC Climate • UK ETS • CDP • GRI • ISO`,
     },
   ];
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    gsap.set(itemsRef.current, { opacity: 0, y: 50 });
+
+    gsap.to(itemsRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.9,
+      ease: "power3.out",
+      stagger: 0.25,
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 75%", // start when container reaches 75% of viewport
+      },
+    });
+
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+  }, []);
+
   return (
-    <div>
-      <section className="py-32 bg-[#fcfdf6] text-black">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 bg-[#fcfdf6] text-black" ref={containerRef}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          {/* Left-aligned giant heading */}
-          <h2
-            className="
-              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
-              font-semibold tracking-tight 
-              text-[#d1cebb] mb-12 text-end
-            "
-          >
-            How it works
-          </h2>
+        {/* Heading */}
+        <h2
+          className="
+            text-3xl sm:text-5xl md:text-6xl lg:text-7xl
+            font-semibold tracking-tight 
+            text-[#d1cebb] mb-12 text-end
+          "
+        >
+          How it works
+        </h2>
 
-          {/* Steps List */}
-          <div className="mt-20 grid md:grid-cols-2 gap-12">
+        {/* Steps */}
+        <div className="mt-20 grid md:grid-cols-2 gap-12">
+          {steps.map((step, idx) => (
+            <div
+              key={idx}
+              ref={(el) => { itemsRef.current[idx] = el; }}
+              className="flex flex-col gap-2"
+            >
+              <p className="text-2xl text-black font-semibold tracking-tight">
+                {step.title}
+              </p>
 
-            {steps.map((step, idx) => (
-              <div key={idx} className="flex flex-col gap-2">
-
-                {/* Step Title */}
-                <p className="text-2xl text-black font-semibold tracking-tight">
-                  {step.title}
-                </p>
-
-                {/* Step Description (supports line breaks) */}
-                <p className="text-lg text-black/80 font-light whitespace-pre-line leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            ))}
-
-          </div>
+              <p className="text-lg text-black/80 font-light whitespace-pre-line leading-relaxed">
+                {step.description}
+              </p>
+            </div>
+          ))}
         </div>
-      </section>
-    </div>
-  )
-}
+      </div>
+    </section>
+  );
+};
 
-export default LubricantHowWorks
+export default LubricantHowWorks;
