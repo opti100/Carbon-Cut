@@ -10,7 +10,6 @@ import TechnicalEngine from '@/components/lubricants/TechnicalEngine'
 import WhoUses from '@/components/lubricants/WhoUses'
 import Footer from '@/components/NewLanding/Footer'
 import Navbar from '@/components/NewLanding/Navbar'
-import SignupFormDemo from '@/components/signup-form-demo'
 import React from 'react'
 
 const page = () => {
@@ -27,6 +26,7 @@ const page = () => {
       <TechnicalEngine />
       <ContactSection />
       <ContactUs />
+      <Footer />
 
 
     </div>
