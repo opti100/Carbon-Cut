@@ -35,6 +35,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { type DateRange } from "react-day-picker"
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"
 import { scaleLinear } from "d3-scale"
+import { toast } from "sonner"
 
 interface CampaignAnalyticsPageProps {
   params: Promise<{ id: string }>
@@ -60,28 +61,40 @@ function DateRangePicker({
   const [localDate, setLocalDate] = useState<DateRange | undefined>(date)
 
   useEffect(() => {
-    setLocalDate(date)
-  }, [date])
+    if (!isOpen) {
+      setLocalDate(date)
+    }
+  }, [date, isOpen])
 
   const handleApply = () => {
-    setDate(localDate)
-    setIsOpen(false)
+    if (localDate?.from && localDate?.to) {
+      setDate(localDate)
+      setIsOpen(false)
+    } else {
+      toast.error("Please select both start and end dates")
+    }
   }
 
   const handleCancel = () => {
-    setLocalDate(date) // Reset to the currently active date
+    setLocalDate(date)
     setIsOpen(false)
   }
 
   const handleReset = () => {
-    setLocalDate(undefined)
+    const defaultRange = {
+      from: subDays(new Date(), 30),
+      to: new Date(),
+    }
+    setLocalDate(defaultRange)
+    setDate(defaultRange)
+    setIsOpen(false)
   }
 
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-         <Button
+          <Button
             id="date"
             variant={"outline"}
             className={cn(
@@ -111,6 +124,7 @@ function DateRangePicker({
             selected={localDate}
             onSelect={setLocalDate}
             numberOfMonths={2}
+            disabled={(date) => date > new Date() || date < new Date("2000-01-01")}
           />
           <div className="flex justify-end items-center gap-2 p-3 border-t bg-background">
             <Button variant="ghost" size="sm" onClick={handleReset}>
@@ -119,7 +133,12 @@ function DateRangePicker({
             <Button variant="ghost" size="sm" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button size="sm" onClick={handleApply}>
+            <Button 
+              size="sm" 
+              onClick={handleApply}
+              style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
+              className="hover:opacity-90"
+            >
               Apply
             </Button>
           </div>
@@ -169,11 +188,11 @@ function RegionalEmissionsMap({ data }: { data: any[] }) {
 
   return (
     <Card className="border bg-white relative">
-     <CardHeader className="flex items-center gap-2 space-y-0 border-b  sm:flex-row">
-       <div className="grid flex-1 gap-1 ">
-         <CardTitle>Top Regions by Emissions</CardTitle>
-        <CardDescription>Carbon footprint across different countries</CardDescription>
-       </div>
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b sm:flex-row">
+        <div className="grid flex-1 gap-1">
+          <CardTitle>Top Regions by Emissions</CardTitle>
+          <CardDescription>Carbon footprint across different countries</CardDescription>
+        </div>
       </CardHeader>
       <CardContent className="h-[450px] w-full p-0 relative">
         {tooltipContent && (
@@ -237,6 +256,8 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
     to: new Date(),
   })
 
+  const [isExporting, setIsExporting] = useState(false)
+
   const apiDateRange = {
     start_date: date?.from ? format(date.from, "yyyy-MM-dd") : format(subDays(new Date(), 30), "yyyy-MM-dd"),
     end_date: date?.to ? format(date.to, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
@@ -261,24 +282,79 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
     enabled: !!campaign,
   })
 
-  useEffect(() => {
-    if (analytics?.date_range) {
-      setDate({
-        from: parseISO(analytics.date_range.start),
-        to: parseISO(analytics.date_range.end),
-      })
-    }
-  }, [analytics?.date_range])
-
   const syncMutation = useMutation({
     mutationFn: (data: { start_date: string; end_date: string }) => campaignApi.syncImpressions(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["campaign-analytics", id] })
+      toast.success("Data synced successfully!")
+    },
+    onError: () => {
+      toast.error("Failed to sync data. Please try again.")
     },
   })
 
   const handleSync = () => {
     syncMutation.mutate(apiDateRange)
+  }
+
+  const handleExport = async () => {
+    if (!campaign || !analytics) {
+      toast.error("Unable to generate report. Please try again.")
+      return
+    }
+
+    try {
+      setIsExporting(true)
+
+      const reportPayload = {
+        campaign: {
+          name: campaign.name,
+          google_ads_campaign_id: campaign.google_ads_campaign_id,
+          status: "Active",
+        },
+        analytics: {
+          totals: analytics.totals,
+          emissions_breakdown: analytics.emissions_breakdown,
+          by_device: analytics.by_device,
+          by_region: analytics.by_region,
+          time_series: analytics.time_series,
+        },
+        dateRange: {
+          start: apiDateRange.start_date,
+          end: apiDateRange.end_date,
+        },
+      }
+
+      const response = await fetch('/api/reports/campaign-export', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reportPayload),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to generate report')
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${campaign.name.replace(/[^a-zA-Z0-9]/g, '_')}_Analytics_Report_${new Date().toISOString().split('T')[0]}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      toast.success("Analytics report downloaded successfully!")
+    } catch (error) {
+      console.error('Error generating report:', error)
+      toast.error(error instanceof Error ? error.message : "Failed to generate report. Please try again.")
+    } finally {
+      setIsExporting(false)
+    }
   }
 
   const isLoading = campaignLoading || (analyticsLoading && !analytics)
@@ -310,24 +386,20 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               </div>
             </div>
 
-            {/* Date range skeleton */}
             <Skeleton className="h-10 w-[300px] bg-muted-foreground/20" />
 
-            {/* Key metrics skeleton */}
             <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
                 <MetricCardSkeleton key={i} />
               ))}
             </div>
 
-            {/* Secondary metrics skeleton */}
             <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
                 <MetricCardSkeleton key={i} />
               ))}
             </div>
 
-            {/* Charts skeleton */}
             <div className="grid gap-3 sm:gap-4 grid-cols-1 lg:grid-cols-2">
               <ChartSkeleton />
               <ChartSkeleton />
@@ -420,7 +492,6 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
                 </Button>
                 <div>
                   <h1 className="text-3xl font-bold tracking-tight">{campaign.name}</h1>
-                  {/* <p className="text-muted-foreground text-sm mt-1">Campaign Analytics & Carbon Footprint</p> */}
                 </div>
               </div>
             </div>
@@ -430,7 +501,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
                 size="sm"
                 onClick={handleSync}
                 disabled={syncMutation.isPending}
-                className="border-0 hover:bg-muted "
+                className="border-0 hover:bg-muted"
               >
                 {syncMutation.isPending ? (
                   <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-2 animate-spin" />
@@ -439,8 +510,18 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
                 )}
                 <span className="hidden sm:inline">Sync Data</span>
               </Button>
-              <Button variant="outline" size="sm" className="border-0 hover:bg-muted ">
-                <Download className="h-4 w-4 mr-2" />
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="border-0 hover:bg-muted"
+                onClick={handleExport}
+                disabled={isExporting || !analytics}
+              >
+                {isExporting ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Download className="h-4 w-4 mr-2" />
+                )}
                 Export
               </Button>
             </div>
@@ -452,9 +533,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
             <MetricCard
               title="Total Impressions"
               value={analytics.totals.impressions.toLocaleString()}
-              subtitle={
-                "Total Impressions"
-              }
+              subtitle="Total Impressions"
               icon={Eye}
               color="blue"
             />
@@ -567,6 +646,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
     </>
   )
 }
+
 interface MetricCardProps {
   title: string
   value: string
@@ -585,8 +665,7 @@ function MetricCard({ title, value, subtitle, icon: Icon, color = "blue" }: Metr
   }
 
   return (
-    <Card className="border rounded-md bg-white shadow-none  hover:shadow-sm transition-shadow">
-  
+    <Card className="border rounded-md bg-white shadow-none hover:shadow-sm transition-shadow">
       <CardContent className="">
         <div className="text-2xl font-bold">{value}</div>
         {subtitle && <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>}
