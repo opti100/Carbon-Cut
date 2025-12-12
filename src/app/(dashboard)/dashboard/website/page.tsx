@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Monitor, Users, Globe, Zap, TrendingUp, Globe2, Smartphone, Calendar } from "lucide-react"
+import { Monitor, Users, Globe, Zap, TrendingUp, Globe2, Smartphone, Calendar, FileDown, Award } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { ApiKeyService } from "@/services/apikey/apikey"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -16,30 +16,42 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useAuth } from "@/contexts/AuthContext"
+import { useState } from "react"
+import { toast } from "sonner"
 
-// Helper function to format small numbers
 const formatEmissions = (value: number, unit: 'kg' | 'g' = 'g') => {
   if (!value || value === 0) return `0 ${unit}`
-  
+
   if (unit === 'kg') {
+    if (value < 0.000001) {
+      return `${value.toExponential(2)} kg`
+    }
     if (value < 0.001) {
       // Convert to grams if less than 1g
-      return `${(value * 1000).toFixed(6)} g`
+      return `${(value * 1000).toFixed(8)} g`
     }
     return `${value.toFixed(6)} kg`
   }
-  
+
+  // For grams
   if (value < 0.001) {
     return `${value.toExponential(2)} g`
+  }
+  if (value < 1) {
+    return `${value.toFixed(8)} g`
   }
   return `${value.toFixed(6)} g`
 }
 
 export default function WebsiteDashboardPage() {
+  const { user } = useAuth()
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false)
+
   const { data: analyticsData, isLoading, isError } = useQuery({
     queryKey: ["websiteAnalytics", 30],
     queryFn: () => ApiKeyService.getWebsiteAnalytics(30),
-    refetchInterval: 60000, 
+    refetchInterval: 60000,
   })
 
   const stats = analyticsData?.data?.stats
@@ -48,6 +60,66 @@ export default function WebsiteDashboardPage() {
   const deviceBreakdown = analyticsData?.data?.device_breakdown || []
   const countryBreakdown = analyticsData?.data?.country_breakdown || []
   const topPages = analyticsData?.data?.top_pages || []
+
+  const handleDownloadReport = async () => {
+    if (!user || !stats) {
+      toast.error("Unable to generate report. Please ensure you're logged in.")
+      return
+    }
+
+    if (!stats.total_emissions_g || stats.total_emissions_g === 0) {
+      toast.error("No emissions data available to generate report")
+      return
+    }
+
+    try {
+      setIsGeneratingReport(true)
+
+      const reportPayload = {
+        user: {
+          name: user.name,
+          email: user.email,
+          companyName: user.companyName,
+          phoneNumber: user.phoneNumber,
+        },
+        stats,
+        dailyBreakdown,
+        periodDays: analyticsData?.data?.period_days || 30,
+      }
+
+      // Call the new website emissions API
+      const response = await fetch('/api/reports/website-emissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reportPayload),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to generate report')
+      }
+
+      // Download the PDF
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${user.companyName || 'Company'}_Website_Emissions_Report_${new Date().toISOString().split('T')[0]}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+
+      toast.success("Certified emissions report downloaded successfully!")
+    } catch (error) {
+      console.error('Error generating report:', error)
+      toast.error(error instanceof Error ? error.message : "Failed to generate report. Please try again.")
+    } finally {
+      setIsGeneratingReport(false)
+    }
+  }
 
   if (isLoading) {
     return (
@@ -82,13 +154,34 @@ export default function WebsiteDashboardPage() {
     <div className="flex-1 overflow-auto bg-background">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="space-y-6">
-          <div className="space-y-2">
-            <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
-              Website/App Dashboard
-            </h1>
-            <p className="text-muted-foreground">
-              Monitor carbon emissions from your website and applications
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-2">
+              <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+                Website/App Dashboard
+              </h1>
+              <p className="text-muted-foreground">
+                Monitor carbon emissions from your website and applications
+              </p>
+            </div>
+            {hasData && stats && stats.total_emissions_g > 0 && (
+              <Button
+                onClick={handleDownloadReport}
+                disabled={isGeneratingReport}
+                className="bg-[#adff00] text-black hover:bg-[#adff00]/90 h-11"
+              >
+                {isGeneratingReport ? (
+                  <>
+                    <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Award className="mr-2 h-4 w-4" />
+                    Download Certified Report
+                  </>
+                )}
+              </Button>
+            )}
           </div>
 
           {!hasData ? (
@@ -111,14 +204,47 @@ export default function WebsiteDashboardPage() {
                   <li>View real-time emissions data and optimize your site</li>
                 </ol>
                 <Button asChild className="bg-[#adff00] text-black hover:bg-[#adff00]/90">
-                  <Link href="/onboarding">Create Website API Key</Link>
+                  <Link href="/onboarding?type=website">Create Website API Key</Link>
                 </Button>
               </CardContent>
             </Card>
           ) : (
             <>
-              {/* Stats Cards */}
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <Card className="bg-linear-to-br from-[#adff00]/10 to-[#adff00]/5 border-[#adff00]/20 rounded-md">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-xl">
+                    <Globe className="h-6 w-6 text-[#adff00]" />
+                    Total Carbon Footprint
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                    <div>
+                      <div className="text-4xl font-bold text-foreground mb-2">
+                        <div className="emissions-value">
+                          {formatEmissions(stats?.total_emissions_g || 0, 'g')}
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        Total carbon emissions from website traffic
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Tracked over {analyticsData?.data?.period_days || 30} days • {stats?.total_sessions || 0} sessions
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                        <span className="text-muted-foreground">Scope 3 Emissions</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Average: {formatEmissions(stats?.avg_emissions_per_visit_g || 0, 'g')} per visit
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <Card className="bg-white rounded-md">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Total Sessions</CardTitle>
@@ -155,19 +281,6 @@ export default function WebsiteDashboardPage() {
                     <p className="text-xs text-muted-foreground">
                       CO₂ tracked
                     </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white rounded-md">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Avg Emissions/Visit</CardTitle>
-                    <Zap className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {formatEmissions(stats?.avg_emissions_per_visit_g || 0, 'g')}
-                    </div>
-                    <p className="text-xs text-muted-foreground">Per visitor</p>
                   </CardContent>
                 </Card>
               </div>
@@ -208,38 +321,6 @@ export default function WebsiteDashboardPage() {
                         ))}
                       </TableBody>
                     </Table>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Device Breakdown */}
-              {deviceBreakdown.length > 0 && (
-                <Card className="bg-white rounded-md">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Smartphone className="h-5 w-5" />
-                      Device Breakdown
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {deviceBreakdown.map((device, idx) => (
-                        <div key={idx} className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 flex-1">
-                            <span className="text-sm font-medium capitalize min-w-[80px]">{device.device}</span>
-                            <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-xs">
-                              <div
-                                className="bg-[#adff00] h-2 rounded-full"
-                                style={{ width: `${device.percentage}%` }}
-                              />
-                            </div>
-                          </div>
-                          <div className="text-sm text-muted-foreground min-w-[100px] text-right">
-                            {device.count} ({device.percentage.toFixed(1)}%)
-                          </div>
-                        </div>
-                      ))}
-                    </div>
                   </CardContent>
                 </Card>
               )}

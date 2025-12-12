@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
@@ -8,38 +9,36 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Mail, Shield, Loader2, ArrowLeft, CheckCircle, User, Building, Phone } from "lucide-react"
+import { Mail, Shield, Loader2, ArrowLeft, CheckCircle } from "lucide-react"
+import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 
-interface SignupData {
-  name: string
-  email: string
-  companyName: string
-  phoneNumber: string
+interface SendOTPRequest {
+  email: string;
+  isLogin?: boolean;
 }
 
-interface SignupOTPRequest extends SignupData {
-  otp: string
+interface VerifyOTPRequest {
+  email: string;
+  otp: string;
 }
 
 interface AuthResponse {
-  message: string
-  data?: any
+  success: boolean;
+  message: string;
+  data?: any;
 }
 
-type Step = 'form' | 'otp'
-
-// Constants
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
-// API functions with proper typing
-const signupAPI = {
-  sendOTP: async (data: SignupData): Promise<AuthResponse> => {
+const authAPI = {
+  sendOTP: async ({ email, isLogin = true }: SendOTPRequest): Promise<AuthResponse> => {
     const response = await fetch(`${API_BASE_URL}/auth/send-otp/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      credentials: 'include',
+      body: JSON.stringify({ email, isLogin }),
     })
 
     if (!response.ok) {
@@ -50,16 +49,17 @@ const signupAPI = {
     return response.json()
   },
 
-  verifyOTP: async (data: SignupOTPRequest): Promise<AuthResponse> => {
+  verifyOTP: async ({ email, otp }: VerifyOTPRequest): Promise<AuthResponse> => {
     const response = await fetch(`${API_BASE_URL}/auth/verify-otp/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      credentials: 'include',
+      body: JSON.stringify({ email, otp }),
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.message || 'Failed to verify OTP')
+      throw new Error(error.message || 'Invalid OTP')
     }
 
     return response.json()
@@ -76,35 +76,25 @@ const validateOTP = (otp: string): boolean => {
   return /^\d{6}$/.test(otp)
 }
 
-const validatePhone = (phone: string): boolean => {
-  return phone.length >= 10
-}
-
 // TanStack Query keys
-const signupKeys = {
-  all: ['signup'] as const,
-  sendOTP: () => [...signupKeys.all, 'send-otp'] as const,
-  verifyOTP: () => [...signupKeys.all, 'verify-otp'] as const,
+const authKeys = {
+  all: ['auth'] as const,
+  sendOTP: () => [...authKeys.all, 'send-otp'] as const,
+  verifyOTP: () => [...authKeys.all, 'verify-otp'] as const,
 }
 
-const SignupPage = () => {
+function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo') || '/live'
+  const redirectUrl = searchParams.get('redirectTo') || searchParams.get('redirect') || '/dashboard/campaigns'
 
-  const [step, setStep] = useState<Step>('form')
-  const [formData, setFormData] = useState<SignupData>({
-    name: '',
-    email: '',
-    companyName: '',
-    phoneNumber: ''
-  })
+  const [step, setStep] = useState<'email' | 'otp'>('email')
+  const [email, setEmail] = useState('')
   const [otp, setOtp] = useState('')
 
-  // Mutations with proper typing
   const sendOTPMutation = useMutation({
-    mutationKey: signupKeys.sendOTP(),
-    mutationFn: signupAPI.sendOTP,
+    mutationKey: authKeys.sendOTP(),
+    mutationFn: authAPI.sendOTP,
     onSuccess: (data: AuthResponse) => {
       setStep('otp')
       toast.success(data.message || 'Verification code sent to your email')
@@ -113,13 +103,13 @@ const SignupPage = () => {
       toast.error(error.message)
     },
   })
-  
-  const verifyOTPMutation = useMutation({
-    mutationKey: signupKeys.verifyOTP(),
-    mutationFn: signupAPI.verifyOTP,
+
+  const otpLoginMutation = useMutation({
+    mutationKey: authKeys.verifyOTP(),
+    mutationFn: authAPI.verifyOTP,
     onSuccess: (data: AuthResponse) => {
-      toast.success(data.message || 'Signup successful!')
-      router.push(redirectTo)
+      toast.success(data.message || 'Login successful!')
+      router.push(redirectUrl) // This will now redirect to /live
       router.refresh()
     },
     onError: (error: Error) => {
@@ -127,60 +117,42 @@ const SignupPage = () => {
     },
   })
 
-  // Event handlers
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!validateEmail(formData.email)) {
+    if (!validateEmail(email)) {
       toast.error('Please enter a valid email address')
       return
     }
-
-    if (!validatePhone(formData.phoneNumber)) {
-      toast.error('Please enter a valid phone number')
-      return
-    }
-
-    sendOTPMutation.mutate(formData)
+    sendOTPMutation.mutate({ email, isLogin: true })
   }
 
-  const handleOTPSubmit = async (e: React.FormEvent) => {
+  const handleOTPSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
     if (!validateOTP(otp)) {
       toast.error('Please enter a valid 6-digit OTP')
       return
     }
-
-    verifyOTPMutation.mutate({ ...formData, otp })
+    otpLoginMutation.mutate({ email, otp })
   }
 
-  const handleBackToForm = () => {
-    setStep('form')
+  const handleBackToEmail = () => {
+    setStep('email')
     setOtp('')
     sendOTPMutation.reset()
+    otpLoginMutation.reset()
   }
 
   const handleResendOTP = () => {
-    if (validateEmail(formData.email)) {
-      sendOTPMutation.mutate(formData)
-    }
+    sendOTPMutation.mutate({ email, isLogin: true })
   }
 
-  const handleInputChange = (field: keyof SignupData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-  }
-
-  // Derived state
-  const isLoading = sendOTPMutation.isPending || verifyOTPMutation.isPending
-  const error = sendOTPMutation.error || verifyOTPMutation.error
-  const isFormValid = formData.name && validateEmail(formData.email) && formData.companyName && validatePhone(formData.phoneNumber)
+  const isLoading = sendOTPMutation.isPending || otpLoginMutation.isPending
   const isOTPValid = validateOTP(otp)
 
   return (
     <div className="h-screen flex flex-col lg:flex-row overflow-hidden">
-      {/* Left Side - Hero Image */}
-      <div 
+      {/* Hero Image Section */}
+      <div
         className="hidden lg:flex lg:w-1/2 relative bg-cover bg-center"
         style={{ backgroundImage: "url('/login-hero.jpg')" }}
       >
@@ -196,7 +168,6 @@ const SignupPage = () => {
         </div>
       </div>
 
-      {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex flex-col bg-background">
         {/* Main Form Container */}
         <div className="flex-1 flex items-center justify-center px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
@@ -204,108 +175,41 @@ const SignupPage = () => {
             <Card className="border-0 shadow-none bg-transparent">
               <CardHeader className="text-center pb-4 sm:pb-6 lg:pb-8 px-0">
                 <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
-                  {step === 'form' ? 'Create Your Account' : 'Verify Your Email'}
+                  {step === 'email' ? 'Welcome Back' : 'Verify Your Email'}
                 </CardTitle>
                 <CardDescription className="text-sm sm:text-base">
-                  {step === 'form'
-                    ? 'Sign up to get started with CarbonCut'
-                    : `We've sent a 6-digit code to ${formData.email}`
-                  }
+                  {step === 'email'
+                    ? 'Sign in to your account to continue'
+                    : `We've sent a 6-digit code to ${email}`}
                 </CardDescription>
               </CardHeader>
 
               <CardContent className="space-y-4">
-                {/* Form Step */}
-                {step === 'form' ? (
-                  <form onSubmit={handleFormSubmit} className="space-y-4">
-                    {/* Name Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-sm font-medium">
-                        Full Name
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          type="text"
-                          id="name"
-                          required
-                          value={formData.name}
-                          onChange={(e) => handleInputChange('name', e.target.value)}
-                          placeholder="John Doe"
-                          className="w-full pl-9 text-sm sm:text-base"
-                          disabled={isLoading}
-                          autoComplete="name"
-                        />
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      </div>
-                    </div>
-
-                    {/* Email Field */}
+                {step === 'email' ? (
+                  <form onSubmit={handleEmailSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-sm font-medium">
                         Email address
                       </Label>
                       <div className="relative">
                         <Input
-                          type="email"
                           id="email"
+                          type="email"
                           required
-                          value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                           placeholder="you@example.com"
-                          className="w-full pl-9 text-sm sm:text-base"
+                          className="w-full  pl-9 text-sm sm:text-base"
                           disabled={isLoading}
-                          autoComplete="email"
                         />
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       </div>
                     </div>
 
-                    {/* Company Name Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="companyName" className="text-sm font-medium">
-                        Company Name
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          type="text"
-                          id="companyName"
-                          required
-                          value={formData.companyName}
-                          onChange={(e) => handleInputChange('companyName', e.target.value)}
-                          placeholder="Acme Inc."
-                          className="w-full pl-9 text-sm sm:text-base"
-                          disabled={isLoading}
-                          autoComplete="organization"
-                        />
-                        <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      </div>
-                    </div>
-
-                    {/* Phone Number Field */}
-                    <div className="space-y-2">
-                      <Label htmlFor="phoneNumber" className="text-sm font-medium">
-                        Phone Number
-                      </Label>
-                      <div className="relative">
-                        <Input
-                          type="tel"
-                          id="phoneNumber"
-                          required
-                          value={formData.phoneNumber}
-                          onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                          placeholder="+1 (555) 000-0000"
-                          className="w-full pl-9 text-sm sm:text-base"
-                          disabled={isLoading}
-                          autoComplete="tel"
-                        />
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      </div>
-                    </div>
-
                     <Button
                       type="submit"
-                      className="w-full hover:bg-tertiary/ text-sm sm:text-base font-medium"
-                      disabled={isLoading || !isFormValid}
+                      className="w-full  hover:bg-tertiary/ text-sm sm:text-base font-medium"
+                      disabled={isLoading || !email}
                     >
                       {sendOTPMutation.isPending ? (
                         <>
@@ -321,7 +225,6 @@ const SignupPage = () => {
                     </Button>
                   </form>
                 ) : (
-                  /* OTP Step */
                   <form onSubmit={handleOTPSubmit} className="space-y-6">
                     <div className="space-y-4">
                       <div className="relative flex justify-center">
@@ -362,13 +265,11 @@ const SignupPage = () => {
                         </InputOTP>
                       </div>
                     </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex flex-col-reverse sm:w-full gap-4">
+                    <div className="flex flex-col-reverse  sm:w-full gap-4">
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={handleBackToForm}
+                        onClick={handleBackToEmail}
                         className="w-full sm:w-auto text-sm font-medium border border-border rounded-md hover:bg-muted focus:ring-2 focus:ring-primary focus:outline-none"
                         disabled={isLoading}
                       >
@@ -380,21 +281,19 @@ const SignupPage = () => {
                         className="w-full sm:w-auto text-sm font-medium bg-primary text-white rounded-md hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:outline-none"
                         disabled={isLoading || !isOTPValid}
                       >
-                        {verifyOTPMutation.isPending ? (
+                        {otpLoginMutation.isPending ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Creating...
+                            Verifying...
                           </>
                         ) : (
                           <>
                             <Shield className="mr-2 h-4 w-4" />
-                            Create Account
+                            Sign In
                           </>
                         )}
                       </Button>
                     </div>
-
-                    {/* Resend Button */}
                     <div className="text-center pt-4">
                       <Button
                         type="button"
@@ -404,21 +303,20 @@ const SignupPage = () => {
                         disabled={isLoading}
                         className="text-primary hover:text-primary/80 text-sm font-medium focus:ring-2 focus:ring-primary focus:outline-none"
                       >
-                        {sendOTPMutation.isPending ? 'Sending...' : 'Resend Code'}
+                        {sendOTPMutation.isPending ? "Sending..." : "Resend Code"}
                       </Button>
                     </div>
                   </form>
                 )}
 
-                {/* Login Link */}
                 <div className="text-center pt-2 sm:pt-4">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    Already have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link
-                      href="/login"
-                      className="font-medium text-primary hover:text-primary/80 transition-colors underline break-words"
+                      href={`/signup${redirectUrl !== '/dashboard/campaigns' ? `?redirectTo=${encodeURIComponent(redirectUrl)}` : ''}`}
+                      className="font-medium text-primary hover:text-primary/80 transition-colors underline wrap-break-words"
                     >
-                      Sign in
+                      Create your account
                     </Link>
                   </p>
                 </div>
@@ -431,4 +329,4 @@ const SignupPage = () => {
   )
 }
 
-export default SignupPage
+export default LoginPage

@@ -156,7 +156,7 @@ const Navbar = () => {
 
                 {/* Carbon live */}
                 <Link
-                  href="/live"
+                  href="/onboardingpn"
                   className="p-8 opacity-70 rounded-xl transition bg-[#b0ea1d] cursor-pointer h-full hover:shadow shadow-2xs hover:opacity-80 block"
                 >
                   <Radio />
