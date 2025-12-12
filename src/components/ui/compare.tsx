@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import { IconDotsVertical } from "@tabler/icons-react";
 
 interface CompareProps {
-  firstImage?: string;
-  secondImage?: string;
+  firstImage?: string | React.ReactNode;
+  secondImage?: string | React.ReactNode;
   className?: string;
   firstImageClassName?: string;
   secondImageClassname?: string;
@@ -17,9 +17,10 @@ interface CompareProps {
   autoplay?: boolean;
   autoplayDuration?: number;
 }
+
 export const Compare = ({
-  firstImage = "",
-  secondImage = "",
+  firstImage = <FirstSection />,
+  secondImage = <SecondSection />,
   className,
   firstImageClassName,
   secondImageClassname,
@@ -34,8 +35,6 @@ export const Compare = ({
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const [isMouseOver, setIsMouseOver] = useState(false);
-
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
   const startAutoplay = useCallback(() => {
@@ -49,7 +48,7 @@ export const Compare = ({
       const percentage = progress <= 1 ? progress * 100 : (2 - progress) * 100;
 
       setSliderXPercent(percentage);
-      autoplayRef.current = setTimeout(animate, 16); // ~60fps
+      autoplayRef.current = setTimeout(animate, 16);
     };
 
     animate();
@@ -67,13 +66,7 @@ export const Compare = ({
     return () => stopAutoplay();
   }, [startAutoplay, stopAutoplay]);
 
-  function mouseEnterHandler() {
-    setIsMouseOver(true);
-    stopAutoplay();
-  }
-
   function mouseLeaveHandler() {
-    setIsMouseOver(false);
     if (slideMode === "hover") {
       setSliderXPercent(initialSliderPercentage);
     }
@@ -113,128 +106,103 @@ export const Compare = ({
     [slideMode, isDragging]
   );
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => handleStart(e.clientX),
-    [handleStart]
-  );
-  const handleMouseUp = useCallback(() => handleEnd(), [handleEnd]);
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent) => handleMove(e.clientX),
-    [handleMove]
-  );
-
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      if (!autoplay) {
-        handleStart(e.touches[0].clientX);
-      }
-    },
-    [handleStart, autoplay]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    if (!autoplay) {
-      handleEnd();
-    }
-  }, [handleEnd, autoplay]);
-
-  const handleTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      if (!autoplay) {
-        handleMove(e.touches[0].clientX);
-      }
-    },
-    [handleMove, autoplay]
-  );
-
   return (
     <div
       ref={sliderRef}
-      className={cn("w-[400px] h-[400px] overflow-hidden", className)}
+      className={cn("w-full h-[500px] rounded-2xl overflow-hidden", className)}
       style={{
         position: "relative",
         cursor: slideMode === "drag" ? "grab" : "col-resize",
       }}
-      onMouseMove={handleMouseMove}
+      onMouseMove={(e) => handleMove(e.clientX)}
       onMouseLeave={mouseLeaveHandler}
-      onMouseEnter={mouseEnterHandler}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchMove={handleTouchMove}
+      onMouseDown={(e) => handleStart(e.clientX)}
+      onMouseUp={handleEnd}
+      onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+      onTouchEnd={handleEnd}
+      onTouchMove={(e) => handleMove(e.touches[0].clientX)}
     >
-      <AnimatePresence initial={false}>
-        <motion.div
-          className="h-full w-px absolute top-0 m-auto z-30 bg-gradient-to-b from-transparent from-[5%] to-[95%] via-indigo-500 to-transparent"
-          style={{
-            left: `${sliderXPercent}%`,
-            top: "0",
-            zIndex: 40,
-          }}
-          transition={{ duration: 0 }}
-        >
-          <div className="w-36 h-full [mask-image:radial-gradient(100px_at_left,white,transparent)] absolute top-1/2 -translate-y-1/2 left-0 bg-gradient-to-r from-indigo-400 via-transparent to-transparent z-20 opacity-50" />
-          <div className="w-10 h-1/2 [mask-image:radial-gradient(50px_at_left,white,transparent)] absolute top-1/2 -translate-y-1/2 left-0 bg-gradient-to-r from-cyan-400 via-transparent to-transparent z-10 opacity-100" />
-          <div className="w-10 h-3/4 top-1/2 -translate-y-1/2 absolute -right-10 [mask-image:radial-gradient(100px_at_left,white,transparent)]">
-            <MemoizedSparklesCore
-              background="transparent"
-              minSize={0.4}
-              maxSize={1}
-              particleDensity={1200}
-              className="w-full h-full"
-              particleColor="#FFFFFF"
-            />
-          </div>
-          {showHandlebar && (
-            <div className="h-5 w-5 rounded-md top-1/2 -translate-y-1/2 bg-white z-30 -right-2.5 absolute   flex items-center justify-center shadow-[0px_-1px_0px_0px_#FFFFFF40]">
-              <IconDotsVertical className="h-4 w-4 text-black" />
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
-      <div className="overflow-hidden w-full h-full relative z-20 pointer-events-none">
-        <AnimatePresence initial={false}>
-          {firstImage ? (
-            <motion.div
-              className={cn(
-                "absolute inset-0 z-20 rounded-2xl shrink-0 w-full h-full select-none overflow-hidden",
-                firstImageClassName
-              )}
-              style={{
-                clipPath: `inset(0 ${100 - sliderXPercent}% 0 0)`,
-              }}
-              transition={{ duration: 0 }}
-            >
-              <img
-                alt="first image"
-                src={firstImage}
-                className={cn(
-                  "absolute inset-0  z-20 rounded-2xl shrink-0 w-full h-full select-none",
-                  firstImageClassName
-                )}
-                draggable={false}
-              />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
-      </div>
+      {/* SLIDER LINE */}
+      <motion.div
+        className="h-full w-px absolute top-0 m-auto z-30 bg-gradient-to-b from-transparent via-indigo-500 to-transparent"
+        style={{
+          left: `${sliderXPercent}%`,
+          zIndex: 40,
+        }}
+        transition={{ duration: 0 }}
+      >
+        <div className="w-36 h-full [mask-image:radial-gradient(100px_at_left,white,transparent)] absolute top-1/2 -translate-y-1/2 left-0 bg-gradient-to-r from-indigo-400 via-transparent to-transparent opacity-50" />
 
-      <AnimatePresence initial={false}>
-        {secondImage ? (
-          <motion.img
-            className={cn(
-              "absolute top-0 left-0 z-[19]  rounded-2xl w-full h-full select-none",
-              secondImageClassname
-            )}
-            alt="second image"
-            src={secondImage}
-            draggable={false}
-          />
-        ) : null}
-      </AnimatePresence>
+        {showHandlebar && (
+          <div className="h-6 w-6 rounded-md top-1/2 -translate-y-1/2 bg-white -right-3 absolute flex items-center justify-center shadow">
+            <IconDotsVertical className="h-4 w-4 text-black" />
+          </div>
+        )}
+      </motion.div>
+
+      {/* FIRST SECTION */}
+      <motion.div
+        className={cn(
+          "absolute inset-0 z-20 select-none",
+          firstImageClassName
+        )}
+        style={{
+          clipPath: `inset(0 ${100 - sliderXPercent}% 0 0)`,
+        }}
+        transition={{ duration: 0 }}
+      >
+        {firstImage}
+      </motion.div>
+
+      {/* SECOND SECTION */}
+      <motion.div
+        className={cn(
+          "absolute top-0 left-0 z-[19] select-none w-full h-full",
+          secondImageClassname
+        )}
+      >
+        {secondImage}
+      </motion.div>
     </div>
   );
 };
 
 const MemoizedSparklesCore = React.memo(SparklesCore);
+
+/* -----------------------------
+   CUSTOM CONTENT SECTIONS
+-------------------------------- */
+
+function FirstSection() {
+  return (
+    <div className="w-full h-full flex flex-col justify-center p-10 bg-[#fcfdf6] text-[#080c04]">
+      <h3 className="text-4xl font-bold mb-4 text-[#6c5f31]">
+        Traditional ESG systems rely on:
+      </h3>
+
+      <ul className="space-y-2 leading-relaxed text-3xl">
+        <li>• Annual sustainability reporting</li>
+        <li>• Generic emission factors</li>
+        <li>• Vendor PDFs and manual spreadsheets</li>
+        <li>• No product-level accuracy</li>
+        <li>• No real-time traceability</li>
+      </ul>
+    </div>
+  );
+}
+
+function SecondSection() {
+  return (
+    <div className="w-full h-full flex flex-col justify-center p-10 bg-[#fcfdf6] text-[#080c04] text-end">
+      <h3 className="text-4xl font-bold mb-4 text-[#6c5f31]">This leads to:</h3>
+
+      <ul className="space-y-2  leading-relaxed text-3xl">
+        <li>• Incorrect emission disclosures</li>
+        <li>• Higher carbon taxes</li>
+        <li>• Poor ESG scores</li>
+        <li>• Lost B2B contracts</li>
+        <li>• Zero visibility on scope 1/2/3 breakdown</li>
+      </ul>
+    </div>
+  );
+}
