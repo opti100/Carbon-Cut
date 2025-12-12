@@ -1,6 +1,6 @@
 import BlogDashboard from '@/components/blog/BlogDashboard'
 import Header from '@/components/calculator/Header'
-import Footer from '@/components/main/Footer'
+import Footer from '@/components/NewLanding/Footer'
 import Navbar from '@/components/NewLanding/Navbar'
 import React from 'react'
 

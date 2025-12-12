@@ -2,8 +2,9 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import AnimatedHeroText from './AnimatedHeroText';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronRight, ChevronLeft } from 'lucide-react';
 import { LinkPreview } from '../ui/link-preview';
+import Link from 'next/link';
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
   return (
@@ -25,6 +26,7 @@ function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
 
 const Hero = () => {
     const [openDropdown, setOpenDropdown] = useState<number | null>(null);
+    const [openNestedDropdown, setOpenNestedDropdown] = useState<string | null>(null);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [showContent, setShowContent] = useState(false);
 
@@ -48,6 +50,11 @@ const Hero = () => {
 
     const toggleDropdown = (id: number) => {
         setOpenDropdown(openDropdown === id ? null : id);
+        setOpenNestedDropdown(null); // Close nested dropdown when main dropdown changes
+    };
+
+    const toggleNestedDropdown = (key: string) => {
+        setOpenNestedDropdown(openNestedDropdown === key ? null : key);
     };
 
     // Close dropdown when clicking outside
@@ -62,6 +69,7 @@ const Hero = () => {
                 !dropdown2Ref.current.contains(target)
             ) {
                 setOpenDropdown(null);
+                setOpenNestedDropdown(null);
             }
         };
 
@@ -75,7 +83,10 @@ const Hero = () => {
     // Close dropdown with ESC key
     useEffect(() => {
         const handleEscapeKey = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') setOpenDropdown(null);
+            if (event.key === 'Escape') {
+                setOpenDropdown(null);
+                setOpenNestedDropdown(null);
+            }
         };
 
         if (openDropdown !== null) {
@@ -96,7 +107,6 @@ const Hero = () => {
                     fill
                     className="object-cover"
                 />
-                {/* <div className="text-white text-xl">Loading...</div> */}
             </div>
         )}
 
@@ -134,9 +144,15 @@ const Hero = () => {
                                 className="absolute left-0 mt-2 w-full max-h-60 overflow-y-auto rounded-lg shadow-lg border z-20 border-[#080c04]"
                                 style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
                             >
-                                 <LinkPreview  isStatic={true} imageSrc='/CarbonCut-fe/resize/SV2.jpg' > <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Measure </p> </LinkPreview>
-                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Reduce </p> </LinkPreview>
-                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Measure </p> </LinkPreview>
+                                 <LinkPreview  isStatic={true} imageSrc='/CarbonCut-fe/resize/SV2.jpg' > 
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Measure </p> 
+                                 </LinkPreview>
+                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > 
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Reduce </p> 
+                                 </LinkPreview>
+                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > 
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Offset </p> 
+                                 </LinkPreview>
                             </div>
                         )}
                     </div>
@@ -154,11 +170,37 @@ const Hero = () => {
 
                         {openDropdown === 2 && (
                             <div
-                                className="absolute left-0 mt-2 w-full max-h-48 overflow-y-auto rounded-lg shadow-lg border z-20  border-[#080c04]"
-                                style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
+                                className="absolute left-0 mt-2 w-full max-h-48  rounded-lg shadow-lg border z-20 border-[#080c04]"
+                                style={{ backgroundColor: "#fcfdf6" }}
                             >
-                               <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Internet </p> </LinkPreview>
-                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Oil & Natural Gas </p> </LinkPreview>
+                               <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png'> 
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Internet </p> 
+                               </LinkPreview>
+                               
+                               {/* Oil & Natural Gas with nested dropdown */}
+                               <div className="relative">
+                                    <div
+                                        className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition flex items-center justify-between"
+                                        onClick={() => toggleNestedDropdown('oil-gas')}
+                                    >
+                                        <span>Oil & Natural Gas</span>
+                                        {openNestedDropdown === 'oil-gas' ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                                    </div>
+                                    
+                                    {/* Nested dropdown for Oil & Natural Gas */}
+                                    {openNestedDropdown === 'oil-gas' && (
+                                        <div className=" mt-1">
+                                            <Link href="/lubricant">
+                                                <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png'>
+                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
+                                                        Lubricants
+                                                    </p>
+                                                </LinkPreview>
+                                            </Link>
+                                          
+                                        </div>
+                                    )}
+                               </div>
                             </div>
                         )}
                     </div>
