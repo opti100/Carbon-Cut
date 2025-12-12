@@ -186,7 +186,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
             <ScrollArea className="h-16 grow p-2">
               <div className={cn("flex w-full flex-col gap-1")}>
                 {/* Dashboard Overview Link */}
-                <Link
+                {/* <Link
                   href="/dashboard"
                   className={cn(
                     "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
@@ -199,7 +199,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                       <p className="ml-2 text-sm font-medium">Dashboard</p>
                     )}
                   </motion.span>
-                </Link>
+                </Link> */}
 
                 {/* Ads Link */}
                 <Link
