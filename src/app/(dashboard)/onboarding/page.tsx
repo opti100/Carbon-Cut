@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { LogIn, UserPlus, Loader2, Lock } from "lucide-react"
 import Link from "next/link"
-
 
 const Page = () => {
     const { user, isLoading, isAuthenticated } = useAuth()
