@@ -251,7 +251,7 @@ export default function LubricantCO2Form() {
               type="submit"
               className="w-full h-12 rounded-lg bg-[#6c5f31] text-white font-semibold shadow-lg hover:opacity-90 transition-all duration-200 hover:bg-[#5a4e2a] transform hover:scale-[1.02]"
             >
-              Get My CO₂e Report →
+              Get CO₂e Report →
             </button>
 
             {/* SUCCESS MESSAGE */}

@@ -1,4 +1,6 @@
-import BusinessImpact from '@/components/lubricants/BusinessImpact'
+
+
+import { BusinessImpact } from '@/components/lubricants/BusinessImpact'
 import CarbonCutFix from '@/components/lubricants/CarbonCutFix'
 import Comparision from '@/components/lubricants/Comparision'
 import ContactSection from '@/components/lubricants/Contact'
@@ -6,6 +8,7 @@ import ContactUs from '@/components/lubricants/ContactUs'
 import Hero from '@/components/lubricants/Hero'
 import LubricantHowWorks from '@/components/lubricants/LubricantHowWorks'
 import Problem from '@/components/lubricants/Problem'
+import ScrollingCardsUI from '@/components/lubricants/TechnicalEngine'
 import TechnicalEngine from '@/components/lubricants/TechnicalEngine'
 import WhoUses from '@/components/lubricants/WhoUses'
 import Footer from '@/components/NewLanding/Footer'

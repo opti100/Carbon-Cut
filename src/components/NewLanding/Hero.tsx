@@ -7,21 +7,21 @@ import { LinkPreview } from '../ui/link-preview';
 import Link from 'next/link';
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
-  return (
-    <div className="w-full h-full overflow-hidden rounded-xl">
-      <video
-        src="/LandingPage.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        onLoadedData={onLoad}
-        onCanPlay={onLoad}
-        className="w-full h-full object-cover"
-      />
-    </div>
-  );
+    return (
+        <div className="w-full h-full overflow-hidden rounded-xl">
+            <video
+                src="/LandingPage.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="auto"
+                onLoadedData={onLoad}
+                onCanPlay={onLoad}
+                className="w-full h-full object-cover"
+            />
+        </div>
+    );
 }
 
 const Hero = () => {
@@ -100,24 +100,23 @@ const Hero = () => {
         <section className="relative h-screen w-full" data-scroll-section>
             {/* Loading Screen */}
             {!isVideoLoaded && (
-               <div className="w-full h-full overflow-hidden rounded-xl  ">
-                <Image
-                    src="/CarbonCut-fe/hero3.jpg"
-                    alt="Carbon Cut Logo"
-                    fill
-                    className="object-cover"
-                />
-            </div>
-        )}
+                <div className="w-full h-full overflow-hidden rounded-xl  ">
+                    <Image
+                        src="/CarbonCut-fe/hero3.jpg"
+                        alt="Carbon Cut Logo"
+                        fill
+                        className="object-cover"
+                    />
+                </div>
+            )}
 
             <div className="absolute inset-0 -z-10">
                 <LandingPageVideo onLoad={handleVideoLoad} />
             </div>
 
             <div
-                className={`flex flex-col items-center justify-center h-full px-6 max-w-5xl mx-auto transition-opacity duration-1000 ${
-                    showContent ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`flex flex-col items-center justify-center h-full px-6 max-w-5xl mx-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'
+                    }`}
                 data-scroll
                 data-scroll-speed="0.5"
             >
@@ -144,15 +143,15 @@ const Hero = () => {
                                 className="absolute left-0 mt-2 w-full max-h-60 overflow-y-auto rounded-lg shadow-lg border z-20 border-[#080c04]"
                                 style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
                             >
-                                 <LinkPreview  isStatic={true} imageSrc='/CarbonCut-fe/resize/SV2.jpg' > 
-                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Measure </p> 
-                                 </LinkPreview>
-                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > 
-                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Reduce </p> 
-                                 </LinkPreview>
-                                 <LinkPreview  isStatic={true} imageSrc='/blogs/blogFive.png' > 
-                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Offset </p> 
-                                 </LinkPreview>
+                                <LinkPreview isStatic={true} imageSrc='/CarbonCut-fe/resize/SV2.jpg' >
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Measure </p>
+                                </LinkPreview>
+                                <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' >
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Reduce </p>
+                                </LinkPreview>
+                                <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' >
+                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Offset </p>
+                                </LinkPreview>
                             </div>
                         )}
                     </div>
@@ -170,40 +169,75 @@ const Hero = () => {
 
                         {openDropdown === 2 && (
                             <div
-                                className="absolute left-0 mt-2 w-full max-h-48  rounded-lg shadow-lg border z-20 border-[#080c04]"
+                                className="absolute left-0 mt-2 w-full max-h-48 rounded-lg shadow-lg border z-20 border-[#080c04]"
                                 style={{ backgroundColor: "#fcfdf6" }}
                             >
-                               <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png'> 
-                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Internet </p> 
-                               </LinkPreview>
-                               
-                               {/* Oil & Natural Gas with nested dropdown */}
-                               <div className="relative">
+                                {/* INTERNET WITH NESTED DROPDOWN */}
+                                <div className="relative">
+                                    <div
+                                        className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition flex items-center justify-between"
+                                        onClick={() => toggleNestedDropdown('internet')}
+                                    >
+                                        <span>Internet</span>
+                                        {openNestedDropdown === 'internet' ? (
+                                            <ChevronLeft className="w-4 h-4" />
+                                        ) : (
+                                            <ChevronRight className="w-4 h-4" />
+                                        )}
+                                    </div>
+
+                                    {/* Nested dropdown for Internet */}
+                                    {openNestedDropdown === 'internet' && (
+                                        <div className="mt-1">
+                                            <Link href="/internet/internet-ads">
+                                                <LinkPreview isStatic={true} imageSrc="/blogs/blogFive.png">
+                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
+                                                        Internet Ads
+                                                    </p>
+                                                </LinkPreview>
+                                            </Link>
+
+                                            <Link href="/internet/website-ads">
+                                                <LinkPreview isStatic={true} imageSrc="/blogs/blogFive.png">
+                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
+                                                        Website Ads
+                                                    </p>
+                                                </LinkPreview>
+                                            </Link>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Oil & Natural Gas with nested dropdown */}
+                                <div className="relative">
                                     <div
                                         className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition flex items-center justify-between"
                                         onClick={() => toggleNestedDropdown('oil-gas')}
                                     >
                                         <span>Oil & Natural Gas</span>
-                                        {openNestedDropdown === 'oil-gas' ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                                        {openNestedDropdown === 'oil-gas' ? (
+                                            <ChevronLeft className="w-4 h-4" />
+                                        ) : (
+                                            <ChevronRight className="w-4 h-4" />
+                                        )}
                                     </div>
-                                    
-                                    {/* Nested dropdown for Oil & Natural Gas */}
+
                                     {openNestedDropdown === 'oil-gas' && (
-                                        <div className=" mt-1">
-                                            <Link href="/lubricant">
-                                                <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png'>
+                                        <div className="mt-1">
+                                            <Link href="/oil-and-natural-gas/lubricant">
+                                                <LinkPreview isStatic={true} imageSrc="/blogs/blogFive.png">
                                                     <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
                                                         Lubricants
                                                     </p>
                                                 </LinkPreview>
                                             </Link>
-                                          
                                         </div>
                                     )}
-                               </div>
+                                </div>
                             </div>
                         )}
                     </div>
+
 
                 </div>
 

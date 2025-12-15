@@ -54,7 +54,7 @@ const WhoUses = () => {
         opacity: 1,
         y: 0,
         rotation: 0,
-        duration: 0.4,
+        duration: 0.2,
         ease: "power3.out",
         stagger: 0.04,
       });

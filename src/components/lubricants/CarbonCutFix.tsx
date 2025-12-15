@@ -9,6 +9,7 @@ import {
   Blocks,
 } from "lucide-react";
 import { BlurFade } from "../ui/blur-fade";
+import Carousel from "../ui/carousel";
 
 export default function CarbonCutFix() {
   return (
@@ -16,63 +17,30 @@ export default function CarbonCutFix() {
       {/* Divider */}
       <div className="w-full border-t border-dashed border-text/10 mb-4 sm:mb-6 md:mb-8"></div>
 
-      <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 bg-[#fcfdf6] relative overflow-hidden">
+      <div className="py-4 sm:py-6 md:py-4 lg:py-4 xl:py-4 bg-[#fcfdf6] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-          {/* Top Text */}
+       
+          <BlurFade delay={0.1} inView className="mb-2 md:mb-4 lg:mb-6 text-right">
           <p className="text-[#d1cebb] text-sm sm:text-base md:text-lg font-normal tracking-tight text-right mb-4 leading-relaxed">
-            CarbonCut: Accurate Real-Time Lubricant CO₂e Measurement 
-            {/* We transform every activity in your lubricant operations into live CO₂e insights, including: */}
+            CarbonCut: Accurate Real-Time Lubricant CO₂e Measurement
           </p>
-
-          {/* Title */}
-          <BlurFade delay={0.1} inView className="mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#d1cebb] text-right leading-[1.15]">
               Here's How CarbonCut Fixes This
             </h2>
           </BlurFade>
 
           {/* Responsive Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {grid.map((feature, index) => (
-              <BlurFade
-                key={feature.title}
-                delay={index * 0.15}
-                inView
-                className="group relative bg-gradient-to-b from-gray-100 to-gray-200 p-6 rounded-3xl overflow-hidden border border-green-100 hover:border-[#b0ea1d] transition-all duration-300 hover:shadow-lg hover:shadow-green-400/10"
-              >
-                {/* Grid BG Pattern */}
-                <Grid size={20} />
+        <Carousel slides={grid.map((item) => ({
+            title: item.title,
+            button: item.button,
+            src: item.src,
+          }))} />
+         
 
-                {/* Icon */}
-                <div className="relative z-20 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#f8fceb] flex items-center justify-center group-hover:bg-[#f8fceb] transition">
-                    <feature.icon className="w-6 h-6 text-black" />
-                  </div>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 relative z-20 group-hover:text-black transition">
-                  {feature.title}
-                </h3>
-
-                {/* Metric */}
-                {feature.metric && (
-                  <div className="relative z-20 mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#f8fceb] text-black text-xs font-medium">
-                    <div className="w-2 h-2 rounded-full animate-pulse bg-[#b0ea1d]" />
-                    {feature.metric}
-                  </div>
-                )}
-
-                {/* Hover Gradient */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-3xl bg-gradient-to-r from-green-400/5 to-green-700/5"></div>
-              </BlurFade>
-            ))}
-          </div>
 
         </div>
       </div>
-      
+
       {/* Bottom Divider */}
       <div className="w-full border-t border-dashed border-text/10 mt-4 sm:mt-6 md:mt-8"></div>
     </>
@@ -84,38 +52,38 @@ export default function CarbonCutFix() {
 const grid = [
   {
     title: "Base oil extraction",
-    metric: "Crude sourcing & refinery energy consumption",
-    icon: BarChart3,
+    button: "Crude sourcing & refinery energy consumption",
+    src: "/auth-hero.jpg",
   },
   {
     title: "Additives & blends",
-    icon: Globe,
-    metric: "Chemical inventory & sourcing emissions",
+    src: "/auth-hero.jpg",
+    button: "Chemical inventory & sourcing emissions",
   },
   {
     title: "Manufacturing",
-    icon: Target,
-    metric: "Blending, bottling, energy mix & utilities",
+    src: "/auth-hero.jpg",
+    button: "Blending, bottling, energy mix & utilities",
   },
   {
     title: "Packaging",
-    icon: LayoutDashboard,
-    metric: "Container materials, recycling %, suppliers",
+    src: "/auth-hero.jpg",
+    button: "Container materials, recycling %, suppliers",
   },
   {
     title: "Logistics",
-    icon: Blocks,
-    metric: "Fleet type, fuel, distance, warehousing",
+    src: "/auth-hero.jpg",
+    button: "Fleet type, fuel, distance, warehousing",
   },
   {
     title: "Distribution",
-    icon: Blocks,
-    metric: "Port → distributor → retailer emissions",
+    src: "/auth-hero.jpg",
+    button: "Port → distributor → retailer emissions",
   },
   {
     title: "End-use emissions",
-    icon: Blocks,
-    metric: "Lubricant performance vs lifecycle",
+    src: "/auth-hero.jpg",
+    button: "Lubricant performance vs lifecycle",
   },
 ];
 
@@ -145,7 +113,7 @@ export const Grid = ({ pattern, size }: { pattern?: any; size?: any }) => {
   );
 };
 
-export function GridPattern({ width, height, x, y, squares, ...props }: { width: number; height: number; x: string; y: string; squares?: number[][]; className?: string; [key: string]: any }) {
+export function GridPattern({ width, height, x, y, squares, ...props }: { width: number; height: number; x: string; y: string; squares?: number[][]; className?: string;[key: string]: any }) {
   const patternId = useId();
 
   return (
