@@ -35,7 +35,7 @@ export function BusinessImpact() {
           >
             <div className="max-w-xl space-y-4">
               <h2 className="text-left text-xl md:text-2xl lg:text-3xl font-semibold text-white">
-                Business Impact Highlights
+                Highlights
               </h2>
 
               <ul className="mt-4 space-y-2 text-neutral-200">

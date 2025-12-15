@@ -115,14 +115,6 @@ const Hero = () => {
                 data-scroll-speed="0.5"
             >
                 <h1 className="text-5xl font-bold text-white text-center mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
-
-
-                <div className="flex flex-col md:flex-row gap-4 text-white text-lg max-w-3xl text-center">
-                    Track, measure, and optimise CO₂e emissions across your entire lubricant lifecycle.
-                    From base oil sourcing to blending, packaging, logistics, and downstream use.
-                    No estimates. No batch data. Just accuracy, automation, and real-time visibility.
-                </div>
-
                
             </div>
 

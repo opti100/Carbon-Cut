@@ -117,7 +117,7 @@ export default function CarbonCutHowItWorks() {
               {/* CENTER DOT (Perfectly Centered) */}
               <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${activeStep >= i ? "border-[#d1cebb] bg-[#d1cebb]" : "border-gray-400 bg-white"
+                  className={`w-4 h-4 rounded-full border-2 transition-all duration-500 ${activeStep >= i ? "border-[#b0ea1d] bg-[#b0ea1d]" : "border-gray-400 bg-white"
                     }`}
                 />
               </div>

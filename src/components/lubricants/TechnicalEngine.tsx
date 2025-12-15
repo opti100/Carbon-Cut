@@ -151,7 +151,7 @@ export default function ScrollingCardsUI() {
         </div>
       </div>
 
-      <div className="h-screen" />
+      {/* <div className="h-screen" /> */}
     </div>
      </>
   );
