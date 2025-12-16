@@ -83,8 +83,8 @@ const WhoUses = () => {
 
           {/* ---------- HEADER ---------- */}
           <BlurFade delay={0.1} inView>
-            <div className="text-center lg:text-right mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-[#d1cebb]">
+            <div className="text-center lg:text-right mb-8 sm:mb-10 md:mb-12 lg:mb-16 font-mono">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-[#6c5f31]">
                 Who Uses CarbonCut
               </h2>
             </div>

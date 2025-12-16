@@ -20,11 +20,11 @@ export default function CarbonCutFix() {
       <div className="py-4 sm:py-6 md:py-4 lg:py-4 xl:py-4 bg-[#fcfdf6] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        
-          <BlurFade delay={0.1} inView className="mb-2 md:mb-4 lg:mb-6 text-right">
-          <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg font-normal tracking-tight text-right mb-4 leading-relaxed">
+          <BlurFade delay={0.1} inView className="mb-2 md:mb-4 lg:mb-6 text-right font-mono">
+          <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg font-normal tracking-tight text-right leading-relaxed">
             CarbonCut: Accurate Real-Time Lubricant CO₂e Measurement
           </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#6c5f31] text-right leading-[1.15]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] text-right leading-[1.15]">
               Here's How CarbonCut Fixes This
             </h2>
           </BlurFade>

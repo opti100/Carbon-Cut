@@ -89,13 +89,13 @@ const ContactSection = () => {
           <div className=" mb-8 sm:mb-12 md:mb-16 lg:mb-20 text-right">
             <h2
               ref={titleRef}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-[#d1cebb]"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-[#6c5f31] font-mono"
             >
               Ready to Calculate Your Lubricants CO₂e?
             </h2>
             <p
               ref={subtitleRef}
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#d1cebb] max-w-7xl mx-auto leading-relaxed"
+              className="text-sm sm:text-base md:text-lg font-normal  text-[#6c5f31] max-w-7xl mx-auto leading-relaxed font-mono"
             >
               Get a custom CO₂e model for your lubricant portfolio:
             </p>

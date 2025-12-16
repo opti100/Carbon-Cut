@@ -84,9 +84,9 @@ export function BusinessImpact() {
 
         {/* Heading */}
         <div className="mb-10">
-          <BlurFade delay={0.1} inView className="mb-6 text-right">
+          <BlurFade delay={0.1} inView className="mb-6 text-right font-mono">
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#d1cebb] leading-[1.15]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] leading-[1.15]">
               Business Impact
             </h2>
           </BlurFade>

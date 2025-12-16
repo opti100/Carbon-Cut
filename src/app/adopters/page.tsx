@@ -1,13 +1,16 @@
+import FormSection from '@/components/adopters/form'
+import Form from '@/components/adopters/form'
+import HeroSectionOne from '@/components/adopters/hero'
 
-import { HeroParallaxDemo } from '@/components/adopters/hero'
-import LubricantCO2Form from '@/components/lubricants/ContactUs'
+
+
 import React from 'react'
 
 const page = () => {
   return (
-    <div>
-      <HeroParallaxDemo />
-      <LubricantCO2Form />
+    <div className="w-full">
+      <HeroSectionOne />
+      <FormSection />
     </div>
   )
 }

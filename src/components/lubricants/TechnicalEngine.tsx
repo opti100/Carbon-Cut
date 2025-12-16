@@ -81,15 +81,15 @@ export default function ScrollingCardsUI() {
       <div ref={containerRef} className="relative pb-[60vh]" style={{ height: "400vh" }}>
         <div className="mx-auto max-w-7xl px-4">
 
-           <BlurFade delay={0.1} inView className="mb-2 md:mb-4 lg:mb-6 text-right">
-                    <p className="text-[#d1cebb] text-sm sm:text-base md:text-lg font-normal tracking-tight text-right mb-4 leading-relaxed">
+           <BlurFade delay={0.1} inView className="mb-2 md:mb-4 lg:mb-6 text-right font-mono">
+                    <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg font-normal tracking-tight text-right  leading-relaxed">
                       Real-Time, Traceable & Assured Carbon Data Infrastructure
                     </p>
-                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#d1cebb] text-right leading-[1.15]">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] text-right leading-[1.15]">
                       The CarbonCut Engine
                       </h2>
                     </BlurFade>
-          {/* Heading */}
+         \
      
 
           <div className="hidden md:flex gap-8 lg:gap-12">
