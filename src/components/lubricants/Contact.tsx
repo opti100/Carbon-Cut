@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { BlurFade } from "../ui/blur-fade";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,7 +77,7 @@ const ContactSection = () => {
   return (
     <>
       {/* Top Divider */}
-      <div className="w-full border-t border-dashed border-text/10 py-20"></div>
+      <div className="w-full border-t border-dashed border-text/10 py-10"></div>
 
       <section
         ref={containerRef}
@@ -84,20 +85,22 @@ const ContactSection = () => {
       >
         <div className="max-w-7xl mx-auto w-full h-full ">
           {/* Heading Section */}
-          <div className="text-center mb-8 sm:mb-12 md:mb-16 lg:mb-20">
+             <BlurFade delay={0.1} inView className="mb-6 text-right">
+          <div className=" mb-8 sm:mb-12 md:mb-16 lg:mb-20 text-right">
             <h2
               ref={titleRef}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-[#080c04]"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 leading-tight text-[#d1cebb]"
             >
               Ready to Calculate Your Lubricants CO₂e?
             </h2>
             <p
               ref={subtitleRef}
-              className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#6c5f31] max-w-7xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#d1cebb] max-w-7xl mx-auto leading-relaxed"
             >
               Get a custom CO₂e model for your lubricant portfolio:
             </p>
           </div>
+          </BlurFade>
 
           {/* Steps Container */}
           <div className="flex-1 flex items-center justify-center py-20">

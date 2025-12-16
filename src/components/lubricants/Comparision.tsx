@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { ArrowRight, Check, X } from 'lucide-react';
+import { BlurFade } from '../ui/blur-fade';
 
 const comparisonData = {
   title: "Why CarbonCut?",
@@ -38,7 +39,8 @@ export default function CarbonCutComparison() {
           {/* Title Section */}
           <div className="  text-[#d1cebb] mx-auto mb-10 ">
             <div className="text-xs ">01 // Advancement</div>
-            <div className="text-5xl md:text-6xl font-bold mb-4 font-sans text-end">{comparisonData.title}</div>
+            <BlurFade delay={0.1} inView>
+            <div className="text-5xl md:text-6xl font-bold mb-4 font-sans text-end">{comparisonData.title}</div> </BlurFade>
           </div>
 
           {/* Comparison Grid */}
