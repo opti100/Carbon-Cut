@@ -107,7 +107,6 @@ const Page = () => {
                 </Tabs>
             </div>
 
-            {/* Title Section */}
             <div className="absolute top-32 left-1/2 transform -translate-x-1/2 z-20 text-center">
                 {onboardingType === "ads" ? (
                     <div className="space-y-2">
