@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { BlurFade } from "../ui/blur-fade";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -36,8 +37,8 @@ const WhoUses = () => {
 
       gsap.set(splitInstance.chars, {
         opacity: 0,
-        y: 100,
-        rotation: 10,
+        y: 60,
+        rotation: 8,
       });
 
       const tl = gsap.timeline({
@@ -54,9 +55,9 @@ const WhoUses = () => {
         opacity: 1,
         y: 0,
         rotation: 0,
-        duration: 0.2,
+        duration: 0.12,
         ease: "power3.out",
-        stagger: 0.04,
+        stagger: 0.02,
       });
 
       (descriptions[index] as any)._splitText = splitInstance;
@@ -73,19 +74,21 @@ const WhoUses = () => {
 
   return (
     <section ref={containerRef} className="relative bg-background">
-      
+
       {/* Top Border */}
       <div className="w-full border-t border-dashed border-text/10 mb-4 sm:mb-6 md:mb-8"></div>
 
       <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
         <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
-          
+
           {/* ---------- HEADER ---------- */}
-          <div className="text-center lg:text-right mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-[#d1cebb]">
-              Who Uses CarbonCut
-            </h2>
-          </div>
+          <BlurFade delay={0.1} inView>
+            <div className="text-center lg:text-right mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold tracking-tight text-[#d1cebb]">
+                Who Uses CarbonCut
+              </h2>
+            </div>
+          </BlurFade>
 
           {/* ---------- LIST ---------- */}
           <div className="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
@@ -109,7 +112,7 @@ const WhoUses = () => {
 
         </div>
       </div>
-      
+
       {/* Bottom Border */}
       <div className="w-full border-t border-dashed border-text/10 mt-4 sm:mt-6 md:mt-8"></div>
     </section>

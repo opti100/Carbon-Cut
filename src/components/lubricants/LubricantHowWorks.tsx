@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
+import { BlurFade } from "../ui/blur-fade";
 
 export default function CarbonCutHowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
@@ -60,12 +61,14 @@ export default function CarbonCutHowItWorks() {
     <div className="bg-[#fcfdf6] text-[#080c04] min-h-screen py-20 px-6 max-w-7xl mx-auto">
 
       {/* Title */}
+     <BlurFade delay={0.1} inView>
       <div className="text-right mb-20 text-[#d1cebb]">
            <p className="  mx-auto">
           A streamlined process for accurate and automated carbon intelligence.
         </p>
         <h1 className="text-5xl md:text-6xl font-bold mb-4">How CarbonCut Works</h1>
       </div>
+      </BlurFade>
 
       {/* Timeline Wrapper */}
       <div ref={sectionRef} className="relative max-w-6xl mx-auto">

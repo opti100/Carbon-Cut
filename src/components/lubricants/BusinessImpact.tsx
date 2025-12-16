@@ -1,88 +1,124 @@
 "use client";
-
 import React from "react";
-import { WobbleCard } from "../ui/wobble-card";
+import { BlurFade } from "../ui/blur-fade";
 
 export function BusinessImpact() {
-  const items = [
-    "Reduce carbon taxes by up to 17%",
-    "Low cost, low effort activity",
-    "Double your accuracy and quality of CO₂e reporting",
-    "Win ESG-driven tenders",
-    "Increase stakeholder confidence",
-    "Improve supply chain transparency",
-    "Eliminate manual carbon reporting",
-    "Track progress toward Net-Zero 2030/2050",
+  const cards = [
+    {
+      id: "01",
+      title: "Reduce carbon taxes by up to 17%",
+      points: [
+        " Identify emission hotspots",
+        "Avoid overpayment penalties",
+        "Maximize tax incentives"
+      ],
+    },
+    {
+      id: "02",
+      title: "Low cost, low effort activity",
+      points: [
+        "  Quick, simple onboarding",
+        "Minimal operational disruption",
+        "Scales with business"
+      ],
+    },
+    {
+      id: "03",
+      title: "Double your accuracy and quality of CO₂e reporting",
+      points: [
+        "Primary activity-based data",
+        "Real-time emission calculations",
+        "Audit-ready standardized reports"
+      ],
+    },
+    {
+      id: "04",
+      title: "Win ESG-driven tenders and contracts",
+      points: [
+        "Meet ESG compliance standards",
+        "Strengthen sustainability bids",
+        "Stand out competitively"
+      ],
+    },
+    {
+      id: "05",
+      title: "Increase stakeholder confidence",
+      points: [
+        "  Transparent sustainability reporting",
+        "Build investor trust",
+        "Demonstrate climate leadership"
+      ],
+    },
+    {
+      id: "06",
+      title: "Improve supply chain transparency",
+      points: [
+        "Track supplier emissions",
+        "Identify high-impact vendors",
+        "Enable supplier collaboration"
+      ],
+    },
+    {
+      id: "07",
+      title: "Eliminate manual carbon reporting",
+      points: [
+        "Automate carbon calculations",
+        "Remove spreadsheet dependency",
+        "Generate reports instantly"
+      ],
+    },
+    {
+      id: "08",
+      title: "Track progress toward Net-Zero 2030/2050",
+      points: [
+        "Monitor reduction milestones",
+        "Align with science-based targets",
+        "Measure long-term progress"
+      ],
+    },
   ];
 
   return (
-    <>
-      <div className="bg-[#fcfdf6] text-[#080c04] min-h-screen py-10 px-6 max-w-7xl mx-auto">
-        <div className="text-right  text-[#d1cebb]">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">Business Impact</h1>
+    <section className="h-screen bg-[#fcfdf6] px-6 flex items-center">
+      <div className="max-w-7xl mx-auto w-full">
+
+        {/* Heading */}
+        <div className="mb-10">
+          <BlurFade delay={0.1} inView className="mb-6 text-right">
+
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#d1cebb] leading-[1.15]">
+              Business Impact
+            </h2>
+          </BlurFade>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 py-10 gap-4 max-w-7xl mx-auto w-full">
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {cards.map((card) => (
+            <div
+              key={card.id}
+              className="rounded-2xl border border-[#6c5f31] p-8  transition"
+            >
+              {/* Number */}
+              <div className="text-sm font-semibold text-[#b0ea1d] mb-4">
+                {card.id}
+              </div>
 
+              {/* Title */}
+              <h3 className="text-[#6c5f31] text-xl font-semibold mb-4 leading-snug">
+                {card.title}
+              </h3>
 
-
-
-
-          {/* LEFT LARGE CARD */}
-          <WobbleCard
-            containerClassName="col-span-1 lg:col-span-2 h-full bg-[#6c5f31] min-h-[500px] lg:min-h-[320px]"
-            className=""
-          >
-            <div className="max-w-xl space-y-4">
-              <h2 className="text-left text-xl md:text-2xl lg:text-3xl font-semibold text-white">
-                Highlights
-              </h2>
-
-              <ul className="mt-4 space-y-2 text-neutral-200">
-                {items.slice(0, 4).map((text, idx) => (
-                  <li key={idx} className="text-base md:text-lg leading-relaxed">
-                    • {text}
-                  </li>
+              {/* Content */}
+              <ul className="space-y-3 text-sm leading-relaxed text-black">
+                {card.points.map((point, idx) => (
+                  <li key={idx}>{point}</li>
                 ))}
               </ul>
             </div>
-          </WobbleCard>
-
-          {/* SMALL RIGHT CARD */}
-          <WobbleCard containerClassName="col-span-1 bg-[#080c04] min-h-[300px]">
-            <h2 className="text-left text-xl md:text-2xl lg:text-3xl font-semibold text-white mb-4">
-              More Advantages
-            </h2>
-
-            <ul className="space-y-2 text-neutral-200">
-              {items.slice(4, 6).map((text, idx) => (
-                <li key={idx} className="text-base md:text-lg leading-relaxed">
-                  • {text}
-                </li>
-              ))}
-            </ul>
-          </WobbleCard>
-
-          {/* FULL-WIDTH CARD */}
-          <WobbleCard
-            containerClassName="col-span-1 lg:col-span-3 bg-[#4a5744] min-h-[400px] lg:min-h-[350px]"
-          >
-            <div className="max-w-xl space-y-4">
-              <h2 className="text-left text-xl md:text-2xl lg:text-3xl font-semibold text-white">
-                Long-Term Results
-              </h2>
-
-              <ul className="space-y-2 text-neutral-200">
-                {items.slice(6, 8).map((text, idx) => (
-                  <li key={idx} className="text-base md:text-lg leading-relaxed">
-                    • {text}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </WobbleCard>
+          ))}
         </div>
       </div>
-    </>
+    </section>
   );
 }

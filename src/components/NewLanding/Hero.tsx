@@ -57,6 +57,7 @@ const Hero = () => {
         setOpenNestedDropdown(openNestedDropdown === key ? null : key);
     };
 
+
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -188,10 +189,13 @@ const Hero = () => {
 
                                     {/* Nested dropdown for Internet */}
                                     {openNestedDropdown === 'internet' && (
-                                        <div className="mt-1">
+                                        <div
+                                            className="absolute top-0 left-full ml-2 w-56 rounded-lg shadow-lg border z-30"
+                                            style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
+                                        >
                                             <Link href="/internet/internet-ads">
                                                 <LinkPreview isStatic={true} imageSrc="/blogs/blogFive.png">
-                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
+                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition">
                                                         Internet Ads
                                                     </p>
                                                 </LinkPreview>
@@ -199,13 +203,14 @@ const Hero = () => {
 
                                             <Link href="/internet/website-ads">
                                                 <LinkPreview isStatic={true} imageSrc="/blogs/blogFive.png">
-                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
-                                                        Website Ads
+                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition">
+                                                        Website/Apps
                                                     </p>
                                                 </LinkPreview>
                                             </Link>
                                         </div>
                                     )}
+
                                 </div>
 
                                 {/* Oil & Natural Gas with nested dropdown */}
@@ -223,16 +228,20 @@ const Hero = () => {
                                     </div>
 
                                     {openNestedDropdown === 'oil-gas' && (
-                                        <div className="mt-1">
+                                        <div
+                                            className="absolute top-0 left-full ml-2 w-56 rounded-lg shadow-lg border z-30"
+                                            style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
+                                        >
                                             <Link href="/oil-and-natural-gas/lubricant">
                                                 <LinkPreview isStatic={true} imageSrc="/blogs/blogFive.png">
-                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition pl-8">
+                                                    <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition">
                                                         Lubricants
                                                     </p>
                                                 </LinkPreview>
                                             </Link>
                                         </div>
                                     )}
+
                                 </div>
                             </div>
                         )}
