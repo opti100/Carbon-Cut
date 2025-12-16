@@ -114,7 +114,7 @@ const Hero = () => {
                 data-scroll
                 data-scroll-speed="0.5"
             >
-                <h1 className="text-5xl font-bold text-white text-center mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
+                <h1 className="text-5xl font-bold font-mono text-white text-center mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
                
             </div>
 
