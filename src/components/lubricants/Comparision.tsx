@@ -37,10 +37,10 @@ export default function CarbonCutComparison() {
         {/* Main Content */}
         <div className="max-w-7xl mx-auto">
           {/* Title Section */}
-          <div className="  text-[#d1cebb] mx-auto mb-10 ">
+          <div className="  text-[#6c5f31] mx-auto mb-10 ">
             <div className="text-xs ">01 // Advancement</div>
             <BlurFade delay={0.1} inView>
-            <div className="text-5xl md:text-6xl font-bold mb-4 font-sans text-end">{comparisonData.title}</div> </BlurFade>
+            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 font-mono text-end">{comparisonData.title}</div> </BlurFade>
           </div>
 
           {/* Comparison Grid */}

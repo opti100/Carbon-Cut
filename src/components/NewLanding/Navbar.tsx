@@ -85,7 +85,7 @@ const Navbar = () => {
             </div>
 
             <Link
-              href="/methodology"
+              href="/adopters"
               className={`text-sm font-medium transition-colors ${isHome
                 ? "text-white hover:text-black"
                 : "text-black hover:text-gray-700"

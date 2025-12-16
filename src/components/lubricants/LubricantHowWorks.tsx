@@ -62,11 +62,11 @@ export default function CarbonCutHowItWorks() {
 
       {/* Title */}
      <BlurFade delay={0.1} inView>
-      <div className="text-right mb-20 text-[#d1cebb]">
+      <div className="text-right mb-20 text-[#6c5f31] font-mono">
            <p className="  mx-auto">
           A streamlined process for accurate and automated carbon intelligence.
         </p>
-        <h1 className="text-5xl md:text-6xl font-bold mb-4">How CarbonCut Works</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4">How CarbonCut Works</h1>
       </div>
       </BlurFade>
 
