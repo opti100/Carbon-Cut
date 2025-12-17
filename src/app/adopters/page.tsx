@@ -10,7 +10,7 @@ const page = () => {
   return (
     <div className="w-full">
       <HeroSectionOne />
-      <FormSection />
+     
     </div>
   )
 }

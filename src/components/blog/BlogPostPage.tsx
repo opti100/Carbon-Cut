@@ -28,6 +28,7 @@ import { BlogFifteenContent } from '@/constants/blogs/blogFiveteen-data';
 import { BlogSixteenContent } from '@/constants/blogs/blogSixteen-data';
 import { BlogSeventeenContent } from '@/constants/blogs/blogSeventeen-data';
 import { BlogEighteenContent } from '@/constants/blogs/blogEighteen-data';
+import { BlogNineteenContent } from '@/constants/blogs/blogNineteen-data';
 
 
 // Blog content component mapping
@@ -49,11 +50,12 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'what-is-real-time-carbon-intelligence': BlogFifteenContent,
   'fastest-way-reduce-carbon-emissions-real-time-tracking': BlogSixteenContent,
   'difference-between-real-time-carbon-data-annual-esg-reporting': BlogSeventeenContent,
-  'real-time-carbon-tracking-replace-annual-reports':BlogEighteenContent
+  'real-time-carbon-tracking-replace-annual-reports':BlogEighteenContent,
+  'real-time-visibility-missing-layer-carbon-accounting':BlogNineteenContent
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
-
+ 
 interface BlogPostPageProps {
   post: BlogPost;
 }
