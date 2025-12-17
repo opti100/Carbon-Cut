@@ -69,7 +69,7 @@ export default function StackedCards() {
        }}
   >
     {/* Title */}
-    <h2 className="font-mono text-4xl text-[#6c5f31] mb-10">
+    <h2 className="font-mono text-4xl text-[#6c5f31] mb-10 font-mono">
      Traditional ESG systems rely on:
     </h2>
 
@@ -77,9 +77,6 @@ export default function StackedCards() {
 
     {/* Content */}
     <div className="flex justify-between gap-10">
-      <div className="text-4xl font-mono text-[#6c5f31]">
-        Problems
-      </div>
 
       <ul className="space-y-3 text-lg text-[#6c5f31] max-w-md font-mono">
         <li>Generic emission factors</li>
@@ -108,7 +105,7 @@ export default function StackedCards() {
     style={{ zIndex: 2 }}
   >
     {/* Title */}
-    <h2 className="font-mono text-4xl text-[#6c5f31] mb-10">
+    <h2 className=" text-4xl text-[#6c5f31] mb-10 font-mono">
       This Leads To:
     </h2>
 
@@ -116,9 +113,7 @@ export default function StackedCards() {
 
     {/* Content */}
     <div className="flex justify-between gap-10">
-      <div className="text-4xl font-mono text-[#6c5f31]">
-        Impact
-      </div>
+     
 
       <ul className="space-y-3 text-lg text-[#6c5f31] max-w-md font-mono">
         <li>Incorrect emission disclosures</li>
