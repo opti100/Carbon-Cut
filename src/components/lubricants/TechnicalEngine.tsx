@@ -89,7 +89,7 @@ export default function ScrollingCardsUI() {
                       The CarbonCut Engine
                       </h2>
                     </BlurFade>
-         \
+         
      
 
           <div className="hidden md:flex gap-8 lg:gap-12">
