@@ -1,6 +1,6 @@
 
 
-import { BusinessImpact } from '@/components/lubricants/BusinessImpact'
+import    {BusinessImpact} from '@/components/lubricants/BusinessImpact'
 import CarbonCutFix from '@/components/lubricants/CarbonCutFix'
 import Comparision from '@/components/lubricants/Comparision'
 import ContactSection from '@/components/lubricants/Contact'

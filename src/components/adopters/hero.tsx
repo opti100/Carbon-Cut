@@ -1,62 +1,67 @@
+"use client";
+
 import React from "react";
-import { ArrowRight } from "lucide-react";
 import Navbar from "../NewLanding/Navbar";
-import Link from "next/link";
+import FormSection from "./form";
+import { PixelatedCanvas } from "../ui/pixelated-canvas";
+import { BlurFade } from "../ui/blur-fade";
 
 export default function HeroSectionOne() {
   return (
-    <div className="min-h-screen bg-[#fcfdf6] p-6">
+    <div className="min-h-screen bg-[#fcfdf6] flex flex-col">
       {/* Navbar */}
       <Navbar />
 
-      {/* Main Grid */}
-      <div className="mt-40 grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch max-w-7xl mx-auto">
-        {/* Left Hero Card */}
-        <div className="lg:col-span-2 bg-[#d1cebb] rounded-3xl p-10 relative overflow-hidden flex items-end">
-          {/* Background Image */}
-          <img
-            src="/LandingGroup.svg"
-            alt="Net zero illustration"
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
-          />
+      {/* Main Section */}
+      <div className="flex-1 flex items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 w-full max-w-7xl mx-auto px-6">
 
-          {/* Content */}
-          <h1 className="relative z-10 text-4xl md:text-5xl font-bold leading-tight max-w-xl">
-            Net-zero digital experience
-          </h1>
-        </div>
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col justify-center h-full font-mono">
+            <BlurFade delay={0.1} inView className="mt-20">
+            
 
-        {/* Right Column */}
-        <div className="flex flex-col gap-6">
-          {/* Card 1 */}
-          <div className="bg-[#6c5f31] text-white rounded-3xl p-6 h-48 relative overflow-hidden flex items-end">
-            <img
-              src="/LandingGroup.svg"
-              alt="Measure reduce offset"
-              className="absolute inset-0 w-full h-full object-cover opacity-30"
-            />
+              <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-extrabold text-[#6c5f31] leading-tight mb-8">
+              Digital carbon emissions
+              </h1>
 
-            <div className="relative z-10 text-xl font-semibold">
-              Measure. Reduce. Offset. <br /> In Real Time.
+                <p className="text-[#6c5f31] text-sm sm:text-base md:text-base mb-4 leading-relaxed">
+                CarbonCut helps your platform measure, reduce, and offset
+                emissions in real time — creating a net-zero digital experience.
+              </p>
+            </BlurFade>
+
+            <div className="max-w-lg">
+              <PixelatedCanvas
+                src="/CarbonCut-fe/CC.svg"
+                width={500}
+                height={600}
+                cellSize={3}
+                dotScale={0.9}
+                shape="square"
+                backgroundColor="#fcfdf6"
+                dropoutStrength={0.4}
+                interactive
+                distortionStrength={3}
+                distortionRadius={80}
+                distortionMode="swirl"
+                followSpeed={0.2}
+                jitterStrength={4}
+                jitterSpeed={4}
+                sampleAverage
+                tintColor="#FFFFFF"
+                tintStrength={0.2}
+              />
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="bg-black text-white rounded-3xl p-6 h-40 relative overflow-hidden flex flex-col justify-between">
-            <img
-              src="/LandingGroup.svg"
-              alt="Carbon intelligence"
-              className="absolute inset-0 w-full h-full object-cover opacity-30"
-            />
-
-            <div className="relative z-10 text-lg font-medium">
-              Real-Time Carbon Intelligence for the Internet
-            </div>
-
-            <div className="relative z-10 flex items-center gap-2 text-xs">
-           <Link href="/" className="flex items-center ">Learn more  <ArrowRight className="ml-2" size={14} /> </Link> 
+          {/* RIGHT COLUMN */}
+          <div className="flex items-center justify-center h-full mt-5">
+            <div className="w-full ">
+              <FormSection />
             </div>
           </div>
+
         </div>
       </div>
     </div>
