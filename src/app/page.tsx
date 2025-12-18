@@ -13,7 +13,7 @@ import Standards from "@/components/NewLanding/Standards";
 import TrustedBySection from "@/components/NewLanding/TrustedBySection";
 import { CardNavItem } from "@/components/CardNav";
 
-const navData: CardNavItem[] = [
+export const navData: CardNavItem[] = [
 	{
 		label: "Products",
 		bgColor: "#b0ea1d",

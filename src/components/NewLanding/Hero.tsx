@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import AnimatedHeroText from './AnimatedHeroText';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { LinkPreview } from '../ui/link-preview';
+import Link from 'next/link';
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
   return (
@@ -171,10 +172,10 @@ const Hero = () => {
                                         style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
                                     >
                                        <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' > 
-                                            <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Internet </p> 
+                                         <Link href='/internet' >  <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Internet </p>  </Link> 
                                        </LinkPreview>
                                        <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' > 
-                                            <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Oil & Natural Gas </p> 
+                                         <Link href='/oil-and-natural-gas' >  <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Oil & Natural Gas </p>  </Link> 
                                        </LinkPreview>
                                     </div>
                                 )}
