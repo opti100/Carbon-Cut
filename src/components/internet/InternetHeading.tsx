@@ -22,11 +22,11 @@ const AnimatedHeading = ({
     gsap.fromTo(
       words,
       {
-        opacity: 0.2,
+        opacity: 0.1,
       },
       {
         opacity: 1,
-        stagger: 0.15,        // slower word-by-word
+        stagger: 0.2,        // slower word-by-word
         ease: "none",         // required for scrub
         scrollTrigger: {
           trigger: containerRef.current,

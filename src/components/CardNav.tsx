@@ -156,9 +156,49 @@ const CardNav: React.FC<CardNavProps> = ({
     if (el) cardsRef.current[i] = el;
   };
 
+const [showNavbar, setShowNavbar] = React.useState(true);
+const lastScrollY = React.useRef(0);
+
+React.useEffect(() => {
+  const handleScroll = () => {
+    const current = window.scrollY;
+
+    // Always show at top
+    if (current < 10) {
+      setShowNavbar(true);
+      lastScrollY.current = current;
+      return;
+    }
+
+    if (current > lastScrollY.current) {
+      // ⬇️ scrolling DOWN → HIDE
+      setShowNavbar(false);
+    } else {
+      // ⬆️ scrolling UP → SHOW
+      setShowNavbar(true);
+    }
+
+    lastScrollY.current = current;
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
+
+
   return (
     <div className={`card-nav-container ${className}`}>
-      <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`} style={{ backgroundColor: baseColor }}>
+      <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`}
+      style={{
+    backgroundColor: baseColor,
+    transform: showNavbar ? "translateY(0)" : "translateY(-110%)",
+    opacity: showNavbar ? 1 : 0,
+    pointerEvents: showNavbar ? "auto" : "none",
+    transition: "transform 0.35s ease, opacity 0.25s ease",
+  }}
+      >
         <div className="card-nav-top">
           <Link href="/" className="logo-container">
             <img src={logo} alt={logoAlt} className="logo" />
