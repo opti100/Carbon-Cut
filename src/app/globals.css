@@ -12,6 +12,9 @@
     transform: translateX(-50%);
   }
 }
+html {
+  scroll-behavior: smooth;
+}
 
 @keyframes marquee-vertical {
   0% {

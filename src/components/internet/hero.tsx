@@ -6,7 +6,7 @@ import { navData } from "@/app/page";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 
-export function HeroInternet() {
+export function InternetHero() {
   return (
     <section className="relative w-full min-h-[90vh] overflow-hidden">
       {/* Navbar */}
@@ -34,42 +34,38 @@ export function HeroInternet() {
       {/* Hero Content */}
       <div className="relative z-10 grid min-h-screen grid-cols-1 lg:grid-cols-2">
         {/* LEFT CONTENT */}
-        <div className="flex flex-col justify-center  px-6 md:px-16 lg:px-24">
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-xl text-3xl font-normal leading-tight text-white md:text-4xl lg:text-5xl"
-          >
-            How can we assist you today?
-          </motion.h1>
+        <div className="flex flex-col justify-center max-w-6xl  px-6 md:px-12 lg:px-18">
+          
+          <div className="text-white text-5xl whitespace-nowrap">
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="mt-6 max-w-xl text-base text-white"
-          >
-            Learn more about our core areas of expertise by selecting your topic
-            of interest.
-          </motion.p>
+            The easiest way to become a <br /> net-zero Internet Company.
+          </div>
+          
 
-          {/* Dropdown CTAs */}
+         
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <Link href="/internet/internet-ads" className="flex w-full items-center justify-between rounded-full border border-white bg-transparent px-6 py-3 text-sm text-white sm:w-[220px]">
+            <Link href="/internet/internet-ads" className=" w-full  justify-between bg-transparent  sm:w-[220px]  group inline-flex items-center gap-2
+    rounded-full border border-white
+    px-6 py-3 text-sm font-medium text-white
+    transition-all duration-250 ease-out
+    hover:bg-white/10 hover:-translate-y-0.5">
               Internet Ads
               <ArrowUpRight size={18} />
             </Link>
 
-            <Link href="/internet/" className="flex w-full items-center justify-between rounded-full border border-white bg-transparent px-6 py-3 text-sm text-white sm:w-[220px]">
+            <Link href="/internet/" className=" w-full  justify-between bg-transparent  sm:w-[220px]  group inline-flex items-center gap-2
+    rounded-full border border-white
+    px-6 py-3 text-sm font-medium text-white
+    transition-all duration-250 ease-out
+    hover:bg-white/10 hover:-translate-y-0.5">
               Web & Apps
               <ArrowUpRight size={18} />
             </Link>
+
           </div>
         </div>
 
-        {/* RIGHT SIDE (empty, image is behind) */}
-        <div className="hidden lg:block" />
+     
       </div>
     </section>
   );

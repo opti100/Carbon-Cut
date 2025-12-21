@@ -53,44 +53,6 @@ const faqData = [
   },
 ];
 
-// const getCategoryInfo = (category: string) => {
-//   switch (category) {
-//     case "basics":
-//       return { color: "bg-blue-100 text-blue-700 border-blue-200", label: "Basics" };
-//     case "usage":
-//       return { color: "bg-tertiary/10 text-tertiary border-tertiary/20", label: "Usage" };
-//     case "features":
-//       return { color: "bg-orange-100 text-orange-700 border-orange-200", label: "Features" };
-//     case "audience":
-//       return { color: "bg-purple-100 text-purple-700 border-purple-200", label: "Audience" };
-//     case "terminology":
-//       return { color: "bg-gray-100 text-gray-700 border-gray-200", label: "Terms" };
-//     case "integration":
-//       return { color: "bg-green-100 text-green-700 border-green-200", label: "Integration" };
-//     default:
-//       return { color: "bg-gray-100 text-gray-700 border-gray-200", label: "General" };
-//   }
-// };
-
-
-  {/* Header */}
-      {/* <div className="text-center space-y-6 mb-24">
-        <h2 className="text-4xl lg:text-6xl font-light tracking-tight" style={{ color: "#080c04" }}>
-          <span style={{ color: "#b0ea1d" }}>About CarbonCut</span> Equivalent CO₂e
-          <br />
-          <span style={{ color: "#080c04" }}>Calculator</span>
-        </h2>
-
-        <p className="max-w-4xl mx-auto leading-relaxed text-lg" style={{ color: "#6c5f31" }}>
-          The CarbonCut Calculator helps you understand the{" "}
-          <strong className="font-semibold" style={{ color: "#F0db18" }}>
-            true climate impact of your marketing activities.
-          </strong>{" "}
-          It uses independently verified emission factors and up-to-date
-          environmental datasets to convert campaign inputs into accurate CO₂e
-          estimates.
-        </p>
-      </div> */}
 
 
 export default function CalculatorFAQ() {

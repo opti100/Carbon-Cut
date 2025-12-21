@@ -4,6 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { BlurFade } from "../ui/blur-fade";
 import Link from "next/link";
+import { PinContainer } from "../ui/3d-pin";
 
 export function InternetAdsWebApp() {
   return (
@@ -49,6 +50,29 @@ export function InternetAdsWebApp() {
             />
           }
         />
+
+        <PinContainer
+          title="Internet Ads"
+          href="/internet/internet-ads"
+        >
+          <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
+           
+            <div className="text-base !m-0 !p-0 font-normal">
+              <span className="text-slate-500 ">
+                Track the carbon cost of every impression, click, and campaign across your advertising ecosystem.
+              </span>
+            </div>
+            <div className="relative flex flex-1 w-full rounded-lg mt-4 overflow-hidden">
+              <Image
+                src="/abstract-gray.jpg"
+                alt="Internet Ads"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </PinContainer>
 
       </div>
     </>

@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
   return (
-    <div className="w-full h-full overflow-hidden rounded-xl">
+    <div className="w-full h-full overflow-hidden ">
       <video
         src="/LandingPage.mp4"
         autoPlay

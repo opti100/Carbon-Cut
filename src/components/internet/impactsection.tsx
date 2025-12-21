@@ -1,65 +1,90 @@
-"use client";
-
 import React from "react";
+import { BlurFade } from "../ui/blur-fade";
 
-export const ImpactSection = () => {
-    return (
-        <section className="bg-[#fffcf4] py-24">
-            <div className="max-w-7xl mx-auto px-6">
-                {/* Main Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+const ImpactSection = () => {
+  return (
+    <section className="bg-[#fcfdf6] py-32">
+      <div className="max-w-7xl mx-auto px-8">
 
-                    {/* LEFT */}
-                    <div className="space-y-20">
-                        {/* Block 1 */}
-                        <div className="border-t border-[#6c5f31]/30 pt-10">
-                            <h2 className="text-3xl font-medium text-[#6c5f31] mb-4">
-                                Impact you can prove
-                            </h2>
+        {/* Top Heading */}
+        <div className="font-mono mb-20">
+          <BlurFade delay={0.1} inView className="text-right max-w-4xl ml-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] leading-tight">
+              How We Calculate Your Emissions
+            </h2>
+            <p className="mt-4 text-[#6c5f31] text-sm sm:text-base md:text-lg leading-relaxed">
+              We've built the most comprehensive digital emission tracking methodology
+              that actually reflects reality.
+            </p>
+          </BlurFade>
+        </div>
 
-                            <p className="text-[#4b5563] text-lg leading-relaxed max-w-xl">
-                               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident atque nobis tempora error dolores, sed quidem, magnam facilis, esse hic placeat id pariatur quam asperiores neque impedit inventore optio quo est vel repudiandae accusantium iste corporis! Illum velit est, cupiditate iure inventore quis soluta reprehenderit quas nisi, veritatis fuga delectus.
-                            </p>
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
 
-                          
-                        </div>
-                        {/* Block 2 */}
-                        <div className="border-t border-[#6c5f31]/30 pt-10">
-                            <h2 className="text-3xl font-medium text-[#6c5f31] mb-4">
-                                Numbers you can trust
-                            </h2>
+          {/* Column 1 */}
+          <div className="flex flex-col">
+            <h3 className="text-4xl font-medium text-[#6c5f31] mb-8">
+              80–85% Digital Operations
+            </h3>
 
-                            <p className="text-[#4b5563] text-lg leading-relaxed max-w-xl">
-                                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum, deleniti porro odio voluptates omnis aperiam doloribus unde perferendis vitae possimus libero sed repellat. Ut suscipit vero distinctio eligendi dignissimos reprehenderit voluptates recusandae dolorum autem hic ratione, possimus quam aspernatur animi tempore. Optio explicabo deserunt quam voluptatibus reiciendis soluta. Ipsam, id.
-                            </p>
-                      
-                        </div>
-                    </div>
+            <div className="h-px bg-[#6c5f31]/40 mb-8" />
 
-                    {/* RIGHT */}
+            <p className="text-black mb-6">
+              This is where your real footprint lives:
+            </p>
 
-                    <div className="space-y-10">
-                        <h1 className="text-3xl leading-tight font-bold text-right text-[#6c5f31]">
-                            Lorem, ipsum dolor.
-                            <br />
-                            Lorem ipsum dolor sit.
-                        </h1>
+            <ul className="text-black leading-relaxed space-y-3 list-disc list-inside">
+              <li>Website & App Traffic: every visit and transaction</li>
+              <li>User Duration: time spent on your platform</li>
+              <li>Data Transfer: bandwidth consumption</li>
+              <li>Server Infrastructure: hosting & energy source</li>
+              <li>Backend Operations: APIs & cloud computing</li>
+              <li>Content Delivery Networks</li>
+            </ul>
+          </div>
 
-                        {/* Visual */}
-                        <div className="relative w-full max-w-md">
-                            <video
-                                src="/internet/impact.mp4"
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                                className="w-full "
-                            />
-                        </div>
-                    </div>
+          {/* Column 2 */}
+          <div className="flex flex-col">
+            <h3 className="text-4xl font-medium text-[#6c5f31] mb-8">
+              15–20% Physical Operations
+            </h3>
 
-                </div>
-            </div>
-        </section>
-    );
+            <div className="h-px bg-[#6c5f31]/40 mb-8" />
+
+            <p className="text-black mb-6">
+              Your traditional footprint still matters:
+            </p>
+
+            <ul className="text-black leading-relaxed space-y-3 list-disc list-inside">
+              <li>Office electricity consumption</li>
+              <li>Workspace infrastructure</li>
+              <li>Employee commutes & travel</li>
+              <li>Physical hardware & equipment</li>
+              <li>Cooling & facilities management</li>
+            </ul>
+          </div>
+
+          {/* Column 3 */}
+          <div className="flex flex-col">
+            <h3 className="text-4xl font-medium text-[#6c5f31] mb-8">
+              100% Reporting Accuracy
+            </h3>
+
+            <div className="h-px bg-[#6c5f31]/40 mb-8" />
+
+            <p className="text-black leading-relaxed">
+              Unlike traditional methods that rely on estimates, we track real,
+              measurable data from your digital operations. This results in
+              audit-ready, credible emission reports trusted by regulators,
+              investors, and customers.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
 };
+
+export default ImpactSection;

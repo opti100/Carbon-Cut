@@ -8,9 +8,11 @@ gsap.registerPlugin(ScrollTrigger);
 const AnimatedHeading = ({
   text,
   className = "",
+  style,
 }: {
   text: string;
   className?: string;
+  style?: React.CSSProperties;
 }) => {
   const containerRef = useRef<HTMLHeadingElement>(null);
 
