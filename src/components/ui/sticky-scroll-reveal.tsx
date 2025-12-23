@@ -89,7 +89,7 @@ export const StickyScroll = ({
             {/* Left: Title */}
             <h2
               ref={(el) => { titleRefs.current[index] = el; }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#080c04] font-mono leading-tight"
+              className="text-4xl md:text-4xl lg:text-4xl font-bold text-[#080c04] font-mono leading-tight"
 
             >
               {item.title}
@@ -98,7 +98,7 @@ export const StickyScroll = ({
             {/* Right: Description */}
             <p
               ref={(el) => { descriptionRefs.current[index] = el; }}
-              className="text-xl md:text-2xl text-[#6c5f31] leading-relaxed font-mono max-w-xl"
+              className=" text-[#6c5f31] leading-relaxed font-mono max-w-xl"
             >
               {item.description}
             </p>

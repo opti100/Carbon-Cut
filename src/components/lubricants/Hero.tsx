@@ -5,10 +5,13 @@ import AnimatedHeroText from '../NewLanding/AnimatedHeroText';
 import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { LinkPreview } from '../ui/link-preview';
 import Link from 'next/link';
+import CardNav from '../CardNav';
+import { navData } from '../NavData';
+
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
     return (
-        <div className="w-full h-full overflow-hidden rounded-xl">
+        <div className="w-full h-full overflow-hidden ">
             <video
                 src="/Lubricants.mp4"
                 autoPlay
@@ -91,9 +94,22 @@ const Hero = () => {
         <>
        
         <section className="relative h-screen w-full" data-scroll-section>
+              {/* Navbar */}
+                  <div className="absolute top-0 left-0 right-0 z-20">
+                    <CardNav
+                      logo="/CarbonCut-fe/CC.svg"
+                      logoAlt="CarbonCut Logo"
+                      items={navData}
+
+                      baseColor="rgba(255, 255, 255, 0.1)"
+                      menuColor="#080c04"
+                      buttonBgColor="#b0ea1d"
+                      buttonTextColor="#080c04"
+                    />
+                  </div>
             {/* Loading Screen */}
             {!isVideoLoaded && (
-                <div className="w-full h-full overflow-hidden rounded-xl  ">
+                <div className="w-full h-full overflow-hidden   ">
                     <Image
                         src="/CarbonCut-fe/Lubricant.png"
                         alt="Carbon Cut Logo"
@@ -114,6 +130,7 @@ const Hero = () => {
                 data-scroll
                 data-scroll-speed="0.5"
             >
+                
                 <h1 className="text-5xl font-bold font-mono text-white text-center mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
                
             </div>

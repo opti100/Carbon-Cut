@@ -1,132 +1,80 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const DOT_COLORS = ["#b0ea1d", "#6c5f31", "#F0db18", "#d1cebb", "#f8fceb"];
+import Link from "next/link";
+import React from "react";
+import { motion } from "framer-motion";
 
 export default function PreFooter() {
-  const dotsRef = useRef<HTMLDivElement[]>([]);
-  const pathRef = useRef<SVGPathElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  const totalDots = 5;
-  const dotSize = 14;
-
-  // Detect Mobile
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // ⭐ PERFECT RESPONSIVE CURVE POSITIONING
-  useEffect(() => {
-    if (isMobile || !pathRef.current) return;
-
-    const path = pathRef.current;
-    const length = path.getTotalLength();
-
-    // ⭐ 5 dots → equal spacing 0%, 25%, 50%, 75%, 100%
-    const spacing = length / (totalDots - 1);
-
-    for (let i = 0; i < totalDots; i++) {
-      const p = path.getPointAtLength(i * spacing);
-      const dot = dotsRef.current[i];
-      if (dot) {
-        dot.style.left = `${p.x}px`; // full width responsive
-        dot.style.top = `${p.y}px`;
-      }
-    }
-  }, [isMobile]);
-
-  // Scroll Animation Left/Right
-  useEffect(() => {
-    if (isMobile || !containerRef.current) return;
-
-    const dots = dotsRef.current.filter(Boolean);
-
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1.2,
-        onUpdate: (self) => {
-          gsap.to(dots, {
-            x: self.direction === 1 ? 60 : -60,
-            duration: 1,
-            ease: "power1.out",
-            overwrite: "auto",
-          });
-        },
-      },
-    });
-
-    return () => ScrollTrigger.killAll();
-  }, [isMobile]);
-
-
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full min-h-screen flex flex-col overflow-hidden bg-[#fcfdf6]"
-    >
-      {/* ================= RESPONSIVE FULL WIDTH CURVE ================= */}
-      {!isMobile && (
-        <div className="absolute top-[10%] left-0 w-full h-[300px] pointer-events-none">
+    <section className="relative min-h-screen w-full bg-[#fcfdf6] overflow-hidden">
+      
+      {/* Decorative Circles */}
+      <AnimatedCircles />
 
-          <svg width="100%" height="300">
-            {/* ⭐ Responsive curve using viewBox */}
-            <path
-              ref={pathRef}
-              d="M 0 220 C 500 0, 1500 0, 2000 220"
-              stroke="transparent"
-              fill="none"
-              vectorEffect="non-scaling-stroke"
-            />
-          </svg>
+      {/* Content */}
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-end px-16 pb-20">
+        
+        <div className="flex flex-row justify-between items-center">  
+        {/* Text Block */}
+        <div className="max-w-4xl">
+          <p className="mb-6 text-xs tracking-widest text-black/80 uppercase">
+            Get accurate reporting
+          </p>
 
-          {/* 5 Equal Spaced Dots */}
-          {Array.from({ length: totalDots }).map((_, i) => (
-            <div
-              key={i}
-              ref={(el) => { if (el) dotsRef.current[i] = el; }}
-              style={{
-                position: "absolute",
-                width: dotSize,
-                height: dotSize,
-                borderRadius: "50%",
-                background: DOT_COLORS[i % DOT_COLORS.length],
-                transform: "translate(-50%, -50%)",
-              }}
-            />
-          ))}
+          <h1 className="text-[64px] leading-[1.05] font-normal text-black">
+            Get in Contact with <br />
+            Our Team
+          </h1>
+
+          <p className="mt-8 max-w-xl font-mono text-xs tracking-wider text-black/80">
+            Every request consumes energy. We help you measure the emissions behind it.
+          </p>
         </div>
-      )}
 
-      {/* ================= CENTER CONTENT ================= */}
-      <div className="relative z-10 flex flex-col justify-center items-center flex-1 text-center px-4 py-20">
-        <h2
-          className="text-6xl md:text-7xl font-semibold tracking-tight text-[#080c04]"
-
-        >
-          Get in Contact with <br />
-          <span className="text-[#F0db18]">our team</span>
-        </h2>
-
-        <a
-          href="/demo"
-          className="flex items-center justify-between mt-10 text-2xl px-6 py-3 rounded-lg font-medium shadow-sm border transition"
-          style={{ backgroundColor: "#b0ea1d", color: "#080c04", borderColor: "#b0ea1d" }}
-        >
-          Contact CarbonCut
-        </a>
+        {/* CTA */}
+        <div className="mt-16 flex justify-end">
+          <Link href="/demo" className="desktop-cta-link">
+            <button
+              type="button"
+              className="card-nav-cta-button"
+              style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
+            >
+              Contact CarbonCut
+            </button>
+          </Link>
+        </div>
+        </div>
       </div>
+    </section>
+  );
+}
+
+
+
+
+
+export function AnimatedCircles() {
+  return (
+    <div className="pointer-events-none absolute left-16 top-24 z-0">
+      <motion.svg
+        width="120"
+        height="120"
+        viewBox="0 0 120 120"
+        fill="none"
+        animate={{
+          scale: [1, 1.03, 1],
+          opacity: [0.9, 1, 0.9],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <circle cx="60" cy="60" r="36" stroke="#111" />
+        <circle cx="64" cy="56" r="36" stroke="#111" />
+        <circle cx="56" cy="64" r="36" stroke="#111" />
+      </motion.svg>
     </div>
   );
 }

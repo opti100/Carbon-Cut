@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { BlurFade } from "../ui/blur-fade";
+import UniversalHeading from "../UniversalHeading";
 
 export default function StackedCards() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,16 +35,9 @@ export default function StackedCards() {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Heading */}
-      <div className="mt-20 font-mono">
-        <BlurFade delay={0.1} inView className="mb-6 text-right">
-          <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg leading-relaxed">
-            Your CO₂e data is outdated, averaged, and full of blind spots.
-          </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] leading-[1.15]">
-            The Lubricants Industry’s Hidden Problem
-          </h2>
-        </BlurFade>
-      </div>
+     
+
+      <UniversalHeading title="The Lubricants Industry’s Hidden Problem" description="Your CO₂e data is outdated, averaged, and full of blind spots." align="right" />
 
 
       {/* Cards */}

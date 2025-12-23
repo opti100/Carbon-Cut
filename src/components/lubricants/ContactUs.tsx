@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
 import LubricantFormSection from "./form";
+import UniversalHeading from "../UniversalHeading";
 
 export default function LubricantCO2Form() {
   const [submitted, setSubmitted] = useState(false);
@@ -52,9 +53,8 @@ export default function LubricantCO2Form() {
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* ------------------------- LEFT CONTENT ------------------------- */}
           <div className="space-y-8 text-[#6c5f31] font-mono">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-mono font-bold leading-tight">
-              Start Your Lubricants CO₂e Calculation
-            </h1>
+            <UniversalHeading title="Start Your Lubricants CO₂e Calculation" align="left" />
+            
 
             <p className="text-sm sm:text-base md:text-lg font-normal leading-relaxed">
               Get a free customised CO₂e breakdown for your top 5 lubricant SKUs.

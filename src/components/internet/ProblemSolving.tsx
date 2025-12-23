@@ -2,6 +2,7 @@ import AnimatedHeading from "./InternetHeading";
 
 export default function ProblemWeareSolving() {
   return (
+    <>
     <section className="w-full bg-[#fcfdf6] my-8 px-3 md:px-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
 
@@ -82,6 +83,9 @@ export default function ProblemWeareSolving() {
         </div>
 
       </div>
+      
     </section>
+       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
+       </>
   );
 }

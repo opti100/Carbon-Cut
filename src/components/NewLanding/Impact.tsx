@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import UniversalHeading from "../UniversalHeading";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -12,33 +13,49 @@ const ImpactSection = () => {
   const numbersRef = useRef<(HTMLDivElement | null)[]>([]);
   const descriptionsRef = useRef<(HTMLParagraphElement | null)[]>([]);
 
-  const Numbers = [
-    {
-      number: "1M+",
-      description:
-        "Tons of CO2e offset through verified carbon credit projects worldwide",
-    },
-    {
-      number: "500K+",
-      description:
-        "Active users globally committed to reducing their carbon footprint",
-    },
-    {
-      number: "10K+",
-      description:
-        "Sustainable projects supported across different sectors and regions",
-    },
-    {
-      number: "50+",
-      description:
-        "Countries reached with our carbon offsetting solutions and services",
-    },
-    {
-      number: "200M+",
-      description:
-        "Trees planted as part of our reforestation and carbon sequestration initiatives",
-    },
-  ];
+const Numbers = [
+  {
+    title: "First of Its Kind",
+    description:
+      "The world’s first platform for real-time emission Tracking & Reduction",
+  },
+  {
+    title: "Impact Ready",
+    description:
+      "Purpose-built to address the biggest blind spot in carbon - Time",
+  },
+  {
+    title: "Audit-Ready",
+    description:
+      "Reports aligned with SECR, SEC, CSRD disclosure frameworks",
+  },
+  {
+    title: "Verified Path",
+    description:
+      "Every tonne tied to a certificate trail + smart-contract record",
+  },
+  {
+    title: "Minutes, Not Months",
+    description:
+      "Campaign-level or operational footprints calculated in minutes — not months.",
+  },
+  {
+    title: "10+ Years",
+    description:
+      "Internet, Energy and Sustainability expertise behind the platform",
+  },
+  {
+    title: "Built for Speed",
+    description:
+      "Created by disruptors, for disruption with speed and accuracy",
+  },
+  {
+    title: "Trusted",
+    description:
+      "Designed for transparency, compliance and climate integrity",
+  },
+];
+
 
   useEffect(() => {
     const items = itemsRef.current.filter(Boolean) as HTMLDivElement[];
@@ -106,75 +123,76 @@ const ImpactSection = () => {
     };
   }, []);
 
-  return (
-    <section ref={containerRef} className="relative bg-background pt-20">
-      {/* TOP BORDER */}
-      <div className="w-full border-t border-dashed border-text/10 mb-10"></div>
+return (
+  <section ref={containerRef} className="relative bg-background pt-4">
+    {/* TOP BORDER */}
+    <div className="w-full border-t border-dashed border-text/10 mb-3"></div>
 
-      <div className="mx-auto max-w-7xl w-full px-6">
-        {/* ---------------- HEADER ---------------- */}
-        <div className="text-right">
-          <p className="text-secondary/60 text-xs sm:text-sm uppercase tracking-wider">
-            By The Numbers
-          </p>
+    <div className="mx-auto max-w-7xl w-full px-3">
+      {/* HEADER */}
+      <UniversalHeading
+        title="Our Impact"
+        description="By The Numbers"
+        align="right"
+      />
 
-          <h2
+      {/* NUMBERS LIST */}
+      <div className="space-y-1">
+        {Numbers.map((item, index) => (
+          <div
+            key={index}
+            ref={(el) => {
+              itemsRef.current[index] = el;
+            }}
             className="
-              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
-              font-semibold tracking-tight 
-              text-[#d1cebb] mb-12
+              grid grid-cols-1 md:grid-cols-2
+              gap-2 md:gap-4
+              items-center
+              border-b border-dashed border-text/10
+              last:border-b-0
+              py-2
             "
           >
-            Our Impact
-          </h2>
-        </div>
-
-        {/* ---------------- NUMBERS LIST ---------------- */}
-        <div className="space-y-14 sm:space-y-16 md:space-y-20">
-          {Numbers.map((item, index) => (
-            <div
-              key={index}
-              ref={(el) => { itemsRef.current[index] = el; }}
-              className="
-                grid grid-cols-1 md:grid-cols-2 
-                gap-8 md:gap-16 
-                items-center 
-                py-10 
-                border-b border-dashed border-text/10 
-                last:border-b-0
-              "
-            >
-              {/* Number */}
-              <div className="overflow-visible">
-                <div
-                     ref={(el) => { numbersRef.current[index] = el; }}
-                  className="
-                    text-6xl sm:text-7xl md:text-8xl lg:text-9xl 
-                    font-bold text-text tracking-tight leading-none inline-block
-                  "
-                >
-                  {item.number}
-                </div>
-              </div>
-
-              {/* Description */}
-              <div className="overflow-hidden">
-                <p
-                  ref={(el) => { descriptionsRef.current[index] = el; }}
-                  className="
-                    text-base sm:text-lg md:text-xl 
-                    text-secondary leading-relaxed
-                  "
-                >
-                  {item.description}
-                </p>
+            {/* Title */}
+            <div className="overflow-visible">
+              <div
+                ref={(el) => {
+                  numbersRef.current[index] = el;
+                }}
+                className="
+                  text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+                  font-bold text-text
+                  tracking-tight
+                  leading-[0.95]
+                "
+              >
+                {item.title}
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Description */}
+            <div className="overflow-hidden">
+              <p
+                ref={(el) => {
+                  descriptionsRef.current[index] = el;
+                }}
+                className="
+                  text-sm sm:text-base
+                  text-secondary
+                  leading-tight
+                "
+              >
+                {item.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
-  );
+    </div>
+  </section>
+);
+
+
 };
 
 export default ImpactSection;

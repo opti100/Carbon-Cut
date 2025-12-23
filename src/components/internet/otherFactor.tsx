@@ -34,6 +34,8 @@ export default function OtherFactor() {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     return (
+        <>
+            
         <section className="w-full bg-[#fcfdf6] py-20">
             <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 ">
                  <BlurFade delay={0.1} inView className="mb-6 text-right">
@@ -111,5 +113,7 @@ export default function OtherFactor() {
                 </div>
             </div>
         </section>
+        <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
+        </>
     );
 }

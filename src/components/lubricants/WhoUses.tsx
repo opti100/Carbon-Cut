@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { BlurFade } from "../ui/blur-fade";
+import UniversalHeading from "../UniversalHeading";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -76,32 +76,26 @@ const WhoUses = () => {
     <section ref={containerRef} className="relative bg-background">
 
       {/* Top Border */}
-      <div className="w-full border-t border-dashed border-text/10 mb-4 sm:mb-6 md:mb-8"></div>
+      <div className="w-full border-t border-dashed border-text/10 "></div>
 
-      <div className="py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24">
+      <div className="py-4 sm:py-4 md:py-8 lg:py-10 xl:py-10">
         <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
 
           {/* ---------- HEADER ---------- */}
-          <BlurFade delay={0.1} inView>
-            <div className="text-center lg:text-right mb-8 sm:mb-10 md:mb-12 lg:mb-16 font-mono">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-[#6c5f31]">
-                Who Uses CarbonCut
-              </h2>
-            </div>
-          </BlurFade>
+          <UniversalHeading title="Who Uses" align="right"  />
 
           {/* ---------- LIST ---------- */}
-          <div className="space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12">
+          <div className="space-y-2 sm:space-y-2 md:space-y-4 lg:space-y-4">
             {Numbers.map((item, index) => (
               <div
                 key={index}
                 ref={(el) => { itemsRef.current[index] = el; }}
-                className="py-4 sm:py-6 md:py-8 lg:py-10 border-b border-dashed border-text/10 last:border-b-0"
+                className="py-4 sm:py-4 md:py-4 lg:py-4 border-b border-dashed border-text/10 last:border-b-0"
               >
                 <div className="overflow-visible">
                   <div
                     ref={(el) => { descriptionsRef.current[index] = el; }}
-                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-text tracking-tight leading-tight inline-block"
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-text flex justify-start items-center tracking-tight leading-tight "
                   >
                     {item.description}
                   </div>

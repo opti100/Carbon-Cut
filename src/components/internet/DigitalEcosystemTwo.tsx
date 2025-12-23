@@ -4,10 +4,7 @@ import { StickyScroll } from "../ui/sticky-scroll-reveal";
 import React, { useEffect, useRef, useState } from "react";
 import AnimatedHeading from "./InternetHeading";
 import { BlurFade } from "../ui/blur-fade";
-
-
-
-
+import UniversalHeading from "../UniversalHeading";
 
 const content = [
   {
@@ -98,21 +95,13 @@ export function DigitalEcosystemTwo() {
   return (
     <>
     <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-       <BlurFade delay={0.1} inView className="mb-6 text-right">
-      
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] leading-[1.15]">
-                  Built for the Entire Digital Ecosystem
-                </h2>
-                <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg leading-relaxed">
-                 Whether you're disrupting finance or revolutionising entertainment, we understand your business:
-                </p>
-              </BlurFade>
-
+      <UniversalHeading title="Built for the Entire Digital Ecosystem" description="Whether you're disrupting finance or revolutionising entertainment, we understand your business:" align="right" />
     
     <div className="w-full bg-[#fcfdf6]">
       <StickyScroll content={content} />
     </div>
     </div>
+    <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
     </>
   );
 }

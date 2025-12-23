@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { LogIn, UserPlus, Loader2, Lock, Globe, Smartphone } from "lucide-react"
 import Link from "next/link"
+import CardNav from "@/components/CardNav"
+import { cn } from "@/lib/utils"
+import { navData } from "@/components/NavData"
 
 const WebAndApps = () => {
   const { user, isLoading, isAuthenticated } = useAuth()
@@ -20,7 +23,7 @@ const WebAndApps = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f7f7f1]">
+      <div className="min-h-screen flex items-center justify-center bg-[#fcfdf6]">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="h-8 w-8 animate-spin text-gray-600" />
           <p className="text-gray-600">Loading...</p>
@@ -30,111 +33,130 @@ const WebAndApps = () => {
   }
 
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr] bg-[#f7f7f1] relative overflow-hidden px-6">
-      
+    <div className="min-h-screen bg-[#fcfdf6] relative overflow-hidden px-6">
+      {/* Navbar */}
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <CardNav
+          logo="/CarbonCut-fe/CC.svg"
+          logoAlt="CarbonCut Logo"
+          items={navData}
+          baseColor="rgba(255, 255, 255, 0.1)"
+          menuColor="#080c04"
+          buttonBgColor="#b0ea1d"
+          buttonTextColor="#080c04"
+        />
+      </div>
+
       {/* Header */}
-      <header className="pt-10 pb-6 flex flex-col items-center text-center">
-        <h1 className="text-3xl font-bold text-gray-900">
+      <header className="mt-32 mb-12 text-center">
+        <h1 className="text-4xl font-bold text-gray-900">
           Track Your Digital Product
         </h1>
-        <p className="text-gray-600 max-w-md mt-2">
+        <p className="text-gray-600 max-w-lg mx-auto mt-3">
           Install our SDK to start tracking carbon emissions from your website or application
         </p>
       </header>
 
-      {/* Main Content */}
+      {/* Main */}
       <main
-        className={`flex items-center justify-center ${
-          !isAuthenticated || !user ? "blur-md pointer-events-none" : ""
-        }`}
+        className={cn(
+          "max-w-6xl mx-auto",
+          (!isAuthenticated || !user) && "blur-md pointer-events-none"
+        )}
       >
-        <div className="w-full max-w-4xl">
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            
-            {/* Target Selection */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
-                What are you tracking?
-              </h2>
-{/* 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Button
-                  variant={onboardingTarget === "website" ? "default" : "outline"}
-                  className={`h-auto py-6 flex flex-col items-center gap-3 ${
-                    onboardingTarget === "website"
-                      ? "bg-[#adff00] hover:bg-[#adff00]/90 text-black"
-                      : ""
-                  }`}
-                  onClick={() => setOnboardingTarget("website")}
-                >
-                  <Globe className="h-8 w-8" />
-                  <div className="text-center">
-                    <div className="font-semibold">Website</div>
-                    <div className="text-sm opacity-80">Track web applications</div>
-                  </div>
-                </Button>
+        {/* Step 1 – Target Selection */}
+        <Card className="mb-10">
+          <CardHeader>
+            <CardTitle>Select your platform</CardTitle>
+            <CardDescription>
+              Choose where you want to measure emissions
+            </CardDescription>
+          </CardHeader>
 
-                <Button
-                  variant={onboardingTarget === "app" ? "default" : "outline"}
-                  className={`h-auto py-6 flex flex-col items-center gap-3 ${
-                    onboardingTarget === "app"
-                      ? "bg-[#adff00] hover:bg-[#adff00]/90 text-black"
-                      : ""
-                  }`}
-                  onClick={() => setOnboardingTarget("app")}
-                >
-                  <Smartphone className="h-8 w-8" />
-                  <div className="text-center">
-                    <div className="font-semibold">Mobile App</div>
-                    <div className="text-sm opacity-80">Track iOS/Android apps</div>
-                  </div>
-                </Button>
-              </div> */}
-            </div>
-
-            {/* SDK Installation */}
-            <div className="space-y-6">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Install SDK for {onboardingTarget === "website" ? "Website" : "Mobile App"}
-                </h2>
-                <p className="text-gray-600">
-                  Follow these steps to integrate our tracking SDK into your{" "}
-                  {onboardingTarget === "website" ? "website" : "application"}
-                </p>
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Website */}
+            <button
+              onClick={() => setOnboardingTarget("website")}
+              className={cn(
+                "rounded-xl border p-6 text-left transition-all",
+                onboardingTarget === "website"
+                  ? "border-[#adff00] bg-[#adff00]/10 shadow-sm"
+                  : "hover:border-gray-300"
+              )}
+            >
+              <Globe className="h-8 w-8 mb-4 text-gray-800" />
+              <div className="font-semibold text-lg">Website</div>
+              <div className="text-sm text-gray-600">
+                Track web applications
               </div>
+            </button>
 
+            {/* App */}
+            <button
+              onClick={() => setOnboardingTarget("app")}
+              className={cn(
+                "rounded-xl border p-6 text-left transition-all",
+                onboardingTarget === "app"
+                  ? "border-[#adff00] bg-[#adff00]/10 shadow-sm"
+                  : "hover:border-gray-300"
+              )}
+            >
+              <Smartphone className="h-8 w-8 mb-4 text-gray-800" />
+              <div className="font-semibold text-lg">Mobile App</div>
+              <div className="text-sm text-gray-600">
+                Track iOS / Android apps
+              </div>
+            </button>
+          </CardContent>
+        </Card>
+
+        {/* Step 2 – SDK Installation */}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              Install SDK for {onboardingTarget === "website" ? "Website" : "Mobile App"}
+            </CardTitle>
+            <CardDescription>
+              Follow these steps to integrate our tracking SDK into your{" "}
+              {onboardingTarget === "website" ? "website" : "application"}
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* SDK Step */}
+            <div>
               <ApiKeyStep onNext={handleWebsiteComplete} sourceType="web" />
-
-              <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  {onboardingTarget === "website" ? "Website" : "Mobile App"} Specific Instructions
-                </h3>
-
-                <ul className="text-gray-600 space-y-2 text-sm">
-                  {onboardingTarget === "website" ? (
-                    <>
-                      <li>• Add the SDK script to your website's head tag</li>
-                      <li>• Test the integration in development first</li>
-                      <li>• Monitor real-time emissions in your dashboard</li>
-                    </>
-                  ) : (
-                    <>
-                      <li>• Install the SDK via npm or CocoaPods</li>
-                      <li>• Initialize the SDK in your app's entry point</li>
-                      <li>• Configure tracking for different app states</li>
-                    </>
-                  )}
-                </ul>
-              </div>
             </div>
-          </div>
-        </div>
+
+            {/* Instructions */}
+            <div className="rounded-xl border bg-gray-50 p-6">
+              <h3 className="font-semibold text-gray-900 mb-3">
+                {onboardingTarget === "website" ? "Website" : "Mobile App"} Specific Instructions
+              </h3>
+
+              <ul className="text-gray-600 space-y-2 text-sm leading-relaxed">
+                {onboardingTarget === "website" ? (
+                  <>
+                    <li>• Add the SDK script to your website's head tag</li>
+                    <li>• Test the integration in development first</li>
+                    <li>• Monitor real-time emissions in your dashboard</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• Install the SDK via npm or CocoaPods</li>
+                    <li>• Initialize the SDK in your app's entry point</li>
+                    <li>• Configure tracking for different app states</li>
+                  </>
+                )}
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
       </main>
 
-      {/* Authentication Overlay */}
+      {/* Auth Overlay */}
       {(!isAuthenticated || !user) && (
-        <div className="fixed inset-0 flex items-center justify-center z-30 bg-black/20 backdrop-blur-sm px-4">
+        <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
           <Card className="w-full max-w-md shadow-2xl">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#adff00]/10">

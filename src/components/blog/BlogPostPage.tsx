@@ -29,6 +29,8 @@ import { BlogSixteenContent } from '@/constants/blogs/blogSixteen-data';
 import { BlogSeventeenContent } from '@/constants/blogs/blogSeventeen-data';
 import { BlogEighteenContent } from '@/constants/blogs/blogEighteen-data';
 import { BlogNineteenContent } from '@/constants/blogs/blogNineteen-data';
+import CardNav from '../CardNav';
+import { navData } from '../NavData';
 
 
 // Blog content component mapping
@@ -94,7 +96,20 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen bg-white ">
-        <Navbar />
+        {/* <Navbar /> */}
+
+         <div className="absolute top-0 left-0 right-0 z-20">
+        <CardNav
+          logo="/CarbonCut-fe/CC.svg"
+          logoAlt="CarbonCut Logo"
+          items={navData}
+          baseColor="rgba(255, 255, 255, 0.1)"
+          menuColor="#080c04"
+          buttonBgColor="#b0ea1d"
+          buttonTextColor="#080c04"
+        />
+      </div>
+
 
         <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mt-20">
           {/* Back Button */}

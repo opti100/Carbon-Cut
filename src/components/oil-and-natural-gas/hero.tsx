@@ -4,8 +4,8 @@
 import { motion } from "motion/react";
 import Navbar from "../NewLanding/Navbar";
 import CardNav from "../CardNav";
-import { navData } from "@/app/page";
 import Link from "next/link";
+import { navData } from "../NavData";
 
 export function HeroOilGas() {
   return (

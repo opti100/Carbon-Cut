@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
 import AnimatedHeroText from './AnimatedHeroText';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-react';
 import { LinkPreview } from '../ui/link-preview';
 import Link from 'next/link';
 
@@ -121,7 +121,7 @@ const Hero = () => {
 
                         {/* Subheading */}
                         <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl leading-relaxed">
-                            Track, reduce, and offset your carbon footprint with powerful analytics and actionable insights.
+                            Track, Decarbon, and Report your carbon footprint with powerful analytics and actionable insights.
                         </p>
 
                         {/* ---------- BUTTON GROUP ---------- */}
@@ -143,43 +143,84 @@ const Hero = () => {
                                         className="absolute left-0 mt-2 w-full max-h-60 overflow-y-auto rounded-lg shadow-lg border z-20 border-[#080c04]"
                                         style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
                                     >
-                                         <LinkPreview isStatic={true} imageSrc='/CarbonCut-fe/resize/SV2.jpg' > 
+                                        
                                             <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Measure </p> 
-                                         </LinkPreview>
-                                         <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' > 
+                                         
+                                       
                                             <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Reduce </p> 
-                                         </LinkPreview>
-                                         <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' > 
+                                      
+                                         
                                             <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Offset </p> 
-                                         </LinkPreview>
+                                       
                                     </div>
                                 )}
                             </div>
 
                             {/* ------------ BUTTON 2 + DROPDOWN CONTAINER ----------- */}
-                            <div className="relative w-full sm:w-64" ref={dropdown2Ref}>
-                                <button
-                                    onClick={() => toggleDropdown(2)}
-                                    className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg border transition hover:shadow-xl hover:scale-105"
-                                    style={{ backgroundColor: "#b0ea1d", color: "#080c04", borderColor: "#b0ea1d" }}
-                                >
-                                    Industries
-                                    {openDropdown === 2 ? <ChevronUp /> : <ChevronDown />}
-                                </button>
-                                {openDropdown === 2 && (
-                                    <div
-                                        className="absolute left-0 mt-2 w-full max-h-48 overflow-y-auto rounded-lg shadow-lg border z-20 border-[#080c04]"
-                                        style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
-                                    >
-                                       <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' > 
-                                         <Link href='/internet' >  <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Internet </p>  </Link> 
-                                       </LinkPreview>
-                                       <LinkPreview isStatic={true} imageSrc='/blogs/blogFive.png' > 
-                                         <Link href='/oil-and-natural-gas' >  <p className="py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition"> Oil & Natural Gas </p>  </Link> 
-                                       </LinkPreview>
-                                    </div>
-                                )}
-                            </div>
+                         <div className="relative w-full sm:w-64" ref={dropdown2Ref}>
+  <button
+    onClick={() => toggleDropdown(2)}
+    className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg border transition hover:shadow-xl hover:scale-105"
+    style={{ backgroundColor: "#b0ea1d", color: "#080c04", borderColor: "#b0ea1d" }}
+  >
+    Industries
+    {openDropdown === 2 ? <ChevronUp /> : <ChevronDown />}
+  </button>
+
+  {openDropdown === 2 && (
+    <div
+      className="absolute left-0 mt-2 w-full rounded-lg shadow-lg border z-20"
+      style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
+    >
+      {/* INTERNET */}
+      <div className="relative group">
+        <Link href="/internet">
+          <div className="flex items-center justify-between py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition">
+            Internet
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </div>
+        </Link>
+        {/* Sub Dropdown */}
+        <div className="absolute top-0 left-full ml-2 w-48 rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all"
+          style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
+        >
+          <Link href="/internet/internet-ads">
+            <p className="py-2 px-3 hover:bg-[#b0ea1d] hover:text-white rounded transition">
+              Internet Ads
+            </p>
+          </Link>
+
+          <Link href="/internet/web-&-apps">
+            <p className="py-2 px-3 hover:bg-[#b0ea1d] hover:text-white rounded transition">
+              Web & Apps
+            </p>
+          </Link>
+        </div>
+      </div>
+
+      {/* OIL & GAS */}
+      <div className="relative group">
+        <Link href="/oil-and-natural-gas">
+          <div className="flex items-center justify-between py-2 px-3 cursor-pointer rounded hover:bg-[#b0ea1d] hover:text-white transition">
+            Oil & Natural Gas
+            <ChevronRight className="ml-2 h-4 w-4" />
+          </div>
+        </Link>
+        {/* Sub Dropdown */}
+        <div className="absolute top-0 left-full ml-2 w-48 rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all"
+          style={{ backgroundColor: "#fcfdf6", borderColor: "#d1cebb" }}
+        >
+          <Link href="/oil-and-natural-gas/lubricant">
+            <p className="py-2 px-3 hover:bg-[#b0ea1d] hover:text-white rounded transition">
+              Lubricant
+            </p>
+          </Link>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
                         </div>
                     </div>
                 </div>

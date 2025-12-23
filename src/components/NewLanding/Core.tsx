@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react"
 import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger"
+import UniversalHeading from "../UniversalHeading"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -103,12 +104,10 @@ const Core = () => {
       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mb-8"></div>
 
       <div className="w-full px-0">
-        <div className="max-w-7xl mx-auto px-6 mb-16 ">
-             <p className="text-secondary/60 text-sm uppercase tracking-wider text-right">Core Values</p>
-        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb] text-right"> 
-          Delivering Results
-        </h2>
-        </div>
+
+       
+
+                <UniversalHeading title=" Delivering Results" description="Core Values" align="right" />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-0">
           {achievements.map((achievement, index) => (

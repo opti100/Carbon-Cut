@@ -5,52 +5,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { BlurFade } from "../ui/blur-fade";
 import Link from "next/link";
 import { PinContainer } from "../ui/3d-pin";
+import UniversalHeading from "../UniversalHeading";
 
 export function InternetAdsWebApp() {
   return (
     <>
-      <div className="mt-20 font-mono max-w-7xl mx-auto px-4">
-        <BlurFade delay={0.1} inView className="mb-6 text-right">
+      
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] leading-[1.15]">
-            Choose Your Emission Category
-          </h2>
-          <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg leading-relaxed">
-            Understanding your digital footprint starts here. Select what matters most to your business:
-          </p>
-        </BlurFade>
-      </div>
+      <UniversalHeading title="Choose Your Emission Category" description="Understanding your digital footprint starts here. Select what matters most to your business." align="right" />
 
-      <div className="py-20 flex flex-col lg:flex-row items-center justify-center bg-[#fcfdf6] dark:bg-black max-w-7xl  mx-auto px-8">
-
-        <Card
-          title="Internet Ads"
-          description="Track the carbon cost of every impression, click, and campaign across your advertising ecosystem."
-          href="/internet/internet-ads"
-          icon={
-            <Image
-              src="/auth-hero.jpg"
-              alt="Internet Ads Background"
-              fill
-              className="object-cover"
-            />
-          }
-        />
-
-        <Card
-          title="Web & Apps"
-          description="Measure the emissions from your websites, applications, and digital services your customers use daily."
-          href="/internet/web-&-apps"
-          icon={
-            <Image
-              src="/abstract-gray.jpg"
-              alt="Web & Apps"
-              fill
-              className="object-cover"
-            />
-          }
-        />
-
+      <div className="py-20 flex flex-col lg:flex-row items-center justify-evenly bg-[#fcfdf6] dark:bg-black max-w-7xl  mx-auto px-8">
         <PinContainer
           title="Internet Ads"
           href="/internet/internet-ads"
@@ -74,7 +38,33 @@ export function InternetAdsWebApp() {
           </div>
         </PinContainer>
 
+
+          <PinContainer
+          title="Web & Apps"
+          href="/internet/web-&-apps"
+        >
+          <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
+           
+            <div className="text-base !m-0 !p-0 font-normal">
+              <span className="text-slate-500 ">
+                Measure the emissions from your websites, applications, and digital services your customers use daily.
+              </span>
+            </div>
+            <div className="relative flex flex-1 w-full rounded-lg mt-4 overflow-hidden">
+              <Image
+                src="/auth-hero.jpg"
+                alt="Web & Apps"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </PinContainer>
+
       </div>
+
+       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
     </>
   );
 }

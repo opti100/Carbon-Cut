@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calculator, BarChart3, Download, Award, PlugZap, GitPullRequestDraft, CalendarSync, ShieldCheck, LucideProps } from "lucide-react";
+import UniversalHeading from "../UniversalHeading";
 
 interface Step {
     step: number;
@@ -384,15 +385,12 @@ export default function HowItWorks() {
             <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
             {/* Desktop Layout - Original Parallax */}
             <div className="hidden lg:block">
-                {/* Desktop Header */}
-                <div className="max-w-7xl mx-auto px-6 mb-16">
-                    <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider text-right ">  How It Works</p>
-                    <h2 className="text-6xl md:text-7xl font-semibold  tracking-tight text-[#d1cebb] text-right leading-tight">
-                      Measure,Reduce,Offset
-                    </h2>
-                </div>
+                
 
-                <div className="prllx-wrapper relative flex h-[1600lvh] flex-row overflow-clip">
+                    <UniversalHeading title="Track Decarbon Report" description="How It Works" align="right" /> 
+
+
+                <div className="prllx-wrapper relative flex h-[700lvh] flex-row overflow-clip">
                     {/* Left Side - Sticky Fields */}
                     <div className="fields-sticky sticky top-0 z-10 h-lvh w-1/2 flex items-center justify-center">
                         {/* Dashed Grid Background with Parallax Movement */}

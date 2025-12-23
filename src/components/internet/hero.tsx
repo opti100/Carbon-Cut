@@ -2,9 +2,10 @@
 
 import { motion } from "motion/react";
 import CardNav from "../CardNav";
-import { navData } from "@/app/page";
+
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { navData } from "../NavData";
 
 export function InternetHero() {
   return (
@@ -44,23 +45,31 @@ export function InternetHero() {
 
          
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <Link href="/internet/internet-ads" className=" w-full  justify-between bg-transparent  sm:w-[220px]  group inline-flex items-center gap-2
-    rounded-full border border-white
-    px-6 py-3 text-sm font-medium text-white
-    transition-all duration-250 ease-out
-    hover:bg-white/10 hover:-translate-y-0.5">
-              Internet Ads
-              <ArrowUpRight size={18} />
-            </Link>
 
-            <Link href="/internet/" className=" w-full  justify-between bg-transparent  sm:w-[220px]  group inline-flex items-center gap-2
-    rounded-full border border-white
-    px-6 py-3 text-sm font-medium text-white
-    transition-all duration-250 ease-out
-    hover:bg-white/10 hover:-translate-y-0.5">
-              Web & Apps
-              <ArrowUpRight size={18} />
+      <div className="nav-right-section">
+            <Link href="/internet/internet-ads" className="desktop-cta-link">
+              <button
+                type="button"
+                className="card-nav-cta-button"
+                style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+              >
+                 Internet Ads
+              </button>
             </Link>
+                    </div>
+
+                     <div className="nav-right-section">
+            <Link href="/internet/web-&-apps" className="desktop-cta-link">
+              <button
+                type="button"
+                className="card-nav-cta-button"
+                style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+              >
+                 Web & Apps
+              </button>
+            </Link>
+                    </div>
+
 
           </div>
         </div>

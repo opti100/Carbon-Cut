@@ -2,6 +2,7 @@ import AnimatedHeading from "./InternetHeading";
 
 export default function WhatWeDoing() {
     return (
+        <>
         <section className="min-h-screen w-full grid grid-cols-1 md:grid-cols-2 gap-5 bg-[#fcfdf6] my-4 md:my-8  overflow-hidden px-3 md:px-6">
 
             {/* LEFT CONTENT */}
@@ -53,5 +54,8 @@ export default function WhatWeDoing() {
       />
             </div>
         </section>
+
+          
+           </>
     );
 }
