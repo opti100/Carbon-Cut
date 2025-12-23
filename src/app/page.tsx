@@ -81,7 +81,7 @@ export default function Home() {
 					logoAlt="CarbonCut Logo"
 					items={navData}
 					baseColor="rgba(255, 255, 255, 0.1)"
-					menuColor="#ffffff"
+					menuColor="#000000"
 					buttonBgColor="#b0ea1d"
 					buttonTextColor="#080c04"
 				/>
