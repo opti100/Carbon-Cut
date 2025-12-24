@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { SmoothCursor } from "@/components/ui/smooth-cursor"
+import UniversalHeading from '../UniversalHeading';
 
 
 interface CardProps {
@@ -210,11 +211,13 @@ export default function FeatureSection() {
 
     return (
         <>
+            <div className="w-full border-t border-dashed border-text/10  "></div>
+            <UniversalHeading title="Carbon Reduction" description="Powerful Features for" align="right" />
             {isHovering && <SmoothCursor />}
 
             <div
                 ref={containerRef}
-                className="w-full min-h-screen lg:min-h-[120vh]  flex flex-col justify-center overflow-hidden relative py-8 sm:py-12 md:py-16 lg:py-20"
+                className="w-full min-h-screen lg:min-h-screen  flex flex-col justify-center overflow-hidden relative "
                 onMouseDown={handleMouseDown}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
@@ -227,25 +230,7 @@ export default function FeatureSection() {
                     touchAction: 'pan-y'
                 }}
             >
-                <div className="w-full border-t border-dashed border-text/10 mb-20 "></div>
                 <div className="relative w-full max-w-7xl mx-auto px-4 md:px-8 flex flex-col justify-center min-h-full">
-                    {/* Header */}
-                    <div className="text-right">
-                        <p className="text-secondary/60 text-xs sm:text-sm uppercase tracking-wider">
-                          Powerful Features for
-                        </p>
-
-                        <h2
-                            className="
-              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
-              font-semibold tracking-tight 
-              text-[#d1cebb] mb-12
-            "
-                        >
-                           Carbon Reduction
-                        </h2>
-                    </div>
-
                     {/* Cards Container */}
                     <div className="relative w-full flex-1 flex items-center justify-center min-h-[400px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[550px] xl:min-h-[600px]">
                         {cards.map((card, index) => (

@@ -7,6 +7,7 @@ import Link from "next/link";
 import { blogThirteenData } from "@/constants/blogs/blogThirteen-data";
 import { blogTwelveData } from "@/constants/blogs/blogsTwelve-data";
 import { blogFourteenData }  from "@/constants/blogs/blogFourteen-data";
+import UniversalHeading from "../UniversalHeading";
 
 const blogs = [
   {
@@ -51,25 +52,7 @@ const Blogs = () => {
     <div className="bg-[#fcfdf6] w-full pt-20">
       {/* TOP BORDER */}
       <div className="w-full border-t border-dashed border-[#6c5f31]/30 mb-12"></div>
-
-           {/* ---------- HEADING (Inside max-w-7xl ONLY) ---------- */}
-      <div className="w-full px-6 ">
-        <div className="max-w-7xl mx-auto text-right">
-          <p className="text-secondary/60 text-xs sm:text-sm uppercase tracking-wider">
-            Blogs
-          </p>
-
-          <h2
-            className="
-              text-3xl sm:text-5xl md:text-6xl lg:text-7xl
-              font-semibold tracking-tight 
-              text-[#d1cebb] 
-            "
-          >
-            Get Latest Insights
-          </h2>
-        </div>
-      </div>
+      <UniversalHeading title=" Get Latest Insights" description="Blogs" align="right" />
     
 
       {/* ---------- BLOG CARDS (FULL WIDTH) ---------- */}

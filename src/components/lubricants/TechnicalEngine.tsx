@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { BlurFade } from "../ui/blur-fade";
+import UniversalHeading from "../UniversalHeading";
 
 const services = [
   {
@@ -81,14 +82,7 @@ export default function ScrollingCardsUI() {
       <div ref={containerRef} className="relative pb-[60vh]" style={{ height: "400vh" }}>
         <div className="mx-auto max-w-7xl px-4">
 
-           <BlurFade delay={0.1} inView className="mb-2 md:mb-4 lg:mb-6 text-right font-mono">
-                    <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg font-normal tracking-tight text-right  leading-relaxed">
-                      Real-Time, Traceable & Assured Carbon Data Infrastructure
-                    </p>
-                      <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] text-right leading-[1.15]">
-                      The CarbonCut Engine
-                      </h2>
-                    </BlurFade>
+  <UniversalHeading title="Technical Engine" align="right" description="Real-Time, Traceable & Assured Carbon Data Infrastructure" />
          
      
 
@@ -151,7 +145,7 @@ export default function ScrollingCardsUI() {
         </div>
       </div>
 
-      {/* <div className="h-screen" /> */}
+      <div className="h-screen" />
     </div>
      </>
   );

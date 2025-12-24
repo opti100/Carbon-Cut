@@ -1,7 +1,9 @@
 
 
-import    {BusinessImpact} from '@/components/lubricants/BusinessImpact'
-import CarbonCutFix from '@/components/lubricants/CarbonCutFix'
+import CardNav from '@/components/CardNav'
+import LenisSmoothScroll from '@/components/LenisSmoothScroll'
+import BusinessImpact from '@/components/lubricants/BusinessImpact'
+import {CarbonCutFix} from '@/components/lubricants/CarbonCutFix'
 import Comparision from '@/components/lubricants/Comparision'
 import ContactSection from '@/components/lubricants/Contact'
 import ContactUs from '@/components/lubricants/ContactUs'
@@ -18,7 +20,7 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-      <Navbar />
+       <LenisSmoothScroll>
       <Hero />
       <Problem />
       <CarbonCutFix />
@@ -30,6 +32,7 @@ const page = () => {
       <ContactSection />
       <ContactUs />
       <Footer />
+       </LenisSmoothScroll>
 
 
     </div>

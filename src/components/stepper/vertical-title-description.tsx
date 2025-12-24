@@ -27,7 +27,7 @@ const steps = [
   },
 ];
 
-export default function Component() {
+export default function VerticalComponent() {
   return (
     <div className="flex items-center justify-center">
       <Stepper

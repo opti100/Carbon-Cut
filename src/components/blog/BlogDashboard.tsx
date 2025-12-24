@@ -6,6 +6,9 @@ import Link from "next/link";
 import { Search, Calendar, Clock, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { blogPosts, getAllCategories, BlogPost } from "@/constants/blogData";
+import CardNav from "../CardNav";
+import { navData } from "../NavData";
+
 
 const colors = {
   text: "#080c04",
@@ -99,6 +102,17 @@ const BlogDashboard = () => {
       className="min-h-screen mt-16"
       style={{ backgroundColor: colors.background }}
     >
+       <div className="absolute top-0 left-0 right-0 z-20">
+        <CardNav
+          logo="/CarbonCut-fe/CC.svg"
+          logoAlt="CarbonCut Logo"
+          items={navData}
+          baseColor="rgba(255, 255, 255, 0.1)"
+          menuColor="#080c04"
+          buttonBgColor="#b0ea1d"
+          buttonTextColor="#080c04"
+        />
+      </div>
       <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
         {/* ----------------------------- SECTION 1: LATEST INSIGHTS ----------------------------- */}
         <div className="text-center mb-16">

@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { BlurFade } from "../ui/blur-fade";
+import UniversalHeading from "../UniversalHeading";
 
 export default function StackedCards() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,16 +35,9 @@ export default function StackedCards() {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Heading */}
-      <div className="mt-20 font-mono">
-        <BlurFade delay={0.1} inView className="mb-6 text-right">
-          <p className="text-[#6c5f31] text-sm sm:text-base md:text-lg leading-relaxed">
-            Your CO₂e data is outdated, averaged, and full of blind spots.
-          </p>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#6c5f31] leading-[1.15]">
-            The Lubricants Industry’s Hidden Problem
-          </h2>
-        </BlurFade>
-      </div>
+     
+
+      <UniversalHeading title="The Lubricants Industry’s Hidden Problem" description="Your CO₂e data is outdated, averaged, and full of blind spots." align="right" />
 
 
       {/* Cards */}
@@ -69,7 +63,7 @@ export default function StackedCards() {
        }}
   >
     {/* Title */}
-    <h2 className="font-mono text-4xl text-[#6c5f31] mb-10">
+    <h2 className="font-mono text-4xl text-[#6c5f31] mb-10 font-mono">
      Traditional ESG systems rely on:
     </h2>
 
@@ -77,9 +71,6 @@ export default function StackedCards() {
 
     {/* Content */}
     <div className="flex justify-between gap-10">
-      <div className="text-4xl font-mono text-[#6c5f31]">
-        Problems
-      </div>
 
       <ul className="space-y-3 text-lg text-[#6c5f31] max-w-md font-mono">
         <li>Generic emission factors</li>
@@ -108,7 +99,7 @@ export default function StackedCards() {
     style={{ zIndex: 2 }}
   >
     {/* Title */}
-    <h2 className="font-mono text-4xl text-[#6c5f31] mb-10">
+    <h2 className=" text-4xl text-[#6c5f31] mb-10 font-mono">
       This Leads To:
     </h2>
 
@@ -116,9 +107,7 @@ export default function StackedCards() {
 
     {/* Content */}
     <div className="flex justify-between gap-10">
-      <div className="text-4xl font-mono text-[#6c5f31]">
-        Impact
-      </div>
+     
 
       <ul className="space-y-3 text-lg text-[#6c5f31] max-w-md font-mono">
         <li>Incorrect emission disclosures</li>

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ApiKeyService } from "@/services/apikey/apikey"
 import { toast } from "sonner"
 import { useEffect, useState } from "react"
+import { Copy } from "lucide-react"
 
 interface ApiKeyStepProps {
     onNext: () => void
@@ -120,7 +121,7 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                     disabled={isLoading || !scriptTag}
                     className="absolute top-2 right-2 text-gray-400 hover:text-gray-100"
                 >
-                    Copy
+                  <Copy />
                 </Button>
             </div>
             <div className="mt-4 text-xs text-muted-foreground space-y-2">
