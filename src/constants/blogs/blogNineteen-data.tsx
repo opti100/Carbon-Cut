@@ -256,26 +256,9 @@ export const BlogNineteenContent = () => {
               </p>
             </div>
 
-            <div className="p-8 border border-black rounded-lg mb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Suggested Internal Links</h3>
-              <ul className="list-disc list-inside text-lg leading-relaxed space-y-2">
-                <li><Link href="/blogs/what-is-real-time-carbon-intelligence" className="text-black hover:text-gray-800 underline">What Is Real-Time Carbon Intelligence</Link></li>
-                <li><Link href="/solutions/esg-reporting" className="text-black hover:text-gray-800 underline">CarbonCut ESG Reporting</Link></li>
-                <li><Link href="/blogs/understanding-scope-3-emissions" className="text-black hover:text-gray-800 underline">Understanding Scope 3 Emissions</Link></li>
-                <li><Link href="/blogs/real-time-cloud-emissions" className="text-black hover:text-gray-800 underline">Real-Time Cloud Emissions</Link></li>
-                <li><Link href="/blogs/how-carbon-emissions-are-calculated" className="text-black hover:text-gray-800 underline">How Carbon Emissions Are Calculated</Link></li>
-              </ul>
-            </div>
+           
 
-            <div className="p-8 border border-black rounded-lg">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Suggested External Links</h3>
-              <ul className="list-disc list-inside text-lg leading-relaxed space-y-2">
-                <li><a href="https://ghgprotocol.org" target="_blank" rel="noopener noreferrer" className="text-black hover:text-gray-800 underline">GHG Protocol</a></li>
-                <li><a href="https://www.gov.uk/government/publications/streamlined-energy-and-carbon-reporting-guidance" target="_blank" rel="noopener noreferrer" className="text-black hover:text-gray-800 underline">UK SECR Guidance</a></li>
-                <li><a href="https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en" target="_blank" rel="noopener noreferrer" className="text-black hover:text-gray-800 underline">EU CSRD Framework</a></li>
-                <li><a href="https://www.sec.gov/news/press-release/2024-31" target="_blank" rel="noopener noreferrer" className="text-black hover:text-gray-800 underline">US SEC Climate Disclosure</a></li>
-              </ul>
-            </div>
+          
           </div>
         </article>
       </div>

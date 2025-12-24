@@ -10,8 +10,8 @@ const UniversalHeading = ({
     description,
     align = "right",
 }: {
-    title: string;
-    description?: string;
+    title: React.ReactNode;
+    description?: React.ReactNode;
     align?: "left" | "center" | "right";
 }) => {
     const containerRef = useRef<HTMLHeadingElement>(null);
@@ -78,7 +78,7 @@ const UniversalHeading = ({
           xl:text-5xl
         "
             >
-                {title.split(" ").map((word, i) => (
+                {typeof title === 'string' ? title.split(" ").map((word, i) => (
                     <span
                         key={i}
                         className="word inline-block opacity-20 tracking-tight sm:tracking-normal"
@@ -87,7 +87,7 @@ const UniversalHeading = ({
                         {i < title.split(" ").length - 1 ? "\u00A0" : ""}
                     </span>
 
-                ))}
+                )) : title}
             </h1>
 
 

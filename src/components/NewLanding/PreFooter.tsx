@@ -52,23 +52,29 @@ export default function PreFooter() {
 
 
 
-
 export function AnimatedCircles() {
   return (
-    <div className="pointer-events-none absolute left-16 top-24 z-0">
+    <div className="absolute left-16 top-20">
       <motion.svg
         width="120"
         height="120"
         viewBox="0 0 120 120"
         fill="none"
         animate={{
-          scale: [1, 1.03, 1],
-          opacity: [0.9, 1, 0.9],
+          rotate: 360,
+          y: [0, -8, 0],
         }}
         transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "easeInOut",
+          rotate: {
+            duration: 40,
+            repeat: Infinity,
+            ease: "linear",
+          },
+          y: {
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          },
         }}
       >
         <circle cx="60" cy="60" r="36" stroke="#111" />

@@ -6,7 +6,6 @@ import FeatureSection from "@/components/NewLanding/FeaturSection";
 import Footer from "@/components/NewLanding/Footer";
 import Hero from "@/components/NewLanding/Hero";
 import HowItWorks from "@/components/NewLanding/HowItWorks";
-import ImpactSection from "@/components/NewLanding/Impact";
 import CardNav from "@/components/CardNav";
 import PreFooter from "@/components/NewLanding/PreFooter";
 import Standards from "@/components/NewLanding/Standards";
@@ -14,6 +13,7 @@ import TrustedBySection from "@/components/NewLanding/TrustedBySection";
 import { CardNavItem } from "@/components/CardNav";
 import LenisSmoothScroll from "@/components/LenisSmoothScroll";
 import { navData } from "@/components/NavData";
+import { ImpactSection } from "@/components/NewLanding/Impact";
 
 
 export default function Home() {

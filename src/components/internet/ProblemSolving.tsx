@@ -1,91 +1,133 @@
-import AnimatedHeading from "./InternetHeading";
+import { InfiniteMovingCards } from "../ui/infinite-moving-cards";
+import UniversalHeading from "../UniversalHeading";
 
 export default function ProblemWeareSolving() {
   return (
-    <>
-    <section className="w-full bg-[#fcfdf6] my-8 px-3 md:px-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+    <section className="w-full max-w-7xl mx-auto py-16 px-4 space-y-24">
 
-        {/* LEFT IMAGE */}
-        <div className="relative rounded-2xl overflow-hidden">
-          <video
-        src="/LandingPage.mp4"
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="w-full h-full object-cover rounded-2xl"
-      />
-        </div>
+      {/* Heading */}
+     <UniversalHeading title="The Problem We're Solving" />
 
-        {/* RIGHT CONTENT */}
-        <div className="flex items-center bg-[#d1cebb] rounded-2xl px-6 md:px-16 py-12">
-          <div className="max-w-xl">
+      {/* ----------- BLOCK 1 ----------- */}
+      <div className="grid md:grid-cols-2 gap-10 items-center">
 
-            <AnimatedHeading
-              text="The Problem We're Solving"
-              className="text-4xl md:text-5xl font-serif font-semibold text-black leading-tight"
-            />
-
-            <p className="mt-6 text-base md:text-lg text-black leading-relaxed">
-              Traditional carbon accounting wasn’t built for digital businesses.
-              <br />
-              If you're running an e-commerce platform, a SaaS product, or a streaming service,
-              the old rules don’t apply. Standard calculators focus on manufacturing, shipping,
-              and offices — completely missing the elephant in the room: your digital infrastructure.
-            </p>
-
-            <p className="mt-6 text-base md:text-lg font-medium text-black">
-              Here's what companies struggle with today:
-            </p>
-
-            {/* PROBLEM LIST */}
-            <ul className="mt-4 space-y-4 text-black">
-              <li>
-                <span className="font-semibold">Blind Spots:</span>{" "}
-                No visibility into internet emissions from websites, apps, and cloud services
-              </li>
-
-              <li>
-                <span className="font-semibold">Expensive Tools:</span>{" "}
-                Enterprise carbon platforms cost $50K–$200K annually
-              </li>
-
-              <li>
-                <span className="font-semibold">Complex Setup:</span>{" "}
-                Months of implementation with specialised consultants
-              </li>
-
-              <li>
-                <span className="font-semibold">Outdated Data:</span>{" "}
-                Annual or quarterly reports that are obsolete by the time you see them
-              </li>
-
-              <li>
-                <span className="font-semibold">Fragmented Picture:</span>{" "}
-                Separate tools for ads, websites, and cloud with no unified view
-              </li>
-
-              <li>
-                <span className="font-semibold">Regulatory Pressure:</span>{" "}
-                New climate disclosure laws with no clear way to comply
-              </li>
-            </ul>
-
-            {/* FINAL STATEMENT */}
-            <p className="mt-10 text-black text-base md:text-lg leading-relaxed">
-              You’re trying to hit net-zero targets with incomplete data and tools
-              that weren’t designed for how modern digital businesses actually operate.
-            </p>
-
+        {/* Image card */}
+        <div className="bg-green-50 rounded-2xl p-6 border">
+          <div className="w-full h-64 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center">
+            <span className="text-gray-500">Image / mockup here</span>
           </div>
         </div>
 
+        {/* Text */}
+        <div className="space-y-4">
+          
+
+          <h3 className="text-xl font-semibold">
+           Traditional carbon accounting wasn't built for digital businesses.
+          </h3>
+
+          <ul className="space-y-2 text-sm">
+            <li>If you're running an e-commerce platform, a SaaS product, or a streaming service, the old rules don't apply. Standard carbon calculators focus on manufacturing, shipping, and office spaces.</li>
+            <li>They completely miss the elephant in the room: your digital infrastructure, where thrid of the customer are care about sustainability and prefer buying form companies which is environmental conscious.</li>
+          </ul>
+        </div>
       </div>
-      
+
+      {/* ----------- BLOCK 2 ----------- */}
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+
+        {/* Text */}
+        {/* <div className="space-y-4 order-2 md:order-1">
+          <span className="text-xs px-3 py-1 rounded-full bg-gray-100">
+            Précision
+          </span>
+
+          <h3 className="text-xl font-semibold">
+            Plus de 4 000 rapports GES livrés : Générez le vôtre
+          </h3>
+
+          <ul className="space-y-2 text-sm">
+            <li>• Analysez les scopes 1, 2, 3 avec données activité & dépenses.</li>
+            <li>• Accédez à des analyses granulaires (unités, sites, etc.).</li>
+            <li>• Base de +350 000 facteurs d'émission.</li>
+          </ul>
+        </div> */}
+
+         <InfiniteMovingCards
+        items={testimonials}
+        direction="right"
+        speed="slow"
+      />
+
+        {/* Image */}
+        <div className="bg-green-900 rounded-2xl p-6 border order-1 md:order-2">
+          <div className="w-full h-64 bg-green-800 rounded-xl flex items-center justify-center">
+            <span className="text-gray-300">Logos / database mockup</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ----------- BLOCK 3 ----------- */}
+      <div className="grid md:grid-cols-2 gap-10 items-center">
+
+        {/* Image */}
+        <div className="bg-green-50 rounded-2xl p-6 border">
+          <div className="w-full h-64 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center">
+            <span className="text-gray-500">Table / objectives mockup</span>
+          </div>
+        </div>
+
+        {/* Text */}
+        <div className="space-y-4">
+          <span className="text-xs px-3 py-1 rounded-full bg-gray-100">
+            Impact
+          </span>
+
+          <h3 className="text-xl font-semibold">
+            Maximisez l'impact avec une feuille de route générée par l'IA
+          </h3>
+
+          <ul className="space-y-2 text-sm">
+            <li>• Passez de l’analyse à l’action en quelques secondes.</li>
+            <li>• Ajoutez les données fournisseurs automatiquement.</li>
+            <li>• Compatible SBTi, stratégie complète intégrée.</li>
+          </ul>
+        </div>
+      </div>
+
     </section>
-       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
-       </>
   );
 }
+
+
+const testimonials = [
+  {
+    quote:
+      " No visibility into internet emissions from websites, apps, and cloud services",
+    title: "Blind Spots",
+  },
+  {
+    quote:
+      " Enterprise carbon platforms cost $50K-$200K annually",
+    title: "Expensive Tools",
+  },
+  {
+    quote: " Months of implementation with specialised consultants",
+    title: "Complex Setup",
+  },
+  {
+    quote:
+      "Annual or quarterly reports that are obsolete by the time you see them",
+    title: "Outdated Data",
+  },
+  {
+    quote:
+      "Separate tools for ads, websites, cloud - no unified view",
+    title: "Fragmented Picture",
+  },
+  {
+    quote:
+      "New climate disclosure laws with no clear way to comply",
+    title: "Regulatory Pressure",
+  },
+];

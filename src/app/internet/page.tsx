@@ -16,6 +16,7 @@ import Footer from '@/components/NewLanding/Footer'
 import PreFooter from '@/components/NewLanding/PreFooter'
 import React from 'react'
 import LenisSmoothScroll from '@/components/LenisSmoothScroll'
+import VerticalComponent from '@/components/stepper/vertical-title-description'
 
 
 const page = () => {

@@ -31,6 +31,7 @@ import { BlogEighteenContent } from '@/constants/blogs/blogEighteen-data';
 import { BlogNineteenContent } from '@/constants/blogs/blogNineteen-data';
 import CardNav from '../CardNav';
 import { navData } from '../NavData';
+import { BlogTwentyContent } from '@/constants/blogs/blogTwenty-data';
 
 
 // Blog content component mapping
@@ -53,7 +54,8 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'fastest-way-reduce-carbon-emissions-real-time-tracking': BlogSixteenContent,
   'difference-between-real-time-carbon-data-annual-esg-reporting': BlogSeventeenContent,
   'real-time-carbon-tracking-replace-annual-reports':BlogEighteenContent,
-  'real-time-visibility-missing-layer-carbon-accounting':BlogNineteenContent
+  'real-time-visibility-missing-layer-carbon-accounting':BlogNineteenContent,
+  'massive-carbon-cost-unseen-emissions':BlogTwentyContent
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
