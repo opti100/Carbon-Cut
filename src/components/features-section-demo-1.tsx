@@ -16,7 +16,7 @@ export default function WhatCarbonCutProvides() {
   //       withCredentials: true,
   //     })
   //     return response.data;
-  //   }
+  //   } 
   // })
   // console.log(data);
   return (
