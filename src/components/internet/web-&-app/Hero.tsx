@@ -87,7 +87,7 @@ export function HeroSectionWebApps() {
                 <HoverEffect items={projects} />
             </div>
 
-          <CardContent className="w-full max-w-5xl ">
+          <CardContent className="w-full mx-auto max-w-5xl ">
 
                 {/* Instructions */}
                 <div className="rounded-xl bg-[#d1cebb] p-6">

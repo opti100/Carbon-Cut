@@ -115,13 +115,13 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                         : scriptTag || "Creating API key..."}
                 </pre>
                 <Button
-                    variant="ghost"
+                   
                     size="sm"
                     onClick={handleCopy}
                     disabled={isLoading || !scriptTag}
-                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-100"
+                    className="absolute top-2 right-2 bg-transparent hover:bg-transparent   text-white hover:text-gray-700/70  z-10"
                 >
-                  <Copy />
+                  <Copy  className="" /> 
                 </Button>
             </div>
             <div className="mt-4 text-xs text-muted-foreground space-y-2">
@@ -136,13 +136,17 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                     </p>
                 )}
             </div>
+
+            <div className="flex justify-center">
             <Button
                 onClick={onNext}
                 disabled={isLoading || !scriptTag}
-                className="mt-4 bg-[#adff00] text-black hover:bg-[#adff00]/90 w-full z-10"
-            >
+                className="card-nav-cta-button mt-10"
+                style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+                >
                 Continue
-            </Button>
+            </Button>  
+                </div>
         </div>
     )
 }
