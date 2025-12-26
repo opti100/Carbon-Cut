@@ -16,8 +16,8 @@ export default function WhatCarbonCutProvides() {
   //       withCredentials: true,
   //     })
   //     return response.data;
-  //   }
-  // })
+  //   } 
+  // })  
   // console.log(data);
   return (
     <div className="py-20  bg-white relative overflow-hidden">

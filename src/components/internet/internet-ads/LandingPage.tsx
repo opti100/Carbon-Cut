@@ -238,6 +238,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Lock, LogIn, UserPlus } from "lucide-react";
 import Link from "next/link";
+import CardNav from "@/components/CardNav";
+import { navData } from "@/components/NavData";
 
 export default function InternetAds() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -273,6 +275,19 @@ export default function InternetAds() {
 
   return (
     <>
+      {/* Navbar */}
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <CardNav
+          logo="/CarbonCut-fe/CC.svg"
+          logoAlt="CarbonCut Logo"
+          items={navData}
+          baseColor="rgba(255, 255, 255, 0.1)"
+          menuColor="#080c04"
+          buttonBgColor="#b0ea1d"
+          buttonTextColor="#080c04"
+        />
+      </div>
+
       <VerticalTimeline
         title="Track Internet Ad Emissions"
         subtitle="Interactive onboarding for campaign-level carbon tracking"

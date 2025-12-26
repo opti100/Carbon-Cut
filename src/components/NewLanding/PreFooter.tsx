@@ -22,9 +22,13 @@ export default function PreFooter() {
           </p>
 
           <h1 className="text-[64px] leading-[1.05] font-normal text-black">
-            Get in Contact with <br />
-            Our Team
+            
           </h1>
+
+           <h1  className=" font-bold text-[#6c5f31] leading-[1.15] text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl" > 
+              Get in Contact with <br />
+            Our Team
+           </h1>
 
           <p className="mt-8 max-w-xl font-mono text-xs tracking-wider text-black/80">
             Every request consumes energy. We help you measure the emissions behind it.

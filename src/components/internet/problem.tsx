@@ -19,7 +19,7 @@ const Problem = () => {
 
 
       {/* Section 2 */}
-      <div className="min-h-screen max-w-8xl mx-auto flex flex-col  px-15 items-end justify-end text-left">
+      <div className="min-h-screen max-w-8xl mx-auto flex flex-col  px-15 items-start justify-center text-left">
         <AnimatedHeading
           text="The problem?"
           className="text-5xl font-semibold text-left"

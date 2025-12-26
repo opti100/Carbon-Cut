@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from "react";
 import { BlurFade } from "./ui/blur-fade";
+import UniversalHeading from "./UniversalHeading";
 
 
 export type TimelineStep = {
@@ -38,12 +39,8 @@ export function VerticalTimeline({
   return (
     <section className="bg-[#fcfdf6] text-[#080c04] min-h-screen py-20 px-6 max-w-7xl mx-auto">
       {/* Title */}
-      <BlurFade delay={0.1} inView>
-        <div className="text-right mb-20 text-[#6c5f31] font-mono">
-          {subtitle && <p className="mb-2">{subtitle}</p>}
-          <h1 className="text-4xl lg:text-5xl font-bold">{title}</h1>
-        </div>
-      </BlurFade>
+      <UniversalHeading title={title} description={subtitle} />
+    
 
       {/* Timeline */}
       <div ref={sectionRef} className="relative max-w-6xl mx-auto">

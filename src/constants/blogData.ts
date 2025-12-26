@@ -40,6 +40,7 @@ import { blogSeventeenData } from './blogs/blogSeventeen-data';
 import { blogEighteenData } from './blogs/blogEighteen-data';
 import { blogNineteenData } from './blogs/blogNineteen-data';
 import { blogTwentyData } from './blogs/blogTwenty-data';
+import { blogTwentyOneData } from './blogs/blogTwentyOne-data';
 
 
 
@@ -64,7 +65,8 @@ export const blogPosts: BlogPost[] = [
   blogSeventeenData,
   blogEighteenData,
   blogNineteenData,
-  blogTwentyData
+  blogTwentyData,
+  blogTwentyOneData
 ];
 
 // Utility functions for blog data

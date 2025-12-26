@@ -32,6 +32,8 @@ import { BlogNineteenContent } from '@/constants/blogs/blogNineteen-data';
 import CardNav from '../CardNav';
 import { navData } from '../NavData';
 import { BlogTwentyContent } from '@/constants/blogs/blogTwenty-data';
+import { BlogTwentyOneContent } from '@/constants/blogs/blogTwentyOne-data';
+import LenisSmoothScroll from '../LenisSmoothScroll';
 
 
 // Blog content component mapping
@@ -55,7 +57,8 @@ const blogContentComponents: Record<string, React.ComponentType> = {
   'difference-between-real-time-carbon-data-annual-esg-reporting': BlogSeventeenContent,
   'real-time-carbon-tracking-replace-annual-reports':BlogEighteenContent,
   'real-time-visibility-missing-layer-carbon-accounting':BlogNineteenContent,
-  'massive-carbon-cost-unseen-emissions':BlogTwentyContent
+  'massive-carbon-cost-unseen-emissions':BlogTwentyContent,
+  'how-to-calculate-carbon-footprint-in-minutes': BlogTwentyOneContent
   // Add future blog components here:
   // 'future-blog-slug': BlogTwoContent,
 };
@@ -93,6 +96,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
 
   return (
     <>
+    <LenisSmoothScroll> 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -232,6 +236,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
         <PreFooter />
         <Footer />
       </div>
+      </LenisSmoothScroll>
     </>
   );
 };

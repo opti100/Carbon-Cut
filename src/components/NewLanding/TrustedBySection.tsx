@@ -37,14 +37,14 @@ const TrustedBySection = () => {
                 </svg>
 
                 <div className="icon-orbit-1">
-                    <Image src="/companies/GetGlow.png" alt="Coming soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-1" style={{ animationDelay: '-4s' }}>
-                    <Image src="/companies/GetGlow.png" alt="Coming soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl " />
+                    <Image src="/companies/ChatWise.png" alt="Coming soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl " />
                 </div>
 
                 <div className="icon-orbit-1" style={{ animationDelay: '-12s' }}>
-                    <Image src="/companies/GetGlow.png" alt="Coming soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl " />
+                    <Image src="/companies/ChatWise.png" alt="Coming soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl " />
                 </div>
 
                 {/* Semi-circle 2 - 500px radius */}
@@ -59,13 +59,13 @@ const TrustedBySection = () => {
                 </svg>
 
                 <div className="icon-orbit-2">
-                    <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-2" style={{ animationDelay: '-5s' }}>
                     <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-2" style={{ animationDelay: '-10s' }}>
-                    <Image src="/CarbonCut-fe/companies/GGS.avif"  alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png"  alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-2" style={{ animationDelay: '-15s' }}>
                     <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
@@ -83,16 +83,16 @@ const TrustedBySection = () => {
                 </svg>
 
                 <div className="icon-orbit-3">
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-3" style={{ animationDelay: '-5s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-3" style={{ animationDelay: '-10s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-3" style={{ animationDelay: '-15s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
 
                 {/* Semi-circle 4 - 800px radius */}
@@ -107,22 +107,22 @@ const TrustedBySection = () => {
                 </svg>
 
                 <div className="icon-orbit-4">
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-4" style={{ animationDelay: '-6s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-4" style={{ animationDelay: '-12s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-4" style={{ animationDelay: '-18s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-4" style={{ animationDelay: '-24s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/CarbonCut-fe/companies/GGS.avif" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
                 <div className="icon-orbit-4" style={{ animationDelay: '-30s' }}>
-                    <Image src="/CarbonCut-fe/companies/comingSoon.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
+                    <Image src="/companies/ChatWise.png" alt="Coming Soon" width={50} height={50} className="w-[30px] h-[30px] md:w-10 md:h-10 lg:w-[50px] lg:h-[50px] rounded-4xl" />
                 </div>
 
                 <style jsx>{`
