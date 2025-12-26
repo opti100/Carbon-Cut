@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getPostBySlug } from '@/constants/blogData';
 import { generateBlogMetadata } from '@/utils/blogMetadata';
 import BlogPostPage from '@/components/blog/BlogPostPage';
+import LenisSmoothScroll from '@/components/LenisSmoothScroll';
 
 interface PageProps {
   params: Promise<{
@@ -42,5 +43,13 @@ export default async function BlogPage({ params }: PageProps) {
     notFound();
   }
 
-  return <BlogPostPage post={post} />;
+  return (
+    <>
+    <LenisSmoothScroll>
+
+    <BlogPostPage post={post} />
+    </LenisSmoothScroll>
+    
+    </>
+  )
 }

@@ -1,7 +1,7 @@
 "use client";
 import { ArrowRight } from "lucide-react";
 
-export default function GreenbackerSection() {
+export default function ProblemWeareSolving() {
   return (
     <section className="relative w-full bg-[#fcfdf6] py-24 overflow-hidden">
 
@@ -29,9 +29,9 @@ export default function GreenbackerSection() {
         </h2>
 
         {/* connecting line */}
-        <div className="mt-16 w-full flex justify-center">
+        {/* <div className="mt-16 w-full flex justify-center">
           <div className="w-[85%] h-24 border-b border-l border-r rounded-b-[40px] border-[#ccbfae]" />
-        </div>
+        </div> */}
 
         {/* two column content */}
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -47,24 +47,20 @@ export default function GreenbackerSection() {
 
             <p className="text-gray-700 leading-relaxed">
               <div>
-                <div>• Blind spots in internet and digital emissions</div>
-                <div>• Enterprise tools costing $50K–$200K annually</div>
-                <div>• Months of implementation</div>
-                <div>• Outdated annual reports</div>
-                <div>• Fragmented tooling</div>
-                <div>• Regulatory pressure with no compliance path</div>
+                <div> {">"} Blind spots in internet and digital emissions</div>
+                <div>{">"} Enterprise tools costing $50K–$200K annually</div>
+                <div>{">"} Months of implementation</div>
+                <div>{">"} Outdated annual reports</div>
+                <div>{">"} Fragmented tooling</div>
+                <div>{">"} Regulatory pressure with no compliance path</div>
               </div>
 
-            </p>
-
-         
+            </p>   
           </div>
-
           {/* Right card */}
           <div>
-           
-
-            <p className="text-black leading-relaxed italic font-semibold text-xl">
+          
+            <p className="text-black leading-relaxed font-mono font-semibold  text-xl">
               You're trying to hit net-zero targets with incomplete data and tools not designed for how modern businesses operate.
             </p>
 

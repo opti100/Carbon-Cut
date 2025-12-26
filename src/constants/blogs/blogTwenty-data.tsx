@@ -341,7 +341,7 @@ export const blogTwentyData: BlogPost = {
   category: '',
   title: 'The Massive Carbon Cost Your Company Creates in the Hours You\'re Not Even Looking',
   excerpt: 'Discover how unseen emissions accumulate when no one is measuring them and why real-time visibility is essential for accurate carbon accounting.',
-  date: '2025-12-28',
+  date: '2025-12-22',
   author: {
     name: '',
     avatar: '/team/carboncut-insights.jpg'
