@@ -7,7 +7,7 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import UniversalHeading from "@/components/UniversalHeading";
 import { motion } from "motion/react";
 
-export function HeroSectionWebApps() {
+export function HeroInternetAds() {
     return (
         <div className="relative mx-auto my-10 flex max-w-8xl flex-col items-center justify-center">
             {/* Navbar */}
@@ -25,7 +25,7 @@ export function HeroSectionWebApps() {
 
             <div className="px-4 py-10 md:py-20">
                 <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
-                    {"Track Your Digital Product"
+                    {"Track Your Internet Ads"
                         .split(" ")
                         .map((word, index) => (
                             <motion.span
@@ -58,55 +58,13 @@ export function HeroSectionWebApps() {
                     }}
                     className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
                 >
-                    Install our SDK to start tracking carbon emissions from your website or application
+                   Track the carbon cost of every impression, click, and campaign across your advertising ecosystem.
                 </motion.p>
                
 
             </div>
-
-            <div className="max-w-5xl mx-auto px-8">
-                <HoverEffect items={projects} />
-            </div>
-
-          <CardContent className="w-full mx-auto max-w-5xl ">
-
-                {/* Instructions */}
-                <div className="rounded-xl bg-[#d1cebb] p-6">
-                    <h3 className="font-semibold text-black mb-3">
-                        Web & Apps Specific Instructions
-                    </h3>
-
-                    <ul className="text-black space-y-2 text-sm leading-relaxed">
-
-                        <>
-                            <li>• Add the SDK script to your website's head tag</li>
-                            <li>• Test the integration in development first</li>
-                            <li>• Monitor real-time emissions in your dashboard</li>
-                        </>
-
-                    </ul>
-                </div>
-            </CardContent>
         </div>
     );
 }
 
 
-const projects = [
-    {
-        title: "Add the SDK script to your website's head tag",
-        description:
-            "Copy and paste the script tag into your code to get started",
-    },
-    {
-        title: "Test the integration in development first",
-        description:
-            "Verify the SDK is working correctly before deploying to production",
-    },
-    {
-        title: "Monitor real-time emissions in your dashboard",
-        description:
-            "View detailed analytics and insights about your digital carbon footprint",
-    },
-   
-];

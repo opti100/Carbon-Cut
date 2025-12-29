@@ -70,10 +70,6 @@ export default function FAQInternet() {
 
         {/* SECTION 1 */}
         <div className="space-y-8 sm:space-y-12 md:space-y-16">
-
-        
-         
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 md:gap-12">
 
             {/* LEFT TITLE */}

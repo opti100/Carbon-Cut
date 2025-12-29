@@ -8,7 +8,7 @@ const Problem = () => {
       {/* Section 1 */}
       <div className="min-h-screen max-w-8xl  mt-28 mx-auto px-15 flex flex-col items-start justify-center text-left">
   <AnimatedHeading
-    text="Your Internet Business Has a Carbon Footprint. We Help You Track, Decarbon, and Report It."
+    text="Your Internet Business Has a Carbon Footprint. We Help You Track, Reduce, and Report It.."
     className="text-5xl font-semibold"
   />
 

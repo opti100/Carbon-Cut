@@ -20,9 +20,9 @@ export default function ProblemWeareSolving() {
         </div>
 
         {/* headline */}
-        <h2 className="text-3xl md:text-5xl leading-tight font-serif max-w-4xl">
-          An <span className="text-[#b0ea1d] italic"> Traditional carbon accounting wasn't built for digital businesses.</span>  Standard calculators focus on manufacturing, shipping,{" "}
-          <span className="text-[#b0ea1d] italic"> and office spaces—they miss </span>{" "}
+        <h2 className="text-3xl md:text-5xl leading-tight font-serif max-w-6xl">
+          An <span className="text-[#b0ea1d] italic"> Traditional carbon accounting wasn't built for digital businesses.</span> <br />  <br /> Standard calculators focus on manufacturing, shipping,{" "}
+          <span className="text-[#b0ea1d] italic"> and office spaces they miss </span>{" "}
           your digital infrastructure entirely.
 
 

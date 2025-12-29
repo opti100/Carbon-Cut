@@ -20,14 +20,14 @@ export default function MonumaHero() {
           <UniversalHeading title="What we're doing" align="left" />
 
           <p className="text-sm md:text-base opacity-90 leading-relaxed">
-           We're democratising carbon accounting for the digital age. Every company, from bootstrapped startups to enterprise giants, deserves access to accurate, real-time emission data without breaking the bank or hiring a team of consultants.
+          We're democratising carbon accounting for the digital age. Every company, from bootstrapped startups to enterprise giants, deserves access to accurate, real-time emission data without breaking the bank or hiring a team of consultants.
           </p>
 
           <p className="text-sm md:text-base opacity-90 leading-relaxed">
             Track, Decarbon and Report - transforms complex carbon calculations into source-level, actionable insights. You get a clear picture of your digital carbon footprint, industry benchmarks to see how you stack up, and concrete recommendations to reduce emissions while maintaining performance.
           </p>
 
-          <p className="text-sm md:text-base opacity-90 leading-relaxed">
+          <p className="text-sm md:text-base opacity-90 leading-relaxed font-semibold">
             This isn't just reporting, it's your sure roadmap to becoming a net-zero company.
           </p>
         </div>

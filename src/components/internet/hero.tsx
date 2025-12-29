@@ -2,7 +2,6 @@
 
 import { motion } from "motion/react";
 import CardNav from "../CardNav";
-
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { navData } from "../NavData";
@@ -32,49 +31,41 @@ export function InternetHero() {
         />
       </div>
 
-      {/* Hero Content */}
-      <div className="relative z-10 grid min-h-screen grid-cols-1 lg:grid-cols-2">
-        {/* LEFT CONTENT */}
-        <div className="flex flex-col justify-center max-w-6xl  px-6 md:px-12 lg:px-18">
-          
-          <div className="text-white text-5xl whitespace-nowrap">
-
-            The easiest way to become a <br /> net-zero Internet Company.
-          </div>
-          
-
-         
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-
-      <div className="nav-right-section">
-            <Link href="/internet/internet-ads" className="desktop-cta-link">
-              <button
-                type="button"
-                className="card-nav-cta-button"
-                style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
-              >
-                 Internet Ads
-              </button>
-            </Link>
-                    </div>
-
-                     <div className="nav-right-section">
-            <Link href="/internet/web-&-apps" className="desktop-cta-link">
-              <button
-                type="button"
-                className="card-nav-cta-button"
-                style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
-              >
-                 Web & Apps
-              </button>
-            </Link>
-                    </div>
+      {/* Hero Content (single column, centered) */}
+      <div className="relative z-10 flex min-h-screen items-center justify-start">
+        <div className="max-w-5xl px-6 md:px-12 text-left">
+          <h1 className="text-white text-4xl md:text-5xl font-semibold leading-tight text-left mx-auto max-w-7xl">
+            The easiest way to become a   net-zero Internet Company.
+          </h1>
 
 
+          <div className="mt-10 flex gap-4 ">
+
+            <div className="nav-right-section">
+              <Link href="/internet/internet-ads" className="desktop-cta-link">
+                <button
+                  type="button"
+                  className="card-nav-cta-button"
+                  style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+                >
+                  Internet Ads
+                </button>
+              </Link>
+            </div>
+
+            <div className="nav-right-section">
+              <Link href="/internet/web-&-apps" className="desktop-cta-link">
+                <button
+                  type="button"
+                  className="card-nav-cta-button"
+                  style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+                >
+                  Web & Apps
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
-
-     
       </div>
     </section>
   );

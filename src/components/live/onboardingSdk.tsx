@@ -102,9 +102,9 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
 
     return (
         <div className="w-full max-w-md">
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label className="block text-sm font-medium text-black mb-2 mt-10">
                 {sourceType === "ads" ? "Ads Tracking" : "Website/App"} SDK Script Tag
-                <span className="ml-2 text-xs font-normal text-gray-500">
+                <span className="ml-2 text-xs font-normal text-gray-800">
                     (Install this on your website)
                 </span>
             </label>
@@ -124,7 +124,7 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                   <Copy  className="" /> 
                 </Button>
             </div>
-            <div className="mt-4 text-xs text-muted-foreground space-y-2">
+            <div className="mt-4 text-xs text-gray-800 space-y-2">
                 <p>
                     <strong>Placement:</strong> Add this script in the{" "}
                     <code>&lt;head&gt;</code> or before closing{" "}
