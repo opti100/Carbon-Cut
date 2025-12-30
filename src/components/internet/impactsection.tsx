@@ -12,9 +12,7 @@ const TABS = [
     description: "This is where your real footprint lives:",
     panel: (
   <div className="h-full flex flex-col">
-    <h4 className="text-lg font-semibold mb-6">
-      Digital emission sources we track
-    </h4>
+   
 
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {[
@@ -66,9 +64,7 @@ const TABS = [
     description: "Your traditional footprint still matters:",
    panel: (
   <div className="h-full flex flex-col">
-    <h4 className="text-lg font-semibold mb-6">
-      Physical & operational emissions
-    </h4>
+   
 
     <div className="space-y-3">
       {[
@@ -98,9 +94,7 @@ const TABS = [
    panel: (
   <div className="h-full flex flex-col justify-between">
     <div>
-      <h4 className="text-lg font-semibold mb-4">
-        Built for audit-ready accuracy
-      </h4>
+     
 
       <div className="rounded-lg  bg-[#f8fceb] p-5">
         <p className="text-sm text-black/70 leading-relaxed">

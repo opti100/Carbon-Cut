@@ -1,6 +1,7 @@
 import { HeroSectionWebApps } from '@/components/internet/web-&-app/Hero'
 import WebAndApps from '@/components/internet/web-&-app/LandingPage'
 import LenisSmoothScroll from '@/components/LenisSmoothScroll'
+import Footer from '@/components/NewLanding/Footer'
 import React from 'react'
 
 const page = () => {
@@ -9,6 +10,7 @@ const page = () => {
       <LenisSmoothScroll>
         <HeroSectionWebApps />
         <WebAndApps />
+        <Footer />
       </LenisSmoothScroll>
     </div>
   )

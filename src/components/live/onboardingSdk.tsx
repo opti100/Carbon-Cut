@@ -102,9 +102,9 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
 
     return (
         <div className="w-full max-w-md">
-            <label className="block text-sm font-medium text-gray-900 mb-2">
+            <label className="block text-sm font-medium text-black mb-2 mt-10">
                 {sourceType === "ads" ? "Ads Tracking" : "Website/App"} SDK Script Tag
-                <span className="ml-2 text-xs font-normal text-gray-500">
+                <span className="ml-2 text-xs font-normal text-gray-800">
                     (Install this on your website)
                 </span>
             </label>
@@ -115,16 +115,16 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                         : scriptTag || "Creating API key..."}
                 </pre>
                 <Button
-                    variant="ghost"
+                   
                     size="sm"
                     onClick={handleCopy}
                     disabled={isLoading || !scriptTag}
-                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-100"
+                    className="absolute top-2 right-2 bg-transparent hover:bg-transparent   text-white hover:text-gray-700/70  z-10"
                 >
-                  <Copy />
+                  <Copy  className="" /> 
                 </Button>
             </div>
-            <div className="mt-4 text-xs text-muted-foreground space-y-2">
+            <div className="mt-4 text-xs text-gray-800 space-y-2">
                 <p>
                     <strong>Placement:</strong> Add this script in the{" "}
                     <code>&lt;head&gt;</code> or before closing{" "}
@@ -136,13 +136,17 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                     </p>
                 )}
             </div>
+
+            <div className="flex justify-center">
             <Button
                 onClick={onNext}
                 disabled={isLoading || !scriptTag}
-                className="mt-4 bg-[#adff00] text-black hover:bg-[#adff00]/90 w-full z-10"
-            >
+                className="card-nav-cta-button mt-10"
+                style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+                >
                 Continue
-            </Button>
+            </Button>  
+                </div>
         </div>
     )
 }

@@ -125,13 +125,13 @@ const Hero = () => {
             </div>
 
             <div
-                className={`flex flex-col items-center justify-center h-full px-6 max-w-5xl mx-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'
+                className={`flex flex-col items-start justify-center h-full px-6 max-w-7xl mx-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'
                     }`}
                 data-scroll
                 data-scroll-speed="0.5"
             >
                 
-                <h1 className="text-5xl font-bold font-mono text-white text-center mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
+                <h1 className="text-5xl font-bold font-mono text-white  mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
                
             </div>
 

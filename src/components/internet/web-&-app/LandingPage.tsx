@@ -42,10 +42,8 @@ const WebAndApps = () => {
           (!isAuthenticated || !user) && "blur-md pointer-events-none"
         )}
       >
-     
-
         {/* Step 2 – SDK Installation */}
-        <Card>
+        <div className="w-full max-w-5xl mx-auto border bg-[#d1cebb] rounded-lg p-8 mt-8  shadow-md">
           <CardHeader>
             <CardTitle>
               Install SDK for Web & Apps
@@ -55,30 +53,13 @@ const WebAndApps = () => {
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* SDK Step */}
+          <CardContent className=" space-y-8 flex justify-center">
+           
             <div>
               <ApiKeyStep onNext={handleWebsiteComplete} sourceType="web" />
             </div>
-
-            {/* Instructions */}
-            <div className="rounded-xl border bg-gray-50 p-6">
-              <h3 className="font-semibold text-gray-900 mb-3">
-              Web & Apps Specific Instructions
-              </h3>
-
-              <ul className="text-gray-600 space-y-2 text-sm leading-relaxed">
-               
-                  <>
-                    <li>• Add the SDK script to your website's head tag</li>
-                    <li>• Test the integration in development first</li>
-                    <li>• Monitor real-time emissions in your dashboard</li>
-                  </>
-              
-              </ul>
-            </div>
           </CardContent>
-        </Card>
+        </div>
       </main>
 
       {/* Auth Overlay */}

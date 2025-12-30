@@ -1,84 +1,73 @@
 "use client";
 
-
 import { motion } from "motion/react";
-import Navbar from "../NewLanding/Navbar";
 import CardNav from "../CardNav";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { navData } from "../NavData";
 
 export function HeroOilGas() {
   return (
-    <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
-      <CardNav
-					logo="/CarbonCut-fe/CC.svg"
-					logoAlt="CarbonCut Logo"
-					items={navData}
-					baseColor="rgba(255, 255, 255, 0.1)"
-					menuColor="#080c04"
-					buttonBgColor="#b0ea1d"
-					buttonTextColor="#080c04"
-				/>
-      
-      <div className="px-4 py-10 md:my-20">
-        <h1 className="relative z-10 mx-auto max-w-7xl text-left text-2xl font-bold text-[#6c5f31] md:text-4xl lg:text-7xl">
-          {"Oil and Natural Gas Industry Solutions"
-            .split(" ")
-            .map((word, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.1,
-                  ease: "easeInOut",
-                }}
-                className="mr-2 inline-block"
-              >
-                {word}
-              </motion.span>
-            ))}
-        </h1>
-        <motion.p
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.3,
-            delay: 0.8,
-          }}
-          className="relative z-10 mx-auto max-w-7xl py-4 text-left  font-normal text-neutral-600 dark:text-neutral-400"
-        >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, voluptatem aliquam <br />cupiditate dignissimos atque modi hic mollitia omnis nam sapiente.
-        </motion.p>
-        <motion.div
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.3,
-            delay: 1,
-          }}
-          className="relative z-10 mt-8 flex flex-wrap items-start justify-start gap-4"
-        >
-          <Link href='/internet/internet-ads' className="w-60 transform rounded-lg bg-[#d1cebb] px-6 py-2 font-medium text-[#080c04] transition-all duration-300 hover:-translate-y-0.5   hover:text-[#080c04] hover:bg-[#d3cda9]">
-           Internet Ads
-          </Link>
-          <Link href='/internet/web-apps' className="w-60 transform rounded-lg border border-gray-300 bg-white px-6 py-2 font-medium text-[#080c04] transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-100">
-           Web & Apps
-          </Link>
-        </motion.div>
-     
+    <section className="relative w-full min-h-[90vh] overflow-hidden">
+      {/* Navbar */}
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <CardNav
+          logo="/CarbonCut-fe/CC.svg"
+          logoAlt="CarbonCut Logo"
+          items={navData}
+          baseColor="rgba(255, 255, 255, 0.1)"
+          menuColor="#080c04"
+          buttonBgColor="#b0ea1d"
+          buttonTextColor="#080c04"
+        />
       </div>
-    </div>
+
+      {/* Background Image */}
+      <div className="absolute inset-0 -z-10">
+        <img
+          src="/auth-hero.jpg"
+          alt="Abstract Green"
+          className="h-full w-full object-cover"
+        />
+      </div>
+
+      {/* Hero Content (single column, centered) */}
+      <div className="relative z-10 flex min-h-screen items-center justify-start">
+        <div className="max-w-5xl px-6 md:px-12 text-left">
+          <h1 className="text-white text-2xl md:text-3xl font-semibold leading-tight text-left mx-auto max-w-7xl">
+            Track oil and gas emissions across upstream, midstream, and downstream operations.
+          </h1>
+
+
+          <div className="mt-10 ">
+
+
+            <div className="nav-right-section">
+              <Link href="/oil-and-natural-gas/lubricant" className="desktop-cta-link">
+                <button
+                  type="button"
+                  className="card-nav-cta-button"
+                  style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
+                >
+                 Lubricant
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
+
+
+
+
+
+
+
+
+
+
 
 
