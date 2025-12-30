@@ -8,7 +8,7 @@ const AnimatedHeroText = () => {
     <div className="flex flex-col gap-4 items-start text-left">
       {/* FIRST LINE */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
-        <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
+        <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-black">
           <RotatingText
             texts={["Track", "Decarbon", "Report"]}
             staggerFrom={"last"}
