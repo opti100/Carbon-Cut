@@ -1,8 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Briefcase, Building2, Cpu, Fan, Zap } from "lucide-react"
 import UniversalHeading from "../UniversalHeading"
+
+const physicalItems = [
+  { label: "Office electricity consumption", icon: Zap },
+  { label: "Workspace and facility infrastructure", icon: Building2 },
+  { label: "Employee commutes and business travel", icon: Briefcase },
+  { label: "Physical hardware and IT equipment", icon: Cpu },
+  { label: "Cooling, power backup, and facilities management", icon: Fan },
+];
 
 const TABS = [
   {
@@ -57,34 +65,26 @@ const TABS = [
 
   },
 
-  {
+{
     id: "report",
     number: "02",
     title: "15–20% Physical Operations",
     description: "Your traditional footprint still matters:",
-   panel: (
-  <div className="h-full flex flex-col">
-   
-
-    <div className="space-y-3">
-      {[
-        "Office electricity consumption",
-        "Workspace and facility infrastructure",
-        "Employee commutes and business travel",
-        "Physical hardware and IT equipment",
-        "Cooling, power backup, and facilities management",
-      ].map((item) => (
-        <div
-          key={item}
-          className="rounded-lg  bg-[#f8fceb] px-4 py-3 text-sm text-black/80"
-        >
-          {item}
+    panel: (
+      <div className="h-full flex flex-col">
+        <div className="space-y-3">
+          {physicalItems.map(({ label, icon: Icon }) => (
+            <div
+              key={label}
+              className="rounded-lg bg-[#f8fceb] px-4 py-3 text-sm text-black/80 flex items-center gap-2"
+            >
+              <Icon className="h-5 w-5" />
+              <span>{label}</span>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-)
-
+      </div>
+    ),
   },
 
   {

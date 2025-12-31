@@ -3,6 +3,7 @@ import Footer from '@/components/NewLanding/Footer'
 import { CoreCapabilities } from '@/components/oil-and-natural-gas/Core-Capabilities'
 import { ExpandableSection } from '@/components/oil-and-natural-gas/expandableSection'
 import { HeroOilGas } from '@/components/oil-and-natural-gas/hero'
+import Lubricant from '@/components/oil-and-natural-gas/Lubricant'
 import WhatWeDo from '@/components/oil-and-natural-gas/WhatWeDo'
 import WhyItMatters from '@/components/oil-and-natural-gas/whyMatters'
 import Lenis from 'lenis'
@@ -14,6 +15,7 @@ const page = () => {
       <LenisSmoothScroll>
         <HeroOilGas />
         <WhyItMatters />
+        <Lubricant/>
         <WhatWeDo />
         <CoreCapabilities />
         {/* <ExpandableSection /> */}
