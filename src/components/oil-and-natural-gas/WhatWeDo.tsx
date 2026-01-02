@@ -14,17 +14,17 @@ const WhatWeDo = () => {
 
   const achievements = [
     {
-      image: "/CarbonCut-fe/core/C1.jpg",
+      image: "/oil-natural-gas/Real-Time.png",
       title: "Real-time data",
       description: "Capture across assets and facilities",
     },
     {
-      image: "/CarbonCut-fe/core/C2.jpg",
+      image: "/oil-natural-gas/Direct-Indirect-Emissions.png",
       title: "Direct & indirect emissions",
       description: "Tracking including combustion, leaks, flaring, and venting",
     },
     {
-      image: "/CarbonCut-fe/core/C3.jpg",
+      image: "/oil-natural-gas/Automated-Reporting.png",
       title: "Automated reporting",
       description: "Aligned with industry and regulatory standards like GHG Protocol and EPA methods",
     },

@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { Calculator, BarChart3, Download, Award, PlugZap, GitPullRequestDraft, CalendarSync, ShieldCheck, LucideProps } from "lucide-react";
-import UniversalHeading from "../UniversalHeading";
+import { Calculator, BarChart3, Download, Award, PlugZap, GitPullRequest, Calendar, ShieldCheck } from "lucide-react";
 
 interface Step {
     step: number;
@@ -13,7 +11,7 @@ interface Step {
     description: string;
     metrics: { label: string };
     image?: string;
-    icon: React.ComponentType<LucideProps>;
+    icon: any;
 }
 
 const steps: Step[] = [
@@ -33,7 +31,7 @@ const steps: Step[] = [
         description: "View live CO₂e totals, forecasted footprints, and AI-agent recommendations for immediate emission reduction — all mapped to GHG Protocol categories.",
         metrics: { label: "Live dashboards. Instant accountability." },
         image: "/how-it-works/monitor.jpg",
-        icon: GitPullRequestDraft
+        icon: GitPullRequest
     },
     {
         step: 3,
@@ -42,7 +40,7 @@ const steps: Step[] = [
         description: "When emissions hit a defined threshold or a campaign ends, CarbonLive automatically retires verified carbon credits from approved registries such as Verra, Gold Standard, ACR.",
         metrics: { label: "Verified offsets, executed automatically." },
         image: "/how-it-works/offset.jpg",
-        icon: CalendarSync
+        icon: Calendar
     },
     {
         step: 4,
@@ -53,7 +51,6 @@ const steps: Step[] = [
         image: "/how-it-works/certify.jpg",
         icon: ShieldCheck
     },
-
 ];
 
 const SkeletonOne = () => {
@@ -247,6 +244,18 @@ const SkeletonFour = () => {
 
 const stepComponents = [SkeletonOne, SkeletonTwo, SkeletonThree, SkeletonFour];
 
+// Simple UniversalHeading component
+const UniversalHeading = ({ title, description, align }: { title: string; description: string; align: string }) => {
+    return (
+        <div className={`max-w-7xl mx-auto px-6 mb-16 ${align === 'right' ? 'text-right' : 'text-left'}`}>
+            <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider mb-2">{description}</p>
+            <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-[#d1cebb]">
+                {title}
+            </h2>
+        </div>
+    );
+};
+
 export default function HowItWorks() {
     const [activeStep, setActiveStep] = useState(0);
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -262,21 +271,17 @@ export default function HowItWorks() {
             const scrollY = window.scrollY;
             const windowHeight = window.innerHeight;
 
-            // Calculate scroll progress through the section (0 to 1)
             const progress = Math.max(0, Math.min(1,
                 (scrollY - sectionTop + windowHeight * 0.5) / sectionHeight
             ));
             setScrollProgress(progress);
 
-            // Slower step progression - requires more scrolling between steps
-            // Each step now requires ~8-10 scroll actions to progress
-            const stepProgress = progress * 4; // 0 to 4
-            const stepIndex = Math.min(Math.floor(stepProgress), 3); // 0, 1, 2, or 3
+            const stepProgress = progress * 4;
+            const stepIndex = Math.min(Math.floor(stepProgress), 3);
 
             setActiveStep(stepIndex);
         };
 
-        // Throttle scroll events for smoother experience
         let ticking = false;
         const scrollHandler = () => {
             if (!ticking) {
@@ -305,90 +310,67 @@ export default function HowItWorks() {
             {/* Mobile Layout - Simple Vertical */}
             <div className="block lg:hidden">
                 {/* Mobile Header */}
-                <div className="px-4 py-6 lg:py-8">
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#60be03] text-center mb-2">
+                <div className="px-4 py-8">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#60be03] text-center mb-2">
                         How it works
                     </h2>
-                    <p className="text-sm sm:text-base text-[#6c5f31] text-center max-w-2xl mx-auto">
-                        Measure, Reduce , Offset
+                    <p className="text-sm text-[#6c5f31] text-center">
+                        Measure, Reduce, Offset
                     </p>
                 </div>
 
                 {/* Mobile Steps */}
-                <div className="space-y-6 lg:space-y-8 px-4 pb-8 lg:pb-12">
+                <div className="space-y-6 px-4 pb-8">
                     {steps.map((step, index) => {
                         const IconComponent = step.icon;
                         return (
-                            <div key={index} className="space-y-3 lg:space-y-4">
+                            <div key={index} className="space-y-3">
                                 {/* Step Content */}
-                                <div className="bg-white rounded-lg border border-[#d1cebb]/40 p-3 lg:p-4">
-                                    <div className="flex items-center gap-2 lg:gap-3 mb-2 lg:mb-3">
-                                        <div className="shrink-0 font-bold font-mono text-base lg:text-lg text-[#6c5f31]">
+                                <div className="rounded-lg border border-[#d1cebb]/40 p-4">
+                                    <div className="flex items-start gap-3 mb-3">
+                                        <div className="shrink-0 font-bold font-mono text-lg text-[#6c5f31]">
                                             0{step.step}
                                         </div>
 
-                                        {/* Icon Component - Mobile */}
-                                        <div className="relative h-6 w-6 lg:h-8 lg:w-8">
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                fill="currentColor"
-                                                viewBox="0 0 40 40"
-                                                className="icons-outline absolute inset-0 text-[#6c5f31] transition-transform duration-1000"
-                                            >
-                                                <path d="M1 32.653V39h6.347v1H0v-7.347zm39 0V40h-7.347v-1H39v-6.347zM7.347 0v1H1v6.347H0V0zM40 0v7.347h-1V1h-6.347V0z" />
-                                            </svg>
-
-                                            {/* Sliding Icon */}
-                                            <div
-                                                className="absolute inset-0 inline-flex overflow-hidden transition-transform duration-500"
-                                                style={{
-                                                    transform: "translateX(0)",
-                                                    opacity: 1
-                                                }}
-                                            >
-                                                <div className="w-6 h-6 lg:w-8 lg:h-8 bg-[#b0ea1d] rounded-full flex items-center justify-center shrink-0">
-                                                    <IconComponent className="w-3 h-3 lg:w-4 lg:h-4 text-white" />
-                                                </div>
-                                            </div>
+                                        <div className="w-8 h-8 bg-[#b0ea1d] rounded-full flex items-center justify-center shrink-0">
+                                            <IconComponent className="w-4 h-4 text-white" />
                                         </div>
 
-                                        <div className="flex-1">
-                                            <h3 className="text-base lg:text-lg font-bold text-[#080c04]">
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="text-lg font-bold text-[#080c04] mb-1">
                                                 {step.title}
                                             </h3>
-                                            <p className="text-xs lg:text-sm text-[#6c5f31] font-medium">
+                                            <p className="text-sm text-[#6c5f31] font-medium">
                                                 {step.subtitle}
                                             </p>
                                         </div>
                                     </div>
 
-                                    <p className="text-xs lg:text-sm text-[#6c5f31]/80 leading-relaxed mb-2 lg:mb-3">
+                                    <p className="text-sm text-[#6c5f31]/80 leading-relaxed mb-3">
                                         {step.description}
                                     </p>
 
-                                    <div className="inline-block bg-[#b0ea1d]/10 border border-[#b0ea1d]/30 rounded-full px-2.5 lg:px-3 py-1">
-                                        <span className="text-[10px] lg:text-xs font-semibold text-[#6c5f31]">
+                                    <div className="inline-block bg-[#b0ea1d]/10 border border-[#b0ea1d]/30 rounded-full px-3 py-4">
+                                        <span className="text-xs font-semibold text-[#6c5f31]">
                                             {step.metrics.label}
                                         </span>
                                     </div>
                                 </div>
 
                                 {/* Skeleton Component */}
-                                <div className="h-48 sm:h-56 lg:h-64">
-                                    {stepComponents[index] && stepComponents[index]()}
+                                <div className="h-56">
+                                    {stepComponents[index]()}
                                 </div>
                             </div>
                         );
                     })}
                 </div>
             </div>
-            <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
+            <div className="w-full border-t border-dashed border-[#6c5f31]/10 mb-8"></div>
+            
             {/* Desktop Layout - Original Parallax */}
             <div className="hidden lg:block">
-                
-
-                    <UniversalHeading title="Track Decarbon Report" description="How It Works" align="right" /> 
-
+                <UniversalHeading title="Track Decarbon Report" description="How It Works" align="right" /> 
 
                 <div className="prllx-wrapper relative flex h-[700lvh] flex-row overflow-clip">
                     {/* Left Side - Sticky Fields */}
@@ -498,16 +480,7 @@ export default function HowItWorks() {
 
                     {/* Right Side - Sticky Animation/Image Panel */}
                     <div className="absolute top-0 right-0 z-0 h-full w-1/2">
-                        <div className="w-full flex  px-6 xl:px-10 py-8 xl:py-12">
-
-         {/* <div className="max-w-7xl mx-auto px-6 mb-16 ">
-             <p className="text-secondary/60 text-sm uppercase tracking-wider text-right">How it's Works</p>
-        <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-text mb-12 text-[#d1cebb] text-right">
-         Measure,Reduce,Offset
-        </h2>
-        </div> */}
-
-                        </div>
+                        <div className="w-full flex px-6 xl:px-10 py-8 xl:py-12"></div>
 
                         <div className="anim-wrapper sticky top-0 left-0 h-lvh w-full">
                             <div className="anim-bg-wrapper absolute inset-0">
@@ -520,7 +493,7 @@ export default function HowItWorks() {
                                             visibility: activeStep === index ? "visible" : "hidden"
                                         }}
                                     >
-                                        {stepComponents[index] && stepComponents[index]()}
+                                        {stepComponents[index]()}
                                     </div>
                                 ))}
                             </div>

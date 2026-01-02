@@ -39,13 +39,12 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
 }) => {
   const [revealCount, setRevealCount] = useState(0);
   const [active, setActive] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(true); // track screen size
 
   const rafRef = useRef<number | null>(null);
   const startTimeRef = useRef(0);
   const lastFlipRef = useRef(0);
-  const scrambleRef = useRef<string[]>(
-    initialGibberish(text, charset).split("")
-  );
+  const scrambleRef = useRef<string[]>(initialGibberish(text, charset).split(""));
 
   const reset = () => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -53,8 +52,17 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
     scrambleRef.current = initialGibberish(text, charset).split("");
   };
 
+  // Track window width
   useEffect(() => {
-    if (!active) return;
+    const update = () => setIsDesktop(window.innerWidth >= 1024);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Only run encryption animation on desktop
+  useEffect(() => {
+    if (!active || !isDesktop) return;
 
     startTimeRef.current = performance.now();
     lastFlipRef.current = startTimeRef.current;
@@ -72,8 +80,7 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
       // scramble unrevealed chars
       if (now - lastFlipRef.current >= flipDelayMs) {
         for (let i = nextReveal; i < total; i++) {
-          scrambleRef.current[i] =
-            text[i] === " " ? " " : randomChar(charset);
+          scrambleRef.current[i] = text[i] === " " ? " " : randomChar(charset);
         }
         lastFlipRef.current = now;
       }
@@ -88,9 +95,14 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [active, text, revealDelayMs, flipDelayMs, charset]);
+  }, [active, isDesktop, text, revealDelayMs, flipDelayMs, charset]);
 
   if (!text) return null;
+
+  // If small screen, just render normal text
+  if (!isDesktop) {
+    return <span className={cn("inline-flex", className)}>{text}</span>;
+  }
 
   return (
     <motion.span
@@ -106,17 +118,8 @@ export const EncryptedText: React.FC<EncryptedTextProps> = ({
       {text.split("").map((char, i) => {
         const revealed = i < revealCount;
         return (
-          <span
-            key={i}
-            className={cn(
-              revealed ? revealedClassName : encryptedClassName
-            )}
-          >
-            {revealed
-              ? char
-              : char === " "
-              ? " "
-              : scrambleRef.current[i]}
+          <span key={i} className={cn(revealed ? revealedClassName : encryptedClassName)}>
+            {revealed ? char : char === " " ? " " : scrambleRef.current[i]}
           </span>
         );
       })}
