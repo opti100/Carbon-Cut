@@ -25,7 +25,14 @@ export default function PreFooter() {
             
           </h1>
 
-           <h1  className=" font-bold text-[#6c5f31] leading-[1.15] text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl" > 
+           <h1  className=" font-bold font-mono
+          text-[#6c5f31]
+          leading-[1.15]
+          text-2xl
+          sm:text-3xl
+          md:text-4xl
+          lg:text-5xl
+          xl:text-5xl" > 
               Get in Contact with <br />
             Our Team
            </h1>
