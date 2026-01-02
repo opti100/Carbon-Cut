@@ -1,13 +1,20 @@
 "use client";
-import Image from 'next/image';
-import React, { useState, useEffect, useRef } from 'react';
-import AnimatedHeroText from './AnimatedHeroText';
-import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-react';
-import Link from 'next/link';
+
+import Image from "next/image";
+import React, { useState, useEffect, useRef } from "react";
+import AnimatedHeroText from "./AnimatedHeroText";
+import {
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  ArrowUpRight,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
   return (
-    <div className="w-full h-full overflow-hidden ">
+    <div className="w-full h-full overflow-hidden">
       <video
         src="/LandingPage.mp4"
         autoPlay
@@ -32,6 +39,8 @@ const Hero = () => {
   const dropdown1Ref = useRef<HTMLDivElement>(null);
   const dropdown2Ref = useRef<HTMLDivElement>(null);
 
+  const router = useRouter();
+
   const handleVideoLoad = () => setIsVideoLoaded(true);
 
   useEffect(() => {
@@ -47,7 +56,6 @@ const Hero = () => {
   const toggleSubMenu = (name: string) =>
     setOpenSubMenu(openSubMenu === name ? null : name);
 
-  // close when clicking outside
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       const t = e.target as Node;
@@ -89,19 +97,18 @@ const Hero = () => {
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
           <div className="max-w-3xl">
-
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-black mb-6 leading-tight">
               <AnimatedHeroText />
             </h1>
 
             <p className="text-base md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">
-              Track, decarbon, and report your carbon footprint with powerful analytics and actionable insights.
+              Track, decarbon, and report your carbon footprint with powerful
+              analytics and actionable insights.
             </p>
 
-            {/* BUTTONS */}
             <div className="flex flex-col sm:flex-row gap-4">
 
-              {/* ========== BUTTON 1 ========== */}
+              {/* BUTTON 1 */}
               <div className="relative w-full sm:w-64" ref={dropdown1Ref}>
                 <button
                   onClick={() => toggleDropdown(1)}
@@ -127,7 +134,7 @@ const Hero = () => {
                 )}
               </div>
 
-              {/* ========== BUTTON 2 ========== */}
+              {/* BUTTON 2 */}
               <div className="relative w-full sm:w-64" ref={dropdown2Ref}>
                 <button
                   onClick={() => toggleDropdown(2)}
@@ -141,84 +148,121 @@ const Hero = () => {
                 {openDropdown === 2 && (
                   <div className="absolute left-0 mt-2 w-full rounded-lg shadow-lg border z-20 bg-white">
 
-                    {/* -------- INTERNET -------- */}
+                    {/* INTERNET MOBILE */}
                     <div className="block md:hidden">
                       <button
-                        onClick={() => toggleSubMenu("internet")}
+                        onClick={() => {
+                          if (openSubMenu === "internet") router.push("/internet");
+                          else toggleSubMenu("internet");
+                        }}
                         className="w-full flex items-center justify-between py-2 px-3"
                       >
-                        Internet
-                        {openSubMenu === "internet" ? <ChevronUp /> : <ChevronRight />}
+                        <span>Internet</span>
+                        {openSubMenu === "internet" ? (
+                          <ArrowUpRight className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
                       </button>
 
                       {openSubMenu === "internet" && (
-                        <div className="pl-4 pb-2">
+                        <div className="pl-4 pb-2 space-y-1">
                           <Link href="/internet/internet-ads">
-                            <p className="py-2 px-3 rounded hover:bg-[#b0ea1d]">
-                              Internet Ads
+                            <p className="py-2 px-3 rounded hover:bg-[#b0ea1d] flex items-center justify-between">
+                              <span>Internet Ads</span>
+                              <ArrowUpRight className="h-4 w-4" />
                             </p>
                           </Link>
+
                           <Link href="/internet/web-&-apps">
-                            <p className="py-2 px-3 rounded hover:bg-[#b0ea1d]">
-                              Web & Apps
+                            <p className="py-2 px-3 rounded hover:bg-[#b0ea1d] flex items-center justify-between">
+                              <span>Web & Apps</span>
+                              <ArrowUpRight className="h-4 w-4" />
                             </p>
                           </Link>
                         </div>
                       )}
                     </div>
 
-                    {/* -------- DESKTOP INTERNET HOVER -------- */}
+                    {/* INTERNET DESKTOP */}
                     <div className="hidden md:block relative group">
-                      <div className="flex items-center justify-between py-2 px-3 cursor-pointer">
-                        Internet <ChevronRight className="h-4 w-4" />
-                      </div>
+                      <Link href="/internet">
+                        <div className="flex items-center justify-between py-2 px-3 cursor-pointer">
+                          <span>Internet</span>
 
-                      <div className="absolute top-0 left-full ml-2 w-48 rounded-lg shadow-lg border bg-white opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                          <span className="relative flex items-center">
+                            <ChevronRight className="h-4 w-4 group-hover:opacity-0 transition-opacity" />
+                            <ArrowUpRight className="h-4 w-4 absolute opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </span>
+                        </div>
+                      </Link>
+
+                      <div className="absolute top-0 left-full ml-2 w-52 rounded-lg shadow-lg border bg-white opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                         <Link href="/internet/internet-ads">
-                          <p className="py-2 px-3 hover:bg-[#b0ea1d] rounded">
-                            Internet Ads
-                          </p>
+                          <div className="py-2 px-3 hover:bg-[#b0ea1d] rounded flex items-center justify-between">
+                            <span>Internet Ads</span>
+                            <ArrowUpRight className="h-4 w-4" />
+                          </div>
                         </Link>
+
                         <Link href="/internet/web-&-apps">
-                          <p className="py-2 px-3 hover:bg-[#b0ea1d] rounded">
-                            Web & Apps
-                          </p>
+                          <div className="py-2 px-3 hover:bg-[#b0ea1d] rounded flex items-center justify-between">
+                            <span>Web & Apps</span>
+                            <ArrowUpRight className="h-4 w-4" />
+                          </div>
                         </Link>
                       </div>
                     </div>
 
-                    {/* -------- OIL & GAS -------- */}
+                    {/* OIL MOBILE */}
                     <div className="block md:hidden">
                       <button
-                        onClick={() => toggleSubMenu("oil")}
+                        onClick={() => {
+                          if (openSubMenu === "oil")
+                            router.push("/oil-and-natural-gas");
+                          else toggleSubMenu("oil");
+                        }}
                         className="w-full flex items-center justify-between py-2 px-3"
                       >
-                        Oil & Natural Gas
-                        {openSubMenu === "oil" ? <ChevronUp /> : <ChevronRight />}
+                        <span>Oil & Natural Gas</span>
+                        {openSubMenu === "oil" ? (
+                          <ArrowUpRight className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
                       </button>
 
                       {openSubMenu === "oil" && (
                         <div className="pl-4 pb-2">
                           <Link href="/oil-and-natural-gas/lubricant">
-                            <p className="py-2 px-3 rounded hover:bg-[#b0ea1d]">
-                              Lubricant
+                            <p className="py-2 px-3 rounded hover:bg-[#b0ea1d] flex items-center justify-between">
+                              <span>Lubricant</span>
+                              <ArrowUpRight className="h-4 w-4" />
                             </p>
                           </Link>
                         </div>
                       )}
                     </div>
 
-                    {/* -------- DESKTOP OIL HOVER -------- */}
+                    {/* OIL DESKTOP */}
                     <div className="hidden md:block relative group">
-                      <div className="flex items-center justify-between py-2 px-3 cursor-pointer">
-                        Oil & Natural Gas <ChevronRight className="h-4 w-4" />
-                      </div>
+                      <Link href="/oil-and-natural-gas">
+                        <div className="flex items-center justify-between py-2 px-3 cursor-pointer">
+                          <span>Oil & Natural Gas</span>
 
-                      <div className="absolute top-0 left-full ml-2 w-48 rounded-lg shadow-lg border bg-white opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                          <span className="relative flex items-center">
+                            <ChevronRight className="h-4 w-4 group-hover:opacity-0 transition-opacity" />
+                            <ArrowUpRight className="h-4 w-4 absolute opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </span>
+                        </div>
+                      </Link>
+
+                      <div className="absolute top-0 left-full ml-2 w-52 rounded-lg shadow-lg border bg-white opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                         <Link href="/oil-and-natural-gas/lubricant">
-                          <p className="py-2 px-3 hover:bg-[#b0ea1d] rounded">
-                            Lubricant
-                          </p>
+                          <div className="py-2 px-3 hover:bg-[#b0ea1d] rounded flex items-center justify-between">
+                            <span>Lubricant</span>
+                            <ArrowUpRight className="h-4 w-4" />
+                          </div>
                         </Link>
                       </div>
                     </div>
@@ -226,7 +270,6 @@ const Hero = () => {
                   </div>
                 )}
               </div>
-
             </div>
           </div>
         </div>

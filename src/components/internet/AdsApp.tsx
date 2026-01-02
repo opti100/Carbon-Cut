@@ -26,7 +26,7 @@ export function InternetAdsWebApp() {
             </div>
             <div className="relative flex flex-1 w-full rounded-lg mt-4 overflow-hidden">
               <Image
-                src="/abstract-gray.jpg"
+                src="/internet/internet-ads.png"
                 alt="Internet Ads"
                 fill
                 className="object-cover"
@@ -50,7 +50,7 @@ export function InternetAdsWebApp() {
             </div>
             <div className="relative flex flex-1 w-full rounded-lg mt-4 overflow-hidden">
               <Image
-                src="/auth-hero.jpg"
+                src="/internet/web-apps.png"
                 alt="Web & Apps"
                 fill
                 className="object-cover"

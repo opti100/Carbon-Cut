@@ -8,7 +8,7 @@ export default function MonumaHero() {
       {/* LEFT IMAGE */}
       <div className="h-full w-full">
         <img
-          src="/article-2/article1.jpg"
+          src="/internet/What-we-doing.png"
           alt="Interior space"
           className="w-full h-full object-cover"
         />
