@@ -5,8 +5,8 @@ import UniversalHeading from "../UniversalHeading";
 export default function MonumaHero() {
   return (
     <section className="w-full h-[80vh] grid grid-cols-1 lg:grid-cols-[40%_60%]">
-      {/* LEFT IMAGE */}
-      <div className="h-full w-full">
+      {/* LEFT IMAGE - hidden on small screens */}
+      <div className="h-full w-full hidden lg:block">
         <img
           src="/internet/What-we-doing.png"
           alt="Interior space"
@@ -16,11 +16,13 @@ export default function MonumaHero() {
 
       {/* RIGHT CONTENT PANEL */}
       <div className="flex items-center justify-center bg-[#d1cebb] bg-[url('/texture.png')] bg-cover bg-blend-overlay px-6 md:px-12">
-        <div className="max-w-xl space-y-6 text-black">
-          <UniversalHeading title="What we're doing" align="left" />
+        <div className="w-full max-w-2xl text-black space-y-6 flex flex-col justify-center">
+          {/* Heading */}
+          <UniversalHeading title="What we're doing"  />
 
+          {/* Paragraphs */}
           <p className="text-sm md:text-base opacity-90 leading-relaxed">
-          We're democratising carbon accounting for the digital age. Every company, from bootstrapped startups to enterprise giants, deserves access to accurate, real-time emission data without breaking the bank or hiring a team of consultants.
+            We're democratising carbon accounting for the digital age. Every company, from bootstrapped startups to enterprise giants, deserves access to accurate, real-time emission data without breaking the bank or hiring a team of consultants.
           </p>
 
           <p className="text-sm md:text-base opacity-90 leading-relaxed">
