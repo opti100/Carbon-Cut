@@ -1,5 +1,5 @@
 "use client";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock, DollarSign, EyeOff, FileClock, Puzzle, ShieldAlert } from "lucide-react";
 
 export default function ProblemWeareSolving() {
   return (
@@ -39,27 +39,50 @@ export default function ProblemWeareSolving() {
           {/* Left card */}
           <div>
             <div className="flex items-center gap-3 mb-3">
-             
+
               <h3 className="font-semibold text-xl">
-               Here's what companies struggle with today:
+                Here's what companies struggle with today:
               </h3>
             </div>
 
             <p className="text-gray-700 leading-relaxed">
-              <div>
-                <div> {">"} Blind spots in internet and digital emissions</div>
-                <div>{">"} Enterprise tools costing $50K–$200K annually</div>
-                <div>{">"} Months of implementation</div>
-                <div>{">"} Outdated annual reports</div>
-                <div>{">"} Fragmented tooling</div>
-                <div>{">"} Regulatory pressure with no compliance path</div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <EyeOff className="h-4 w-4" />
+                  <span>Blind spots in internet and digital emissions</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4" />
+                  <span>Enterprise tools costing $50K–$200K annually</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  <span>Months of implementation</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <FileClock className="h-4 w-4" />
+                  <span>Outdated annual reports</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Puzzle className="h-4 w-4" />
+                  <span>Fragmented tooling</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <ShieldAlert className="h-4 w-4" />
+                  <span>Regulatory pressure with no compliance path</span>
+                </div>
               </div>
 
-            </p>   
+            </p>
           </div>
           {/* Right card */}
           <div>
-          
+
             <p className="text-black leading-relaxed font-mono font-semibold  text-xl">
               You're trying to hit net-zero targets with incomplete data and tools not designed for how modern businesses operate.
             </p>
