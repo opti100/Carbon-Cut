@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Calculator, BarChart3, Download, Award, PlugZap, GitPullRequest, Calendar, ShieldCheck } from "lucide-react";
+import UniversalHeading from "../UniversalHeading";
 
 interface Step {
     step: number;
@@ -244,17 +245,7 @@ const SkeletonFour = () => {
 
 const stepComponents = [SkeletonOne, SkeletonTwo, SkeletonThree, SkeletonFour];
 
-// Simple UniversalHeading component
-const UniversalHeading = ({ title, description, align }: { title: string; description: string; align: string }) => {
-    return (
-        <div className={`max-w-7xl mx-auto px-6 mb-16 ${align === 'right' ? 'text-right' : 'text-left'}`}>
-            <p className="text-[#6c5f31]/60 text-sm uppercase tracking-wider mb-2">{description}</p>
-            <h2 className="text-6xl md:text-7xl font-semibold tracking-tight text-[#d1cebb]">
-                {title}
-            </h2>
-        </div>
-    );
-};
+
 
 export default function HowItWorks() {
     const [activeStep, setActiveStep] = useState(0);
@@ -311,11 +302,11 @@ export default function HowItWorks() {
             <div className="block lg:hidden">
                 {/* Mobile Header */}
                 <div className="px-4 py-8">
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#60be03] text-center mb-2">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#b0ea1d] text-center mb-2">
                         How it works
                     </h2>
                     <p className="text-sm text-[#6c5f31] text-center">
-                        Measure, Reduce, Offset
+                        Track, Decarbon, Report
                     </p>
                 </div>
 
@@ -370,7 +361,7 @@ export default function HowItWorks() {
             
             {/* Desktop Layout - Original Parallax */}
             <div className="hidden lg:block">
-                <UniversalHeading title="Track Decarbon Report" description="How It Works" align="right" /> 
+                <UniversalHeading  title="How It Works" align="right" /> 
 
                 <div className="prllx-wrapper relative flex h-[700lvh] flex-row overflow-clip">
                     {/* Left Side - Sticky Fields */}

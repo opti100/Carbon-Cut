@@ -112,7 +112,7 @@ const Hero = () => {
               <div className="relative w-full sm:w-64" ref={dropdown1Ref}>
                 <button
                   onClick={() => toggleDropdown(1)}
-                  className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg border transition hover:shadow-xl"
+                  className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg  transition hover:shadow-xl"
                   style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
                 >
                   Capabilities
@@ -138,7 +138,7 @@ const Hero = () => {
               <div className="relative w-full sm:w-64" ref={dropdown2Ref}>
                 <button
                   onClick={() => toggleDropdown(2)}
-                  className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg border transition hover:shadow-xl"
+                  className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg  transition hover:shadow-xl"
                   style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
                 >
                   Industries

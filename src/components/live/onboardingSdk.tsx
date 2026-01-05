@@ -6,6 +6,7 @@ import { ApiKeyService } from "@/services/apikey/apikey"
 import { toast } from "sonner"
 import { useEffect, useState } from "react"
 import { Copy } from "lucide-react"
+import { CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 interface ApiKeyStepProps {
     onNext: () => void
@@ -102,6 +103,10 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
 
     return (
         <div className="w-full max-w-md">
+          <div>
+            <h1 className="block text-sm font-medium text-black mb-2 mt-2"> Install SDK for Web & Apps </h1>
+            <p className=" text-xs font-normal text-gray-800">  Follow these steps to integrate our tracking SDK into your Web & Apps </p>
+          </div>
             <label className="block text-sm font-medium text-black mb-2 mt-10">
                 {sourceType === "ads" ? "Ads Tracking" : "Website/App"} SDK Script Tag
                 <span className="ml-2 text-xs font-normal text-gray-800">
@@ -131,17 +136,17 @@ export default function ApiKeyStep({ onNext, sourceType = "web" }: ApiKeyStepPro
                     <code>&lt;/body&gt;</code>.
                 </p>
                 {sourceType === "ads" && (
-                    <p className="text-orange-600">
+                    <p className="text-gray-800">
                         <strong>Note:</strong> This script will track emissions from your ad campaigns with UTM parameters.
                     </p>
                 )}
             </div>
 
-            <div className="flex justify-center">
+            <div className="">
             <Button
                 onClick={onNext}
                 disabled={isLoading || !scriptTag}
-                className="card-nav-cta-button mt-10"
+                className="card-nav-cta-button mt-5"
                 style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                 Continue

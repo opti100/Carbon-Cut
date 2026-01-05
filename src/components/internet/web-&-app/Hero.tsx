@@ -60,15 +60,30 @@ export function HeroSectionWebApps() {
                 >
                     Install our SDK to start tracking carbon emissions from your website or application
                 </motion.p>
-               
+
 
             </div>
 
-            <div className="max-w-5xl mx-auto px-8">
-                <HoverEffect items={projects} />
+            <div className="max-w-5xl mx-auto px-8 my-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projects.map((item, index) => (
+                        <div
+                            key={index}
+                            className="rounded-2xl  bg-[#d1cebb] p-6 shadow-sm hover:shadow-md transition"
+                        >
+                            <h3 className=" font-semibold mb-2">
+                                {item.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                                {item.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-          <CardContent className="w-full mx-auto max-w-5xl ">
+
+            <CardContent className="w-full mx-auto max-w-5xl ">
 
                 {/* Instructions */}
                 <div className="rounded-xl bg-[#d1cebb] p-6">
@@ -108,5 +123,5 @@ const projects = [
         description:
             "View detailed analytics and insights about your digital carbon footprint",
     },
-   
+
 ];

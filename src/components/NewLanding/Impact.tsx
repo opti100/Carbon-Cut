@@ -96,7 +96,7 @@ export function ImpactSection() {
   return (
     <>
     <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <UniversalHeading title="Our Impact & Expertise at a Glance" description={<><span>A trusted platform to measure, report, and offset carbon emissions with reliable data, </span><br /><span>clear insights, and globally verified projects that drive real climate impact.</span></>} align="right" />
+      <UniversalHeading title="Our Impact & Expertise at a Glance" description={<><span>A trusted platform to measure, report, and offset carbon emissions with reliable data,clear insights, and globally verified projects that drive real climate impact.</span></>} align="right" />
     
     <div className="w-full bg-[#fcfdf6]">
       <StickyScroll content={content} />

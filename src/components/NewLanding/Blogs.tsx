@@ -3,45 +3,44 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-import { blogThirteenData } from "@/constants/blogs/blogThirteen-data";
-import { blogTwelveData } from "@/constants/blogs/blogsTwelve-data";
-import { blogFourteenData }  from "@/constants/blogs/blogFourteen-data";
 import UniversalHeading from "../UniversalHeading";
+import { blogTwentyOneData } from "@/constants/blogs/blogTwentyOne-data";
+import { blogTwentyData } from "@/constants/blogs/blogTwenty-data";
+import { blogNineteenData } from "@/constants/blogs/blogNineteen-data";
 
 const blogs = [
   {
-    image: blogThirteenData.image || "/blogs/blogThirteen.png",
-    date: new Date(blogThirteenData.date).toLocaleDateString("en-US", {
+    image: blogTwentyOneData.image || "/blogs/blogThirteen.png",
+    date: new Date(blogTwentyOneData.date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    readTime: blogThirteenData.readTime,
-    title: blogThirteenData.title,
-    slug: blogThirteenData.slug,
+    readTime: blogTwentyOneData.readTime,
+    title: blogTwentyOneData.title,
+    slug: blogTwentyOneData.slug,
   },
   {
-    image: blogTwelveData.image || "/blogs/blogTwelve.png",
-    date: new Date(blogTwelveData.date).toLocaleDateString("en-US", {
+    image: blogTwentyData.image || "/blogs/blogTwelve.png",
+    date: new Date(blogTwentyData.date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    readTime: blogTwelveData.readTime,
-    title: blogTwelveData.title,
-    slug: blogTwelveData.slug,
+    readTime: blogTwentyData.readTime,
+    title: blogTwentyData.title,
+    slug: blogTwentyData.slug,
   },
   {
-    image: blogFourteenData.image || "/blogs/blogFourteen.png",
-    date: new Date(blogFourteenData.date).toLocaleDateString("en-US", {
+    image: blogNineteenData.image || "/blogs/blogFourteen.png",
+    date: new Date(blogNineteenData.date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
     }),
-    readTime: blogFourteenData.readTime,
-    title: blogFourteenData.title,
-    slug: blogFourteenData.slug,
+    readTime: blogNineteenData.readTime,
+    title: blogNineteenData.title,
+    slug: blogNineteenData.slug,
   },
 ];
 

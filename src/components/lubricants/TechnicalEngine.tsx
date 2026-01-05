@@ -1,51 +1,50 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { BlurFade } from "../ui/blur-fade";
 import UniversalHeading from "../UniversalHeading";
 
 const services = [
   {
     title: "Streaming",
     description: "Real-time API ingestion",
-    image: "/abstract-gray.jpg",
+    image: "/lubricants/TechnicalEngine/Streaming.png",
   },
   {
     title: "Inventorying",
     description: "Multi-stream OEM emissions tracking",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/TechnicalEngine/Inventorying.png",
   },
   {
     title: "Attribution",
     description: "Automated LCI (Life Cycle Inventory) mapping",
-    image: "/article-2/article6.jpg",
+    image: "/lubricants/TechnicalEngine/Attribution.png",
   },
   {
     title: "Harmonization",
     description: "Tiered supplier emission data modelling",
-    image: "/lava-fire.jpg",
+    image: "/lubricants/TechnicalEngine/Harmonization.png",
   },
   {
     title: "Forensics",
     description: "Dynamic emission factors from global datasets",
-    image: "/article-2/article4.jpg",
+    image: "/lubricants/TechnicalEngine/Forensics.png",
   },
   {
     title: "Transparency",
     description: "AI-based anomaly detection",
-    image: "/article-2/article1.jpg",
+    image: "/lubricants/TechnicalEngine/Transparency.png",
   },
   {
     title: "Assurance",
     description: "Internal & external audit-ready logs",
-    image: "/green-moss.jpg",
+    image: "/lubricants/TechnicalEngine/Assurance.png",
   },
-
 ];
 
 export default function ScrollingCardsUI() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // DESKTOP SCROLL ANIMATION
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
@@ -76,77 +75,100 @@ export default function ScrollingCardsUI() {
 
   return (
     <>
-   
       <div className="w-full border-t border-dashed border-text/10 mb-4 sm:mb-6 md:mb-8"></div>
-    <div className="min-h-screen bg-[#fcfdf6] text-[#080c04] py-20 px-6">
-      <div ref={containerRef} className="relative pb-[60vh]" style={{ height: "400vh" }}>
-        <div className="mx-auto max-w-7xl px-4">
 
-  <UniversalHeading title="Technical Engine" align="right" description="Real-Time, Traceable & Assured Carbon Data Infrastructure" />
-         
-     
+      <div className="min-h-screen bg-[#fcfdf6] text-[#080c04] py-10 px-6">
 
-          <div className="hidden md:flex gap-8 lg:gap-12">
-            {/* LEFT — TEXT ONLY (NO VIDEO) */}
-            <div className="w-full lg:w-1/2 sticky top-8 h-[600px] flex items-center">
+        <UniversalHeading
+          title="Technical Engine"
+          align="right"
+          description="Real-Time, Traceable & Assured Carbon Data Infrastructure"
+        />
+
+        {/* ===================== DESKTOP / TABLET ===================== */}
+        <div
+          ref={containerRef}
+          className="relative pb-[60vh] hidden md:block"
+          style={{ height: "400vh" }}
+        >
+          <div className="mx-auto max-w-7xl px-4 flex gap-10">
+
+            {/* LEFT TEXT BLOCK */}
+            <div className="w-1/2 sticky top-8 h-[600px] flex items-center">
               <div>
                 <h3 className="text-5xl font-medium leading-tight text-[#080c04]">
-                Continuous Tracking. 
+                  Continuous Tracking.
                   <br />
                   <span className="text-[#b0ea1d]">Verified Outcomes.</span>
                 </h3>
+
                 <p className="mt-6 text-2xl text-[#6c5f31] max-w-md">
-                 Enterprise-Scale Emissions Data, Normalized and Verified
+                  Enterprise-Scale Emissions Data, Normalized and Verified
                 </p>
               </div>
             </div>
 
-            {/* RIGHT — SCROLLING CARDS */}
-            <div className="w-full lg:w-1/2 relative">
+            {/* RIGHT — SCROLL CARDS WITH IMAGES */}
+            <div className="w-1/2 relative">
               <div
-                className="flex flex-col gap-6 lg:gap-8 pt-[600px]"
+                className="flex flex-col gap-8 pt-[600px]"
                 style={{
                   transform: `translateY(${cardsTranslateY}px)`,
                   transition: "transform 0.1s linear",
                 }}
               >
                 {services.map((service, index) => (
-                  <div key={index} className="w-full max-w-7xl ml-auto">
+                  <div key={index}>
                     <div className="group relative overflow-hidden min-h-[330px] rounded-xl bg-white p-10 shadow-sm hover:shadow-md transition-all">
-                      {/* Hover Image */}
-                      <div className="absolute inset-0 opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+
+                      {/* IMAGE (DESKTOP ONLY) */}
+                      <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-500">
                         <img
                           src={service.image}
                           alt={service.title}
                           className="h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-black/40 group-hover:bg-none" />
+                        <div className="absolute inset-0 bg-black/60" />
                       </div>
 
-                      {/* Text */}
+                      {/* TEXT */}
                       <div className="relative z-10">
-                        <div className="text-3xl font-medium text-[#ffffff] group-hover:text-white transition-colors">
+                        <div className="text-3xl font-medium text-white">
                           {service.title}
                         </div>
-                        <p className="mt-4 text-2xl text-white group-hover:text-gray-100 transition-colors">
+                        <p className="mt-4 text-xl text-gray-200">
                           {service.description}
                         </p>
                       </div>
 
-                   
                     </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Mobile unchanged */}
+        {/* ===================== MOBILE VERSION ===================== */}
+        <div className="md:hidden mt-10 space-y-4">
+          {services.map((service, i) => (
+            <div
+              key={i}
+              className="rounded-2xl  p-5 shadow-sm"
+            >
+              <p className="text-sm text-[#6c5f31]">Step {i + 1}</p>
+
+              <h3 className="text-xl font-semibold text-[#080c04] mt-1">
+                {service.title}
+              </h3>
+
+              <p className="text-gray-700 mt-2">
+                {service.description}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
-
-      <div className="h-screen" />
-    </div>
-     </>
+    </>
   );
 }
