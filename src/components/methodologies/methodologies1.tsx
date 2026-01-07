@@ -1,7 +1,6 @@
 import React from 'react';
-import Navbar from '../NewLanding/Navbar';
 
-const AppleTermsOfUse = () => {
+const Methodology = () => {
   const html =`
   <!DOCTYPE html>
 <html lang="en">
@@ -534,4 +533,4 @@ const AppleTermsOfUse = () => {
   </div>
 };
 
-export default AppleTermsOfUse;
+export default Methodology;

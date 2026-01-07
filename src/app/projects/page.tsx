@@ -8,9 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Eye, MapPin, Grid3x3, List, Search } from 'lucide-react';
 import { useProjectDetails, useProjects } from '@/utils/projects/projectHooks';
 import { useAuth } from '@/contexts/AuthContext';
-import Header from '@/components/calculator/Header';
-import PreFooter from '@/components/main/PreFooter';
-import Footer from '@/components/main/Footer';
+
 import Image from 'next/image';
 
 const ProjectsPage = () => {
@@ -52,7 +50,6 @@ const ProjectsPage = () => {
   return (
     <div>
       <div className="container mx-auto px-4 py-8">
-        <Header />
         <h1 className="text-3xl mt-20 font-bold mb-8">Carbon Offset Projects</h1>
 
         {/* Search and View Controls */}
@@ -388,8 +385,7 @@ const ProjectsPage = () => {
 
     
       </div>
-      <PreFooter />
-      <Footer />
+     
     </div>
   );
 };

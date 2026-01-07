@@ -1,13 +1,8 @@
 "use client";
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
-import AnimatedHeroText from '../NewLanding/AnimatedHeroText';
-import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
-import { LinkPreview } from '../ui/link-preview';
-import Link from 'next/link';
 import CardNav from '../CardNav';
 import { navData } from '../NavData';
-
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
     return (

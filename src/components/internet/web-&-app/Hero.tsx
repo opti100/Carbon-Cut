@@ -1,10 +1,7 @@
 "use client";
 import CardNav from "@/components/CardNav";
-import { description } from "@/components/dashboard/Chart-Area-Interactive";
 import { navData } from "@/components/NavData";
 import { CardContent } from "@/components/ui/card";
-import { HoverEffect } from "@/components/ui/card-hover-effect";
-import UniversalHeading from "@/components/UniversalHeading";
 import { motion } from "motion/react";
 
 export function HeroSectionWebApps() {

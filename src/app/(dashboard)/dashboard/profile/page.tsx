@@ -34,7 +34,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import Image from "next/image"
 import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog"
 import { ApiKeyService } from "@/services/apikey/apikey"
-import { DashboardHeader } from "@/components/DashboardHeader"
 import { useGoogleAds } from "@/contexts/GoogleAdsContext"
 import { useRouter } from "next/dist/client/components/navigation"
 

@@ -24,11 +24,14 @@ export function HeroOilGas() {
 
       {/* Background Image */}
       <div className="absolute inset-0 -z-10">
-        <img
-          src="/auth-hero.jpg"
-          alt="Abstract Green"
+        <video
+          src="/Oil&Natural.mp4"
+          autoPlay
+          loop
+          muted
           className="h-full w-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
       {/* Hero Content (single column, centered) */}
@@ -54,7 +57,7 @@ export function HeroOilGas() {
               </Link>
             </div>
           </div>
-        </div>
+        </div> 
       </div>
     </section>
   );

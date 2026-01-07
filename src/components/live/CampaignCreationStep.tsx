@@ -16,7 +16,6 @@ import { CreateCampaignData, UTMParameter } from "@/types/campaign"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { makeRequest } from "@/contexts/AuthContext"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1"
 

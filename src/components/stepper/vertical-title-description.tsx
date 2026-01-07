@@ -9,7 +9,7 @@ import {
   StepperSeparator,
   StepperTitle,
   StepperTrigger,
-} from '@/components/ui/stepper';
+} from '@/components/ui/stepper'
 import { Check, LoaderCircleIcon } from 'lucide-react';
 
 const steps = [

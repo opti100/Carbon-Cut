@@ -62,9 +62,6 @@ const faqData = [
 ];
 
 
-
-
-
 export default function FAQGas() {
   return (
     <>

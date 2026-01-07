@@ -40,7 +40,7 @@ const services = [
   },
 ];
 
-export default function ScrollingCardsUI() {
+export default function TechnicalEngine() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -140,14 +140,16 @@ export default function ScrollingCardsUI() {
                           {service.description}
                         </p>
                       </div>
-
                     </div>
+                   
                   </div>
                 ))}
               </div>
             </div>
           </div>
+
         </div>
+           <div className="h-screen" />
 
         {/* ===================== MOBILE VERSION ===================== */}
         <div className="md:hidden mt-10 space-y-4">
