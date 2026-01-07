@@ -367,7 +367,7 @@ export default function HowItWorks() {
 
                 <div className="prllx-wrapper relative flex h-[700lvh] flex-row overflow-clip">
                     {/* Left Side - Sticky Fields */}
-                    <div className="fields-sticky sticky top-0 z-10 h-screen w-1/2 flex items-center justify-center">
+                    <div className="fields-sticky sticky top-0 z-10 h-screen w-1/2 flex items-center justify-start">
                         {/* Dashed Grid Background with Parallax Movement */}
                         <div className="absolute top-0 -z-10 left-10 xl:left-20 h-full mb-40  w-4 text-[#fdcf29]"
                             style={{
@@ -474,9 +474,8 @@ export default function HowItWorks() {
                     <div className="absolute top-0 right-0 z-0 h-full w-1/2">
                         <div className="w-full flex px-6 xl:px-10 py-8 xl:py-12"></div>
 
-                        <div className="anim-wrapper sticky top-0 left-0 h-screen w-full">
-                            <div className="anim-bg-wrapper absolute inset-0">
-                                {steps.slice(0, 4).map((step, index) => (
+                        <div className="anim-wrapper sticky top-0 left-0 h-screen flex justify-center items-center w-full  ">
+                             {steps.slice(0, 4).map((step, index) => (
                                     <div
                                         key={index}
                                         className="anim-bg-img absolute inset-0 transition-opacity duration-700"
@@ -488,7 +487,6 @@ export default function HowItWorks() {
                                         {stepComponents[index]()}
                                     </div>
                                 ))}
-                            </div>
                         </div>
                     </div>
                 </div>

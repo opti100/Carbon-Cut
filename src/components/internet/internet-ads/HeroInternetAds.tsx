@@ -20,7 +20,7 @@ export function HeroInternetAds() {
             </div>
 
             <div className="px-4 py-10 md:py-20">
-                <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
+                <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-mono font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
                     {"Track Your Internet Ads"
                         .split(" ")
                         .map((word, index) => (

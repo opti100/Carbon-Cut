@@ -88,7 +88,7 @@ const WhoUses = () => {
         <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
 
           {/* HEADER */}
-          <UniversalHeading title="Who Uses" align="right" />
+          <UniversalHeading title="Who Uses this?" description="CarbonCut powers real-time CO₂e" align="right" />
 
           {/* LIST */}
           <div className="space-y-4">

@@ -30,7 +30,7 @@ const services = [
   },
   {
     title: "Transparency",
-    description: "AI-based anomaly detection",
+    description: "AI based anomaly detection",
     image: "/lubricants/TechnicalEngine/Transparency.png",
   },
   {
@@ -44,7 +44,7 @@ export default function TechnicalEngine() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // DESKTOP SCROLL ANIMATION
+ 
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
@@ -122,13 +122,13 @@ export default function TechnicalEngine() {
                     <div className="group relative overflow-hidden min-h-[330px] rounded-xl bg-white p-10 shadow-sm hover:shadow-md transition-all">
 
                       {/* IMAGE (DESKTOP ONLY) */}
-                      <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 opacity-90 group-hover:opacity-100 transition-opacity duration-500">
                         <img
                           src={service.image}
                           alt={service.title}
                           className="h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-black/60" />
+                        <div className="absolute inset-0 bg-black/40" />
                       </div>
 
                       {/* TEXT */}

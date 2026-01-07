@@ -21,7 +21,7 @@ export function HeroSectionWebApps() {
             </div>
 
             <div className="px-4 py-10 md:py-20">
-                <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
+                <h1 className="relative z-10 mx-auto max-w-6xl text-center text-2xl font-mono font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
                     {"Track Your Digital Product"
                         .split(" ")
                         .map((word, index) => (
@@ -53,7 +53,7 @@ export function HeroSectionWebApps() {
                         duration: 0.3,
                         delay: 0.8,
                     }}
-                    className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
+                    className="relative z-10 mx-auto max-w-6xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
                 >
                     Install our SDK to start tracking carbon emissions from your website or application
                 </motion.p>
