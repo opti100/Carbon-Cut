@@ -1,10 +1,17 @@
-"use client";
-import { ArrowRight, Clock, DollarSign, EyeOff, FileClock, Puzzle, ShieldAlert } from "lucide-react";
+'use client'
+import {
+  ArrowRight,
+  Clock,
+  DollarSign,
+  EyeOff,
+  FileClock,
+  Puzzle,
+  ShieldAlert,
+} from 'lucide-react'
 
 export default function ProblemWeareSolving() {
   return (
     <section className="relative w-full bg-[#fcfdf6] py-24 overflow-hidden">
-
       {/* background arcs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -left-40 top-0 w-[900px] h-[900px] rounded-full border-[1px] border-[#cfc5b6]" />
@@ -12,8 +19,7 @@ export default function ProblemWeareSolving() {
         <div className="absolute left-0 top-32 w-[900px] h-[900px] rounded-full border-[1px] border-[#e3dacd]" />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-6">
-
+      <div className="relative max-w-[1400px]  mx-auto px-4 sm:px-6 lg:px-8">
         {/* subtitle */}
         <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-4">
           The Problem We're Solving
@@ -21,11 +27,17 @@ export default function ProblemWeareSolving() {
 
         {/* headline */}
         <h2 className="text-3xl md:text-5xl leading-tight font-serif max-w-6xl">
-          An <span className="text-[#b0ea1d] italic"> Traditional carbon accounting wasn't built for digital businesses.</span> <br />  <br /> Standard calculators focus on manufacturing, shipping,{" "}
-          <span className="text-[#b0ea1d] italic"> and office spaces they miss </span>{" "}
+          An{' '}
+          <span className="text-[#b0ea1d] italic">
+            {' '}
+            Traditional carbon accounting wasn't built for digital businesses.
+          </span>{' '}
+          <br /> <br /> Standard calculators focus on manufacturing, shipping,{' '}
+          <span className="text-[#b0ea1d] italic">
+            {' '}
+            and office spaces they miss{' '}
+          </span>{' '}
           your digital infrastructure entirely.
-
-
         </h2>
 
         {/* connecting line */}
@@ -35,11 +47,9 @@ export default function ProblemWeareSolving() {
 
         {/* two column content */}
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-12">
-
           {/* Left card */}
           <div>
             <div className="flex items-center gap-3 mb-3">
-
               <h3 className="font-semibold text-xl">
                 Here's what companies struggle with today:
               </h3>
@@ -77,19 +87,17 @@ export default function ProblemWeareSolving() {
                   <span>Regulatory pressure with no compliance path</span>
                 </div>
               </div>
-
             </p>
           </div>
           {/* Right card */}
           <div>
-
             <p className="text-black leading-relaxed font-mono font-semibold  text-xl">
-              You're trying to hit net-zero targets with incomplete data and tools not designed for how modern businesses operate.
+              You're trying to hit net-zero targets with incomplete data and tools not
+              designed for how modern businesses operate.
             </p>
-
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }

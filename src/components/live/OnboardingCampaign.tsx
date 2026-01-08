@@ -1,18 +1,24 @@
-"use client"
+'use client'
 
-import React, { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { useGoogleAds } from "@/contexts/GoogleAdsContext"
-import { campaignApi } from "@/services/campaign/campaign"
-import { CreateCampaignData, UTMParameter } from "@/types/campaign"
-import { Loader2, Sparkles } from "lucide-react"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import React, { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useGoogleAds } from '@/contexts/GoogleAdsContext'
+import { campaignApi } from '@/services/campaign/campaign'
+import { CreateCampaignData, UTMParameter } from '@/types/campaign'
+import { Loader2, Sparkles } from 'lucide-react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface OnboardingCampaignProps {
-  onNext: () => void // 
+  onNext: () => void //
 }
 
 export default function OnboardingCampaign({ onNext }: OnboardingCampaignProps) {
@@ -20,13 +26,13 @@ export default function OnboardingCampaign({ onNext }: OnboardingCampaignProps) 
   const queryClient = useQueryClient()
   const { status, isSwitchingAccount } = useGoogleAds()
 
-  const [selectedCampaignId, setSelectedCampaignId] = useState<string>("")
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>('')
   const [formData, setFormData] = useState<Partial<CreateCampaignData>>({})
 
   // 1. Fetch available Google Ads campaigns
   const { data: googleAdsCampaigns, isLoading: googleAdsCampaignsLoading } = useQuery({
-    queryKey: ["googleAdsCampaigns", status?.customer_id],
-    queryFn: () => campaignApi.googleAdsCampaign(status?.customer_id || ""),
+    queryKey: ['googleAdsCampaigns', status?.customer_id],
+    queryFn: () => campaignApi.googleAdsCampaign(status?.customer_id || ''),
     enabled: !!status?.customer_id && !isSwitchingAccount,
     staleTime: 5 * 60 * 1000,
   })
@@ -34,17 +40,22 @@ export default function OnboardingCampaign({ onNext }: OnboardingCampaignProps) 
   // 2. When a campaign is selected, prepare the form data
   useEffect(() => {
     if (selectedCampaignId && googleAdsCampaigns) {
-      const selectedCampaign = googleAdsCampaigns.find((c: any) => c.id === selectedCampaignId)
+      const selectedCampaign = googleAdsCampaigns.find(
+        (c: any) => c.id === selectedCampaignId
+      )
       if (selectedCampaign) {
         const campaignName = selectedCampaign.name
         const campaignId = selectedCampaign.id
-        const slug = campaignName.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "")
+        const slug = campaignName
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '_')
+          .replace(/^_+|_+$/g, '')
 
         const utmParams: UTMParameter[] = [
-          { key: "utm_source", value: "google", selected: true },
-          { key: "utm_medium", value: "cpc", selected: true },
-          { key: "utm_campaign", value: slug, selected: true },
-          { key: "utm_id", value: campaignId, selected: true },
+          { key: 'utm_source', value: 'google', selected: true },
+          { key: 'utm_medium', value: 'cpc', selected: true },
+          { key: 'utm_campaign', value: slug, selected: true },
+          { key: 'utm_id', value: campaignId, selected: true },
         ]
 
         setFormData({
@@ -62,12 +73,12 @@ export default function OnboardingCampaign({ onNext }: OnboardingCampaignProps) 
   const createMutation = useMutation({
     mutationFn: (data: CreateCampaignData) => campaignApi.create(data),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["campaigns"] })
+      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
       toast.success(`Campaign "${data.name}" created successfully!`)
-      router.push("/dashboard") // Redirect to dashboard on success
+      router.push('/dashboard') // Redirect to dashboard on success
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.error || "Failed to create campaign")
+      toast.error(error.response?.data?.error || 'Failed to create campaign')
     },
   })
 
@@ -75,7 +86,7 @@ export default function OnboardingCampaign({ onNext }: OnboardingCampaignProps) 
     if (formData.name && formData.google_ads_campaign_id) {
       createMutation.mutate(formData as CreateCampaignData)
     } else {
-      toast.error("Please select a campaign first.")
+      toast.error('Please select a campaign first.')
     }
   }
 
@@ -89,7 +100,9 @@ export default function OnboardingCampaign({ onNext }: OnboardingCampaignProps) 
         disabled={isLoading || createMutation.isPending}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder={isLoading ? "Loading campaigns..." : "Select a campaign"} />
+          <SelectValue
+            placeholder={isLoading ? 'Loading campaigns...' : 'Select a campaign'}
+          />
         </SelectTrigger>
         <SelectContent>
           {googleAdsCampaigns?.map((campaign: any) => (

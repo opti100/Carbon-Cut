@@ -1,63 +1,71 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BlurFade } from '@/components/ui/blur-fade';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Building2, Leaf, ArrowRight, Globe, MapPin } from 'lucide-react';
-import { ComplianceMarketCountries } from '@/types/market';
-import { useAuth } from '@/contexts/AuthContext';
+'use client'
+import React, { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { BlurFade } from '@/components/ui/blur-fade'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Building2, Leaf, ArrowRight, Globe, MapPin } from 'lucide-react'
+import { ComplianceMarketCountries } from '@/types/market'
+import { useAuth } from '@/contexts/AuthContext'
 
 const OffsetFlow = () => {
-  const [selectedMarket, setSelectedMarket] = useState<'compliance' | 'voluntary' | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const { isAuthenticated } = useAuth();
+  const [selectedMarket, setSelectedMarket] = useState<'compliance' | 'voluntary' | null>(
+    null
+  )
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const { isAuthenticated } = useAuth()
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push('/signup');
-      return;
+      router.push('/signup')
+      return
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, router])
 
   useEffect(() => {
-    const marketParam = searchParams.get('market');
+    const marketParam = searchParams.get('market')
     if (marketParam === 'compliance' || marketParam === 'voluntary') {
-      setSelectedMarket(marketParam);
+      setSelectedMarket(marketParam)
     }
-  }, [searchParams]);
+  }, [searchParams])
 
   const handleMarketSelection = (market: 'compliance' | 'voluntary') => {
-    setSelectedMarket(market);
-    localStorage.setItem('selectedMarket', market);
-    
+    setSelectedMarket(market)
+    localStorage.setItem('selectedMarket', market)
+
     if (market === 'voluntary') {
       // Redirect to projects for voluntary market
-      router.push('/projects');
+      router.push('/projects')
     }
-  };
+  }
 
   const handleCountrySelection = (country: string) => {
-    setSelectedCountry(country);
-    localStorage.setItem('selectedCountry', country);
+    setSelectedCountry(country)
+    localStorage.setItem('selectedCountry', country)
     // You can redirect to a specific compliance page or continue with the flow
     // router.push(`/offset/compliance?country=${country}`);
-  };
+  }
 
   const handleContinue = () => {
     if (selectedMarket === 'compliance' && selectedCountry) {
-      router.push(`/offset/compliance?country=${selectedCountry}`);
+      router.push(`/offset/compliance?country=${selectedCountry}`)
     }
-  };
+  }
 
-  const complianceCountries = Object.entries(ComplianceMarketCountries);
+  const complianceCountries = Object.entries(ComplianceMarketCountries)
 
   if (!isAuthenticated) {
-    return null; // Will redirect to signup
+    return null // Will redirect to signup
   }
 
   return (
@@ -69,7 +77,8 @@ const OffsetFlow = () => {
               Choose Your Carbon Offset Market
             </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Select the carbon offset market that best fits your organization&apos;s needs and compliance requirements.
+              Select the carbon offset market that best fits your organization&apos;s
+              needs and compliance requirements.
             </p>
           </div>
         </BlurFade>
@@ -89,9 +98,11 @@ const OffsetFlow = () => {
               >
                 <CardContent className="p-6 md:p-8">
                   <div className="flex items-start gap-4 md:gap-6">
-                    <div className={`flex-shrink-0 p-3 md:p-4 rounded-2xl transition-colors ${
-                      selectedMarket === 'compliance' ? 'bg-blue-100' : 'bg-blue-50'
-                    }`}>
+                    <div
+                      className={`flex-shrink-0 p-3 md:p-4 rounded-2xl transition-colors ${
+                        selectedMarket === 'compliance' ? 'bg-blue-100' : 'bg-blue-50'
+                      }`}
+                    >
                       <Building2 className="h-8 w-8 md:h-10 md:w-10 text-blue-600" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -104,7 +115,8 @@ const OffsetFlow = () => {
                         </Badge>
                       </div>
                       <p className="text-gray-600 text-base md:text-lg mb-4 leading-relaxed">
-                        Government-regulated carbon credits for organizations with mandatory emission reduction targets under cap-and-trade systems.
+                        Government-regulated carbon credits for organizations with
+                        mandatory emission reduction targets under cap-and-trade systems.
                       </p>
                       <ul className="text-sm md:text-base text-gray-600 space-y-2">
                         <li className="flex items-center gap-2">
@@ -144,9 +156,11 @@ const OffsetFlow = () => {
               >
                 <CardContent className="p-6 md:p-8">
                   <div className="flex items-start gap-4 md:gap-6">
-                    <div className={`flex-shrink-0 p-3 md:p-4 rounded-2xl transition-colors ${
-                      selectedMarket === 'voluntary' ? 'bg-green-100' : 'bg-green-50'
-                    }`}>
+                    <div
+                      className={`flex-shrink-0 p-3 md:p-4 rounded-2xl transition-colors ${
+                        selectedMarket === 'voluntary' ? 'bg-green-100' : 'bg-green-50'
+                      }`}
+                    >
                       <Leaf className="h-8 w-8 md:h-10 md:w-10 text-green-600" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -159,7 +173,8 @@ const OffsetFlow = () => {
                         </Badge>
                       </div>
                       <p className="text-gray-600 text-base md:text-lg mb-4 leading-relaxed">
-                        Market-driven carbon credits for voluntary sustainability commitments and corporate responsibility initiatives.
+                        Market-driven carbon credits for voluntary sustainability
+                        commitments and corporate responsibility initiatives.
                       </p>
                       <ul className="text-sm md:text-base text-gray-600 space-y-2">
                         <li className="flex items-center gap-2">
@@ -231,7 +246,12 @@ const OffsetFlow = () => {
                         <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
                           <p className="text-blue-700 font-medium flex items-center gap-2">
                             <MapPin className="h-4 w-4" />
-                            Selected Region: {ComplianceMarketCountries[selectedCountry as keyof typeof ComplianceMarketCountries]}
+                            Selected Region:{' '}
+                            {
+                              ComplianceMarketCountries[
+                                selectedCountry as keyof typeof ComplianceMarketCountries
+                              ]
+                            }
                           </p>
                         </div>
                         <Button
@@ -263,7 +283,8 @@ const OffsetFlow = () => {
                     Redirecting to Voluntary Carbon Projects
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    You&apos;ll be taken to our marketplace of verified carbon offset projects.
+                    You&apos;ll be taken to our marketplace of verified carbon offset
+                    projects.
                   </p>
                   <Button
                     onClick={() => router.push('/projects')}
@@ -279,7 +300,7 @@ const OffsetFlow = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OffsetFlow;
+export default OffsetFlow

@@ -1,24 +1,30 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
-import { useRouter } from "next/navigation"
-import ApiKeyStep from "@/components/live/onboardingSdk"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { LogIn, UserPlus, Loader2, Lock, Globe, Smartphone } from "lucide-react"
-import Link from "next/link"
-import CardNav from "@/components/CardNav"
-import { cn } from "@/lib/utils"
-import { navData } from "@/components/NavData"
+import { useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
+import { useRouter } from 'next/navigation'
+import ApiKeyStep from '@/components/live/onboardingSdk'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { LogIn, UserPlus, Loader2, Lock, Globe, Smartphone } from 'lucide-react'
+import Link from 'next/link'
+import CardNav from '@/components/CardNav'
+import { cn } from '@/lib/utils'
+import { navData } from '@/components/NavData'
 
 const WebAndApps = () => {
   const { user, isLoading, isAuthenticated } = useAuth()
   const router = useRouter()
-  const [onboardingTarget, setOnboardingTarget] = useState<"website" | "app">("website")
+  const [onboardingTarget, setOnboardingTarget] = useState<'website' | 'app'>('website')
 
   const handleWebsiteComplete = () => {
-    router.push("/internet/internet-ads")
+    router.push('/internet/internet-ads')
   }
 
   if (isLoading) {
@@ -34,23 +40,18 @@ const WebAndApps = () => {
 
   return (
     <div className="min-h-screen bg-[#fcfdf6] relative overflow-hidden px-6">
-
       {/* Main */}
       <main
         className={cn(
-          "max-w-6xl mx-auto",
-          (!isAuthenticated || !user) && "blur-md pointer-events-none"
+          'max-w-6xl mx-auto',
+          (!isAuthenticated || !user) && 'blur-md pointer-events-none'
         )}
       >
         {/* Step 2 – SDK Installation */}
         <div className="max-w-5xl mx-auto px-8  bg-[#d1cebb] rounded-lg p-8   shadow-md">
-         
-
-         
-            <div>
-              <ApiKeyStep onNext={handleWebsiteComplete} sourceType="web" />
-            </div>
-         
+          <div>
+            <ApiKeyStep onNext={handleWebsiteComplete} sourceType="web" />
+          </div>
         </div>
       </main>
 
@@ -64,12 +65,17 @@ const WebAndApps = () => {
               </div>
               <CardTitle className="text-2xl">Authentication Required</CardTitle>
               <CardDescription>
-                Please log in or sign up to access onboarding and start tracking your carbon emissions
+                Please log in or sign up to access onboarding and start tracking your
+                carbon emissions
               </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
-              <Button asChild size="lg" className="w-full bg-[#adff00] hover:bg-[#adff00]/90 text-black">
+              <Button
+                asChild
+                size="lg"
+                className="w-full bg-[#adff00] hover:bg-[#adff00]/90 text-black"
+              >
                 <Link href="/login">
                   <LogIn className="mr-2 h-4 w-4" />
                   Log In

@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link'
+import React from 'react'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 const Skiper40 = () => {
   return (
@@ -16,54 +16,54 @@ const Skiper40 = () => {
         <Link005 href="mailto:hi@skiper-ui.com">hi@skiper-ui.com</Link005>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export { Link000, Link001, Link002, Link003, Link004, Link005, Skiper40 };
+export { Link000, Link001, Link002, Link003, Link004, Link005, Skiper40 }
 
 const Link000 = ({
   children,
   href,
   className,
 }: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
+  children: React.ReactNode
+  href: string
+  className?: string
 }) => {
   return (
     <Link
       href={href}
       className={cn(
-        "group relative flex items-center",
+        'group relative flex items-center',
         className,
         "before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:h-[0.05em] before:w-full before:bg-current before:content-['']",
-        "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "hover:before:origin-left hover:before:scale-x-100",
+        'before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'hover:before:origin-left hover:before:scale-x-100'
       )}
     >
       {children}
     </Link>
-  );
-};
+  )
+}
 const Link001 = ({
   children,
   href,
   className,
 }: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
+  children: React.ReactNode
+  href: string
+  className?: string
 }) => {
   return (
     <a
       href={href}
       target="_blank"
       className={cn(
-        "group relative flex items-center",
+        'group relative flex items-center',
         "before:pointer-events-none before:absolute before:left-0 before:top-[1.5em] before:h-[0.05em] before:w-full before:bg-current before:content-['']",
-        "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "hover:before:origin-left hover:before:scale-x-100",
-        className,
+        'before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'hover:before:origin-left hover:before:scale-x-100',
+        className
       )}
     >
       {children}
@@ -83,27 +83,27 @@ const Link001 = ({
         ></path>
       </svg>
     </a>
-  );
-};
+  )
+}
 const Link002 = ({
   children,
   href,
   className,
 }: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
+  children: React.ReactNode
+  href: string
+  className?: string
 }) => {
   return (
     <a
       href={href}
       className={cn(
-        "group relative flex items-center",
+        'group relative flex items-center',
         className,
         "before:pointer-events-none before:absolute before:left-0 before:top-[1.5em] before:h-[0.05em] before:w-full before:bg-current before:content-['']",
-        "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "before:origin-left",
-        "hover:before:origin-right hover:before:scale-x-100",
+        'before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'before:origin-left',
+        'hover:before:origin-right hover:before:scale-x-100'
       )}
     >
       {children}
@@ -123,27 +123,27 @@ const Link002 = ({
         ></path>
       </svg>
     </a>
-  );
-};
+  )
+}
 const Link003 = ({
   children,
   href,
   className,
 }: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
+  children: React.ReactNode
+  href: string
+  className?: string
 }) => {
   return (
     <a
       href={href}
       className={cn(
-        "group relative flex items-center",
+        'group relative flex items-center',
         className,
         "before:pointer-events-none before:absolute before:left-0 before:top-[1.5em] before:h-[0.05em] before:w-full before:bg-current before:content-['']",
-        "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "before:origin-center",
-        "hover:before:scale-x-100",
+        'before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'before:origin-center',
+        'hover:before:scale-x-100'
       )}
     >
       {children}
@@ -163,28 +163,28 @@ const Link003 = ({
         ></path>
       </svg>
     </a>
-  );
-};
+  )
+}
 
 const Link004 = ({
   children,
   href,
   className,
 }: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
+  children: React.ReactNode
+  href: string
+  className?: string
 }) => {
   return (
     <a
       href={href}
       className={cn(
-        "group relative flex items-center",
+        'group relative flex items-center',
         className,
         "before:pointer-events-none before:absolute before:left-0 before:w-full before:bg-white before:content-['']",
-        "before:origin-right before:scale-x-0 before:transition-all before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "before:origin-center md:before:bottom-0",
-        "before:z-1 px-2 before:h-0 before:scale-x-100 before:mix-blend-difference hover:before:h-[1.4em]",
+        'before:origin-right before:scale-x-0 before:transition-all before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'before:origin-center md:before:bottom-0',
+        'before:z-1 px-2 before:h-0 before:scale-x-100 before:mix-blend-difference hover:before:h-[1.4em]'
       )}
     >
       {children}
@@ -204,27 +204,27 @@ const Link004 = ({
         ></path>
       </svg>
     </a>
-  );
-};
+  )
+}
 const Link005 = ({
   children,
   href,
   className,
 }: {
-  children: React.ReactNode;
-  href: string;
-  className?: string;
+  children: React.ReactNode
+  href: string
+  className?: string
 }) => {
   return (
     <a
       href={href}
       className={cn(
         className,
-        "group relative flex items-center",
+        'group relative flex items-center',
         "before:pointer-events-none before:absolute before:left-0 before:w-full before:bg-white before:content-['']",
-        "before:scale-x-1 before:transition-all before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "before:origin-left md:before:top-0",
-        "before:z-1 px-2 before:h-full before:scale-x-0 before:mix-blend-difference hover:before:scale-x-100",
+        'before:scale-x-1 before:transition-all before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'before:origin-left md:before:top-0',
+        'before:z-1 px-2 before:h-full before:scale-x-0 before:mix-blend-difference hover:before:scale-x-100'
       )}
     >
       {children}
@@ -244,8 +244,8 @@ const Link005 = ({
         ></path>
       </svg>
     </a>
-  );
-};
+  )
+}
 
 /**
  * Skiper 40 Animated Link — React

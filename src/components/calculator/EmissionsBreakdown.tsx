@@ -1,5 +1,5 @@
-import { TrendingUp, Globe, Zap } from "lucide-react"
-import { EmissionsPieChart } from "../PieChart"
+import { TrendingUp, Globe, Zap } from 'lucide-react'
+import { EmissionsPieChart } from '../PieChart'
 
 interface EmissionsBreakdownProps {
   totals: {
@@ -12,9 +12,9 @@ interface EmissionsBreakdownProps {
 
 export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) {
   // Check if there's any data to display
-  const hasChannelData = Object.values(totals.byChannel).some(value => value > 0)
-  const hasMarketData = Object.values(totals.byMarket).some(value => value > 0)
-  const hasScopeData = Object.values(totals.byScope).some(value => value > 0)
+  const hasChannelData = Object.values(totals.byChannel).some((value) => value > 0)
+  const hasMarketData = Object.values(totals.byMarket).some((value) => value > 0)
+  const hasScopeData = Object.values(totals.byScope).some((value) => value > 0)
 
   // If no data exists, render nothing
   if (!hasChannelData && !hasMarketData && !hasScopeData) {
@@ -23,33 +23,31 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
 
   // Color palettes for each chart type
   const channelPalette = [
-    "#688b0d",
-    "#80ad10",
-    "#99ce13",
-    "#afe91c",
-    "#bbed3d",
-    "#c7f05f",
-    "#d2f380",
-    "#def6a1"
-
+    '#688b0d',
+    '#80ad10',
+    '#99ce13',
+    '#afe91c',
+    '#bbed3d',
+    '#c7f05f',
+    '#d2f380',
+    '#def6a1',
   ]
 
   const marketPalette = [
-    "#574d27",
-    "#706333",
-    "#89793e",
-    "#a28f49",
-    "#b5a15c",
-    "#c0af75",
-    "#cbbe8e",
-    "#d7cca7"
-
+    '#574d27',
+    '#706333',
+    '#89793e',
+    '#a28f49',
+    '#b5a15c',
+    '#c0af75',
+    '#cbbe8e',
+    '#d7cca7',
   ]
 
   const scopePalette: Record<number, string> = {
-    1: "#8f8209", // Dark Orange (Scope 1 - Direct)
-    2: "#efd90f", // Orange (Scope 2 - Indirect Energy)
-    3: "#f5e86f", // Light Orange (Scope 3 - Other Indirect)
+    1: '#8f8209', // Dark Orange (Scope 1 - Direct)
+    2: '#efd90f', // Orange (Scope 2 - Indirect Energy)
+    3: '#f5e86f', // Light Orange (Scope 3 - Other Indirect)
   }
 
   // Transform data for charts - only include data with values > 0
@@ -77,17 +75,23 @@ export default function EmissionsBreakdown({ totals }: EmissionsBreakdownProps) 
     .map(([scope, value]) => ({
       name: `Scope ${scope}`,
       value,
-      fill: scopePalette[parseInt(scope)] || "#F97316",
+      fill: scopePalette[parseInt(scope)] || '#F97316',
     }))
 
   return (
     <div className="bg-[#fcfdf6] px-6 py-8 space-y-8">
       {/* Header */}
       <div>
-         <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 " style={{ color: '#080c04' }}>Emissions Breakdown</h1>
+        <h1
+          className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-6 "
+          style={{ color: '#080c04' }}
+        >
+          Emissions Breakdown
+        </h1>
         <p className="text-gray-600 mt-2 max-w-3xl">
-          Breakdown of your marketing-related CO₂e emissions across different channels, markets, and scopes.
-          Calculated using <strong className="text-[#080c04]">verified emission factors</strong>.
+          Breakdown of your marketing-related CO₂e emissions across different channels,
+          markets, and scopes. Calculated using{' '}
+          <strong className="text-[#080c04]">verified emission factors</strong>.
         </p>
       </div>
 

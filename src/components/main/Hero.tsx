@@ -1,16 +1,11 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
-import AnimatedHeroText from "./AnimatedHeroText";
-import {
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
-  ArrowUpRight,
-} from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from 'next/image'
+import React, { useState, useEffect, useRef } from 'react'
+import AnimatedHeroText from './AnimatedHeroText'
+import { ChevronDown, ChevronRight, ChevronUp, ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
   return (
@@ -26,56 +21,55 @@ function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
         onCanPlay={onLoad}
         className="w-full h-full object-cover"
       />
-        <div className="absolute inset-0 bg-black/20"></div>
+      <div className="absolute inset-0 bg-black/20"></div>
     </div>
-  );
+  )
 }
 
 const Hero = () => {
-  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [showContent, setShowContent] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null)
+  const [openSubMenu, setOpenSubMenu] = useState<string | null>(null)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [showContent, setShowContent] = useState(false)
 
-  const dropdown1Ref = useRef<HTMLDivElement>(null);
-  const dropdown2Ref = useRef<HTMLDivElement>(null);
+  const dropdown1Ref = useRef<HTMLDivElement>(null)
+  const dropdown2Ref = useRef<HTMLDivElement>(null)
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const handleVideoLoad = () => setIsVideoLoaded(true);
+  const handleVideoLoad = () => setIsVideoLoaded(true)
 
   useEffect(() => {
     if (isVideoLoaded) {
-      const t = setTimeout(() => setShowContent(true), 100);
-      return () => clearTimeout(t);
+      const t = setTimeout(() => setShowContent(true), 100)
+      return () => clearTimeout(t)
     }
-  }, [isVideoLoaded]);
+  }, [isVideoLoaded])
 
-  const toggleDropdown = (id: number) =>
-    setOpenDropdown(openDropdown === id ? null : id);
+  const toggleDropdown = (id: number) => setOpenDropdown(openDropdown === id ? null : id)
 
   const toggleSubMenu = (name: string) =>
-    setOpenSubMenu(openSubMenu === name ? null : name);
+    setOpenSubMenu(openSubMenu === name ? null : name)
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      const t = e.target as Node;
+      const t = e.target as Node
       if (
         dropdown1Ref.current &&
         !dropdown1Ref.current.contains(t) &&
         dropdown2Ref.current &&
         !dropdown2Ref.current.contains(t)
       ) {
-        setOpenDropdown(null);
-        setOpenSubMenu(null);
+        setOpenDropdown(null)
+        setOpenSubMenu(null)
       }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   return (
-    <section className="relative h-screen w-full" data-scroll-section>
+    <section className="relative h-screen w-full px-4 sm:px-6 lg:px-8" data-scroll-section>
       {!isVideoLoaded && (
         <div className="w-full h-full overflow-hidden rounded-xl">
           <Image
@@ -92,29 +86,28 @@ const Hero = () => {
       </div>
 
       <div
-        className={`flex items-center h-full transition-opacity duration-1000 ${
-          showContent ? "opacity-100" : "opacity-0"
+        className={`flex items-center justify-start h-full transition-opacity duration-1000  ${
+          showContent ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="w-full max-w-[1400px] mx-auto ">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <AnimatedHeroText />
             </h1>
 
             <p className="text-base md:text-xl text-white/80 mb-8 max-w-2xl leading-relaxed">
-              Track, decarbon, and report your carbon footprint with powerful
-              analytics and actionable insights.
+              Track, decarbon, and report your carbon footprint with powerful analytics
+              and actionable insights.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-
               {/* BUTTON 1 */}
               <div className="relative w-full sm:w-64" ref={dropdown1Ref}>
                 <button
                   onClick={() => toggleDropdown(1)}
                   className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg  transition hover:shadow-xl"
-                  style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
+                  style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                   Capabilities
                   {openDropdown === 1 ? <ChevronUp /> : <ChevronDown />}
@@ -140,7 +133,7 @@ const Hero = () => {
                 <button
                   onClick={() => toggleDropdown(2)}
                   className="flex items-center justify-between w-full px-6 py-3 rounded-lg font-medium shadow-lg  transition hover:shadow-xl"
-                  style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
+                  style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                   Industries
                   {openDropdown === 2 ? <ChevronUp /> : <ChevronDown />}
@@ -148,25 +141,24 @@ const Hero = () => {
 
                 {openDropdown === 2 && (
                   <div className="absolute left-0 mt-2 w-full rounded-lg shadow-lg border z-20 bg-white">
-
                     {/* INTERNET MOBILE */}
                     <div className="block md:hidden">
                       <button
                         onClick={() => {
-                          if (openSubMenu === "internet") router.push("/internet");
-                          else toggleSubMenu("internet");
+                          if (openSubMenu === 'internet') router.push('/internet')
+                          else toggleSubMenu('internet')
                         }}
                         className="w-full flex items-center justify-between py-2 px-3"
                       >
                         <span>Internet</span>
-                        {openSubMenu === "internet" ? (
+                        {openSubMenu === 'internet' ? (
                           <ArrowUpRight className="h-4 w-4" />
                         ) : (
                           <ChevronRight className="h-4 w-4" />
                         )}
                       </button>
 
-                      {openSubMenu === "internet" && (
+                      {openSubMenu === 'internet' && (
                         <div className="pl-4 pb-2 space-y-1">
                           <Link href="/internet/internet-ads">
                             <p className="py-2 px-3 rounded hover:bg-[#b0ea1d] flex items-center justify-between">
@@ -219,21 +211,20 @@ const Hero = () => {
                     <div className="block md:hidden">
                       <button
                         onClick={() => {
-                          if (openSubMenu === "oil")
-                            router.push("/oil-and-natural-gas");
-                          else toggleSubMenu("oil");
+                          if (openSubMenu === 'oil') router.push('/oil-and-natural-gas')
+                          else toggleSubMenu('oil')
                         }}
                         className="w-full flex items-center justify-between py-2 px-3"
                       >
                         <span>Oil & Natural Gas</span>
-                        {openSubMenu === "oil" ? (
+                        {openSubMenu === 'oil' ? (
                           <ArrowUpRight className="h-4 w-4" />
                         ) : (
                           <ChevronRight className="h-4 w-4" />
                         )}
                       </button>
 
-                      {openSubMenu === "oil" && (
+                      {openSubMenu === 'oil' && (
                         <div className="pl-4 pb-2">
                           <Link href="/oil-and-natural-gas/lubricant">
                             <p className="py-2 px-3 rounded hover:bg-[#b0ea1d] flex items-center justify-between">
@@ -267,7 +258,6 @@ const Hero = () => {
                         </Link>
                       </div>
                     </div>
-
                   </div>
                 )}
               </div>
@@ -276,7 +266,7 @@ const Hero = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

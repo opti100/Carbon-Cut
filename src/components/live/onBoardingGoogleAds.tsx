@@ -1,13 +1,19 @@
-"use client"
+'use client'
 
-import React, { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { CheckCircle, Loader2, AlertCircle } from "lucide-react"
-import { useGoogleAds } from "@/contexts/GoogleAdsContext"
-import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog"
+import React, { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { CheckCircle, Loader2, AlertCircle } from 'lucide-react'
+import { useGoogleAds } from '@/contexts/GoogleAdsContext'
+import { GoogleAdsConnectDialog } from '@/components/dashboard/google-ads/GoogleAdsConnectDialog'
 
 interface OnboardingGoogleAdsProps {
   onNext: () => void
@@ -16,7 +22,7 @@ interface OnboardingGoogleAdsProps {
 export default function OnboardingGoogleAds({ onNext }: OnboardingGoogleAdsProps) {
   const { status, isLoading, accounts, accountsLoading, switchAccount } = useGoogleAds()
   const [connectDialogOpen, setConnectDialogOpen] = useState(false)
-  const [selectedAccount, setSelectedAccount] = useState(status?.customer_id || "")
+  const [selectedAccount, setSelectedAccount] = useState(status?.customer_id || '')
   const [isSwitching, setIsSwitching] = useState(false)
 
   const isConnected = status?.is_connected === true
@@ -29,7 +35,7 @@ export default function OnboardingGoogleAds({ onNext }: OnboardingGoogleAdsProps
       setSelectedAccount(customerId)
       await switchAccount(customerId)
     } catch (error) {
-      console.error("Failed to switch account:", error)
+      console.error('Failed to switch account:', error)
     } finally {
       setIsSwitching(false)
     }

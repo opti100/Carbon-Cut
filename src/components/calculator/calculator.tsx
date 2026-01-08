@@ -5,10 +5,10 @@ import PreFooter from '../main/PreFooter'
 
 const Calculator = () => {
   return (
-   <main className="min-h-screen">
+    <main className="min-h-screen">
       {/* <CalculatorForm/> */}
       <CalculatorLanding />
-      <PreFooter/>
+      <PreFooter />
     </main>
   )
 }

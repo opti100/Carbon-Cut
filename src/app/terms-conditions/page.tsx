@@ -1,9 +1,24 @@
-"use client"
+'use client'
 
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Shield, Mail, MapPin, Calendar, Clock, FileText, AlertTriangle, Gavel, CreditCard, Lock, Globe, Users, CheckCircle, XCircle } from 'lucide-react'
+import {
+  Shield,
+  Mail,
+  MapPin,
+  Calendar,
+  Clock,
+  FileText,
+  AlertTriangle,
+  Gavel,
+  CreditCard,
+  Lock,
+  Globe,
+  Users,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react'
 
 const page = () => {
   const sections = [
@@ -11,13 +26,15 @@ const page = () => {
       id: 'agreement',
       title: 'Agreement',
       icon: <FileText className="w-5 h-5" />,
-      content: 'These Terms govern your access to and use of CarbonCut\'s products and services, including our carbon-calculation platform, dashboards, APIs, and the offset marketplace. By creating an account, clicking accept, or using the Service, you agree to these Terms and our Privacy Policy.'
+      content:
+        "These Terms govern your access to and use of CarbonCut's products and services, including our carbon-calculation platform, dashboards, APIs, and the offset marketplace. By creating an account, clicking accept, or using the Service, you agree to these Terms and our Privacy Policy.",
     },
     {
       id: 'accounts',
       title: 'Accounts & Eligibility',
       icon: <Users className="w-5 h-5" />,
-      content: 'You must be at least the age of majority in your jurisdiction and have the authority to bind your organization. Keep credentials confidential; you\'re responsible for activity under your account. Multiple users of an enterprise/agency must ensure compliance by all users.'
+      content:
+        "You must be at least the age of majority in your jurisdiction and have the authority to bind your organization. Keep credentials confidential; you're responsible for activity under your account. Multiple users of an enterprise/agency must ensure compliance by all users.",
     },
     {
       id: 'service-scope',
@@ -26,21 +43,25 @@ const page = () => {
       subsections: [
         {
           title: 'CarbonCalculator - Carbon calculations',
-          content: 'CarbonCut provides modeled estimates of campaign-related greenhouse-gas emissions using emission factors, methodologies, and assumptions disclosed in-product or documentation. Results depend on your inputs and third-party data; they are not guarantees.'
+          content:
+            'CarbonCut provides modeled estimates of campaign-related greenhouse-gas emissions using emission factors, methodologies, and assumptions disclosed in-product or documentation. Results depend on your inputs and third-party data; they are not guarantees.',
         },
         {
           title: 'CarbonOffset - Offsets & certificates',
-          content: 'Offsets are supplied by third-party project developers and registries (e.g., VERRA, Gold Standard, ACR/CAR). CarbonCut operates a marketplace and may facilitate purchase/retirement. CarbonCut is not the issuer of credits and is not responsible for the performance of third-party projects.'
+          content:
+            'Offsets are supplied by third-party project developers and registries (e.g., VERRA, Gold Standard, ACR/CAR). CarbonCut operates a marketplace and may facilitate purchase/retirement. CarbonCut is not the issuer of credits and is not responsible for the performance of third-party projects.',
         },
         {
           title: 'C3 Seal - Certification & Seal',
-          content: 'Campaigns meeting measurement and/or offset criteria may display the CarbonCutCertified C3 seal, backed by blockchain verification. Certification applies only to the specific campaigns offset through CarbonCut or pays for the C3 Seals after calculation.'
+          content:
+            'Campaigns meeting measurement and/or offset criteria may display the CarbonCutCertified C3 seal, backed by blockchain verification. Certification applies only to the specific campaigns offset through CarbonCut or pays for the C3 Seals after calculation.',
         },
         {
           title: 'No legal/assurance service',
-          content: 'We do not provide legal, accounting, or verification services. If you need assurance (e.g., ISO/PAS claims), consider engaging an accredited third-party auditor.'
-        }
-      ]
+          content:
+            'We do not provide legal, accounting, or verification services. If you need assurance (e.g., ISO/PAS claims), consider engaging an accredited third-party auditor.',
+        },
+      ],
     },
     {
       id: 'acceptable-use',
@@ -51,8 +72,8 @@ const page = () => {
         'Bypass technical controls',
         'Upload unlawful or infringing content',
         'Misrepresent calculated results or offset claims',
-        'Use the Service to deceive consumers (e.g., greenwashing)'
-      ]
+        'Use the Service to deceive consumers (e.g., greenwashing)',
+      ],
     },
     {
       id: 'api-terms',
@@ -62,8 +83,8 @@ const page = () => {
         'Paid Service with Rate limits and fair use thresholds',
         'Security requirements (e.g., key rotation, storage)',
         'Attribution requirements (where applicable)',
-        'Violation may result in suspension or termination of API access'
-      ]
+        'Violation may result in suspension or termination of API access',
+      ],
     },
     {
       id: 'your-data',
@@ -72,17 +93,20 @@ const page = () => {
       subsections: [
         {
           title: 'Customer Content',
-          content: 'You own your inputs (campaign data, creatives, spend, etc.). You grant CarbonCut a license to process this data to provide and improve the Service, including aggregated, de-identified analytics.'
+          content:
+            'You own your inputs (campaign data, creatives, spend, etc.). You grant CarbonCut a license to process this data to provide and improve the Service, including aggregated, de-identified analytics.',
         },
         {
           title: 'Confidentiality',
-          content: 'Each party will protect the other\'s confidential information with reasonable care.'
+          content:
+            "Each party will protect the other's confidential information with reasonable care.",
         },
         {
           title: 'Privacy & security',
-          content: 'We process personal data per our Privacy Policy and maintain appropriate technical and organizational measures.'
-        }
-      ]
+          content:
+            'We process personal data per our Privacy Policy and maintain appropriate technical and organizational measures.',
+        },
+      ],
     },
     {
       id: 'claims',
@@ -91,17 +115,20 @@ const page = () => {
       subsections: [
         {
           title: 'Claims discipline',
-          content: 'If you publish claims (e.g., "carbon neutral campaign"), you must clearly disclose scopes/boundaries, the role of offsets, and provide supporting evidence (retirement serials, methodology, base year and CarbonCut Seal).'
+          content:
+            'If you publish claims (e.g., "carbon neutral campaign"), you must clearly disclose scopes/boundaries, the role of offsets, and provide supporting evidence (retirement serials, methodology, base year and CarbonCut Seal).',
         },
         {
           title: 'Compliance',
-          content: 'You are responsible for complying with applicable advertising/consumer-protection and anti-spam laws (e.g., UK CMA/ASA, EU UCPD/Green Claims Directive, U.S. FTC Green Guides, ISO 14021/14067, PAS 2060).'
+          content:
+            'You are responsible for complying with applicable advertising/consumer-protection and anti-spam laws (e.g., UK CMA/ASA, EU UCPD/Green Claims Directive, U.S. FTC Green Guides, ISO 14021/14067, PAS 2060).',
         },
         {
           title: 'Use of CarbonCut name',
-          content: 'Don\'t imply CarbonCut "certified" your organization unless we offer and you complete a formal certification program by either purchasing the certification or buying the offset.'
-        }
-      ]
+          content:
+            'Don\'t imply CarbonCut "certified" your organization unless we offer and you complete a formal certification program by either purchasing the certification or buying the offset.',
+        },
+      ],
     },
     {
       id: 'smart-contracts',
@@ -110,33 +137,39 @@ const page = () => {
       subsections: [
         {
           title: 'When Smart Contracts Apply',
-          content: 'Smart contracts are introduced only after the successful retirement of carbon credits via the CarbonCut wallet.'
+          content:
+            'Smart contracts are introduced only after the successful retirement of carbon credits via the CarbonCut wallet.',
         },
         {
           title: 'Scope of Recording',
-          content: 'The smart contract records only: Confirmation of transaction completion, Volume of credits retired with essential Claim Record, Reference to the underlying project or registry.'
+          content:
+            'The smart contract records only: Confirmation of transaction completion, Volume of credits retired with essential Claim Record, Reference to the underlying project or registry.',
         },
         {
           title: 'Wallet Restriction',
-          content: 'Only the CarbonCut wallet interacts with the smart contract. User wallets are not connected directly, ensuring standardisation, simplicity, and reduced risk.'
+          content:
+            'Only the CarbonCut wallet interacts with the smart contract. User wallets are not connected directly, ensuring standardisation, simplicity, and reduced risk.',
         },
         {
           title: 'CarbonCut Tokens (CCTs)',
-          content: 'Following retirement, CarbonCut may tokenise a percentage of retired credits into CarbonCut Tokens (CCTs) for secondary trading. These tokens are separate from certification documentation and do not entitle double claiming.'
-        }
-      ]
+          content:
+            'Following retirement, CarbonCut may tokenise a percentage of retired credits into CarbonCut Tokens (CCTs) for secondary trading. These tokens are separate from certification documentation and do not entitle double claiming.',
+        },
+      ],
     },
     {
       id: 'fees',
       title: 'Fees, Billing, Taxes, Refunds',
       icon: <CreditCard className="w-5 h-5" />,
-      content: 'Fees are as shown in the Service or an Order Form. Unless stated otherwise, fees are non-refundable; taxes are your responsibility. Late payments may incur interest and/or suspension.'
+      content:
+        'Fees are as shown in the Service or an Order Form. Unless stated otherwise, fees are non-refundable; taxes are your responsibility. Late payments may incur interest and/or suspension.',
     },
     {
       id: 'intellectual-property',
       title: 'Intellectual Property',
       icon: <Shield className="w-5 h-5" />,
-      content: 'The Service, software, methodologies, and content are owned by CarbonCut and its licensors - Optiminastic SG PTE LTD. Except for your limited right to use the Service, no IP rights are transferred. Agencies/consultants may export CarbonCut reports for client deliverables with attribution.'
+      content:
+        'The Service, software, methodologies, and content are owned by CarbonCut and its licensors - Optiminastic SG PTE LTD. Except for your limited right to use the Service, no IP rights are transferred. Agencies/consultants may export CarbonCut reports for client deliverables with attribution.',
     },
     {
       id: 'liability',
@@ -144,17 +177,18 @@ const page = () => {
       icon: <XCircle className="w-5 h-5" />,
       items: [
         'Neither party is liable for indirect or consequential damages',
-        'CarbonCut\'s total liability is capped at amounts paid in 12 months (or USD 1,000 if no fees paid)',
+        "CarbonCut's total liability is capped at amounts paid in 12 months (or USD 1,000 if no fees paid)",
         'CarbonCut is not liable for third-party project performance, registry errors, or regulatory rejection',
-        'Nothing limits liability for fraud, willful misconduct, or amounts that cannot be limited by law'
-      ]
+        'Nothing limits liability for fraud, willful misconduct, or amounts that cannot be limited by law',
+      ],
     },
     {
       id: 'governing-law',
       title: 'Governing Law & Disputes',
       icon: <Gavel className="w-5 h-5" />,
-      content: 'These Terms are governed by the laws of the Republic of Singapore. Singapore courts have exclusive jurisdiction. Parties will attempt good faith resolution before litigation and may agree to mediation or arbitration under SIAC rules.'
-    }
+      content:
+        'These Terms are governed by the laws of the Republic of Singapore. Singapore courts have exclusive jurisdiction. Parties will attempt good faith resolution before litigation and may agree to mediation or arbitration under SIAC rules.',
+    },
   ]
 
   return (
@@ -183,7 +217,8 @@ const page = () => {
             </Badge>
           </div>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Please read these terms carefully. They govern your use of CarbonCuts&apos;services and form a legal agreement between you and us.
+            Please read these terms carefully. They govern your use of
+            CarbonCuts&apos;services and form a legal agreement between you and us.
           </p>
         </div>
 
@@ -201,7 +236,8 @@ const page = () => {
                   <strong>Privacy inquiries:</strong> policy_carboncut@optiminastic.com
                 </p>
                 <p className="text-gray-700">
-                  <strong>Postal:</strong> 2 Venture DR, #19-21, Vision Exchange, Singapore 908526
+                  <strong>Postal:</strong> 2 Venture DR, #19-21, Vision Exchange,
+                  Singapore 908526
                 </p>
               </div>
             </div>
@@ -211,20 +247,23 @@ const page = () => {
         {/* Terms Sections */}
         <div className="space-y-8">
           {sections.map((section, index) => (
-            <Card key={section.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
+            <Card
+              key={section.id}
+              className="border border-gray-200 hover:shadow-lg transition-shadow"
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    {section.icon}
-                  </div>
-                  <span>{index + 1}. {section.title}</span>
+                  <div className="bg-blue-100 p-2 rounded-lg">{section.icon}</div>
+                  <span>
+                    {index + 1}. {section.title}
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
                 {section.content && (
                   <p className="text-gray-700 mb-4 leading-relaxed">{section.content}</p>
                 )}
-                
+
                 {section.items && (
                   <ul className="space-y-3">
                     {section.items.map((item, itemIndex) => (
@@ -257,8 +296,12 @@ const page = () => {
                   <div className="space-y-6">
                     {section.subsections.map((subsection, subIndex) => (
                       <div key={subIndex}>
-                        <h4 className="font-semibold text-gray-900 mb-3">{subsection.title}</h4>
-                        <p className="text-gray-700 text-sm leading-relaxed">{subsection.content}</p>
+                        <h4 className="font-semibold text-gray-900 mb-3">
+                          {subsection.title}
+                        </h4>
+                        <p className="text-gray-700 text-sm leading-relaxed">
+                          {subsection.content}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -279,7 +322,10 @@ const page = () => {
             </CardHeader>
             <CardContent>
               <p className="text-orange-800 text-sm">
-                The Service is provided &quot;as is&quot;. We disclaim implied warranties (merchantability, fitness for purpose, non-infringement). We do not warrant that calculations or offsets will achieve any regulatory or certification outcome.
+                The Service is provided &quot;as is&quot;. We disclaim implied warranties
+                (merchantability, fitness for purpose, non-infringement). We do not
+                warrant that calculations or offsets will achieve any regulatory or
+                certification outcome.
               </p>
             </CardContent>
           </Card>
@@ -293,7 +339,9 @@ const page = () => {
             </CardHeader>
             <CardContent>
               <p className="text-green-800 text-sm">
-                Enterprise customers may request an SLA covering uptime commitments, service credits and support escalation. Unless separately agreed, the Service is provided &quot;as is&quot;.
+                Enterprise customers may request an SLA covering uptime commitments,
+                service credits and support escalation. Unless separately agreed, the
+                Service is provided &quot;as is&quot;.
               </p>
             </CardContent>
           </Card>
@@ -309,7 +357,8 @@ const page = () => {
           </CardHeader>
           <CardContent>
             <p className="text-red-800 text-sm">
-              You will comply with applicable export controls and sanctions and will not use the Service in violation of anti-bribery/anti-corruption laws.
+              You will comply with applicable export controls and sanctions and will not
+              use the Service in violation of anti-bribery/anti-corruption laws.
             </p>
           </CardContent>
         </Card>
@@ -322,12 +371,17 @@ const page = () => {
                 <Clock className="w-5 h-5 text-purple-700" />
               </div>
               <div>
-                <h3 className="font-semibold text-purple-900 mb-2">Term, Suspension, Termination</h3>
+                <h3 className="font-semibold text-purple-900 mb-2">
+                  Term, Suspension, Termination
+                </h3>
                 <ul className="text-purple-800 text-sm space-y-1">
                   <li>• Terms continue while you use the Service</li>
                   <li>• We may suspend or terminate for material breach</li>
                   <li>• You may terminate by closing your account</li>
-                  <li>• Certain clauses survive termination (confidentiality, IP, liability, etc.)</li>
+                  <li>
+                    • Certain clauses survive termination (confidentiality, IP, liability,
+                    etc.)
+                  </li>
                 </ul>
               </div>
             </div>
@@ -344,7 +398,9 @@ const page = () => {
               <div>
                 <h3 className="font-semibold text-yellow-900 mb-2">Changes to Terms</h3>
                 <p className="text-yellow-800 text-sm">
-                  We may update these Terms from time to time. If changes are material, we&apos;ll notify you (e.g., email or in-app). Continued use after the effective date constitutes acceptance.
+                  We may update these Terms from time to time. If changes are material,
+                  we&apos;ll notify you (e.g., email or in-app). Continued use after the
+                  effective date constitutes acceptance.
                 </p>
               </div>
             </div>
@@ -356,7 +412,8 @@ const page = () => {
           <p>Last updated: October 09, 2025</p>
           <p className="mt-1">© 2025 Optiminastic SG Pte Ltd. All rights reserved.</p>
           <p className="mt-2 text-xs">
-            These Terms (plus any Order Form and Privacy Policy) are the entire agreement and supersede prior understandings.
+            These Terms (plus any Order Form and Privacy Policy) are the entire agreement
+            and supersede prior understandings.
           </p>
         </div>
       </div>

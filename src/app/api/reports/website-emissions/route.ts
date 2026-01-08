@@ -1,15 +1,15 @@
 // src/app/api/reports/website-emissions/route.ts
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { user, dailyBreakdown, stats, periodDays } = await request.json();
+    const { user, dailyBreakdown, stats, periodDays } = await request.json()
 
     if (!user || !stats || !dailyBreakdown || dailyBreakdown.length === 0) {
       return NextResponse.json(
         { error: 'Missing required data for report generation' },
         { status: 400 }
-      );
+      )
     }
 
     // Generate simple HTML report
@@ -17,11 +17,11 @@ export async function POST(request: NextRequest) {
       user,
       stats,
       dailyBreakdown,
-      periodDays
-    });
+      periodDays,
+    })
 
     // Convert HTML to PDF using a simple approach
-    const pdfArrayBuffer = await generateSimplePDF(html, user.companyName);
+    const pdfArrayBuffer = await generateSimplePDF(html, user.companyName)
 
     return new NextResponse(pdfArrayBuffer, {
       status: 200,
@@ -29,45 +29,44 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${user.companyName.replace(/[^a-zA-Z0-9]/g, '_')}_Website_Emissions_Report.pdf"`,
       },
-    });
-
+    })
   } catch (error) {
-    console.error('Error generating website emissions PDF:', error);
+    console.error('Error generating website emissions PDF:', error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
-    );
+    )
   }
 }
 
 function generateWebsiteEmissionsHTML(data: any): string {
-  const { user, stats, dailyBreakdown, periodDays } = data;
-  const certificationId = `WEB-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+  const { user, stats, dailyBreakdown, periodDays } = data
+  const certificationId = `WEB-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
   const reportDate = new Date().toLocaleDateString('en-GB', {
     day: '2-digit',
     month: 'long',
-    year: 'numeric'
-  });
+    year: 'numeric',
+  })
 
   const formatEmissions = (grams: number) => {
     if (grams < 0.001) {
-      return `${grams.toExponential(2)} g`;
+      return `${grams.toExponential(2)} g`
     }
     if (grams < 1) {
-      return `${grams.toFixed(8)} g`;
+      return `${grams.toFixed(8)} g`
     }
-    return `${grams.toFixed(6)} g`;
-  };
+    return `${grams.toFixed(6)} g`
+  }
 
   const formatEmissionsKg = (kg: number) => {
     if (kg < 0.000001) {
-      return `${kg.toExponential(2)} kg`;
+      return `${kg.toExponential(2)} kg`
     }
     if (kg < 0.001) {
-      return `${kg.toFixed(9)} kg`;
+      return `${kg.toFixed(9)} kg`
     }
-    return `${kg.toFixed(6)} kg`;
-  };
+    return `${kg.toFixed(6)} kg`
+  }
 
   return `
 <!DOCTYPE html>
@@ -316,14 +315,18 @@ function generateWebsiteEmissionsHTML(data: any): string {
             </tr>
         </thead>
         <tbody>
-            ${dailyBreakdown.map((day: any) => `
+            ${dailyBreakdown
+              .map(
+                (day: any) => `
                 <tr>
                     <td>${new Date(day.date).toLocaleDateString('en-GB')}</td>
                     <td style="text-align: right;">${day.sessions}</td>
                     <td style="text-align: right;">${formatEmissions(day.emissions_g)}</td>
                     <td style="text-align: right;">${formatEmissionsKg(day.emissions_g / 1000)}</td>
                 </tr>
-            `).join('')}
+            `
+              )
+              .join('')}
         </tbody>
     </table>
 
@@ -353,22 +356,25 @@ function generateWebsiteEmissionsHTML(data: any): string {
     </div>
 </body>
 </html>
-  `;
+  `
 }
 
-async function generateSimplePDF(html: string, companyName: string): Promise<ArrayBuffer> {
-  const puppeteer = require('puppeteer');
-  
-  let browser;
+async function generateSimplePDF(
+  html: string,
+  companyName: string
+): Promise<ArrayBuffer> {
+  const puppeteer = require('puppeteer')
+
+  let browser
   try {
     browser = await puppeteer.launch({
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-    
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: 'networkidle0' });
-    
+    })
+
+    const page = await browser.newPage()
+    await page.setContent(html, { waitUntil: 'networkidle0' })
+
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -378,15 +384,17 @@ async function generateSimplePDF(html: string, companyName: string): Promise<Arr
         bottom: '20mm',
         left: '15mm',
       },
-    });
-    
-    await browser.close();
-    return pdfBuffer.buffer.slice(pdfBuffer.byteOffset, pdfBuffer.byteOffset + pdfBuffer.byteLength);
-    
+    })
+
+    await browser.close()
+    return pdfBuffer.buffer.slice(
+      pdfBuffer.byteOffset,
+      pdfBuffer.byteOffset + pdfBuffer.byteLength
+    )
   } catch (error) {
     if (browser) {
-      await browser.close();
+      await browser.close()
     }
-    throw error;
+    throw error
   }
 }

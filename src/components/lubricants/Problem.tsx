@@ -1,6 +1,6 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import UniversalHeading from "../UniversalHeading";
+'use client'
+import React, { useEffect, useRef, useState } from 'react'
+import UniversalHeading from '../UniversalHeading'
 import {
   Calculator,
   CalendarClock,
@@ -12,39 +12,37 @@ import {
   FileX2,
   Handshake,
   ThumbsDown,
-} from "lucide-react";
+} from 'lucide-react'
 
 export default function StackedCards() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     const onScroll = () => {
-      if (!containerRef.current) return;
+      if (!containerRef.current) return
 
-      const cards = Array.from(
-        containerRef.current.children
-      ) as HTMLDivElement[];
+      const cards = Array.from(containerRef.current.children) as HTMLDivElement[]
 
-      if (cards.length < 2) return;
+      if (cards.length < 2) return
 
-      const secondCardTop = cards[1].getBoundingClientRect().top;
+      const secondCardTop = cards[1].getBoundingClientRect().top
 
-      const start = window.innerHeight * 0.7;
-      const end = window.innerHeight * 0.3;
+      const start = window.innerHeight * 0.7
+      const end = window.innerHeight * 0.3
 
-      const raw = (start - secondCardTop) / (start - end);
-      const clamped = Math.min(Math.max(raw, 0), 1);
+      const raw = (start - secondCardTop) / (start - end)
+      const clamped = Math.min(Math.max(raw, 0), 1)
 
-      setProgress(clamped);
-    };
+      setProgress(clamped)
+    }
 
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6lg:px-8">
       <UniversalHeading
         title="The Lubricants Industry’s Hidden Problem"
         description="Your CO₂e data is outdated, averaged, and full of blind spots."
@@ -82,7 +80,7 @@ export default function StackedCards() {
           "
           style={{
             transform: `scale(${1 - progress * 0.06})`,
-            transformOrigin: "top center",
+            transformOrigin: 'top center',
             zIndex: 1,
           }}
         >
@@ -174,5 +172,5 @@ export default function StackedCards() {
         </div>
       </div>
     </div>
-  );
+  )
 }

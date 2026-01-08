@@ -1,12 +1,18 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { use, useState, useEffect } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import type React from 'react'
+import { use, useState, useEffect } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   ArrowLeft,
   RefreshCw,
@@ -21,29 +27,29 @@ import {
   Loader2,
   AlertCircle,
   Download,
-} from "lucide-react"
-import { campaignApi } from "@/services/campaign/campaign"
-import { cn } from "@/lib/utils"
-import { format, subDays, parseISO } from "date-fns"
-import { PerformanceOverTimeChart } from "@/components/dashboard/PerformanceOverTimeChart"
-import { EmissionsTrendChart } from "@/components/dashboard/EmissionsTrendChart"
-import { DevicePerformanceChart } from "@/components/dashboard/DevicePerformanceChart"
-import { EmissionsBreakdownChart } from "@/components/dashboard/EmissionsBreakdownChart"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
-import { type DateRange } from "react-day-picker"
-import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps"
-import { scaleLinear } from "d3-scale"
-import { toast } from "sonner"
+} from 'lucide-react'
+import { campaignApi } from '@/services/campaign/campaign'
+import { cn } from '@/lib/utils'
+import { format, subDays, parseISO } from 'date-fns'
+import { PerformanceOverTimeChart } from '@/components/dashboard/PerformanceOverTimeChart'
+import { EmissionsTrendChart } from '@/components/dashboard/EmissionsTrendChart'
+import { DevicePerformanceChart } from '@/components/dashboard/DevicePerformanceChart'
+import { EmissionsBreakdownChart } from '@/components/dashboard/EmissionsBreakdownChart'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { type DateRange } from 'react-day-picker'
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps'
+import { scaleLinear } from 'd3-scale'
+import { toast } from 'sonner'
 
 interface CampaignAnalyticsPageProps {
   params: Promise<{ id: string }>
 }
 
 const toNumber = (value: any): number => {
-  if (typeof value === "number") return value
-  if (typeof value === "string") return Number.parseFloat(value) || 0
+  if (typeof value === 'number') return value
+  if (typeof value === 'string') return Number.parseFloat(value) || 0
   return 0
 }
 
@@ -71,7 +77,7 @@ function DateRangePicker({
       setDate(localDate)
       setIsOpen(false)
     } else {
-      toast.error("Please select both start and end dates")
+      toast.error('Please select both start and end dates')
     }
   }
 
@@ -91,25 +97,25 @@ function DateRangePicker({
   }
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn('grid gap-2', className)}>
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
+            variant={'outline'}
             className={cn(
-              "w-[300px] justify-start text-left font-normal bg-white hover:bg-muted border",
-              !date && "text-muted-foreground"
+              'w-[300px] justify-start text-left font-normal bg-white hover:bg-muted border',
+              !date && 'text-muted-foreground'
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} - {format(date.to, "LLL dd, y")}
+                  {format(date.from, 'LLL dd, y')} - {format(date.to, 'LLL dd, y')}
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                format(date.from, 'LLL dd, y')
               )
             ) : (
               <span>Pick a date</span>
@@ -124,7 +130,7 @@ function DateRangePicker({
             selected={localDate}
             onSelect={setLocalDate}
             numberOfMonths={2}
-            disabled={(date) => date > new Date() || date < new Date("2000-01-01")}
+            disabled={(date) => date > new Date() || date < new Date('2000-01-01')}
           />
           <div className="flex justify-end items-center gap-2 p-3 border-t bg-background">
             <Button variant="ghost" size="sm" onClick={handleReset}>
@@ -133,10 +139,10 @@ function DateRangePicker({
             <Button variant="ghost" size="sm" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               onClick={handleApply}
-              style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
+              style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
               className="hover:opacity-90"
             >
               Apply
@@ -174,7 +180,7 @@ function ChartSkeleton() {
   )
 }
 
-const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json"
+const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
 
 function RegionalEmissionsMap({ data }: { data: any[] }) {
   const [tooltipContent, setTooltipContent] = useState<any>(null)
@@ -184,7 +190,7 @@ function RegionalEmissionsMap({ data }: { data: any[] }) {
 
   const colorScale = scaleLinear<string>()
     .domain([0, maxEmissions])
-    .range(["#dcfce7", "#15803d"]) 
+    .range(['#dcfce7', '#15803d'])
 
   return (
     <Card className="border bg-white relative">
@@ -196,7 +202,10 @@ function RegionalEmissionsMap({ data }: { data: any[] }) {
       </CardHeader>
       <CardContent className="h-[450px] w-full p-0 relative">
         {tooltipContent && (
-          <div className="absolute z-10 p-2 text-xs rounded-md shadow-lg pointer-events-none bg-popover text-popover-foreground" style={{ top: tooltipContent.y, left: tooltipContent.x }}>
+          <div
+            className="absolute z-10 p-2 text-xs rounded-md shadow-lg pointer-events-none bg-popover text-popover-foreground"
+            style={{ top: tooltipContent.y, left: tooltipContent.x }}
+          >
             <p className="font-bold">{tooltipContent.name}</p>
             <p>{tooltipContent.emissions_kg.toFixed(4)} kg CO₂e</p>
             <p>{tooltipContent.conversions} conversions</p>
@@ -204,7 +213,7 @@ function RegionalEmissionsMap({ data }: { data: any[] }) {
         )}
         <ComposableMap
           projectionConfig={{ rotate: [-10, 0, 0], scale: 147 }}
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: '100%', height: '100%' }}
         >
           <ZoomableGroup center={[0, 20]}>
             <Geographies geography={geoUrl}>
@@ -215,23 +224,30 @@ function RegionalEmissionsMap({ data }: { data: any[] }) {
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
-                      fill={countryData ? colorScale(countryData.emissions_kg) : "#E9EAEA"}
+                      fill={
+                        countryData ? colorScale(countryData.emissions_kg) : '#E9EAEA'
+                      }
                       stroke="#FFF"
                       strokeWidth={0.5}
                       onMouseEnter={(evt) => {
                         const { name } = geo.properties
                         const countryInfo = dataMap.get(name)
                         if (countryInfo) {
-                          setTooltipContent({ ...countryInfo, name, x: evt.clientX + 15, y: evt.clientY - 30 })
+                          setTooltipContent({
+                            ...countryInfo,
+                            name,
+                            x: evt.clientX + 15,
+                            y: evt.clientY - 30,
+                          })
                         }
                       }}
                       onMouseLeave={() => {
                         setTooltipContent(null)
                       }}
                       style={{
-                        default: { outline: "none" },
-                        hover: { outline: "none", fill: "#16a34a" },
-                        pressed: { outline: "none" },
+                        default: { outline: 'none' },
+                        hover: { outline: 'none', fill: '#16a34a' },
+                        pressed: { outline: 'none' },
                       }}
                     />
                   )
@@ -244,7 +260,6 @@ function RegionalEmissionsMap({ data }: { data: any[] }) {
     </Card>
   )
 }
-
 
 export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageProps) {
   const { id } = use(params)
@@ -259,12 +274,14 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
   const [isExporting, setIsExporting] = useState(false)
 
   const apiDateRange = {
-    start_date: date?.from ? format(date.from, "yyyy-MM-dd") : format(subDays(new Date(), 30), "yyyy-MM-dd"),
-    end_date: date?.to ? format(date.to, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
+    start_date: date?.from
+      ? format(date.from, 'yyyy-MM-dd')
+      : format(subDays(new Date(), 30), 'yyyy-MM-dd'),
+    end_date: date?.to ? format(date.to, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd'),
   }
 
   const { data: campaign, isLoading: campaignLoading } = useQuery({
-    queryKey: ["campaign", id],
+    queryKey: ['campaign', id],
     queryFn: () => campaignApi.get(Number(id)),
   })
 
@@ -273,23 +290,24 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
     isLoading: analyticsLoading,
     isError: analyticsError,
   } = useQuery({
-    queryKey: ["campaign-analytics", id, apiDateRange],
+    queryKey: ['campaign-analytics', id, apiDateRange],
     queryFn: () =>
       campaignApi.getAnalytics(id, {
         ...apiDateRange,
-        group_by: "day",
+        group_by: 'day',
       }),
     enabled: !!campaign,
   })
 
   const syncMutation = useMutation({
-    mutationFn: (data: { start_date: string; end_date: string }) => campaignApi.syncImpressions(id, data),
+    mutationFn: (data: { start_date: string; end_date: string }) =>
+      campaignApi.syncImpressions(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["campaign-analytics", id] })
-      toast.success("Data synced successfully!")
+      queryClient.invalidateQueries({ queryKey: ['campaign-analytics', id] })
+      toast.success('Data synced successfully!')
     },
     onError: () => {
-      toast.error("Failed to sync data. Please try again.")
+      toast.error('Failed to sync data. Please try again.')
     },
   })
 
@@ -299,7 +317,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
 
   const handleExport = async () => {
     if (!campaign || !analytics) {
-      toast.error("Unable to generate report. Please try again.")
+      toast.error('Unable to generate report. Please try again.')
       return
     }
 
@@ -310,7 +328,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
         campaign: {
           name: campaign.name,
           google_ads_campaign_id: campaign.google_ads_campaign_id,
-          status: "Active",
+          status: 'Active',
         },
         analytics: {
           totals: analytics.totals,
@@ -348,10 +366,14 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
 
-      toast.success("Analytics report downloaded successfully!")
+      toast.success('Analytics report downloaded successfully!')
     } catch (error) {
       console.error('Error generating report:', error)
-      toast.error(error instanceof Error ? error.message : "Failed to generate report. Please try again.")
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Failed to generate report. Please try again.'
+      )
     } finally {
       setIsExporting(false)
     }
@@ -426,24 +448,24 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
 
   const emissionsBreakdownData = [
     {
-      category: "impressions",
+      category: 'impressions',
       emissions: toNumber(analytics.emissions_breakdown.impressions_g) / 1000,
-      fill: "#10b981",
+      fill: '#10b981',
     },
     {
-      category: "pageviews",
+      category: 'pageviews',
       emissions: toNumber(analytics.emissions_breakdown.page_views_g) / 1000,
-      fill: "#3b82f6",
+      fill: '#3b82f6',
     },
     {
-      category: "clicks",
+      category: 'clicks',
       emissions: toNumber(analytics.emissions_breakdown.clicks_g) / 1000,
-      fill: "#f59e0b",
+      fill: '#f59e0b',
     },
     {
-      category: "conversions",
+      category: 'conversions',
       emissions: toNumber(analytics.emissions_breakdown.conversions_g) / 1000,
-      fill: "#ec4899",
+      fill: '#ec4899',
     },
   ].filter((item) => item.emissions > 0)
 
@@ -455,7 +477,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
   }))
 
   const timeSeriesData = analytics.time_series.map((item) => ({
-    date: format(new Date(item.date), "MMM dd"),
+    date: format(new Date(item.date), 'MMM dd'),
     fullDate: item.date,
     impressions: item.impressions,
     sessions: item.sessions,
@@ -510,9 +532,9 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
                 )}
                 <span className="hidden sm:inline">Sync Data</span>
               </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 className="border-0 hover:bg-muted"
                 onClick={handleExport}
                 disabled={isExporting || !analytics}
@@ -543,7 +565,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               subtitle={
                 analytics.totals.conversions > 0
                   ? `${analytics.totals.conversion_rate.toFixed(2)}% CVR`
-                  : "No conversions yet"
+                  : 'No conversions yet'
               }
               icon={TrendingUp}
               color="green"
@@ -552,7 +574,9 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               title="Total Cost"
               value={`${analytics.totals.cost.toLocaleString()}`}
               subtitle={
-                analytics.totals.clicks > 0 ? `${toNumber(analytics.totals.cpc).toFixed(2)} CPC` : "Clicks"
+                analytics.totals.clicks > 0
+                  ? `${toNumber(analytics.totals.cpc).toFixed(2)} CPC`
+                  : 'Clicks'
               }
               icon={DollarSign}
               color="yellow"
@@ -560,10 +584,14 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
             <MetricCard
               title="Carbon Emissions"
               value={
-                totalEmissionsKg >= 1 ? `${totalEmissionsKg.toFixed(3)} kg` : `${totalEmissionsValue.toFixed(2)} g`
+                totalEmissionsKg >= 1
+                  ? `${totalEmissionsKg.toFixed(3)} kg`
+                  : `${totalEmissionsValue.toFixed(2)} g`
               }
               subtitle={
-                analytics.totals.conversions > 0 ? `${emissionsPerConversionKg.toFixed(4)} kg/conv` : `Total emissions`
+                analytics.totals.conversions > 0
+                  ? `${emissionsPerConversionKg.toFixed(4)} kg/conv`
+                  : `Total emissions`
               }
               icon={Leaf}
               color="emerald"
@@ -577,7 +605,7 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               subtitle={
                 analytics.totals.impressions > 0
                   ? `${((analytics.totals.sessions / analytics.totals.impressions) * 100).toFixed(2)}% engagement rate`
-                  : "No impressions yet"
+                  : 'No impressions yet'
               }
               icon={Users}
               color="green"
@@ -595,14 +623,14 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               subtitle={
                 analytics.totals.sessions > 0
                   ? `${(analytics.totals.page_views / analytics.totals.sessions).toFixed(2)} pages/session`
-                  : "No sessions yet"
+                  : 'No sessions yet'
               }
               icon={Activity}
               color="yellow"
             />
             <MetricCard
               title="CPA"
-              value={`$${analytics.totals.conversions > 0 ? toNumber(analytics.totals.cpa).toFixed(2) : "0.00"}`}
+              value={`$${analytics.totals.conversions > 0 ? toNumber(analytics.totals.cpa).toFixed(2) : '0.00'}`}
               subtitle="Cost per acquisition"
               icon={DollarSign}
               color="emerald"
@@ -616,7 +644,10 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               </>
             ) : (
               <>
-                <PerformanceOverTimeChart data={timeSeriesData} dateRange={analytics.date_range} />
+                <PerformanceOverTimeChart
+                  data={timeSeriesData}
+                  dateRange={analytics.date_range}
+                />
                 <EmissionsTrendChart
                   data={timeSeriesData}
                   totalEmissions={totalEmissionsKg}
@@ -634,7 +665,10 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
               </>
             ) : (
               <>
-                <EmissionsBreakdownChart data={emissionsBreakdownData} totalEmissions={totalEmissionsKg} />
+                <EmissionsBreakdownChart
+                  data={emissionsBreakdownData}
+                  totalEmissions={totalEmissionsKg}
+                />
                 <DevicePerformanceChart data={deviceData} />
               </>
             )}
@@ -652,16 +686,22 @@ interface MetricCardProps {
   value: string
   subtitle?: string
   icon: React.ElementType
-  color?: "blue" | "green" | "yellow" | "emerald" | "red"
+  color?: 'blue' | 'green' | 'yellow' | 'emerald' | 'red'
 }
 
-function MetricCard({ title, value, subtitle, icon: Icon, color = "blue" }: MetricCardProps) {
+function MetricCard({
+  title,
+  value,
+  subtitle,
+  icon: Icon,
+  color = 'blue',
+}: MetricCardProps) {
   const colorClasses = {
-    blue: "text-blue-600 bg-blue-50 dark:bg-blue-950/30",
-    green: "text-green-600 bg-green-50 dark:bg-green-950/30",
-    yellow: "text-yellow-600 bg-yellow-50 dark:bg-yellow-950/30",
-    emerald: "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30",
-    red: "text-red-600 bg-red-50 dark:bg-red-950/30",
+    blue: 'text-blue-600 bg-blue-50 dark:bg-blue-950/30',
+    green: 'text-green-600 bg-green-50 dark:bg-green-950/30',
+    yellow: 'text-yellow-600 bg-yellow-50 dark:bg-yellow-950/30',
+    emerald: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30',
+    red: 'text-red-600 bg-red-50 dark:bg-red-950/30',
   }
 
   return (

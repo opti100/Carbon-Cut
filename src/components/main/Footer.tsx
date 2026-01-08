@@ -1,30 +1,30 @@
-"use client";
-import React, { useRef, useState } from "react";
-import Image from "next/image";
-import { Instagram, Facebook, Twitter, Linkedin } from "lucide-react";
-import { Link004 } from "./ui/skiper-ui/skiper40";
-import { useLenis } from "lenis/react";
+'use client'
+import React, { useRef, useState } from 'react'
+import Image from 'next/image'
+import { Instagram, Facebook, Twitter, Linkedin } from 'lucide-react'
+import { Link004 } from './ui/skiper-ui/skiper40'
+import { useLenis } from 'lenis/react'
 
 const Footer = () => {
-  const footerRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const linksRef = useRef<HTMLDivElement>(null);
-  const socialRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
+  const linksRef = useRef<HTMLDivElement>(null)
+  const socialRef = useRef<HTMLDivElement>(null)
 
-  const [logoOffset, setLogoOffset] = useState(0);
-  const [linksOffset, setLinksOffset] = useState(0);
-  const [socialOffset, setSocialOffset] = useState(0);
+  const [logoOffset, setLogoOffset] = useState(0)
+  const [linksOffset, setLinksOffset] = useState(0)
+  const [socialOffset, setSocialOffset] = useState(0)
 
   useLenis(() => {
-    if (!footerRef.current) return;
+    if (!footerRef.current) return
 
-    const rect = footerRef.current.getBoundingClientRect();
-    const scrollProgress = rect.top / window.innerHeight;
+    const rect = footerRef.current.getBoundingClientRect()
+    const scrollProgress = rect.top / window.innerHeight
 
-    setLogoOffset(-scrollProgress * 120);
-    setLinksOffset(-scrollProgress * 80);
-    setSocialOffset(-scrollProgress * 50); 
-  });
+    setLogoOffset(-scrollProgress * 120)
+    setLinksOffset(-scrollProgress * 80)
+    setSocialOffset(-scrollProgress * 50)
+  })
 
   return (
     <footer
@@ -32,9 +32,7 @@ const Footer = () => {
       className="w-full min-h-screen relative overflow-hidden bg-black backdrop-blur-3xl"
     >
       {/* ThreeScene Background */}
-      <div className="absolute inset-0 z-0 ">
-        {/* <ThreeScene /> */}
-      </div>
+      <div className="absolute inset-0 z-0 ">{/* <ThreeScene /> */}</div>
 
       <div className="relative z-10 w-full min-h-screen flex flex-col">
         {/* Links Section with Parallax */}
@@ -42,7 +40,7 @@ const Footer = () => {
           ref={linksRef}
           style={{
             transform: `translateY(${linksOffset}px)`,
-            transition: "transform 0.1s ease-out",
+            transition: 'transform 0.1s ease-out',
           }}
           className="flex items-start lg:justify-between justify-center px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-12"
         >
@@ -86,9 +84,7 @@ const Footer = () => {
             </div>
 
             <div className="flex flex-col items-start text-left space-y-3">
-              <h3 className="font-semibold text-base md:text-lg text-white">
-                Community
-              </h3>
+              <h3 className="font-semibold text-base md:text-lg text-white">Community</h3>
               <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
                 <Link004
                   href="/help-center"
@@ -124,9 +120,7 @@ const Footer = () => {
             </div>
 
             <div className="flex flex-col items-start text-left space-y-3">
-              <h3 className="font-semibold text-base md:text-lg text-white">
-                Partner
-              </h3>
+              <h3 className="font-semibold text-base md:text-lg text-white">Partner</h3>
               <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
                 <Link004
                   href="/our-partner"
@@ -150,7 +144,7 @@ const Footer = () => {
           ref={socialRef}
           style={{
             transform: `translateY(${socialOffset}px)`,
-            transition: "transform 0.1s ease-out",
+            transition: 'transform 0.1s ease-out',
           }}
           className="w-full px-4 sm:px-8 md:px-12 lg:px-16 flex flex-col sm:flex-row items-center justify-between py-4 md:py-6 gap-4"
         >
@@ -195,7 +189,7 @@ const Footer = () => {
           ref={logoRef}
           style={{
             transform: `translateY(${logoOffset}px)`,
-            transition: "transform 0.1s ease-out",
+            transition: 'transform 0.1s ease-out',
           }}
           className="flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 lg:px-16 py-8 md:py-12"
         >
@@ -205,12 +199,12 @@ const Footer = () => {
             width={1200}
             height={400}
             className="w-full h-auto object-contain max-w-full inverted-colors:invert"
-            style={{ maxHeight: "400px", filter: "brightness(0) invert(1)" }}
+            style={{ maxHeight: '400px', filter: 'brightness(0) invert(1)' }}
           />
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

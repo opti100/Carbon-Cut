@@ -1,18 +1,32 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Label, Pie, PieChart } from "recharts"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
+import * as React from 'react'
+// import { Label, Pie, PieChart } from "recharts"
+import dynamic from 'next/dynamic'
+// const { PieChart, Pie, Label } = dynamic(
+//   () =>
+//     import("recharts").then((mod) => ({
+//       PieChart: mod.PieChart,
+//       Pie: mod.Pie,
+//       Label: mod.Label
+//     })),
+//   { ssr: false }
+// );
+
+const DynamicPieChart = dynamic(() => import('recharts').then((mod) => mod.PieChart), {
+  ssr: false,
+})
+// @ts-ignore - will fix later
+const DynamicPie = dynamic(() => import('recharts').then((mod) => mod.Pie), {
+  ssr: false,
+})
+const DynamicLabel = dynamic(() => import('recharts').then((mod) => mod.Label), {
+  ssr: false,
+})
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { LegendType } from 'recharts'
 
 interface EmissionsPieChartProps {
   title: string
@@ -39,30 +53,30 @@ export function EmissionsPieChart({
     if (value > 999) {
       return {
         value: (value / 1000).toFixed(4),
-        unit: 't'
-      };
+        unit: 't',
+      }
     }
     return {
       value: value.toFixed(5),
-      unit: 'kg'
-    };
-  };
+      unit: 'kg',
+    }
+  }
 
-  const formattedTotal = formatEmission(totalEmissions);
+  const formattedTotal = formatEmission(totalEmissions)
 
   // Create dynamic chart config based on data
   const chartConfig = React.useMemo(() => {
     const config: Record<string, { label: string; color?: string }> = {
-      value: { label: "Emissions" },
+      value: { label: 'Emissions' },
     }
-    
+
     data.forEach((item) => {
       config[item.name] = {
         label: item.name,
         color: item.fill,
       }
     })
-    
+
     return config
   }, [data])
 
@@ -79,29 +93,31 @@ export function EmissionsPieChart({
           config={chartConfig}
           className="mx-auto aspect-square max-h-[280px]"
         >
-          <PieChart>
+          <DynamicPieChart>
             <ChartTooltip
               cursor={false}
               content={
                 <ChartTooltipContent
                   hideLabel
                   formatter={(value, name) => {
-                    const val = Number(value);
-                    const formatted = formatEmission(val);
+                    const val = Number(value)
+                    const formatted = formatEmission(val)
                     return (
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{name}:</span>
-                        <span className="font-semibold">{formatted.value} {formatted.unit}</span>
+                        <span className="font-semibold">
+                          {formatted.value} {formatted.unit}
+                        </span>
                         <span className="text-xs text-muted-foreground">
                           ({((val / totalEmissions) * 100).toFixed(1)}%)
                         </span>
                       </div>
-                    );
+                    )
                   }}
                 />
               }
             />
-            <Pie
+            <DynamicPie
               data={data}
               dataKey="value"
               nameKey="name"
@@ -109,9 +125,9 @@ export function EmissionsPieChart({
               strokeWidth={0}
               stroke="none"
             >
-              <Label
+              <DynamicLabel
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                     return (
                       <text
                         x={viewBox.cx}
@@ -145,14 +161,14 @@ export function EmissionsPieChart({
                   }
                 }}
               />
-            </Pie>
-          </PieChart>
+            </DynamicPie>
+          </DynamicPieChart>
         </ChartContainer>
 
         {/* Legend */}
         <div className="mt-6 space-y-2">
           {data.map((item) => {
-            const formatted = formatEmission(item.value);
+            const formatted = formatEmission(item.value)
             return (
               <div key={item.name} className="flex items-center justify-between text-sm">
                 <div className="flex items-center gap-2">
@@ -160,7 +176,9 @@ export function EmissionsPieChart({
                     className="h-3 w-3 rounded-full"
                     style={{ backgroundColor: item.fill }}
                   />
-                  <span className="text-gray-700 truncate max-w-[150px]">{item.name}</span>
+                  <span className="text-gray-700 truncate max-w-[150px]">
+                    {item.name}
+                  </span>
                 </div>
                 <div className="text-right">
                   <span className="font-semibold text-gray-900">
@@ -171,7 +189,7 @@ export function EmissionsPieChart({
                   </span>
                 </div>
               </div>
-            );
+            )
           })}
         </div>
       </CardContent>

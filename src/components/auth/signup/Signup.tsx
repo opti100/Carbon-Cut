@@ -1,14 +1,29 @@
-"use client"
+'use client'
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Mail, Shield, Loader2, ArrowLeft, CheckCircle, User, Building, Phone } from "lucide-react"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  Mail,
+  Shield,
+  Loader2,
+  ArrowLeft,
+  CheckCircle,
+  User,
+  Building,
+  Phone,
+} from 'lucide-react'
 import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 
@@ -63,7 +78,7 @@ const signupAPI = {
     }
 
     return response.json()
-  }
+  },
 }
 
 // Validation functions
@@ -97,7 +112,7 @@ const SignupPage = () => {
     name: '',
     email: '',
     companyName: '',
-    phoneNumber: ''
+    phoneNumber: '',
   })
   const [otp, setOtp] = useState('')
 
@@ -113,7 +128,7 @@ const SignupPage = () => {
       toast.error(error.message)
     },
   })
-  
+
   const verifyOTPMutation = useMutation({
     mutationKey: signupKeys.verifyOTP(),
     mutationFn: signupAPI.verifyOTP,
@@ -130,7 +145,7 @@ const SignupPage = () => {
   // Event handlers
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateEmail(formData.email)) {
       toast.error('Please enter a valid email address')
       return
@@ -146,7 +161,7 @@ const SignupPage = () => {
 
   const handleOTPSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateOTP(otp)) {
       toast.error('Please enter a valid 6-digit OTP')
       return
@@ -168,19 +183,23 @@ const SignupPage = () => {
   }
 
   const handleInputChange = (field: keyof SignupData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   // Derived state
   const isLoading = sendOTPMutation.isPending || verifyOTPMutation.isPending
   const error = sendOTPMutation.error || verifyOTPMutation.error
-  const isFormValid = formData.name && validateEmail(formData.email) && formData.companyName && validatePhone(formData.phoneNumber)
+  const isFormValid =
+    formData.name &&
+    validateEmail(formData.email) &&
+    formData.companyName &&
+    validatePhone(formData.phoneNumber)
   const isOTPValid = validateOTP(otp)
 
   return (
     <div className="h-screen flex flex-col lg:flex-row overflow-hidden">
       {/* Left Side - Hero Image */}
-      <div 
+      <div
         className="hidden lg:flex lg:w-1/2 relative bg-cover bg-center"
         style={{ backgroundImage: "url('/login-hero.jpg')" }}
       >
@@ -209,8 +228,7 @@ const SignupPage = () => {
                 <CardDescription className="text-sm sm:text-base">
                   {step === 'form'
                     ? 'Sign up to get started with CarbonCut'
-                    : `We've sent a 6-digit code to ${formData.email}`
-                  }
+                    : `We've sent a 6-digit code to ${formData.email}`}
                 </CardDescription>
               </CardHeader>
 
@@ -271,7 +289,9 @@ const SignupPage = () => {
                           id="companyName"
                           required
                           value={formData.companyName}
-                          onChange={(e) => handleInputChange('companyName', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange('companyName', e.target.value)
+                          }
                           placeholder="Acme Inc."
                           className="w-full pl-9 text-sm sm:text-base"
                           disabled={isLoading}
@@ -292,7 +312,9 @@ const SignupPage = () => {
                           id="phoneNumber"
                           required
                           value={formData.phoneNumber}
-                          onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange('phoneNumber', e.target.value)
+                          }
                           placeholder="+1 (555) 000-0000"
                           className="w-full pl-9 text-sm sm:text-base"
                           disabled={isLoading}

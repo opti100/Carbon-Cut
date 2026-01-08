@@ -1,6 +1,6 @@
-import nodemailer from 'nodemailer';
-import { PdfReportData } from '@/types/database';
-import { CloudinaryService } from '@/services/cloudinary-service';
+import nodemailer from 'nodemailer'
+import { PdfReportData } from '@/types/database'
+import { CloudinaryService } from '@/services/cloudinary-service'
 
 export class EmailService {
   private static transporter = nodemailer.createTransport({
@@ -11,44 +11,44 @@ export class EmailService {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-  });
+  })
 
   // Send PDF report via email
   static async sendPDFReport(
-    email: string, 
-    report: PdfReportData, 
+    email: string,
+    report: PdfReportData,
     isCertified: boolean = false
   ): Promise<boolean> {
     try {
-      console.log(`Sending ${isCertified ? 'certified' : 'regular'} PDF to ${email}`);
+      console.log(`Sending ${isCertified ? 'certified' : 'regular'} PDF to ${email}`)
 
       // Download PDF from Cloudinary if available
-      let pdfBuffer: Buffer | null = null;
+      let pdfBuffer: Buffer | null = null
       if (report.cloudinaryPublicId) {
         try {
-          pdfBuffer = await CloudinaryService.downloadPDFBuffer(report.cloudinaryPublicId);
+          pdfBuffer = await CloudinaryService.downloadPDFBuffer(report.cloudinaryPublicId)
         } catch (error) {
-          console.error('Failed to download PDF from Cloudinary:', error);
+          console.error('Failed to download PDF from Cloudinary:', error)
         }
       }
 
       if (!pdfBuffer) {
-        console.error('No PDF buffer available for email');
-        return false;
+        console.error('No PDF buffer available for email')
+        return false
       }
 
       // Generate filename
-      const sanitizedCompanyName = report.companyName.replace(/[^a-zA-Z0-9]/g, '_');
-      const timestamp = new Date(report.createdAt).toISOString().split('T')[0];
-      const filename = `${sanitizedCompanyName}_${report.disclosureFormat}_Report_${timestamp}.pdf`;
+      const sanitizedCompanyName = report.companyName.replace(/[^a-zA-Z0-9]/g, '_')
+      const timestamp = new Date(report.createdAt).toISOString().split('T')[0]
+      const filename = `${sanitizedCompanyName}_${report.disclosureFormat}_Report_${timestamp}.pdf`
 
       // Email content
-      const subject = isCertified 
+      const subject = isCertified
         ? `✅ Your Certified Carbon Offset Report - ${report.companyName}`
-        : `📊 Your Carbon Footprint Report - ${report.companyName}`;
+        : `📊 Your Carbon Footprint Report - ${report.companyName}`
 
-      const htmlContent = this.generateEmailHTML(report, isCertified);
-      const textContent = this.generateEmailText(report, isCertified);
+      const htmlContent = this.generateEmailHTML(report, isCertified)
+      const textContent = this.generateEmailText(report, isCertified)
 
       // Send email
       const mailOptions = {
@@ -61,39 +61,40 @@ export class EmailService {
           {
             filename,
             content: pdfBuffer,
-            contentType: 'application/pdf'
-          }
-        ]
-      };
+            contentType: 'application/pdf',
+          },
+        ],
+      }
 
-      const result = await this.transporter.sendMail(mailOptions);
-      console.log(`Email sent successfully to ${email}:`, result.messageId);
-      return true;
-
+      const result = await this.transporter.sendMail(mailOptions)
+      console.log(`Email sent successfully to ${email}:`, result.messageId)
+      return true
     } catch (error) {
-      console.error('Error sending email:', error);
-      return false;
+      console.error('Error sending email:', error)
+      return false
     }
   }
 
   // Send certified PDF specifically
   static async sendCertifiedPDF(email: string, report: PdfReportData): Promise<boolean> {
-    return this.sendPDFReport(email, report, true);
+    return this.sendPDFReport(email, report, true)
   }
 
   // Send regular PDF
   static async sendRegularPDF(email: string, report: PdfReportData): Promise<boolean> {
-    return this.sendPDFReport(email, report, false);
+    return this.sendPDFReport(email, report, false)
   }
 
   // Generate HTML email content
   private static generateEmailHTML(report: PdfReportData, isCertified: boolean): string {
-    const certificationBadge = isCertified ? `
+    const certificationBadge = isCertified
+      ? `
       <div style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 12px; border-radius: 8px; text-align: center; margin: 20px 0;">
         <h3 style="margin: 0; font-size: 18px;">🏆 CERTIFIED REPORT</h3>
         <p style="margin: 5px 0 0 0; font-size: 14px;">Certificate ID: ${report.certificationId}</p>
       </div>
-    ` : '';
+    `
+      : ''
 
     return `
       <!DOCTYPE html>
@@ -142,7 +143,9 @@ export class EmailService {
           </table>
         </div>
 
-        ${isCertified ? `
+        ${
+          isCertified
+            ? `
           <div style="background: #fef3c7; border: 1px solid #f59e0b; padding: 15px; border-radius: 8px; margin: 20px 0;">
             <h4 style="color: #92400e; margin-top: 0;">✅ Certification Details</h4>
             <p style="margin: 0; color: #92400e;">
@@ -150,7 +153,9 @@ export class EmailService {
               Your certification ID is <strong>${report.certificationId}</strong> and can be used for compliance reporting.
             </p>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
         <div style="margin: 30px 0;">
           <p><strong>What's Next?</strong></p>
@@ -179,17 +184,19 @@ export class EmailService {
         </div>
       </body>
       </html>
-    `;
+    `
   }
 
   // Generate plain text email content
   private static generateEmailText(report: PdfReportData, isCertified: boolean): string {
-    const certificationText = isCertified ? `
+    const certificationText = isCertified
+      ? `
 CERTIFIED REPORT
 Certificate ID: ${report.certificationId}
 This report has been verified and certified by Optiminastic.
 
-` : '';
+`
+      : ''
 
     return `
 Carbon Cut - Your ${isCertified ? 'Certified ' : ''}Carbon Footprint Report
@@ -219,18 +226,18 @@ The Carbon Cut Team
 
 This email was sent to ${report.email}.
 Visit Carbon Cut: ${process.env.NEXT_PUBLIC_BASE_URL}
-    `;
+    `
   }
 
   // Test email configuration
   static async testConnection(): Promise<boolean> {
     try {
-      await this.transporter.verify();
-      console.log('Email server connection verified');
-      return true;
+      await this.transporter.verify()
+      console.log('Email server connection verified')
+      return true
     } catch (error) {
-      console.error('Email server connection failed:', error);
-      return false;
+      console.error('Email server connection failed:', error)
+      return false
     }
   }
 }

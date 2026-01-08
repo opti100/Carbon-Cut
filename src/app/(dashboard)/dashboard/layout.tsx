@@ -22,9 +22,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex h-screen w-screen flex-row">
       <SessionNavBar />
-      <main className="flex h-screen grow flex-col overflow-auto">
-        {children}
-      </main>
+      <main className="flex h-screen grow flex-col overflow-auto">{children}</main>
     </div>
   )
 }

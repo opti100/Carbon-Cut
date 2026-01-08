@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
   try {
-    const { campaign, analytics, dateRange } = await request.json();
+    const { campaign, analytics, dateRange } = await request.json()
 
     if (!campaign || !analytics) {
       return NextResponse.json(
         { error: 'Missing required data for report generation' },
         { status: 400 }
-      );
+      )
     }
 
-    const html = generateCampaignReportHTML({ campaign, analytics, dateRange });
+    const html = generateCampaignReportHTML({ campaign, analytics, dateRange })
 
-    const pdfArrayBuffer = await generateCampaignPDF(html, campaign.name);
+    const pdfArrayBuffer = await generateCampaignPDF(html, campaign.name)
 
     return new NextResponse(pdfArrayBuffer, {
       status: 200,
@@ -21,49 +21,48 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${campaign.name.replace(/[^a-zA-Z0-9]/g, '_')}_Analytics_Report_${new Date().toISOString().split('T')[0]}.pdf"`,
       },
-    });
-
+    })
   } catch (error) {
-    console.error('Error generating campaign report:', error);
+    console.error('Error generating campaign report:', error)
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
-    );
+    )
   }
 }
 
 function generateCampaignReportHTML(data: any): string {
-  const { campaign, analytics, dateRange } = data;
-  const certificationId = `CAMP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+  const { campaign, analytics, dateRange } = data
+  const certificationId = `CAMP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
   const reportDate = new Date().toLocaleDateString('en-GB', {
     day: '2-digit',
     month: 'long',
-    year: 'numeric'
-  });
+    year: 'numeric',
+  })
 
   // Safely extract and convert values
-  const totals = analytics.totals || {};
-  const impressions = Number(totals.impressions) || 0;
-  const clicks = Number(totals.clicks) || 0;
-  const sessions = Number(totals.sessions) || 0;
-  const pageViews = Number(totals.page_views) || 0;
-  const conversions = Number(totals.conversions) || 0;
-  const cost = Number(totals.cost) || 0;
-  const ctr = Number(totals.ctr) || 0;
-  const cpc = Number(totals.cpc) || 0;
-  const cpa = Number(totals.cpa) || 0;
-  const conversionRate = Number(totals.conversion_rate) || 0;
-  const totalEmissionsKg = Number(totals.total_emissions_kg) || 0;
-  const emissionsPerConversion = Number(totals.emissions_per_conversion_kg) || 0;
+  const totals = analytics.totals || {}
+  const impressions = Number(totals.impressions) || 0
+  const clicks = Number(totals.clicks) || 0
+  const sessions = Number(totals.sessions) || 0
+  const pageViews = Number(totals.page_views) || 0
+  const conversions = Number(totals.conversions) || 0
+  const cost = Number(totals.cost) || 0
+  const ctr = Number(totals.ctr) || 0
+  const cpc = Number(totals.cpc) || 0
+  const cpa = Number(totals.cpa) || 0
+  const conversionRate = Number(totals.conversion_rate) || 0
+  const totalEmissionsKg = Number(totals.total_emissions_kg) || 0
+  const emissionsPerConversion = Number(totals.emissions_per_conversion_kg) || 0
 
-  const totalEmissionsG = totalEmissionsKg * 1000;
+  const totalEmissionsG = totalEmissionsKg * 1000
 
   // Emissions breakdown
-  const emissionsBreakdown = analytics.emissions_breakdown || {};
-  const impressionsEmissionsG = Number(emissionsBreakdown.impressions_g) || 0;
-  const clicksEmissionsG = Number(emissionsBreakdown.clicks_g) || 0;
-  const pageViewsEmissionsG = Number(emissionsBreakdown.page_views_g) || 0;
-  const conversionsEmissionsG = Number(emissionsBreakdown.conversions_g) || 0;
+  const emissionsBreakdown = analytics.emissions_breakdown || {}
+  const impressionsEmissionsG = Number(emissionsBreakdown.impressions_g) || 0
+  const clicksEmissionsG = Number(emissionsBreakdown.clicks_g) || 0
+  const pageViewsEmissionsG = Number(emissionsBreakdown.page_views_g) || 0
+  const conversionsEmissionsG = Number(emissionsBreakdown.conversions_g) || 0
 
   return `
 <!DOCTYPE html>
@@ -444,7 +443,7 @@ function generateCampaignReportHTML(data: any): string {
                 <div class="metric-label">Page Views</div>
             </div>
             <div class="metric-box">
-                <div class="metric-value">${cost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                <div class="metric-value">${cost.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
                 <div class="metric-label">Total Cost</div>
             </div>
             <div class="metric-box">
@@ -512,14 +511,18 @@ function generateCampaignReportHTML(data: any): string {
                 </tr>
             </thead>
             <tbody>
-                ${(analytics.by_device || []).map((device: any) => `
+                ${(analytics.by_device || [])
+                  .map(
+                    (device: any) => `
                     <tr>
                         <td style="text-transform: capitalize; font-weight: 500;">${device.device_type}</td>
                         <td style="text-align: right;">${Number(device.sessions).toLocaleString()}</td>
                         <td style="text-align: right;">${Number(device.conversions).toLocaleString()}</td>
                         <td style="text-align: right;">${Number(device.emissions_kg).toFixed(4)}</td>
                     </tr>
-                `).join('')}
+                `
+                  )
+                  .join('')}
             </tbody>
         </table>
     </div>
@@ -536,14 +539,19 @@ function generateCampaignReportHTML(data: any): string {
                 </tr>
             </thead>
             <tbody>
-                ${(analytics.by_region || []).slice(0, 10).map((region: any) => `
+                ${(analytics.by_region || [])
+                  .slice(0, 10)
+                  .map(
+                    (region: any) => `
                     <tr>
                         <td style="font-weight: 500;">${region.country}</td>
                         <td style="text-align: right;">${Number(region.sessions).toLocaleString()}</td>
                         <td style="text-align: right;">${Number(region.conversions).toLocaleString()}</td>
                         <td style="text-align: right;">${Number(region.emissions_kg).toFixed(4)}</td>
                     </tr>
-                `).join('')}
+                `
+                  )
+                  .join('')}
             </tbody>
         </table>
     </div>
@@ -580,13 +588,16 @@ function generateCampaignReportHTML(data: any): string {
     </div>
 </body>
 </html>
-  `;
+  `
 }
 
-async function generateCampaignPDF(html: string, campaignName: string): Promise<ArrayBuffer> {
-  const puppeteer = require('puppeteer');
-  
-  let browser;
+async function generateCampaignPDF(
+  html: string,
+  campaignName: string
+): Promise<ArrayBuffer> {
+  const puppeteer = require('puppeteer')
+
+  let browser
   try {
     browser = await puppeteer.launch({
       headless: true,
@@ -597,17 +608,17 @@ async function generateCampaignPDF(html: string, campaignName: string): Promise<
         '--disable-accelerated-2d-canvas',
         '--no-first-run',
         '--no-zygote',
-        '--disable-gpu'
+        '--disable-gpu',
       ],
-    });
-    
-    const page = await browser.newPage();
-    
-    await page.setContent(html, { 
+    })
+
+    const page = await browser.newPage()
+
+    await page.setContent(html, {
       waitUntil: 'domcontentloaded',
-      timeout: 10000 
-    });
-    
+      timeout: 10000,
+    })
+
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -618,25 +629,27 @@ async function generateCampaignPDF(html: string, campaignName: string): Promise<
         left: '12mm',
       },
       preferCSSPageSize: true,
-      timeout: 30000
-    });
-    
-    await browser.close();
-    
+      timeout: 30000,
+    })
+
+    await browser.close()
+
     return pdfBuffer.buffer.slice(
       pdfBuffer.byteOffset,
       pdfBuffer.byteOffset + pdfBuffer.byteLength
-    );
-    
+    )
   } catch (error) {
     if (browser) {
       try {
-        await browser.close();
+        await browser.close()
       } catch (closeError) {
-        console.error('Error closing browser:', closeError);
+        console.error('Error closing browser:', closeError)
       }
     }
-    console.error('PDF generation error:', error);
-    throw new Error('Failed to generate PDF: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    console.error('PDF generation error:', error)
+    throw new Error(
+      'Failed to generate PDF: ' +
+        (error instanceof Error ? error.message : 'Unknown error')
+    )
   }
 }

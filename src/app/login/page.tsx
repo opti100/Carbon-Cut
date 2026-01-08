@@ -1,8 +1,6 @@
 import LoginPage from '@/components/auth/login/Login'
 const page = () => {
-  return (
-      <LoginPage/>
-  )
+  return <LoginPage />
 }
 
 export default page

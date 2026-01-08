@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import UniversalHeading from "../UniversalHeading";
+import UniversalHeading from '../UniversalHeading'
 
 export default function MonumaHero() {
   return (
@@ -15,25 +15,35 @@ export default function MonumaHero() {
       </div>
 
       {/* RIGHT CONTENT PANEL */}
-      <div className="flex items-center justify-center bg-[#d1cebb] bg-[url('/texture.png')] bg-cover bg-blend-overlay px-6 md:px-12">
-        <div className="w-full max-w-2xl text-black space-y-6 flex flex-col justify-center">
+      <div className="flex items-center justify-start  bg-[#d1cebb] bg-[url('/texture.png')] bg-cover bg-blend-overlay px-6 md:px-12">
+        <div className="w-full max-w-2xl  text-black space-y-6 flex flex-col justify-start">
           {/* Heading */}
-          <UniversalHeading title="What we're doing"  />
+
+          <h1 className="text-2xl md:text-3xl font-mono text-[#6c5f31] font-bold">
+            What we're doing
+          </h1>
 
           {/* Paragraphs */}
           <p className="text-sm md:text-base opacity-90 leading-relaxed">
-            We're democratising carbon accounting for the digital age. Every company, from bootstrapped startups to enterprise giants, deserves access to accurate, real-time emission data without breaking the bank or hiring a team of consultants.
+            We're democratising carbon accounting for the digital age. Every company, from
+            bootstrapped startups to enterprise giants, deserves access to accurate,
+            real-time emission data without breaking the bank or hiring a team of
+            consultants.
           </p>
 
           <p className="text-sm md:text-base opacity-90 leading-relaxed">
-            Track, Decarbon and Report - transforms complex carbon calculations into source-level, actionable insights. You get a clear picture of your digital carbon footprint, industry benchmarks to see how you stack up, and concrete recommendations to reduce emissions while maintaining performance.
+            Track, Decarbon and Report - transforms complex carbon calculations into
+            source-level, actionable insights. You get a clear picture of your digital
+            carbon footprint, industry benchmarks to see how you stack up, and concrete
+            recommendations to reduce emissions while maintaining performance.
           </p>
 
           <p className="text-sm md:text-base opacity-90 leading-relaxed font-semibold">
-            This isn't just reporting, it's your sure roadmap to becoming a net-zero company.
+            This isn't just reporting, it's your sure roadmap to becoming a net-zero
+            company.
           </p>
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -7,7 +7,7 @@
 // ) {
 //   try {
 //     const { reportId } = params;
-    
+
 //     // Get the form data
 //     const formData = await request.formData();
 //     const file = formData.get('pdf') as File;

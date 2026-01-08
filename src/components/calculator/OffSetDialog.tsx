@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -6,54 +6,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { Card, CardContent } from '../ui/card';
-import { Badge } from '../ui/badge';
-import { Building2, Leaf } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+} from '@/components/ui/dialog'
+import { Button } from '../ui/button'
+import { Card, CardContent } from '../ui/card'
+import { Badge } from '../ui/badge'
+import { Building2, Leaf } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 const OffsetDialog = () => {
-  const [offsetDialogOpen, setOffsetDialogOpen] = useState(false);
-  const [selectedMarket, setSelectedMarket] = useState<'compliance' | 'voluntary' | null>(null);
-  const router = useRouter();
-  const { isAuthenticated } = useAuth();
+  const [offsetDialogOpen, setOffsetDialogOpen] = useState(false)
+  const [selectedMarket, setSelectedMarket] = useState<'compliance' | 'voluntary' | null>(
+    null
+  )
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
 
   const handleMarketSelection = (market: 'compliance' | 'voluntary') => {
-    localStorage.setItem('selectedMarket', market);
-    setSelectedMarket(market);
-  };
+    localStorage.setItem('selectedMarket', market)
+    setSelectedMarket(market)
+  }
 
   const handleClose = () => {
-    setOffsetDialogOpen(false);
-    setSelectedMarket(null);
-  };
+    setOffsetDialogOpen(false)
+    setSelectedMarket(null)
+  }
 
   const handleDialogTrigger = () => {
     if (!isAuthenticated) {
-      router.push('/signup');
-      return;
+      router.push('/signup')
+      return
     }
-    setOffsetDialogOpen(true);
-  };
+    setOffsetDialogOpen(true)
+  }
 
   return (
     <Dialog open={offsetDialogOpen} onOpenChange={setOffsetDialogOpen}>
-      <Button 
+      <Button
         onClick={handleDialogTrigger}
         className="bg-green-600 hover:bg-green-700 text-white font-medium text-sm px-4 py-2.5 h-auto rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto"
       >
         Offset with CarbonCut
       </Button>
-      
+
       <DialogContent className="bg-white border-gray-200 text-gray-900 max-w-[95vw] sm:max-w-md md:max-w-2xl lg:max-w-3xl max-h-[95vh] overflow-y-auto rounded-2xl sm:rounded-2xl p-4 sm:p-6">
         <DialogHeader className="px-0 sm:px-0">
           <DialogTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 text-center sm:text-left">
             Choose Your Carbon Offset Market
           </DialogTitle>
           <DialogDescription className="text-gray-600 text-sm sm:text-base leading-relaxed text-center sm:text-left">
-            Select the carbon offset market that best fits your organization&apos;s needs and compliance requirements.
+            Select the carbon offset market that best fits your organization&apos;s needs
+            and compliance requirements.
           </DialogDescription>
         </DialogHeader>
 
@@ -82,7 +85,8 @@ const OffsetDialog = () => {
                     </Badge>
                   </div>
                   <p className="text-gray-600 text-sm sm:text-base mb-4 sm:mb-5 leading-relaxed">
-                    Government-regulated carbon credits for organizations with mandatory emission reduction targets.
+                    Government-regulated carbon credits for organizations with mandatory
+                    emission reduction targets.
                   </p>
                   {selectedMarket === 'compliance' && (
                     <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
@@ -146,11 +150,11 @@ const OffsetDialog = () => {
           <Button
             disabled={!selectedMarket}
             onClick={() => {
-              handleClose();
+              handleClose()
               if (selectedMarket === 'compliance') {
-                router.push(`/offset?market=${selectedMarket}`);
+                router.push(`/offset?market=${selectedMarket}`)
               } else {
-                router.push(`/projects`);
+                router.push(`/projects`)
               }
             }}
             className="flex-1 py-2.5 sm:py-3 text-sm sm:text-base bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed order-1 sm:order-2"
@@ -160,7 +164,7 @@ const OffsetDialog = () => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default OffsetDialog;
+export default OffsetDialog

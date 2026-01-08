@@ -1,32 +1,28 @@
-import type { Metadata } from "next";
-import "./globals.css"
-import { Geist, Geist_Mono } from "next/font/google";
-import Providers from "@/providers/providers";
-import Script from "next/script";
+import type { Metadata } from 'next'
+import './globals.css'
+import { Geist, Geist_Mono } from 'next/font/google'
+import Providers from '@/providers/providers'
+import Script from 'next/script'
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
-  title: "Carbon Cut",
-  description: "Measure and Offset Your Marketing Carbon Emissions",
+  title: 'Carbon Cut',
+  description: 'Measure and Offset Your Marketing Carbon Emissions',
   icons: {
-    icon: "/favicon.ico",
+    icon: '/favicon.ico',
   },
-};
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <link rel="preload" href="/LandingPage.mp4" as="video" type="video/mp4" />
@@ -59,9 +55,9 @@ export default function RootLayout({
             plausible.init();
           `}
         </Script>
-        
+
         <Providers>{children}</Providers>
       </body>
     </html>
-  );
+  )
 }

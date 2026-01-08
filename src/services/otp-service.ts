@@ -1,9 +1,9 @@
-import nodemailer from 'nodemailer';
-import ejs from 'ejs';
-import path from 'path';
-import { PrismaClient } from '@/generated/prisma';
+import nodemailer from 'nodemailer'
+import ejs from 'ejs'
+import path from 'path'
+import { PrismaClient } from '@/generated/prisma'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export class OTPService {
   private static transporter = nodemailer.createTransport({
@@ -14,17 +14,24 @@ export class OTPService {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
-  });
+  })
 
   // Generate 6-digit OTP
   static generateOTP(): string {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+    return Math.floor(100000 + Math.random() * 900000).toString()
   }
 
   // Render email template
   private static async renderTemplate(templateName: string, data: any): Promise<string> {
-    const templatePath = path.join(process.cwd(), 'src', 'services','templates', 'emails', `${templateName}.ejs`);
-    return await ejs.renderFile(templatePath, data);
+    const templatePath = path.join(
+      process.cwd(),
+      'src',
+      'services',
+      'templates',
+      'emails',
+      `${templateName}.ejs`
+    )
+    return await ejs.renderFile(templatePath, data)
   }
 
   // Send welcome email (only for new users)
@@ -33,34 +40,38 @@ export class OTPService {
       const html = await this.renderTemplate('welcome', {
         name: name || 'there',
         email,
-      });
+      })
 
       const mailOptions = {
         from: process.env.SMTP_FROM || 'noreply@carboncut.com',
         to: email,
         subject: 'Welcome to CarbonCut - Start Your Carbon Journey!',
         html,
-      };
+      }
 
-      await this.transporter.sendMail(mailOptions);
+      await this.transporter.sendMail(mailOptions)
     } catch (error) {
-      console.error('Error sending welcome email:', error);
+      console.error('Error sending welcome email:', error)
       // Don't throw error for welcome email failure
     }
   }
 
   // Send OTP email for login or registration
-  static async sendOTP(email: string, name: string = '', isLogin: boolean = false): Promise<{ success: boolean; message: string }> {
+  static async sendOTP(
+    email: string,
+    name: string = '',
+    isLogin: boolean = false
+  ): Promise<{ success: boolean; message: string }> {
     try {
-      const otp = this.generateOTP();
-      const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+      const otp = this.generateOTP()
+      const expiry = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
 
       // Check if user exists
       const existingUser = await prisma.user.findUnique({
         where: { email },
-      });
+      })
 
-      const isNewUser = !existingUser;
+      const isNewUser = !existingUser
 
       // Create or update user with OTP
       const user = await prisma.user.upsert({
@@ -78,7 +89,7 @@ export class OTPService {
           otpExpiry: expiry,
           otpVerified: false,
         },
-      });
+      })
 
       // // Send welcome email for new users
       // if (isNewUser && name) {
@@ -95,66 +106,71 @@ export class OTPService {
         otp,
         isLogin,
         email,
-      });
+      })
 
-      const emailSubject = isLogin ? 'Your CarbonCut Login Code' : 'Your CarbonCut Verification Code';
+      const emailSubject = isLogin
+        ? 'Your CarbonCut Login Code'
+        : 'Your CarbonCut Verification Code'
 
       const mailOptions = {
         from: process.env.SMTP_FROM || 'noreply@carboncut.com',
         to: email,
         subject: emailSubject,
         html,
-      };
+      }
 
-      await this.transporter.sendMail(mailOptions);
+      await this.transporter.sendMail(mailOptions)
 
       return {
         success: true,
-        message: isLogin 
+        message: isLogin
           ? 'Login code sent successfully to your email address.'
           : 'OTP sent successfully to your email address.',
-      };
+      }
     } catch (error) {
-      console.error('Error sending OTP:', error);
+      console.error('Error sending OTP:', error)
       return {
         success: false,
         message: 'Failed to send OTP. Please try again.',
-      };
+      }
     }
   }
 
-  static async verifyOTP(email: string, otp: string): Promise<{ success: boolean; message: string; userId?: string }> {
+  static async verifyOTP(
+    email: string,
+    otp: string
+  ): Promise<{ success: boolean; message: string; userId?: string }> {
     try {
       const user = await prisma.user.findUnique({
         where: { email },
-      });
+      })
 
       if (!user) {
         return {
           success: false,
           message: 'Email not found. Please request a new OTP.',
-        };
+        }
       }
 
       if (!user.otpCode || !user.otpExpiry) {
         return {
           success: false,
           message: 'No OTP found for this email. Please request a new OTP.',
-        };
+        }
       }
 
       if (new Date() > user.otpExpiry) {
         return {
           success: false,
           message: 'OTP has expired. Please request a new OTP.',
-        };
+        }
       }
 
       if (user.otpCode !== otp) {
         return {
           success: false,
           message: 'Invalid OTP. Please check and try again.',
-        };
+        }
       }
 
       // Mark OTP as verified
@@ -165,19 +181,19 @@ export class OTPService {
           otpCode: null,
           otpExpiry: null,
         },
-      });
+      })
 
       return {
         success: true,
         message: 'OTP verified successfully!',
         userId: user.id,
-      };
+      }
     } catch (error) {
-      console.error('Error verifying OTP:', error);
+      console.error('Error verifying OTP:', error)
       return {
         success: false,
         message: 'Failed to verify OTP. Please try again.',
-      };
+      }
     }
   }
 
@@ -186,11 +202,11 @@ export class OTPService {
     try {
       const user = await prisma.user.findUnique({
         where: { email },
-      });
-      return user?.otpVerified || false;
+      })
+      return user?.otpVerified || false
     } catch (error) {
-      console.error('Error checking email verification:', error);
-      return false;
+      console.error('Error checking email verification:', error)
+      return false
     }
   }
 }

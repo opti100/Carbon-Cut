@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { FC, useEffect, useRef, useState } from "react"
-import { motion, useSpring } from "framer-motion"
+import { FC, useEffect, useRef, useState } from 'react'
+import { motion, useSpring } from 'framer-motion'
 
 interface Position {
   x: number
@@ -138,8 +138,7 @@ export function SmoothCursor({
 
       if (speed > 0.1) {
         const currentAngle =
-          Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) +
-          90
+          Math.atan2(velocity.current.y, velocity.current.x) * (180 / Math.PI) + 90
 
         let angleDiff = currentAngle - previousAngle.current
         if (angleDiff > 180) angleDiff -= 360
@@ -170,12 +169,12 @@ export function SmoothCursor({
       })
     }
 
-    document.body.style.cursor = "none"
-    window.addEventListener("mousemove", throttledMouseMove)
+    document.body.style.cursor = 'none'
+    window.addEventListener('mousemove', throttledMouseMove)
 
     return () => {
-      window.removeEventListener("mousemove", throttledMouseMove)
-      document.body.style.cursor = "auto"
+      window.removeEventListener('mousemove', throttledMouseMove)
+      document.body.style.cursor = 'auto'
       if (rafId) cancelAnimationFrame(rafId)
     }
   }, [cursorX, cursorY, rotation, scale])
@@ -183,21 +182,21 @@ export function SmoothCursor({
   return (
     <motion.div
       style={{
-        position: "fixed",
+        position: 'fixed',
         left: cursorX,
         top: cursorY,
-        translateX: "-50%",
-        translateY: "-50%",
+        translateX: '-50%',
+        translateY: '-50%',
         rotate: rotation,
         scale: scale,
         zIndex: 100,
-        pointerEvents: "none",
-        willChange: "transform",
+        pointerEvents: 'none',
+        willChange: 'transform',
       }}
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
       transition={{
-        type: "spring",
+        type: 'spring',
         stiffness: 400,
         damping: 30,
       }}

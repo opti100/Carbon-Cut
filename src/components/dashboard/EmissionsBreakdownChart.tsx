@@ -1,8 +1,20 @@
-"use client"
-import { Label, Pie, PieChart } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Leaf } from "lucide-react"
+'use client'
+import { Label, Pie, PieChart } from 'recharts'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
+import { Leaf } from 'lucide-react'
 
 interface EmissionsBreakdownData {
   category: string
@@ -16,26 +28,29 @@ interface EmissionsBreakdownChartProps {
 }
 
 const chartConfig = {
-  emissions: { label: "Emissions (kg)" },
+  emissions: { label: 'Emissions (kg)' },
   impressions: {
-    label: "Impressions",
-    color: "#10b981",
+    label: 'Impressions',
+    color: '#10b981',
   },
   pageviews: {
-    label: "Page Views",
-    color: "#3b82f6",
+    label: 'Page Views',
+    color: '#3b82f6',
   },
   clicks: {
-    label: "Clicks",
-    color: "#f59e0b",
+    label: 'Clicks',
+    color: '#f59e0b',
   },
   conversions: {
-    label: "Conversions",
-    color: "#ec4899",
+    label: 'Conversions',
+    color: '#ec4899',
   },
 } satisfies ChartConfig
 
-export function EmissionsBreakdownChart({ data, totalEmissions }: EmissionsBreakdownChartProps) {
+export function EmissionsBreakdownChart({
+  data,
+  totalEmissions,
+}: EmissionsBreakdownChartProps) {
   const coloredData = data.map((item) => {
     const cfg = chartConfig[item.category as keyof typeof chartConfig] as {
       label: string
@@ -89,16 +104,35 @@ export function EmissionsBreakdownChart({ data, totalEmissions }: EmissionsBreak
                 />
               }
             />
-            <Pie data={coloredData} dataKey="emissions" nameKey="category" innerRadius={50} strokeWidth={5}>
+            <Pie
+              data={coloredData}
+              dataKey="emissions"
+              nameKey="category"
+              innerRadius={50}
+              strokeWidth={5}
+            >
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
                     return (
-                      <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-2xl font-bold">
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-2xl font-bold"
+                        >
                           {totalEmissions.toFixed(3)}
                         </tspan>
-                        <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 20} className="fill-muted-foreground text-xs">
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 20}
+                          className="fill-muted-foreground text-xs"
+                        >
                           kg CO₂e
                         </tspan>
                       </text>
@@ -115,7 +149,9 @@ export function EmissionsBreakdownChart({ data, totalEmissions }: EmissionsBreak
           <Leaf className="h-4 w-4 text-green-600" />
           Total carbon footprint
         </div>
-        <div className="leading-none text-muted-foreground text-xs">Showing breakdown for the selected period</div>
+        <div className="leading-none text-muted-foreground text-xs">
+          Showing breakdown for the selected period
+        </div>
       </CardFooter>
     </Card>
   )

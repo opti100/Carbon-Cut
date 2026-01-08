@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import React from "react";
-import FormSection from "./form";
-import { PixelatedCanvas } from "../ui/pixelated-canvas";
-import { BlurFade } from "../ui/blur-fade";
-import CardNav from "../CardNav";
-import { navData } from "../NavData";
+import React from 'react'
+import FormSection from './form'
+import { PixelatedCanvas } from '../ui/pixelated-canvas'
+import { BlurFade } from '../ui/blur-fade'
+import CardNav from '../CardNav'
+import { navData } from '../NavData'
 
 export default function HeroSectionOne() {
   return (
@@ -26,19 +26,16 @@ export default function HeroSectionOne() {
       {/* Main Section */}
       <div className="flex-1 flex items-center">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 w-full max-w-7xl mx-auto px-6">
-
           {/* LEFT COLUMN */}
           <div className="flex flex-col justify-center h-full font-mono">
             <BlurFade delay={0.1} inView className="mt-20">
-            
-
               <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-extrabold text-[#6c5f31] leading-tight mb-8">
-              Digital carbon emissions
+                Digital carbon emissions
               </h1>
 
-                <p className="text-[#6c5f31] text-sm sm:text-base md:text-base mb-4 leading-relaxed">
-                CarbonCut helps your platform measure, reduce, and offset
-                emissions in real time — creating a net-zero digital experience.
+              <p className="text-[#6c5f31] text-sm sm:text-base md:text-base mb-4 leading-relaxed">
+                CarbonCut helps your platform measure, reduce, and offset emissions in
+                real time — creating a net-zero digital experience.
               </p>
             </BlurFade>
 
@@ -72,9 +69,8 @@ export default function HeroSectionOne() {
               <FormSection />
             </div>
           </div>
-
         </div>
       </div>
     </div>
-  );
+  )
 }

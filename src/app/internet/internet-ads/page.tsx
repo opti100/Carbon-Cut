@@ -9,11 +9,10 @@ const page = () => {
   return (
     <div>
       <LenisSmoothScroll>
-         <HeroInternetAds />
-      <InternetAds />
-      <Footer />
+        <HeroInternetAds />
+        <InternetAds />
+        <Footer />
       </LenisSmoothScroll>
-
     </div>
   )
 }

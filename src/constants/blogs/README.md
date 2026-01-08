@@ -15,6 +15,7 @@ src/constants/
 ## Current Blog System
 
 The current system uses only one blog post (`blogone-data.tsx`) which contains:
+
 - A React component (`BlogOneContent`) for rich content formatting
 - Blog metadata (`blogOneData`) exported as a `BlogPost` object
 
@@ -63,14 +64,14 @@ export const blogTwoData: BlogPost = {
 1. Open `src/constants/blogData.ts`
 2. Add the import at the top:
    ```typescript
-   import { blogTwoData } from './blogs/blogtwo-data';
+   import { blogTwoData } from './blogs/blogtwo-data'
    ```
 3. Add it to the blogPosts array:
    ```typescript
    export const blogPosts: BlogPost[] = [
      blogOneData,
      blogTwoData, // Add your new blog here
-   ];
+   ]
    ```
 
 ### Step 3: Update Blog Components
@@ -78,7 +79,7 @@ export const blogTwoData: BlogPost = {
 1. Open `src/components/blog/BlogPostPage.tsx`
 2. Import your new content component:
    ```typescript
-   import { BlogTwoContent } from '@/constants/blogs/blogtwo-data';
+   import { BlogTwoContent } from '@/constants/blogs/blogtwo-data'
    ```
 3. Add it to the content rendering logic where `BlogOneContent` is used
 
@@ -103,6 +104,7 @@ export const blogTwoData: BlogPost = {
 ## Content Formatting
 
 Content should be created as React components with proper JSX formatting:
+
 - Use semantic HTML elements (`<h2>`, `<p>`, `<div>`, etc.)
 - Apply Tailwind CSS classes for styling
 - Use the `prose` classes for consistent typography

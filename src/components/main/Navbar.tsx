@@ -1,55 +1,55 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Calculator, ChevronDown, ChevronRight, Menu, Radio, Scale } from "lucide-react";
-import { usePathname } from "next/dist/client/components/navigation";
+'use client'
+import React, { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Calculator, ChevronDown, ChevronRight, Menu, Radio, Scale } from 'lucide-react'
+import { usePathname } from 'next/dist/client/components/navigation'
 
 const Navbar = () => {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const pathname = usePathname();
-  const isHome = pathname === "/";
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const [isVisible, setIsVisible] = useState(true)
+  const lastScrollY = useRef(0)
+  const pathname = usePathname()
+  const isHome = pathname === '/'
 
   useEffect(() => {
-    const scrollContainer = document.querySelector("[data-scroll-container]");
+    const scrollContainer = document.querySelector('[data-scroll-container]')
 
     const getScrollY = () => {
-      return scrollContainer ? scrollContainer.scrollTop : window.scrollY;
-    };
+      return scrollContainer ? scrollContainer.scrollTop : window.scrollY
+    }
 
     const handleScroll = () => {
-      const currentScrollY = getScrollY();
+      const currentScrollY = getScrollY()
 
       if (currentScrollY < 10) {
-        setIsVisible(true);
+        setIsVisible(true)
       } else if (currentScrollY > lastScrollY.current) {
-        setIsVisible(false);
-        setHoveredItem(null);
+        setIsVisible(false)
+        setHoveredItem(null)
       } else {
-        setIsVisible(true);
+        setIsVisible(true)
       }
 
-      lastScrollY.current = currentScrollY;
-    };
+      lastScrollY.current = currentScrollY
+    }
 
     if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
     } else {
-      window.addEventListener("scroll", handleScroll, { passive: true });
+      window.addEventListener('scroll', handleScroll, { passive: true })
     }
 
     return () => {
       if (scrollContainer) {
-        scrollContainer.removeEventListener("scroll", handleScroll);
+        scrollContainer.removeEventListener('scroll', handleScroll)
       } else {
-        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener('scroll', handleScroll)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return (
     <motion.header
@@ -63,7 +63,12 @@ const Navbar = () => {
           {/* Logo */}
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer">
-              <Image src="/CarbonCut-fe/CC.svg" alt="CarbonCut Logo" height={50} width={50} />
+              <Image
+                src="/CarbonCut-fe/CC.svg"
+                alt="CarbonCut Logo"
+                height={50}
+                width={50}
+              />
             </div>
           </Link>
 
@@ -71,14 +76,15 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-10">
             <div
               className="relative h-full py-2"
-              onMouseEnter={() => setHoveredItem("Product")}
+              onMouseEnter={() => setHoveredItem('Product')}
               onMouseLeave={() => setHoveredItem(null)}
             >
               <span
-                className={`text-sm font-medium transition-colors cursor-pointer ${isHome
-                  ? "text-white hover:text-black"
-                  : "text-black hover:text-gray-700"
-                  }`}
+                className={`text-sm font-medium transition-colors cursor-pointer ${
+                  isHome
+                    ? 'text-white hover:text-black'
+                    : 'text-black hover:text-gray-700'
+                }`}
               >
                 Product
               </span>
@@ -86,30 +92,27 @@ const Navbar = () => {
 
             <Link
               href="/adopters"
-              className={`text-sm font-medium transition-colors ${isHome
-                ? "text-white hover:text-black"
-                : "text-black hover:text-gray-700"
-                }`}
+              className={`text-sm font-medium transition-colors ${
+                isHome ? 'text-white hover:text-black' : 'text-black hover:text-gray-700'
+              }`}
             >
               Solutions
             </Link>
 
             <Link
               href="/blogs"
-              className={`text-sm font-medium transition-colors ${isHome
-                ? "text-white hover:text-black"
-                : "text-black hover:text-gray-700"
-                }`}
+              className={`text-sm font-medium transition-colors ${
+                isHome ? 'text-white hover:text-black' : 'text-black hover:text-gray-700'
+              }`}
             >
               Blogs
             </Link>
 
             <Link
               href="/about"
-              className={`text-sm font-medium transition-colors ${isHome
-                ? "text-white hover:text-black"
-                : "text-black hover:text-gray-700"
-                }`}
+              className={`text-sm font-medium transition-colors ${
+                isHome ? 'text-white hover:text-black' : 'text-black hover:text-gray-700'
+              }`}
             >
               About
             </Link>
@@ -129,14 +132,14 @@ const Navbar = () => {
 
       {/* Product Dropdown */}
       <AnimatePresence>
-        {hoveredItem === "Product" && (
+        {hoveredItem === 'Product' && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="absolute top-full left-0 z-10 w-full overflow-hidden backdrop-blur-sm border-b border-white/20 shadow-sm"
-            onMouseEnter={() => setHoveredItem("Product")}
+            onMouseEnter={() => setHoveredItem('Product')}
             onMouseLeave={() => setHoveredItem(null)}
           >
             <div className="mx-auto w-full px-6 py-6">
@@ -150,7 +153,9 @@ const Navbar = () => {
                   <Calculator />
                   <div className="font-semibold text-xl mt-6 flex justify-between">
                     CarbonCalculator
-                    <span><ChevronRight /></span>
+                    <span>
+                      <ChevronRight />
+                    </span>
                   </div>
                 </Link>
 
@@ -162,7 +167,9 @@ const Navbar = () => {
                   <Radio />
                   <div className="font-semibold text-xl mt-6 flex justify-between">
                     CarbonLive
-                    <span><ChevronRight /></span>
+                    <span>
+                      <ChevronRight />
+                    </span>
                   </div>
                 </Link>
 
@@ -174,7 +181,9 @@ const Navbar = () => {
                   <Scale />
                   <div className="font-semibold text-xl mt-6 flex justify-between">
                     CarbonOffset
-                    <span><ChevronRight /></span>
+                    <span>
+                      <ChevronRight />
+                    </span>
                   </div>
                 </Link>
               </div>
@@ -183,7 +192,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </motion.header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

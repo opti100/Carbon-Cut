@@ -1,36 +1,36 @@
-import { ActivityData, OrganizationData } from "@/types/types";
-import puppeteer from 'puppeteer';
+import { ActivityData, OrganizationData } from '@/types/types'
+import puppeteer from 'puppeteer'
 
 export interface PDFFormData {
-  name: string;
-  email: string;
-  companyName: string;
-  phoneNumber: string;
-  disclosureFormat: 'SECR' | 'CSRD' | 'SEC';
+  name: string
+  email: string
+  companyName: string
+  phoneNumber: string
+  disclosureFormat: 'SECR' | 'CSRD' | 'SEC'
 }
 
 export interface PDFGenerationData {
-  organization: OrganizationData;
-  activities: ActivityData[];
-  getDisplayCO2: (activity: ActivityData) => number;
+  organization: OrganizationData
+  activities: ActivityData[]
+  getDisplayCO2: (activity: ActivityData) => number
   totals: {
-    total: number;
-    byChannel: Record<string, number>;
-    byMarket: Record<string, number>;
-    byScope: Record<string, number>;
-  };
-  formData: PDFFormData;
+    total: number
+    byChannel: Record<string, number>
+    byMarket: Record<string, number>
+    byScope: Record<string, number>
+  }
+  formData: PDFFormData
 }
 
 const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
-  const { organization, activities, getDisplayCO2, totals, formData } = data;
-  const totalEmissions = totals.total;
-  const now = new Date();
-  const reportDate = now.toLocaleDateString('en-GB', { 
-    day: '2-digit', 
-    month: 'long', 
-    year: 'numeric' 
-  });
+  const { organization, activities, getDisplayCO2, totals, formData } = data
+  const totalEmissions = totals.total
+  const now = new Date()
+  const reportDate = now.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
 
   // Calculate scope data
   const scopeData = [
@@ -38,33 +38,33 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
       scope: '1',
       description: 'Direct emissions from owned/controlled sources',
       emissions: totals.byScope['1'] || 0,
-      category: 'Fuels'
+      category: 'Fuels',
     },
     {
-      scope: '2', 
+      scope: '2',
       description: 'Indirect emissions from purchased energy',
       emissions: totals.byScope['2'] || 0,
-      category: 'Electricity'
+      category: 'Electricity',
     },
     {
       scope: '3',
       description: 'Other indirect emissions in value chain',
       emissions: totals.byScope['3'] || 0,
-      category: 'Business Travel/Materials'
-    }
-  ];
+      category: 'Business Travel/Materials',
+    },
+  ]
 
   // Top marketing channels
   const topChannels = Object.entries(totals.byChannel)
-    .sort(([,a], [,b]) => b - a)
-    .slice(0, 10);
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10)
 
   // Sample activities
   const sampleActivities = activities
     .sort((a, b) => getDisplayCO2(b) - getDisplayCO2(a))
-    .slice(0, 15);
+    .slice(0, 15)
 
- return `
+  return `
  <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -833,19 +833,19 @@ const generateSECRHTMLTemplate = (data: PDFGenerationData): string => {
 
 </body>
 </html>
- `;
-};
+ `
+}
 
 // Updated PDF generation function using Puppeteer with better error handling
 const generatePDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array> => {
-  let browser;
-  
+  let browser
+
   try {
-    const htmlContent = generateSECRHTMLTemplate(data);
-    
+    const htmlContent = generateSECRHTMLTemplate(data)
+
     // Check if we're in development or production
-    const isDev = process.env.NODE_ENV === 'development';
-    
+    const isDev = process.env.NODE_ENV === 'development'
+
     // Configure Puppeteer launch options based on environment
     const launchOptions: any = {
       headless: true,
@@ -858,34 +858,34 @@ const generatePDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array>
         '--no-zygote',
         '--disable-gpu',
         '--disable-web-security',
-        '--disable-features=VizDisplayCompositor'
-      ]
-    };
+        '--disable-features=VizDisplayCompositor',
+      ],
+    }
 
     // In production or if Chrome is not available, try to use system Chrome
     // if (!isDev || process.env.VERCEL) {
-    //   launchOptions.executablePath =  
-    //                                '/usr/bin/chromium-browser' || 
+    //   launchOptions.executablePath =
+    //                                '/usr/bin/chromium-browser' ||
     //                                '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
     // }
 
-    console.log('Launching Puppeteer with options:', launchOptions);
+    console.log('Launching Puppeteer with options:', launchOptions)
 
     // Launch Puppeteer browser
-    browser = await puppeteer.launch(launchOptions);
+    browser = await puppeteer.launch(launchOptions)
 
-    const page = await browser.newPage();
-    
+    const page = await browser.newPage()
+
     // Set viewport and content
-    await page.setViewport({ width: 1200, height: 1600 });
-    
+    await page.setViewport({ width: 1200, height: 1600 })
+
     // Set content and wait for it to load
     await page.setContent(htmlContent, {
       waitUntil: ['networkidle0', 'domcontentloaded'],
-      timeout: 30000
-    });
+      timeout: 30000,
+    })
 
-    console.log('Content set, generating PDF...');
+    console.log('Content set, generating PDF...')
 
     // Generate PDF with proper options
     const pdfBuffer = await page.pdf({
@@ -896,7 +896,7 @@ const generatePDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array>
         top: '20mm',
         right: '20mm',
         bottom: '20mm',
-        left: '20mm'
+        left: '20mm',
       },
       displayHeaderFooter: true,
       headerTemplate: `
@@ -910,39 +910,40 @@ const generatePDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array>
           <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
         </div>
       `,
-      timeout: 60000
-    });
+      timeout: 60000,
+    })
 
-    console.log('PDF generated successfully');
-    return new Uint8Array(pdfBuffer);
-
+    console.log('PDF generated successfully')
+    return new Uint8Array(pdfBuffer)
   } catch (error) {
-    console.error('Error generating PDF with Puppeteer:', error);
-    
+    console.error('Error generating PDF with Puppeteer:', error)
+
     // If Puppeteer fails, provide a fallback
     if (error instanceof Error && error.message.includes('Could not find Chrome')) {
-      console.log('Chrome not found, using HTML fallback...');
-      return generateHTMLFallback(data);
+      console.log('Chrome not found, using HTML fallback...')
+      return generateHTMLFallback(data)
     }
-    
-    throw new Error(`PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+
+    throw new Error(
+      `PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   } finally {
     if (browser) {
       try {
-        await browser.close();
+        await browser.close()
       } catch (closeError) {
-        console.error('Error closing browser:', closeError);
+        console.error('Error closing browser:', closeError)
       }
     }
   }
-};
+}
 
 // Fallback function that returns HTML as PDF placeholder
 const generateHTMLFallback = (data: PDFGenerationData): Uint8Array => {
-  console.log('Using HTML fallback for PDF generation');
-  
-  const htmlContent = generateSECRHTMLTemplate(data);
-  
+  console.log('Using HTML fallback for PDF generation')
+
+  const htmlContent = generateSECRHTMLTemplate(data)
+
   // Create a simple PDF-like document with HTML content
   const fallbackContent = `
 <!DOCTYPE html>
@@ -966,16 +967,18 @@ const generateHTMLFallback = (data: PDFGenerationData): Uint8Array => {
     ${htmlContent}
 </body>
 </html>
-  `;
-  
-  const encoder = new TextEncoder();
-  return encoder.encode(fallbackContent);
-};
+  `
+
+  const encoder = new TextEncoder()
+  return encoder.encode(fallbackContent)
+}
 
 // Main export function for generating SECR report
-export const generateSECRReport = async (data: PDFGenerationData): Promise<Uint8Array> => {
-  return await generatePDFFromHTML(data);
-};
+export const generateSECRReport = async (
+  data: PDFGenerationData
+): Promise<Uint8Array> => {
+  return await generatePDFFromHTML(data)
+}
 
-export { generateSECRHTMLTemplate, generatePDFFromHTML };
-export default generateSECRReport;
+export { generateSECRHTMLTemplate, generatePDFFromHTML }
+export default generateSECRReport

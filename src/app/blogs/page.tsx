@@ -7,8 +7,8 @@ const page = () => {
   return (
     <div>
       <LenisSmoothScroll>
-      <BlogDashboard />
-      <Footer />
+        <BlogDashboard />
+        <Footer />
       </LenisSmoothScroll>
     </div>
   )

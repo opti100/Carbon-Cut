@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
 const makeRequest = async (endpoint: string, options: RequestInit = {}) => {
   const response = await fetch(`${API_BASE}${endpoint}`, {
@@ -10,26 +10,26 @@ const makeRequest = async (endpoint: string, options: RequestInit = {}) => {
       'Content-Type': 'application/json',
       ...options.headers,
     },
-  });
+  })
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message);
+    const error = await response.json().catch(() => ({ message: 'Request failed' }))
+    throw new Error(error.message)
   }
 
-  return response.json();
-};
+  return response.json()
+}
 
 export const useUserProfile = () => {
   return useQuery({
     queryKey: ['userProfile'],
     queryFn: () => makeRequest('/auth/me/'),
-  });
-};
+  })
+}
 
 export const useUpdateProfile = () => {
-  const queryClient = useQueryClient();
-  
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: (data: any) =>
       makeRequest('/auth/update-profile/', {
@@ -37,7 +37,7 @@ export const useUpdateProfile = () => {
         body: JSON.stringify(data),
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] })
     },
-  });
-};
+  })
+}

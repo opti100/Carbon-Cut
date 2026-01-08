@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -6,6 +6,7 @@ import { AuthProvider } from '@/contexts/AuthContext'
 import { ReduxProvider } from './ReduxProvider'
 import { QueryProvider } from './QueryProvider'
 import { GoogleAdsProvider } from '@/contexts/GoogleAdsContext'
+import { PostHogProvider } from './PosthogProviders'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,15 +31,15 @@ interface ProvidersProps {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReduxProvider>
-        <AuthProvider>
-          <QueryProvider>
-            <GoogleAdsProvider>
-              {children}
-            </GoogleAdsProvider>
-          </QueryProvider>
-        </AuthProvider>
-      </ReduxProvider>
+      <PostHogProvider>
+        <ReduxProvider>
+          <AuthProvider>
+            <QueryProvider>
+              <GoogleAdsProvider>{children}</GoogleAdsProvider>
+            </QueryProvider>
+          </AuthProvider>
+        </ReduxProvider>
+      </PostHogProvider>
     </QueryClientProvider>
   )
 }

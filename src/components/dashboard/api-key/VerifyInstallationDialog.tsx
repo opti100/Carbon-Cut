@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -8,31 +8,31 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  CheckCircle, 
-  XCircle, 
-  AlertTriangle, 
-  Loader2, 
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Loader2,
   Copy,
   ExternalLink,
   Code,
-  RefreshCw
-} from 'lucide-react';
-import { ApiKeyService } from '@/services/apikey/apikey';
-import { VerificationResult, InstallationGuide } from '@/types/api-key';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+  RefreshCw,
+} from 'lucide-react'
+import { ApiKeyService } from '@/services/apikey/apikey'
+import { VerificationResult, InstallationGuide } from '@/types/api-key'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 interface VerifyInstallationDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  apiKeyId: string;
-  apiKeyName: string;
-  apiKeyPrefix: string;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  apiKeyId: string
+  apiKeyName: string
+  apiKeyPrefix: string
 }
 
 export function VerifyInstallationDialog({
@@ -40,109 +40,115 @@ export function VerifyInstallationDialog({
   onOpenChange,
   apiKeyId,
   apiKeyName,
-  apiKeyPrefix
+  apiKeyPrefix,
 }: VerifyInstallationDialogProps) {
-  const [verificationUrl, setVerificationUrl] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(null);
-  const [installationGuide, setInstallationGuide] = useState<InstallationGuide | null>(null);
-  const [copiedSnippet, setCopiedSnippet] = useState(false);
-  const [loadingGuide, setLoadingGuide] = useState(false);
-  const [activeTab, setActiveTab] = useState<'verify' | 'guide'>('verify');
+  const [verificationUrl, setVerificationUrl] = useState('')
+  const [isVerifying, setIsVerifying] = useState(false)
+  const [verificationResult, setVerificationResult] = useState<VerificationResult | null>(
+    null
+  )
+  const [installationGuide, setInstallationGuide] = useState<InstallationGuide | null>(
+    null
+  )
+  const [copiedSnippet, setCopiedSnippet] = useState(false)
+  const [loadingGuide, setLoadingGuide] = useState(false)
+  const [activeTab, setActiveTab] = useState<'verify' | 'guide'>('verify')
 
   // Memoize the handleGetGuide function to prevent unnecessary re-renders
   const handleGetGuide = useCallback(async () => {
-    setLoadingGuide(true);
+    setLoadingGuide(true)
     try {
-      const response = await ApiKeyService.getInstallationGuide(apiKeyId);
-      setInstallationGuide(response.data.installation);
+      const response = await ApiKeyService.getInstallationGuide(apiKeyId)
+      setInstallationGuide(response.data.installation)
     } catch (error) {
-      console.error('Error fetching installation guide:', error);
+      console.error('Error fetching installation guide:', error)
     } finally {
-      setLoadingGuide(false);
+      setLoadingGuide(false)
     }
-  }, [apiKeyId]); // Only re-create when apiKeyId changes
+  }, [apiKeyId]) // Only re-create when apiKeyId changes
 
   useEffect(() => {
     if (open && !installationGuide) {
-      handleGetGuide();
+      handleGetGuide()
     }
-  }, [open, installationGuide, handleGetGuide]); // Now includes all dependencies
+  }, [open, installationGuide, handleGetGuide]) // Now includes all dependencies
 
   const handleVerify = async () => {
     if (!verificationUrl.trim()) {
-      return;
+      return
     }
 
-    setIsVerifying(true);
-    setVerificationResult(null);
+    setIsVerifying(true)
+    setVerificationResult(null)
 
     try {
-      const result = await ApiKeyService.verifyInstallation(apiKeyId, verificationUrl);
-      setVerificationResult(result);
-      
+      const result = await ApiKeyService.verifyInstallation(apiKeyId, verificationUrl)
+      setVerificationResult(result)
+
       if (result.data.status === 'verified') {
         // Auto-switch to results
-        setTimeout(() => setActiveTab('verify'), 500);
+        setTimeout(() => setActiveTab('verify'), 500)
       }
     } catch (error) {
-      console.error('Verification error:', error);
+      console.error('Verification error:', error)
       setVerificationResult({
         success: false,
         data: {
           installed: false,
           status: 'not_found',
-          warnings: ['Failed to verify installation. Please check the URL and try again.'],
+          warnings: [
+            'Failed to verify installation. Please check the URL and try again.',
+          ],
           details: {
             sdk_script_found: false,
             token_found: false,
-            correct_token: false
-          }
-        }
-      });
+            correct_token: false,
+          },
+        },
+      })
     } finally {
-      setIsVerifying(false);
+      setIsVerifying(false)
     }
-  };
+  }
 
   const handleCopySnippet = async (text: string) => {
-    await navigator.clipboard.writeText(text);
-    setCopiedSnippet(true);
-    setTimeout(() => setCopiedSnippet(false), 2000);
-  };
+    await navigator.clipboard.writeText(text)
+    setCopiedSnippet(true)
+    setTimeout(() => setCopiedSnippet(false), 2000)
+  }
 
   const handleClose = () => {
-    setVerificationUrl('');
-    setVerificationResult(null);
-    setActiveTab('verify');
-    onOpenChange(false);
-  };
+    setVerificationUrl('')
+    setVerificationResult(null)
+    setActiveTab('verify')
+    onOpenChange(false)
+  }
 
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'verified':
-        return <CheckCircle className="h-5 w-5 text-green-600" />;
+        return <CheckCircle className="h-5 w-5 text-green-600" />
       case 'warning':
-        return <AlertTriangle className="h-5 w-5 text-amber-600" />;
+        return <AlertTriangle className="h-5 w-5 text-amber-600" />
       case 'not_found':
-        return <XCircle className="h-5 w-5 text-red-600" />;
+        return <XCircle className="h-5 w-5 text-red-600" />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'verified':
-        return 'bg-green-50 border-green-200';
+        return 'bg-green-50 border-green-200'
       case 'warning':
-        return 'bg-amber-50 border-amber-200';
+        return 'bg-amber-50 border-amber-200'
       case 'not_found':
-        return 'bg-red-50 border-red-200';
+        return 'bg-red-50 border-red-200'
       default:
-        return 'bg-gray-50 border-gray-200';
+        return 'bg-gray-50 border-gray-200'
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -150,11 +156,16 @@ export function VerifyInstallationDialog({
         <DialogHeader>
           <DialogTitle>SDK Installation Verification</DialogTitle>
           <DialogDescription>
-            Verify that CarbonCut SDK is properly installed for <strong>{apiKeyName}</strong> ({apiKeyPrefix}...)
+            Verify that CarbonCut SDK is properly installed for{' '}
+            <strong>{apiKeyName}</strong> ({apiKeyPrefix}...)
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'verify' | 'guide')} className="w-full">
+        <Tabs
+          value={activeTab}
+          onValueChange={(v) => setActiveTab(v as 'verify' | 'guide')}
+          className="w-full"
+        >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="verify">Verify Installation</TabsTrigger>
             <TabsTrigger value="guide">Installation Guide</TabsTrigger>
@@ -176,11 +187,7 @@ export function VerifyInstallationDialog({
                   onClick={handleVerify}
                   disabled={!verificationUrl.trim() || isVerifying}
                 >
-                  {isVerifying ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    'Verify'
-                  )}
+                  {isVerifying ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Verify'}
                 </Button>
               </div>
               <p className="text-sm text-gray-500">
@@ -195,18 +202,22 @@ export function VerifyInstallationDialog({
                   <div className="flex-1">
                     <AlertDescription>
                       <div className="font-semibold mb-2">
-                        {verificationResult.data.status === 'verified' && 'Installation Verified! ✅'}
-                        {verificationResult.data.status === 'warning' && 'Installation Found with Warnings ⚠️'}
-                        {verificationResult.data.status === 'not_found' && 'SDK Not Detected ❌'}
+                        {verificationResult.data.status === 'verified' &&
+                          'Installation Verified! ✅'}
+                        {verificationResult.data.status === 'warning' &&
+                          'Installation Found with Warnings ⚠️'}
+                        {verificationResult.data.status === 'not_found' &&
+                          'SDK Not Detected ❌'}
                       </div>
 
-                      {verificationResult.data.warnings && verificationResult.data.warnings.length > 0 && (
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          {verificationResult.data.warnings.map((warning, idx) => (
-                            <li key={idx}>{warning}</li>
-                          ))}
-                        </ul>
-                      )}
+                      {verificationResult.data.warnings &&
+                        verificationResult.data.warnings.length > 0 && (
+                          <ul className="list-disc list-inside space-y-1 text-sm">
+                            {verificationResult.data.warnings.map((warning, idx) => (
+                              <li key={idx}>{warning}</li>
+                            ))}
+                          </ul>
+                        )}
 
                       {verificationResult.data.details && (
                         <div className="mt-3 space-y-2 text-sm">
@@ -240,9 +251,19 @@ export function VerifyInstallationDialog({
                           {verificationResult.data.details.script_details && (
                             <div className="mt-2 p-2 bg-white rounded border">
                               <div className="font-mono text-xs">
-                                <div>Source: {verificationResult.data.details.script_details.src}</div>
+                                <div>
+                                  Source:{' '}
+                                  {verificationResult.data.details.script_details.src}
+                                </div>
                                 {verificationResult.data.details.script_details.token && (
-                                  <div>Token: {verificationResult.data.details.script_details.token.substring(0, 15)}...</div>
+                                  <div>
+                                    Token:{' '}
+                                    {verificationResult.data.details.script_details.token.substring(
+                                      0,
+                                      15
+                                    )}
+                                    ...
+                                  </div>
                                 )}
                               </div>
                             </div>
@@ -270,7 +291,8 @@ export function VerifyInstallationDialog({
               <Alert>
                 <Code className="h-4 w-4" />
                 <AlertDescription>
-                  Enter your website URL above to check if the CarbonCut SDK is properly installed and configured.
+                  Enter your website URL above to check if the CarbonCut SDK is properly
+                  installed and configured.
                 </AlertDescription>
               </Alert>
             )}
@@ -286,7 +308,8 @@ export function VerifyInstallationDialog({
                 <Alert className="bg-blue-50 border-blue-200">
                   <Code className="h-4 w-4 text-blue-600" />
                   <AlertDescription className="text-blue-800">
-                    <strong>Installation Instructions:</strong> {installationGuide.placement}
+                    <strong>Installation Instructions:</strong>{' '}
+                    {installationGuide.placement}
                   </AlertDescription>
                 </Alert>
 
@@ -325,7 +348,10 @@ export function VerifyInstallationDialog({
                     <ExternalLink className="h-4 w-4 mt-0.5 flex-shrink-0" />
                     <span className="text-sm">
                       Need help? Check out our{' '}
-                      <a href="/docs/installation" className="text-blue-600 hover:underline">
+                      <a
+                        href="/docs/installation"
+                        className="text-blue-600 hover:underline"
+                      >
                         detailed installation documentation
                       </a>
                     </span>
@@ -358,5 +384,5 @@ export function VerifyInstallationDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

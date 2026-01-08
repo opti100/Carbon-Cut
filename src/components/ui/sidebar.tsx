@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { motion, type Transition } from "framer-motion";
-import { Badge } from "@/components/ui/badge"
+import { cn } from '@/lib/utils'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { motion, type Transition } from 'framer-motion'
+import { Badge } from '@/components/ui/badge'
 import {
   Blocks,
   Boxes,
@@ -27,38 +27,38 @@ import {
   X,
   Megaphone,
   Monitor,
-} from "lucide-react";
-import Image from "next/image";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react'
+import Image from 'next/image'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useAuth } from "@/contexts/AuthContext";
+} from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { useAuth } from '@/contexts/AuthContext'
 
 const sidebarVariants = {
   open: {
-    width: "15rem",
+    width: '15rem',
   },
   closed: {
-    width: "3.05rem",
+    width: '3.05rem',
   },
-};
+}
 
 const contentVariants = {
-  open: { display: "block", opacity: 1 },
-  closed: { display: "block", opacity: 1 },
-};
+  open: { display: 'block', opacity: 1 },
+  closed: { display: 'block', opacity: 1 },
+}
 
 const variants = {
   open: {
@@ -75,50 +75,56 @@ const variants = {
       x: { stiffness: 100 },
     },
   },
-};
+}
 
 const transitionProps: Transition = {
-  type: "tween",
-  ease: "easeOut",
+  type: 'tween',
+  ease: 'easeOut',
   duration: 0.2,
   staggerChildren: 0.1,
-};
+}
 
 const staggerVariants = {
   open: {
     transition: { staggerChildren: 0.03, delayChildren: 0.02 },
   },
-};
+}
 
-function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean; setIsCollapsed?: (value: boolean) => void }) {
-  const pathname = usePathname();
-  const { user, logout } = useAuth();
-  const router = useRouter();
-  const [dashboardExpanded, setDashboardExpanded] = useState(true);
-  
+function SidebarContent({
+  isCollapsed,
+  setIsCollapsed,
+}: {
+  isCollapsed: boolean
+  setIsCollapsed?: (value: boolean) => void
+}) {
+  const pathname = usePathname()
+  const { user, logout } = useAuth()
+  const router = useRouter()
+  const [dashboardExpanded, setDashboardExpanded] = useState(true)
+
   const getInitials = (name?: string, email?: string) => {
     if (name) {
       return name
-        .split(" ")
+        .split(' ')
         .map((n) => n[0])
-        .join("")
+        .join('')
         .toUpperCase()
-        .slice(0, 2);
+        .slice(0, 2)
     }
     if (email) {
-      return email.slice(0, 2).toUpperCase();
+      return email.slice(0, 2).toUpperCase()
     }
-    return "U";
-  };
-  
+    return 'U'
+  }
+
   const handleLogout = async () => {
     try {
-      await logout();
-      router.push("/login");
+      await logout()
+      router.push('/login')
     } catch (error) {
-      console.error("Logout failed:", error);
+      console.error('Logout failed:', error)
     }
-  };
+  }
 
   return (
     <motion.ul variants={staggerVariants} className="flex h-full flex-col">
@@ -132,7 +138,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                   size="sm"
                   className="flex w-fit items-center gap-2 px-2"
                 >
-                  <Avatar className='rounded size-4'>
+                  <Avatar className="rounded size-4">
                     <AvatarFallback>O</AvatarFallback>
                   </Avatar>
                   <motion.li
@@ -141,9 +147,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                   >
                     {!isCollapsed && (
                       <>
-                        <p className="text-sm font-medium">
-                          {"Organization"}
-                        </p>
+                        <p className="text-sm font-medium">{'Organization'}</p>
                         <ChevronsUpDown className="h-4 w-4 text-muted-foreground/50" />
                       </>
                     )}
@@ -151,27 +155,18 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem
-                  asChild
-                  className="flex items-center gap-2"
-                >
+                <DropdownMenuItem asChild className="flex items-center gap-2">
                   <Link href="/settings/members">
                     <UserCog className="h-4 w-4" /> Manage members
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  asChild
-                  className="flex items-center gap-2"
-                >
+                <DropdownMenuItem asChild className="flex items-center gap-2">
                   <Link href="/settings/integrations">
                     <Blocks className="h-4 w-4" /> Integrations
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link
-                    href="/select-org"
-                    className="flex items-center gap-2"
-                  >
+                  <Link href="/select-org" className="flex items-center gap-2">
                     <Plus className="h-4 w-4" />
                     Create or join an organization
                   </Link>
@@ -184,7 +179,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
         <div className="flex h-full w-full flex-col">
           <div className="flex grow flex-col gap-4">
             <ScrollArea className="h-16 grow p-2">
-              <div className={cn("flex w-full flex-col gap-1")}>
+              <div className={cn('flex w-full flex-col gap-1')}>
                 {/* Dashboard Overview Link */}
                 {/* <Link
                   href="/dashboard"
@@ -205,15 +200,13 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                 <Link
                   href="/dashboard/campaigns"
                   className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("/dashboard/campaigns") && "bg-muted",
+                    'flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted',
+                    pathname?.includes('/dashboard/campaigns') && 'bg-muted'
                   )}
                 >
                   <Megaphone className="h-4 w-4" />
                   <motion.span variants={variants}>
-                    {!isCollapsed && (
-                      <p className="ml-2 text-sm font-medium">Ads</p>
-                    )}
+                    {!isCollapsed && <p className="ml-2 text-sm font-medium">Ads</p>}
                   </motion.span>
                 </Link>
 
@@ -221,8 +214,8 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                 <Link
                   href="/dashboard/website"
                   className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname === "/dashboard/website" && "bg-muted",
+                    'flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted',
+                    pathname === '/dashboard/website' && 'bg-muted'
                   )}
                 >
                   <Monitor className="h-4 w-4" />
@@ -236,9 +229,8 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                 <Link
                   href="/dashboard/integrations"
                   className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("integrations") &&
-                    "bg-muted ",
+                    'flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted',
+                    pathname?.includes('integrations') && 'bg-muted '
                   )}
                 >
                   <Boxes className="h-4 w-4" />
@@ -250,13 +242,12 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                     )}
                   </motion.li>
                 </Link>
-                
+
                 <Link
                   href="/dashboard/profile"
                   className={cn(
-                    "flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted",
-                    pathname?.includes("profile") &&
-                    "bg-muted text-blue-600",
+                    'flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted',
+                    pathname?.includes('profile') && 'bg-muted text-blue-600'
                   )}
                 >
                   <UserCircle className="h-4 w-4" />
@@ -278,9 +269,7 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
             >
               <Settings className="h-4 w-4 shrink-0" />
               <motion.li variants={variants}>
-                {!isCollapsed && (
-                  <p className="ml-2 text-sm font-medium"> Settings</p>
-                )}
+                {!isCollapsed && <p className="ml-2 text-sm font-medium"> Settings</p>}
               </motion.li>
             </Link>
             <div>
@@ -313,19 +302,14 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col text-left">
-                      <span className="text-sm font-medium">
-                        {user?.name || "User"}
-                      </span>
+                      <span className="text-sm font-medium">{user?.name || 'User'}</span>
                       <span className="line-clamp-1 text-xs text-muted-foreground">
-                        {user?.email || ""}
+                        {user?.email || ''}
                       </span>
                     </div>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    asChild
-                    className="flex items-center gap-2"
-                  >
+                  <DropdownMenuItem asChild className="flex items-center gap-2">
                     <Link href="/dashboard/profile">
                       <UserCircle className="h-4 w-4" /> Profile
                     </Link>
@@ -343,13 +327,13 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean;
         </div>
       </div>
     </motion.ul>
-  );
+  )
 }
 
 export function SessionNavBar() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const pathname = usePathname();
+  const [isCollapsed, setIsCollapsed] = useState(true)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <>
@@ -373,10 +357,10 @@ export function SessionNavBar() {
       {/* Desktop Sidebar */}
       <motion.div
         className={cn(
-          "sidebar fixed left-0 z-40 h-full shrink-0 border-r hidden lg:block",
+          'sidebar fixed left-0 z-40 h-full shrink-0 border-r hidden lg:block'
         )}
-        initial={isCollapsed ? "closed" : "open"}
-        animate={isCollapsed ? "closed" : "open"}
+        initial={isCollapsed ? 'closed' : 'open'}
+        animate={isCollapsed ? 'closed' : 'open'}
         variants={sidebarVariants}
         transition={transitionProps}
         onMouseEnter={() => setIsCollapsed(false)}
@@ -390,5 +374,5 @@ export function SessionNavBar() {
         </motion.div>
       </motion.div>
     </>
-  );
+  )
 }
