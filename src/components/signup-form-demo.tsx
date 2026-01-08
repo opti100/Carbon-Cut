@@ -1,46 +1,44 @@
-"use client";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+'use client'
+import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { cn } from '@/lib/utils'
 
 export default function SignupFormDemo() {
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(false)
   const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    email: "",
-    message: "",
-  });
+    firstname: '',
+    lastname: '',
+    email: '',
+    message: '',
+  })
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
+    e.preventDefault()
+    console.log('Form submitted:', formData)
 
     // show success message
-    setSubmitted(true);
+    setSubmitted(true)
 
     // clear form fields
     setFormData({
-      firstname: "",
-      lastname: "",
-      email: "",
-      message: "",
-    });
+      firstname: '',
+      lastname: '',
+      email: '',
+      message: '',
+    })
 
     // hide success message after 3s
     setTimeout(() => {
-      setSubmitted(false);
-    }, 3000);
-  };
+      setSubmitted(false)
+    }, 3000)
+  }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target
+    setFormData((prev) => ({ ...prev, [id]: value }))
+  }
 
   return (
     <div>
@@ -87,7 +85,6 @@ export default function SignupFormDemo() {
             />
           </LabelInputContainer>
 
-       
           <LabelInputContainer className="mb-6">
             <Label htmlFor="message">Message</Label>
             <textarea
@@ -99,7 +96,6 @@ export default function SignupFormDemo() {
              focus:outline-none focus:ring-2 focus:ring-tertiary focus:border-tertiary
              dark:border-gray-700 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:ring-tertiary"
             />
-
           </LabelInputContainer>
 
           {/* Submit button */}
@@ -135,7 +131,7 @@ export default function SignupFormDemo() {
         </AnimatePresence>
       </div>
     </div>
-  );
+  )
 }
 
 /* ✅ Reusable components */
@@ -154,19 +150,15 @@ const BottomGradient = () => {
         opacity-0 blur-sm transition duration-500 group-hover/btn:opacity-100"
       />
     </>
-  );
-};
+  )
+}
 
 const LabelInputContainer = ({
   children,
   className,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  children: React.ReactNode
+  className?: string
 }) => {
-  return (
-    <div className={cn("flex w-full flex-col space-y-2", className)}>
-      {children}
-    </div>
-  );
-};
+  return <div className={cn('flex w-full flex-col space-y-2', className)}>{children}</div>
+}

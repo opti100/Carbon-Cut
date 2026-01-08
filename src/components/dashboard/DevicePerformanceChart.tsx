@@ -1,6 +1,13 @@
-"use client"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+'use client'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   type ChartConfig,
   ChartContainer,
@@ -8,7 +15,7 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from '@/components/ui/chart'
 
 interface DeviceData {
   device: string
@@ -23,12 +30,12 @@ interface DevicePerformanceChartProps {
 
 const chartConfig = {
   sessions: {
-    label: "Sessions",
-    color: "hsl(var(--chart-1))",
+    label: 'Sessions',
+    color: 'hsl(var(--chart-1))',
   },
   conversions: {
-    label: "Conversions",
-    color: "hsl(var(--chart-2))",
+    label: 'Conversions',
+    color: 'hsl(var(--chart-2))',
   },
 } satisfies ChartConfig
 
@@ -70,8 +77,8 @@ export function DevicePerformanceChart({ data }: DevicePerformanceChartProps) {
                 <ChartTooltipContent
                   indicator="dashed"
                   formatter={(value, name) => {
-                    if (name === "emissions") {
-                      return [`${Number(value).toFixed(4)} kg`, "Emissions"]
+                    if (name === 'emissions') {
+                      return [`${Number(value).toFixed(4)} kg`, 'Emissions']
                     }
                     return [value, name]
                   }}
@@ -79,16 +86,22 @@ export function DevicePerformanceChart({ data }: DevicePerformanceChartProps) {
               }
             />
             <Bar dataKey="sessions" fill="var(--color-sessions)" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="conversions" fill="var(--color-conversions)" radius={[8, 8, 0, 0]} />
+            <Bar
+              dataKey="conversions"
+              fill="var(--color-conversions)"
+              radius={[8, 8, 0, 0]}
+            />
             <ChartLegend content={<ChartLegendContent />} />
           </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">Device performance comparison</div>
+        <div className="flex gap-2 font-medium leading-none">
+          Device performance comparison
+        </div>
         <div className="leading-none text-muted-foreground text-xs">
-          {totalDevices} device type{totalDevices !== 1 ? "s" : ""} • {totalConversions} conversions •{" "}
-          {totalEmissions.toFixed(4)} kg CO₂e
+          {totalDevices} device type{totalDevices !== 1 ? 's' : ''} • {totalConversions}{' '}
+          conversions • {totalEmissions.toFixed(4)} kg CO₂e
         </div>
       </CardFooter>
     </Card>

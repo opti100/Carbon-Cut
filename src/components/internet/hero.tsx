@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { motion } from "motion/react";
-import CardNav from "../CardNav";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
-import Link from "next/link";
-import { navData } from "../NavData";
+import { motion } from 'motion/react'
+import CardNav from '../CardNav'
+import { ArrowUpRight, ChevronDown } from 'lucide-react'
+import Link from 'next/link'
+import { navData } from '../NavData'
 
 export function InternetHero() {
   return (
@@ -38,12 +38,10 @@ export function InternetHero() {
       <div className="relative z-10 flex min-h-screen items-center justify-start">
         <div className="max-w-5xl px-6 md:px-12 text-left">
           <h1 className="text-white text-4xl md:text-5xl font-semibold leading-tight text-left mx-auto max-w-7xl">
-            The easiest way to become a   net-zero Internet Company.
+            The easiest way to become a net-zero Internet Company.
           </h1>
 
-
           <div className="mt-10 flex gap-4 ">
-
             <div className="nav-right-section">
               <Link href="/internet/internet-ads" className="desktop-cta-link">
                 <button
@@ -71,5 +69,5 @@ export function InternetHero() {
         </div>
       </div>
     </section>
-  );
+  )
 }

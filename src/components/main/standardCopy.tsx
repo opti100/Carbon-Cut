@@ -1,55 +1,58 @@
-"use client";
-import { useEffect, useRef } from "react";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+'use client'
+import { useEffect, useRef } from 'react'
+import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 const Standards = () => {
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const scrollTriggersRef = useRef<ScrollTrigger[]>([])
 
   const standards = [
     {
-      name: "Verified Carbon Standard",
-      logo: "/CarbonCut-fe/Standards/VCS.png",
-      description: "The world's leading voluntary carbon market program with verified carbon standards",
-      tags: ["12 Years", "400+ Projects"],
-      color: "bg-gradient-to-br from-primary/30 to-primary/10",
-      sv: "/CarbonCut-fe/resize/SV1.jpg"
+      name: 'Verified Carbon Standard',
+      logo: '/CarbonCut-fe/Standards/VCS.png',
+      description:
+        "The world's leading voluntary carbon market program with verified carbon standards",
+      tags: ['12 Years', '400+ Projects'],
+      color: 'bg-gradient-to-br from-primary/30 to-primary/10',
+      sv: '/CarbonCut-fe/resize/SV1.jpg',
     },
     {
-      name: "American Carbon Registry",
-      logo: "/CarbonCut-fe/Standards/ACR.svg",
-      description: "American Carbon Registry - Leading carbon offset program in North America",
-      tags: ["12 Years", "400+ Projects"],
-      color: "bg-gradient-to-br from-secondary/30 to-secondary/10",
-      sv: "/CarbonCut-fe/resize/SV2.jpg"
+      name: 'American Carbon Registry',
+      logo: '/CarbonCut-fe/Standards/ACR.svg',
+      description:
+        'American Carbon Registry - Leading carbon offset program in North America',
+      tags: ['12 Years', '400+ Projects'],
+      color: 'bg-gradient-to-br from-secondary/30 to-secondary/10',
+      sv: '/CarbonCut-fe/resize/SV2.jpg',
     },
     {
-      name: "Climate Action Reserve",
-      logo: "/CarbonCut-fe/Standards/CAR.png",
-      description: "Climate Action Reserve - High-quality carbon offset projects and protocols",
-      tags: ["12 Years", "400+ Projects"],
-      color: "bg-gradient-to-br from-primary/20 to-accent/20",
-      sv: "/CarbonCut-fe/resize/SV3.jpg"
+      name: 'Climate Action Reserve',
+      logo: '/CarbonCut-fe/Standards/CAR.png',
+      description:
+        'Climate Action Reserve - High-quality carbon offset projects and protocols',
+      tags: ['12 Years', '400+ Projects'],
+      color: 'bg-gradient-to-br from-primary/20 to-accent/20',
+      sv: '/CarbonCut-fe/resize/SV3.jpg',
     },
     {
-      name: "Gold Standard",
-      logo: "/CarbonCut-fe/Standards/GS.svg",
-      description: "Trusted standard for climate and sustainable development impact",
-      tags: ["12 Years", "400+ Projects"],
-      color: "bg-gradient-to-br from-accent/30 to-accent/10",
-      sv: "/CarbonCut-fe/resize/SV4.jpg"
+      name: 'Gold Standard',
+      logo: '/CarbonCut-fe/Standards/GS.svg',
+      description: 'Trusted standard for climate and sustainable development impact',
+      tags: ['12 Years', '400+ Projects'],
+      color: 'bg-gradient-to-br from-accent/30 to-accent/10',
+      sv: '/CarbonCut-fe/resize/SV4.jpg',
     },
-  ];
+  ]
 
   useEffect(() => {
-    const cards = cardsRef.current.filter(Boolean);
-    if (cards.length === 0) return;
+    const cards = cardsRef.current.filter(Boolean)
+    if (cards.length === 0) return
 
     const timer = setTimeout(() => {
       cards.forEach((card, index) => {
@@ -58,37 +61,35 @@ const Standards = () => {
           y: 0,
           scale: 1,
           duration: 1,
-          ease: "power3.out",
+          ease: 'power3.out',
           scrollTrigger: {
-            scroller: "[data-scroll-container]",
+            scroller: '[data-scroll-container]',
             trigger: card,
-            start: "top 85%",
-            end: "top 50%",
-            toggleActions: "play none none reverse",
+            start: 'top 85%',
+            end: 'top 50%',
+            toggleActions: 'play none none reverse',
             markers: false,
           },
-        });
+        })
 
         if (animation.scrollTrigger) {
-          scrollTriggersRef.current.push(animation.scrollTrigger);
+          scrollTriggersRef.current.push(animation.scrollTrigger)
         }
-      });
+      })
 
-      ScrollTrigger.refresh();
-    }, 1000);
+      ScrollTrigger.refresh()
+    }, 1000)
 
     return () => {
-      clearTimeout(timer);
-      scrollTriggersRef.current.forEach(trigger => trigger.kill());
-      scrollTriggersRef.current = [];
-      gsap.set(cards, { clearProps: "all" });
-    };
-  }, []);
+      clearTimeout(timer)
+      scrollTriggersRef.current.forEach((trigger) => trigger.kill())
+      scrollTriggersRef.current = []
+      gsap.set(cards, { clearProps: 'all' })
+    }
+  }, [])
 
   return (
-    <div 
-      className="relative pt-14 bg-background"
-    >
+    <div className="relative pt-14 bg-background">
       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
 
       <div className="w-full">
@@ -98,12 +99,14 @@ const Standards = () => {
             Carbon Standards
           </h2>
         </div>
-        
+
         <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory scroll-smooth px-6">
           {standards.map((standard, index) => (
             <div
               key={standard.name}
-              ref={(el) => { cardsRef.current[index] = el; }}
+              ref={(el) => {
+                cardsRef.current[index] = el
+              }}
               className="flex-shrink-0 h-[600px] w-[340px] bg-accent rounded-4xl border border-text/10 overflow-hidden group hover:shadow-sm snap-center"
             >
               <div className="w-full flex justify-between h-16">
@@ -127,7 +130,7 @@ const Standards = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="h-[200px] bg-accent px-6 relative overflow-hidden flex flex-col justify-between mb-6">
                 <div className="min-h-[70px] flex items-end">
                   <div className="text-4xl md:text-5xl font-semibold tracking-tight text-text">
@@ -161,7 +164,7 @@ const Standards = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Standards;
+export default Standards

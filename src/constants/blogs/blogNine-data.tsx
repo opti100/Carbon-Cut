@@ -1,18 +1,19 @@
-import React from 'react';
-import { BlogPost } from '../blogData';
-import Link from 'next/link';
+import React from 'react'
+import { BlogPost } from '../blogData'
+import Link from 'next/link'
 
 export const BlogNineContent = () => {
   return (
-    <div className="bg-white"> 
+    <div className="bg-white">
       <div className="max-w-7xl mx-auto px-6 py-12">
-        
-
         <article className="prose prose-lg max-w-none">
           {/* Introduction */}
           <div className="mb-12">
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              Most organisations discover their carbon emissions long after they&apos;ve already occurred. A factory runs for 30 days, cloud workloads expand across regions, digital systems process millions of tasks and only weeks or months later, the sustainability team receives the data needed to create a report.
+              Most organisations discover their carbon emissions long after they&apos;ve
+              already occurred. A factory runs for 30 days, cloud workloads expand across
+              regions, digital systems process millions of tasks and only weeks or months
+              later, the sustainability team receives the data needed to create a report.
             </p>
 
             <div className="my-8 pl-6 border-l-4 border-gray-300">
@@ -25,15 +26,23 @@ export const BlogNineContent = () => {
             </div>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              This time lag is the single biggest barrier to meaningful climate action today.
+              This time lag is the single biggest barrier to meaningful climate action
+              today.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              Sustainability teams spend an extraordinary amount of time chasing information, energy bills, vendor reports, internal logs, cloud usage summaries, production schedules, fleet telemetry, facility activity, and supplier declarations. Even after heavy manual effort, the result is often incomplete. Missing data becomes an estimation. Estimation becomes uncertainty. And uncertainty leads to inaction, rising costs, and missed reduction targets.
+              Sustainability teams spend an extraordinary amount of time chasing
+              information, energy bills, vendor reports, internal logs, cloud usage
+              summaries, production schedules, fleet telemetry, facility activity, and
+              supplier declarations. Even after heavy manual effort, the result is often
+              incomplete. Missing data becomes an estimation. Estimation becomes
+              uncertainty. And uncertainty leads to inaction, rising costs, and missed
+              reduction targets.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              In a world where operations move in real time, carbon systems still run in delay.
+              In a world where operations move in real time, carbon systems still run in
+              delay.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 font-semibold">
@@ -48,7 +57,11 @@ export const BlogNineContent = () => {
             </h2>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              Every modern business operates like a constellation of interconnected systems, factories, IoT devices, cloud platforms, data centres, fleets, digital infrastructure, and global suppliers. Each of these systems creates emissions dynamically. Their footprint changes based on behaviours, geographies, loads, and timing.
+              Every modern business operates like a constellation of interconnected
+              systems, factories, IoT devices, cloud platforms, data centres, fleets,
+              digital infrastructure, and global suppliers. Each of these systems creates
+              emissions dynamically. Their footprint changes based on behaviours,
+              geographies, loads, and timing.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
@@ -57,7 +70,8 @@ export const BlogNineContent = () => {
 
             <div className="my-8 space-y-3">
               <p className="text-lg leading-relaxed text-gray-900">
-                • A manufacturing line may draw extra power because of a maintenance shift.
+                • A manufacturing line may draw extra power because of a maintenance
+                shift.
               </p>
               <p className="text-lg leading-relaxed text-gray-900">
                 • A cloud cluster may scale during peak user activity.
@@ -72,20 +86,28 @@ export const BlogNineContent = () => {
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              This is why real-time measurement is not just a technical improvement, it is a structural transformation. When emissions are visible the moment they occur, they become actionable. Reduction stops being theoretical and starts being operational.
+              This is why real-time measurement is not just a technical improvement, it is
+              a structural transformation. When emissions are visible the moment they
+              occur, they become actionable. Reduction stops being theoretical and starts
+              being operational.
             </p>
 
             <div className="bg-gray-50 p-6 my-8">
               <p className="text-lg leading-relaxed text-gray-900 mb-4">
-                According to CIO Insights, over 70% of organisational carbon data today is either estimated or incomplete because it arrives too late to validate or correct. And research published by ECO Business shows companies spend 6-12 weeks assembling a full carbon inventory.
+                According to CIO Insights, over 70% of organisational carbon data today is
+                either estimated or incomplete because it arrives too late to validate or
+                correct. And research published by ECO Business shows companies spend 6-12
+                weeks assembling a full carbon inventory.
               </p>
               <p className="text-lg leading-relaxed text-gray-900">
-                These delays make accuracy nearly impossible and reduction opportunities invisible.
+                These delays make accuracy nearly impossible and reduction opportunities
+                invisible.
               </p>
             </div>
 
             <p className="text-lg leading-relaxed text-gray-900">
-              Real-time tracking solves this by aligning carbon visibility with the speed at which modern systems operate.
+              Real-time tracking solves this by aligning carbon visibility with the speed
+              at which modern systems operate.
             </p>
           </section>
 
@@ -97,7 +119,8 @@ export const BlogNineContent = () => {
 
             <p className="text-lg leading-relaxed text-gray-900 mb-8">
               Real-time carbon tracking is powered by three scientific principles:
-              continuous data ingestion, live emission factors, and dynamic activity mapping.
+              continuous data ingestion, live emission factors, and dynamic activity
+              mapping.
             </p>
 
             <div className="space-y-12">
@@ -106,7 +129,8 @@ export const BlogNineContent = () => {
                   1. Direct Integration With Operational & Digital Systems
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
-                  Real-time tracking begins at the source. Instead of waiting for reports, CarbonCut integrates instantly with the systems that generate emissions:
+                  Real-time tracking begins at the source. Instead of waiting for reports,
+                  CarbonCut integrates instantly with the systems that generate emissions:
                 </p>
                 <ul className="text-lg leading-relaxed text-gray-900 space-y-2 mb-4">
                   <li>• factory machinery and industrial sensors</li>
@@ -116,7 +140,8 @@ export const BlogNineContent = () => {
                   <li>• internal digital systems and process pipelines</li>
                 </ul>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  This provides uninterrupted access to live activity data, the only way to detect changes as they occur.
+                  This provides uninterrupted access to live activity data, the only way
+                  to detect changes as they occur.
                 </p>
               </div>
 
@@ -125,16 +150,21 @@ export const BlogNineContent = () => {
                   2. Emission Factors That Reflect Real Conditions
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
-                  Electricity&apos;s carbon intensity is not static. It changes by the hour based on renewable availability, regional grid load, and fuel mix.
+                  Electricity&apos;s carbon intensity is not static. It changes by the
+                  hour based on renewable availability, regional grid load, and fuel mix.
                 </p>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
                   Traditional tools use fixed averages.
                 </p>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
-                  Real-time tracking uses live grid-intensity signals, matching each datapoint with real-world conditions.
+                  Real-time tracking uses live grid-intensity signals, matching each
+                  datapoint with real-world conditions.
                 </p>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  CarbonCut also adheres strictly to the GHG Protocol, ensuring every measurement aligns with globally recognised Scope 1, 2, and 3 frameworks. Real-time does not change the methodology, it changes the accuracy, completeness, and timing.
+                  CarbonCut also adheres strictly to the GHG Protocol, ensuring every
+                  measurement aligns with globally recognised Scope 1, 2, and 3
+                  frameworks. Real-time does not change the methodology, it changes the
+                  accuracy, completeness, and timing.
                 </p>
               </div>
 
@@ -143,8 +173,8 @@ export const BlogNineContent = () => {
                   3. Live Correlation Between Activity and Emissions
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
-                  Every operational action has a carbon impact.
-                  CarbonCut maps activity → energy use → emissions continuously.
+                  Every operational action has a carbon impact. CarbonCut maps activity →
+                  energy use → emissions continuously.
                 </p>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
                   Examples include:
@@ -156,13 +186,15 @@ export const BlogNineContent = () => {
                   <li>• digital tasks attached to compute and data-transfer loads</li>
                 </ul>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  This correlation is automatic, immediate, and precise, eliminating guesswork entirely.
+                  This correlation is automatic, immediate, and precise, eliminating
+                  guesswork entirely.
                 </p>
               </div>
             </div>
 
             <p className="text-lg leading-relaxed text-gray-900 mt-8">
-              Real-time tracking transforms carbon into a live operational signal, just like performance analytics, uptime monitoring, or cloud observability.
+              Real-time tracking transforms carbon into a live operational signal, just
+              like performance analytics, uptime monitoring, or cloud observability.
             </p>
           </section>
 
@@ -173,7 +205,9 @@ export const BlogNineContent = () => {
             </h2>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-8">
-              Most carbon platforms were built for reporting, not reduction. Their architecture relies on past data, making them unable to support real-time climate decisions.
+              Most carbon platforms were built for reporting, not reduction. Their
+              architecture relies on past data, making them unable to support real-time
+              climate decisions.
             </p>
 
             <div className="space-y-8">
@@ -182,7 +216,8 @@ export const BlogNineContent = () => {
                   They rely on delayed, manual inputs
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  Energy bills, vendor statements, and supplier declarations cannot capture second-by-second fluctuations.
+                  Energy bills, vendor statements, and supplier declarations cannot
+                  capture second-by-second fluctuations.
                 </p>
               </div>
 
@@ -191,7 +226,8 @@ export const BlogNineContent = () => {
                   They depend heavily on estimation
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  When precise activity data is missing, estimates fill the gaps and the more indirect the data, the larger the uncertainty.
+                  When precise activity data is missing, estimates fill the gaps and the
+                  more indirect the data, the larger the uncertainty.
                 </p>
               </div>
 
@@ -200,8 +236,8 @@ export const BlogNineContent = () => {
                   They cannot ingest high-volume operational signals
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  Factories, cloud clusters, and digital infrastructures generate massive data streams.
-                  Legacy tools cannot process this in real time.
+                  Factories, cloud clusters, and digital infrastructures generate massive
+                  data streams. Legacy tools cannot process this in real time.
                 </p>
               </div>
 
@@ -210,17 +246,20 @@ export const BlogNineContent = () => {
                   They show emissions only after the fact
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  By the time a footprint is visible, the opportunity to reduce it is gone.
+                  By the time a footprint is visible, the opportunity to reduce it is
+                  gone.
                 </p>
               </div>
             </div>
 
             <p className="text-lg leading-relaxed text-gray-900 mt-8">
-              This is why sustainability teams often say they spend more time collecting data than reducing emissions.
+              This is why sustainability teams often say they spend more time collecting
+              data than reducing emissions.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 font-semibold mt-6">
-              Real-time measurement eliminates this cycle and replaces it with immediate clarity.
+              Real-time measurement eliminates this cycle and replaces it with immediate
+              clarity.
             </p>
           </section>
 
@@ -231,7 +270,8 @@ export const BlogNineContent = () => {
             </h2>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-8">
-              CarbonCut makes emissions visible and reducible in real time, across factories, cloud, and digital systems.
+              CarbonCut makes emissions visible and reducible in real time, across
+              factories, cloud, and digital systems.
             </p>
 
             <div className="space-y-8">
@@ -240,8 +280,10 @@ export const BlogNineContent = () => {
                   1. Instant Integration With Live Activity Sources
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  CarbonCut streams operational data directly from systems rather than waiting for monthly summaries. Factories, devices, workloads, and processes feed continuous telemetry into the platform.
-                  Everything updates as fast as the underlying systems themselves.
+                  CarbonCut streams operational data directly from systems rather than
+                  waiting for monthly summaries. Factories, devices, workloads, and
+                  processes feed continuous telemetry into the platform. Everything
+                  updates as fast as the underlying systems themselves.
                 </p>
               </div>
 
@@ -250,7 +292,8 @@ export const BlogNineContent = () => {
                   2. AI That Detects Inefficiencies the Moment They Appear
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900 mb-4">
-                  Once data flows in continuously, CarbonCut&apos;s AI identifies patterns that generate unnecessary emissions:
+                  Once data flows in continuously, CarbonCut&apos;s AI identifies patterns
+                  that generate unnecessary emissions:
                 </p>
                 <ul className="text-lg leading-relaxed text-gray-900 space-y-2 mb-4">
                   <li>• machines consuming unusually high power</li>
@@ -260,7 +303,8 @@ export const BlogNineContent = () => {
                   <li>• under-optimised processes increasing energy draw</li>
                 </ul>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  These insights surface in real time, enabling real reduction, not retroactive explanation.
+                  These insights surface in real time, enabling real reduction, not
+                  retroactive explanation.
                 </p>
               </div>
 
@@ -269,8 +313,10 @@ export const BlogNineContent = () => {
                   3. Instant, Verified Offsetting for Residual Emissions
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  When unavoidable emissions remain, CarbonCut enables instant offsetting through verified, auditable credits. Every retirement is recorded with clear documentation and traceability.
-                  This ensures total climate accountability while companies work on long-term reduction.
+                  When unavoidable emissions remain, CarbonCut enables instant offsetting
+                  through verified, auditable credits. Every retirement is recorded with
+                  clear documentation and traceability. This ensures total climate
+                  accountability while companies work on long-term reduction.
                 </p>
               </div>
 
@@ -279,8 +325,10 @@ export const BlogNineContent = () => {
                   4. Audit-Ready Outputs Using GHG Protocol Standards
                 </h3>
                 <p className="text-lg leading-relaxed text-gray-900">
-                  Because CarbonCut aligns fully with the GHG Protocol, sustainability teams can use these real-time datasets for ESG reporting, compliance submissions, and internal carbon accounting with confidence.
-                  Real-time does not compromise rigour — it enhances it.
+                  Because CarbonCut aligns fully with the GHG Protocol, sustainability
+                  teams can use these real-time datasets for ESG reporting, compliance
+                  submissions, and internal carbon accounting with confidence. Real-time
+                  does not compromise rigour — it enhances it.
                 </p>
               </div>
             </div>
@@ -293,15 +341,20 @@ export const BlogNineContent = () => {
             </h2>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              Carbon visibility is becoming an operational necessity, not a reporting task.
+              Carbon visibility is becoming an operational necessity, not a reporting
+              task.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              As regulators tighten standards and organisations adopt aggressive climate targets, quarterly or annual measurement is no longer sufficient. Companies need to understand emissions with the same immediacy they understand energy usage, cloud spending, fleet performance, and digital activity.
+              As regulators tighten standards and organisations adopt aggressive climate
+              targets, quarterly or annual measurement is no longer sufficient. Companies
+              need to understand emissions with the same immediacy they understand energy
+              usage, cloud spending, fleet performance, and digital activity.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              This is why real-time systems will become the dominant approach to carbon management:
+              This is why real-time systems will become the dominant approach to carbon
+              management:
             </p>
 
             <ul className="text-lg leading-relaxed text-gray-900 space-y-2 mb-6">
@@ -313,7 +366,8 @@ export const BlogNineContent = () => {
             </ul>
 
             <p className="text-lg leading-relaxed text-gray-900">
-              The future of climate action belongs to platforms that turn carbon into a live operational metric, not a delayed report.
+              The future of climate action belongs to platforms that turn carbon into a
+              live operational metric, not a delayed report.
             </p>
           </section>
 
@@ -324,12 +378,13 @@ export const BlogNineContent = () => {
             </h2>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              CarbonCut&apos;s mission is clear:
-              Measure, reduce, and offset carbon emissions in real time.
+              CarbonCut&apos;s mission is clear: Measure, reduce, and offset carbon
+              emissions in real time.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              Most organisations only discover their emissions when it&apos;s too late to change them.
+              Most organisations only discover their emissions when it&apos;s too late to
+              change them.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
@@ -349,38 +404,44 @@ export const BlogNineContent = () => {
             </div>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-6">
-              The science behind real-time tracking isn&apos;t just about improved measurement, it&apos;s about giving companies the ability to act while it still matters.
+              The science behind real-time tracking isn&apos;t just about improved
+              measurement, it&apos;s about giving companies the ability to act while it
+              still matters.
             </p>
 
             <p className="text-lg leading-relaxed text-gray-900 mb-8">
-              When emissions become visible the moment they occur, reduction becomes realistic, measurable, and immediate.
+              When emissions become visible the moment they occur, reduction becomes
+              realistic, measurable, and immediate.
             </p>
 
             <div className="bg-gray-50 text-black p-8 rounded-lg shadow-2xl">
               <p className="text-3xl ">
-                This is the foundation of modern climate integrity, and it&apos;s the direction every forward-thinking organisation is now moving toward.
+                This is the foundation of modern climate integrity, and it&apos;s the
+                direction every forward-thinking organisation is now moving toward.
               </p>
             </div>
           </section>
         </article>
       </div>
     </div>
-  );
-};
+  )
+}
 
 // Export blog data for the blog system
 export const blogNineData: BlogPost = {
   id: '9',
   slug: 'the-science-behind-real-time-carbon-tracking',
   category: 'Technology',
-  title: 'The Science Behind Real-Time Carbon Tracking: How CarbonCut Measures What Others Miss',
-  excerpt: 'Discover the scientific principles powering real-time carbon tracking and how CarbonCut transforms delayed reporting into immediate, actionable climate intelligence.',
+  title:
+    'The Science Behind Real-Time Carbon Tracking: How CarbonCut Measures What Others Miss',
+  excerpt:
+    'Discover the scientific principles powering real-time carbon tracking and how CarbonCut transforms delayed reporting into immediate, actionable climate intelligence.',
   date: '2025-11-26',
   author: {
     name: 'CarbonCut Team',
-    avatar: '/people/person1.jpg'
+    avatar: '/people/person1.jpg',
   },
   readTime: '8 min read',
   image: '/blogs/blogNine.png',
   featured: true,
-};
+}

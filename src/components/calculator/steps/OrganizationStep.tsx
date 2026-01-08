@@ -1,22 +1,22 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Calendar as CalendarComponent } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { format } from 'date-fns';
-import { DateRange } from 'react-day-picker';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Calendar } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Calendar as CalendarComponent } from '@/components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { format } from 'date-fns'
+import { DateRange } from 'react-day-picker'
 
 interface OrganizationStepProps {
-  organization: string;
-  setOrganization: (value: string) => void;
-  reportingPeriod: DateRange | undefined;
-  setReportingPeriod: (value: DateRange | undefined) => void;
-  separateOffsets: string;
-  setSeparateOffsets: (value: string) => void;
-  showErrors?: boolean;
+  organization: string
+  setOrganization: (value: string) => void
+  reportingPeriod: DateRange | undefined
+  setReportingPeriod: (value: DateRange | undefined) => void
+  separateOffsets: string
+  setSeparateOffsets: (value: string) => void
+  showErrors?: boolean
 }
 
 export default function OrganizationStep({
@@ -31,10 +31,10 @@ export default function OrganizationStep({
   // Set default date to today if not already set
   React.useEffect(() => {
     if (!reportingPeriod) {
-      const today = new Date();
-      setReportingPeriod({ from: today, to: today });
+      const today = new Date()
+      setReportingPeriod({ from: today, to: today })
     }
-  }, [reportingPeriod, setReportingPeriod]);
+  }, [reportingPeriod, setReportingPeriod])
 
   return (
     <motion.div
@@ -45,15 +45,23 @@ export default function OrganizationStep({
       transition={{ duration: 0.3 }}
       className="space-y-4 sm:space-y-6 flex-1"
     >
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8" style={{ color: '#080c04' }}>Organization Information</h2>
+      <h2
+        className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8"
+        style={{ color: '#080c04' }}
+      >
+        Organization Information
+      </h2>
 
       <div className="space-y-2">
-        <Label htmlFor="organization" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
+        <Label
+          htmlFor="organization"
+          className="text-base sm:text-lg font-semibold"
+          style={{ color: '#6c5f31' }}
+        >
           Organization/Brand
         </Label>
         {showErrors && !organization && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-            
             <span>Please fill this field to proceed to next step</span>
           </div>
         )}
@@ -68,10 +76,14 @@ export default function OrganizationStep({
       </div>
 
       <div className="space-y-2">
-        <Label className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>Reporting Period</Label>
+        <Label
+          className="text-base sm:text-lg font-semibold"
+          style={{ color: '#6c5f31' }}
+        >
+          Reporting Period
+        </Label>
         {showErrors && (!reportingPeriod?.from || !reportingPeriod?.to) && (
           <div className="py-2 flex items-center gap-2" style={{ color: '#dc2626' }}>
-          
             <span>Please select a date range to proceed to next step</span>
           </div>
         )}
@@ -85,13 +97,16 @@ export default function OrganizationStep({
               {reportingPeriod?.from ? (
                 reportingPeriod.to ? (
                   <>
-                    {format(reportingPeriod.from, 'LLL dd, y')} - {format(reportingPeriod.to, 'LLL dd, y')}
+                    {format(reportingPeriod.from, 'LLL dd, y')} -{' '}
+                    {format(reportingPeriod.to, 'LLL dd, y')}
                   </>
                 ) : (
                   format(reportingPeriod.from, 'LLL dd, y')
                 )
               ) : (
-                <span className="text-[#d1cebb] font-normal">e.g., jan 2024 - dec 2024</span>
+                <span className="text-[#d1cebb] font-normal">
+                  e.g., jan 2024 - dec 2024
+                </span>
               )}
             </Button>
           </PopoverTrigger>
@@ -110,7 +125,11 @@ export default function OrganizationStep({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="offsets" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
+        <Label
+          htmlFor="offsets"
+          className="text-base sm:text-lg font-semibold"
+          style={{ color: '#6c5f31' }}
+        >
           Offsets to Disclose Separately (kg CO₂e)
         </Label>
         <Input
@@ -119,14 +138,14 @@ export default function OrganizationStep({
           placeholder="Enter your offset amount in kg"
           value={separateOffsets}
           onChange={(e) => {
-            const value = e.target.value;
+            const value = e.target.value
             if (value === '' || /^\d*\.?\d*$/.test(value)) {
-              setSeparateOffsets(value);
+              setSeparateOffsets(value)
             }
           }}
           onKeyPress={(e) => {
             if (!/[0-9.]/.test(e.key)) {
-              e.preventDefault();
+              e.preventDefault()
             }
           }}
           className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20"
@@ -136,5 +155,5 @@ export default function OrganizationStep({
         </p>
       </div>
     </motion.div>
-  );
+  )
 }

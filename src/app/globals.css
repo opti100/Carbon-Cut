@@ -1,11 +1,12 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 /* @import 'locomotive-scroll/dist/locomotive-scroll.css'; */
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --animate-scroll: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+  --animate-scroll: scroll var(--animation-duration, 40s)
+    var(--animation-direction, forwards) linear infinite;
 
   @keyframes scroll {
     to {
@@ -13,7 +14,6 @@
     }
   }
 }
-
 
 @keyframes marquee {
   0% {
@@ -44,12 +44,17 @@ html {
   animation: marquee-vertical var(--duration) linear infinite;
 }
 
-
 /* Bounce Down */
 @keyframes icon-bounce-down {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(5px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .icon-bounce-down {
@@ -58,15 +63,20 @@ html {
 
 /* Bounce Up */
 @keyframes icon-bounce-up {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .icon-bounce-up {
   animation: icon-bounce-up 0.35s ease-in-out;
 }
-
 
 @theme inline {
   --color-background: var(--background);
@@ -121,14 +131,14 @@ html {
   --secondary-foreground: #fcfdf6;
   --muted: #e8eade;
   --muted-foreground: #6c5f31;
-  --accent: #F0db18;
+  --accent: #f0db18;
   --accent-foreground: #080c04;
   --destructive: #e40014;
   --border: #d4d8c8;
   --input: #d4d8c8;
   --ring: #b0ea1d;
   --chart-1: #b0ea1d;
-  --chart-2: #F0db18;
+  --chart-2: #f0db18;
   --chart-3: #6c5f31;
   --chart-4: #fcbb00;
   --chart-5: #f99c00;
@@ -155,14 +165,14 @@ html {
   --secondary-foreground: #fcfdf6;
   --muted: #2a3020;
   --muted-foreground: #b8bca8;
-  --accent: #F0db18;
+  --accent: #f0db18;
   --accent-foreground: #080c04;
   --destructive: #ff6568;
   --border: rgba(252, 253, 246, 0.1);
   --input: rgba(252, 253, 246, 0.15);
   --ring: #b0ea1d;
   --chart-1: #b0ea1d;
-  --chart-2: #F0db18;
+  --chart-2: #f0db18;
   --chart-3: #6c5f31;
   --chart-4: #fcbb00;
   --chart-5: #f99c00;
@@ -190,7 +200,7 @@ html {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
-  
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -287,13 +297,13 @@ html.has-scroll-dragging {
   min-height: 100vh;
 }
 
-[data-scroll-direction="horizontal"] [data-scroll-container] {
+[data-scroll-direction='horizontal'] [data-scroll-container] {
   height: 100vh;
   display: inline-block;
   white-space: nowrap;
 }
 
-[data-scroll-direction="horizontal"] [data-scroll-section] {
+[data-scroll-direction='horizontal'] [data-scroll-section] {
   display: inline-block;
   vertical-align: top;
   white-space: nowrap;
@@ -307,7 +317,9 @@ html.has-scroll-dragging {
   width: 11px;
   height: 100%;
   transform-origin: center right;
-  transition: transform 0.3s, opacity 0.3s;
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
   opacity: 0;
 }
 
@@ -377,7 +389,8 @@ html.has-scroll-dragging {
   color: white;
 }
 
-.btn-1, .btn-2 {
+.btn-1,
+.btn-2 {
   font-size: 0.8rem;
   font-weight: 500;
   color: white;

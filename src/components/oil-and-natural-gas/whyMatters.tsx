@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import AnimatedHeading from "../internet/InternetHeading";
+import AnimatedHeading from '../internet/InternetHeading'
 
 export default function WhyItMatters() {
   return (
@@ -15,9 +15,7 @@ export default function WhyItMatters() {
       "
     >
       <div className="max-w-7xl mx-auto w-full px-5 sm:px-6 lg:px-10 py-10 sm:py-12 lg:py-16">
-
         <div className="flex flex-col items-center lg:items-start gap-6 lg:gap-10">
-
           {/* Label */}
           <p className="text-center lg:text-left text-xs sm:text-sm tracking-widest text-[#6c5f31]">
             Why It Matters
@@ -31,11 +29,11 @@ export default function WhyItMatters() {
 
           {/* Subtext */}
           <p className="uppercase text-[#325342] tracking-wide text-xs sm:text-sm md:text-base text-center lg:text-left max-w-3xl">
-            Traditional methods miss key sources like methane leaks and flaring, leading to gaps in compliance and decarbonization
+            Traditional methods miss key sources like methane leaks and flaring, leading
+            to gaps in compliance and decarbonization
           </p>
-
         </div>
       </div>
     </section>
-  );
+  )
 }

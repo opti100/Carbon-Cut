@@ -1,33 +1,39 @@
-"use client"
+'use client'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useMutation } from '@tanstack/react-query'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Mail, Shield, Loader2, ArrowLeft, CheckCircle } from "lucide-react"
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Mail, Shield, Loader2, ArrowLeft, CheckCircle } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 
 interface SendOTPRequest {
-  email: string;
-  isLogin?: boolean;
+  email: string
+  isLogin?: boolean
 }
 
 interface VerifyOTPRequest {
-  email: string;
-  otp: string;
+  email: string
+  otp: string
 }
 
 interface AuthResponse {
-  success: boolean;
-  message: string;
-  data?: any;
+  success: boolean
+  message: string
+  data?: any
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
@@ -63,7 +69,7 @@ const authAPI = {
     }
 
     return response.json()
-  }
+  },
 }
 
 // Validation functions
@@ -86,7 +92,10 @@ const authKeys = {
 function LoginPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectUrl = searchParams.get('redirectTo') || searchParams.get('redirect') || '/dashboard/campaigns'
+  const redirectUrl =
+    searchParams.get('redirectTo') ||
+    searchParams.get('redirect') ||
+    '/dashboard/campaigns'
 
   const [step, setStep] = useState<'email' | 'otp'>('email')
   const [email, setEmail] = useState('')
@@ -303,7 +312,7 @@ function LoginPage() {
                         disabled={isLoading}
                         className="text-primary hover:text-primary/80 text-sm font-medium focus:ring-2 focus:ring-primary focus:outline-none"
                       >
-                        {sendOTPMutation.isPending ? "Sending..." : "Resend Code"}
+                        {sendOTPMutation.isPending ? 'Sending...' : 'Resend Code'}
                       </Button>
                     </div>
                   </form>

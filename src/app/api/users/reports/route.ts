@@ -1,27 +1,21 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PdfReportService } from '@/services/pdf-report-service';
+import { NextRequest, NextResponse } from 'next/server'
+import { PdfReportService } from '@/services/pdf-report-service'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const email = searchParams.get('email');
-    const authtoken = await cookieStore.get('authtoken');
-    console.log('Auth Token from cookies:', authtoken);
+    const { searchParams } = new URL(request.url)
+    const email = searchParams.get('email')
+    const authtoken = await cookieStore.get('authtoken')
+    console.log('Auth Token from cookies:', authtoken)
     if (!email) {
-      return NextResponse.json(
-        { error: 'Email parameter is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Email parameter is required' }, { status: 400 })
     }
 
     // Get user and their reports
-    const user = await PdfReportService.getUserByEmail(email);
+    const user = await PdfReportService.getUserByEmail(email)
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
     // Return user data with reports
@@ -33,9 +27,9 @@ export async function GET(request: NextRequest) {
         name: user.name,
         phoneNumber: user.phoneNumber,
         companyName: user.companyName,
-        createdAt: user.createdAt
+        createdAt: user.createdAt,
       },
-      reports: user.reports.map(report => ({
+      reports: user.reports.map((report) => ({
         id: report.id,
         companyName: report.companyName,
         disclosureFormat: report.disclosureFormat,
@@ -46,15 +40,11 @@ export async function GET(request: NextRequest) {
         paymentStatus: report.paymentStatus,
         createdAt: report.createdAt,
         pdfUrl: report.pdfUrl,
-        activitiesCount: report.activities.length
-      }))
-    });
-
+        activitiesCount: report.activities.length,
+      })),
+    })
   } catch (error) {
-    console.error('Error fetching user reports:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch user reports' },
-      { status: 500 }
-    );
+    console.error('Error fetching user reports:', error)
+    return NextResponse.json({ error: 'Failed to fetch user reports' }, { status: 500 })
   }
 }

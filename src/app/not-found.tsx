@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 export default function UnderConstructionPage() {
   return (
@@ -10,10 +10,8 @@ export default function UnderConstructionPage() {
         <p className="text-lg text-gray-700 mb-2">
           We’re currently working on something great.
         </p>
-        <p className="text-lg text-[#b0ea1d] font-medium">
-          Please check back soon.
-        </p>
+        <p className="text-lg text-[#b0ea1d] font-medium">Please check back soon.</p>
       </div>
     </div>
-  );
+  )
 }

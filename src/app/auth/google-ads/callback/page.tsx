@@ -1,106 +1,135 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { Loader2, CheckCircle2, XCircle, ExternalLink, Info, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
+import {
+  Loader2,
+  CheckCircle2,
+  XCircle,
+  ExternalLink,
+  Info,
+  ArrowRight,
+} from 'lucide-react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function GoogleAdsCallbackPage() {
-  const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
-  const router = useRouter();
-  const [status, setStatus] = useState<'processing' | 'success' | 'error' | 'create_account'>('processing');
-  const [message, setMessage] = useState('Processing authentication...');
+  const searchParams = useSearchParams()
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  const [status, setStatus] = useState<
+    'processing' | 'success' | 'error' | 'create_account'
+  >('processing')
+  const [message, setMessage] = useState('Processing authentication...')
 
   useEffect(() => {
-    const success = searchParams.get('success');
-    const error = searchParams.get('error');
-    const code = searchParams.get('code');
-    const state = searchParams.get('state');
-    const showCreateAccount = searchParams.get('showCreateAccount');
+    const success = searchParams.get('success')
+    const error = searchParams.get('error')
+    const code = searchParams.get('code')
+    const state = searchParams.get('state')
+    const showCreateAccount = searchParams.get('showCreateAccount')
 
     if (error) {
       if (error === 'no_customer_accounts' && showCreateAccount === 'true') {
-        setStatus('create_account');
-        setMessage('No Google Ads account found. You need to create one to continue.');
-        return;
+        setStatus('create_account')
+        setMessage('No Google Ads account found. You need to create one to continue.')
+        return
       }
 
-      setStatus('error');
-      setMessage(`Authentication failed: ${error}`);
-      
+      setStatus('error')
+      setMessage(`Authentication failed: ${error}`)
+
       if (window.opener) {
-        window.opener.postMessage({
-          type: 'GOOGLE_ADS_AUTH_ERROR',
-          error: error
-        }, window.location.origin);
+        window.opener.postMessage(
+          {
+            type: 'GOOGLE_ADS_AUTH_ERROR',
+            error: error,
+          },
+          window.location.origin
+        )
       }
-      return;
+      return
     }
 
     if (success === 'true') {
-      setStatus('success');
-      setMessage('Successfully connected to Google Ads!');
-      
+      setStatus('success')
+      setMessage('Successfully connected to Google Ads!')
+
       if (window.opener) {
-        window.opener.postMessage({
-          type: 'GOOGLE_ADS_AUTH_SUCCESS',
-          success: true
-        }, window.location.origin);
+        window.opener.postMessage(
+          {
+            type: 'GOOGLE_ADS_AUTH_SUCCESS',
+            success: true,
+          },
+          window.location.origin
+        )
       }
 
       setTimeout(() => {
-        window.close();
-      }, 2000);
-      queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] });
-      return;
+        window.close()
+      }, 2000)
+      queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] })
+      return
     }
 
     if (!code || !state) {
-      setStatus('error');
-      setMessage('Missing authorization code or state parameter');
-      
+      setStatus('error')
+      setMessage('Missing authorization code or state parameter')
+
       if (window.opener) {
-        window.opener.postMessage({
-          type: 'GOOGLE_ADS_AUTH_ERROR',
-          error: 'Missing parameters'
-        }, window.location.origin);
+        window.opener.postMessage(
+          {
+            type: 'GOOGLE_ADS_AUTH_ERROR',
+            error: 'Missing parameters',
+          },
+          window.location.origin
+        )
       }
-      return;
+      return
     }
 
-    setStatus('success');
-    setMessage('Successfully connected to Google Ads!');
+    setStatus('success')
+    setMessage('Successfully connected to Google Ads!')
 
     if (window.opener) {
-      window.opener.postMessage({
-        type: 'GOOGLE_ADS_AUTH_SUCCESS',
-        code,
-        state
-      }, window.location.origin);
+      window.opener.postMessage(
+        {
+          type: 'GOOGLE_ADS_AUTH_SUCCESS',
+          code,
+          state,
+        },
+        window.location.origin
+      )
     }
 
     setTimeout(() => {
-      window.close();
-    }, 2000);
-
-  }, [searchParams, queryClient]); 
+      window.close()
+    }, 2000)
+  }, [searchParams, queryClient])
 
   const handleCreateGoogleAdsAccount = () => {
-    window.open('https://business.google.com/in/google-ads/', '_blank');
-  };
+    window.open('https://business.google.com/in/google-ads/', '_blank')
+  }
 
   const handleRetryConnection = () => {
     if (window.opener) {
-      window.opener.postMessage({
-        type: 'GOOGLE_ADS_RETRY_CONNECTION'
-      }, window.location.origin);
+      window.opener.postMessage(
+        {
+          type: 'GOOGLE_ADS_RETRY_CONNECTION',
+        },
+        window.location.origin
+      )
     }
-    window.close();
-  };
+    window.close()
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 p-4">
@@ -149,13 +178,16 @@ export default function GoogleAdsCallbackPage() {
               <Alert className="bg-orange-50 border-orange-200">
                 <Info className="h-4 w-4 text-orange-600" />
                 <AlertDescription className="text-orange-800">
-                  To connect CarbonCut to Google Ads, you need an active Google Ads account.
+                  To connect CarbonCut to Google Ads, you need an active Google Ads
+                  account.
                 </AlertDescription>
               </Alert>
 
               <div className="space-y-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-900 mb-2">What you&apos;ll need:</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    What you&apos;ll need:
+                  </h3>
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• A Google account (Gmail)</li>
                     <li>• Business information</li>
@@ -190,25 +222,22 @@ export default function GoogleAdsCallbackPage() {
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                   <h4 className="font-medium text-blue-900 mb-2">💡 Pro Tip</h4>
                   <p className="text-sm text-blue-800">
-                    After creating your Google Ads account, it may take a few minutes to become active. 
-                    You can retry the connection once your account is set up.
+                    After creating your Google Ads account, it may take a few minutes to
+                    become active. You can retry the connection once your account is set
+                    up.
                   </p>
                 </div>
               </div>
             </div>
           )}
-          
+
           {status === 'error' && (
             <div className="space-y-4">
               <Alert variant="destructive">
                 <XCircle className="h-4 w-4" />
                 <AlertDescription>{message}</AlertDescription>
               </Alert>
-              <Button
-                onClick={() => window.close()}
-                variant="outline"
-                className="w-full"
-              >
+              <Button onClick={() => window.close()} variant="outline" className="w-full">
                 Close Window
               </Button>
             </div>
@@ -222,5 +251,5 @@ export default function GoogleAdsCallbackPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

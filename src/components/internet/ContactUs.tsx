@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import { ArrowRight } from "lucide-react";
-import { EncryptedText } from "../ui/encrypted-text";
-import Link from "next/link";
+import { ArrowRight } from 'lucide-react'
+import { EncryptedText } from '../ui/encrypted-text'
+import Link from 'next/link'
 
 export default function PricingHero() {
   return (
@@ -45,7 +45,7 @@ export default function PricingHero() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 /* ---------------- Components ---------------- */
@@ -55,25 +55,27 @@ function HeaderLeft() {
     <div>
       <p className="text-[#6c5f31] text-sm mb-2">// SUSTAINABILITY()</p>
       <h1 className="text-2xl md:text-3xl leading-tight">
-        Ready to Take Control of Your{" "}
+        Ready to Take Control of Your{' '}
         <span className="text-[#b0ea1d]">Digital Carbon Footprint?</span>
       </h1>
     </div>
-  );
+  )
 }
 
 function TextLeft() {
   return (
     <div className="space-y-2 text-sm text-[#6c5f31]">
       <p>
-        Join the companies building the sustainable internet. Track, reduce, and report your digital emissions with clarity.
+        Join the companies building the sustainable internet. Track, reduce, and report
+        your digital emissions with clarity.
       </p>
       <p>
-        Your competitors are already acting. Investors are asking questions. Customers expect transparency.
+        Your competitors are already acting. Investors are asking questions. Customers
+        expect transparency.
       </p>
       <p className="font-semibold text-[#080c04]">The time to act is now.</p>
     </div>
-  );
+  )
 }
 
 function Note() {
@@ -81,7 +83,7 @@ function Note() {
     <div className="border border-[#d1cebb] bg-[#fcfdf6] p-3 text-xs italic text-[#6c5f31] rounded-md">
       No credit card required · Set up in minutes · First report today
     </div>
-  );
+  )
 }
 
 function CTAButton() {
@@ -100,7 +102,7 @@ function CTAButton() {
         </button>
       </Link>
     </div>
-  );
+  )
 }
 
 function HeaderRight() {
@@ -108,45 +110,50 @@ function HeaderRight() {
     <div>
       <p className="text-[#6c5f31] text-sm mb-1">// PLATFORM()</p>
       <p className="text-sm text-[#6c5f31]">
-        Everything you need to measure, manage, and reduce emissions across your digital infrastructure.
+        Everything you need to measure, manage, and reduce emissions across your digital
+        infrastructure.
       </p>
     </div>
-  );
+  )
 }
 
 function FeatureGrid({ isMobile }: { isMobile?: boolean }) {
   return (
-    <div className={`grid ${isMobile ? "grid-cols-1 gap-4" : "grid-cols-2 gap-6"} text-sm mt-4`}>
+    <div
+      className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-2 gap-6'} text-sm mt-4`}
+    >
       <FeatureBlock
         title="[0] // CORE"
         items={[
-          "Real-time emission tracking",
-          "Infrastructure-level insights",
-          "Investor-ready reporting",
-          "Reduction recommendations",
+          'Real-time emission tracking',
+          'Infrastructure-level insights',
+          'Investor-ready reporting',
+          'Reduction recommendations',
         ]}
       />
       <FeatureBlock
         title="[1] // EXTRAS"
         items={[
-          "API & platform integrations",
-          "Compliance-ready exports",
-          "Team collaboration",
-          "Continuous updates",
+          'API & platform integrations',
+          'Compliance-ready exports',
+          'Team collaboration',
+          'Continuous updates',
         ]}
       />
     </div>
-  );
+  )
 }
 
 function Metrics({ isMobile }: { isMobile?: boolean }) {
   return (
-    <div className={`grid ${isMobile ? "grid-cols-3 gap-4 mt-4" : "grid-cols-3 gap-4 text-center mt-4"}`}>
+    <div
+      className={`grid ${isMobile ? 'grid-cols-3 gap-4 mt-4' : 'grid-cols-3 gap-4 text-center mt-4'}`}
+    >
       <Stat value="5 min" label="SETUP" />
       <Stat value="24/7" label="TRACKING" />
       <Stat value="∞" label="SCALABLE" />
     </div>
-  );
+  )
 }
 
 function Stat({ value, label }: { value: string; label: string }) {
@@ -155,7 +162,7 @@ function Stat({ value, label }: { value: string; label: string }) {
       <p className="text-lg font-semibold">{value}</p>
       <p className="text-xs text-[#6c5f31] mt-1">{label}</p>
     </div>
-  );
+  )
 }
 
 function FeatureBlock({ title, items }: { title: string; items: string[] }) {
@@ -171,5 +178,5 @@ function FeatureBlock({ title, items }: { title: string; items: string[] }) {
         ))}
       </ul>
     </div>
-  );
+  )
 }

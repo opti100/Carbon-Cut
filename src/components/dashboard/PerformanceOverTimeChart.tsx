@@ -1,8 +1,14 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import * as React from 'react'
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   type ChartConfig,
   ChartContainer,
@@ -10,8 +16,14 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+} from '@/components/ui/chart'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface TimeSeriesData {
   date: string
@@ -31,23 +43,26 @@ interface PerformanceOverTimeChartProps {
 
 const chartConfig = {
   impressions: {
-    label: "Impressions",
-    color: "hsl(var(--chart-1))",
+    label: 'Impressions',
+    color: 'hsl(var(--chart-1))',
   },
   sessions: {
-    label: "Sessions",
-    color: "hsl(var(--chart-2))",
+    label: 'Sessions',
+    color: 'hsl(var(--chart-2))',
   },
   conversions: {
-    label: "Conversions",
-    color: "hsl(var(--chart-3))",
+    label: 'Conversions',
+    color: 'hsl(var(--chart-3))',
   },
 } satisfies ChartConfig
 
-export function PerformanceOverTimeChart({ data, dateRange }: PerformanceOverTimeChartProps) {
-  const [timeRange, setTimeRange] = React.useState("90d")
+export function PerformanceOverTimeChart({
+  data,
+  dateRange,
+}: PerformanceOverTimeChartProps) {
+  const [timeRange, setTimeRange] = React.useState('90d')
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("impressions")
+    React.useState<keyof typeof chartConfig>('impressions')
 
   const filteredData = data.slice(-Number.parseInt(timeRange, 10))
 
@@ -76,23 +91,36 @@ export function PerformanceOverTimeChart({ data, dateRange }: PerformanceOverTim
         </Select>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
           <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillImpressions" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-impressions)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-impressions)" stopOpacity={0.1} />
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-impressions)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-impressions)"
+                  stopOpacity={0.1}
+                />
               </linearGradient>
               <linearGradient id="fillSessions" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-sessions)" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="var(--color-sessions)" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="fillConversions" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-conversions)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-conversions)" stopOpacity={0.1} />
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-conversions)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-conversions)"
+                  stopOpacity={0.1}
+                />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} stroke="hsl(var(--muted-foreground) / 0.1)" />
@@ -106,7 +134,9 @@ export function PerformanceOverTimeChart({ data, dateRange }: PerformanceOverTim
             />
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent labelFormatter={(value) => value} indicator="dot" />}
+              content={
+                <ChartTooltipContent labelFormatter={(value) => value} indicator="dot" />
+              }
             />
             <Area
               dataKey="impressions"

@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -8,78 +8,78 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Copy, CheckCircle, Loader2, AlertTriangle, Globe } from 'lucide-react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApiKeyService } from '@/services/apikey/apikey';
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Copy, CheckCircle, Loader2, AlertTriangle, Globe } from 'lucide-react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { ApiKeyService } from '@/services/apikey/apikey'
 
 interface CreateApiKeyDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
 export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogProps) {
-  const [name, setName] = useState('');
-  const [domain, setDomain] = useState('');
-  const [generatedKey, setGeneratedKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
-  const queryClient = useQueryClient();
+  const [name, setName] = useState('')
+  const [domain, setDomain] = useState('')
+  const [generatedKey, setGeneratedKey] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+  const queryClient = useQueryClient()
 
   // Check if user already has an API key
   const { data: apiKeysData } = useQuery({
     queryKey: ['apiKeys'],
     queryFn: async () => {
-      const result = await ApiKeyService.getApiKeys();
-      return result;
+      const result = await ApiKeyService.getApiKeys()
+      return result
     },
     retry: 1,
     staleTime: 30000,
-  });
+  })
 
-  const apiKeys = apiKeysData?.data?.api_keys || [];
-  const hasApiKey = apiKeys.length > 0;
+  const apiKeys = apiKeysData?.data?.api_keys || []
+  const hasApiKey = apiKeys.length > 0
 
   const createKeyMutation = useMutation({
     mutationFn: ({ name, domain }: { name: string; domain: string }) =>
       ApiKeyService.createApiKey(name, domain),
     onSuccess: (response) => {
       if (response.data?.full_key) {
-        setGeneratedKey(response.data.full_key);
+        setGeneratedKey(response.data.full_key)
       }
-      queryClient.invalidateQueries({ queryKey: ['apiKeys'] });
+      queryClient.invalidateQueries({ queryKey: ['apiKeys'] })
     },
-  });
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (name.trim() && domain.trim() && !hasApiKey) {
       createKeyMutation.mutate({
         name: name.trim(),
         domain: domain.trim(),
-      });
+      })
     }
-  };
+  }
 
   const handleCopy = async () => {
     if (generatedKey) {
-      await navigator.clipboard.writeText(generatedKey);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(generatedKey)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     }
-  };
+  }
 
   const handleClose = () => {
-    setName('');
-    setDomain('');
-    setGeneratedKey(null);
-    setCopied(false);
-    createKeyMutation.reset();
-    onOpenChange(false);
-  };
+    setName('')
+    setDomain('')
+    setGeneratedKey(null)
+    setCopied(false)
+    createKeyMutation.reset()
+    onOpenChange(false)
+  }
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -103,7 +103,8 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                 <AlertDescription className="text-gray-800">
                   <p className="font-medium mb-1">API Key Limit Reached</p>
                   <p className="text-sm">
-                    You already have an API key. Please delete your existing key before creating a new one.
+                    You already have an API key. Please delete your existing key before
+                    creating a new one.
                   </p>
                 </AlertDescription>
               </Alert>
@@ -113,7 +114,9 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                   <Alert className="bg-blue-50 border-blue-200">
                     <Globe className="h-4 w-4 text-blue-600" />
                     <AlertDescription className="text-blue-800 text-sm">
-                      <strong>Important:</strong> Enter the domain where you&apos;ll install the CarbonCut SDK. This ensures proper tracking and security.
+                      <strong>Important:</strong> Enter the domain where you&apos;ll
+                      install the CarbonCut SDK. This ensures proper tracking and
+                      security.
                     </AlertDescription>
                   </Alert>
 
@@ -131,7 +134,8 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                       required
                     />
                     <p className="text-sm text-gray-500">
-                      Enter the domain where you&apos;ll install the tracking script (without https://)
+                      Enter the domain where you&apos;ll install the tracking script
+                      (without https://)
                     </p>
                   </div>
 
@@ -174,7 +178,9 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                   </Button>
                   <Button
                     type="submit"
-                    disabled={!name.trim() || !domain.trim() || createKeyMutation.isPending}
+                    disabled={
+                      !name.trim() || !domain.trim() || createKeyMutation.isPending
+                    }
                     className={`rounded-sm ${
                       !name.trim() || !domain.trim()
                         ? 'bg-gray-400 text-white'
@@ -216,8 +222,8 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
                 <div className="flex items-start gap-2">
                   <AlertTriangle className="h-5 w-5 text-[#ff8904] flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-gray-800">
-                    <strong>Important:</strong> Copy this key now and store it securely. For
-                    security reasons, you won&apos;t be able to view it again.
+                    <strong>Important:</strong> Copy this key now and store it securely.
+                    For security reasons, you won&apos;t be able to view it again.
                   </div>
                 </div>
               </div>
@@ -247,5 +253,5 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
         )}
       </DialogContent>
     </Dialog>
-  );
+  )
 }

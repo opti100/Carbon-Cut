@@ -1,4 +1,3 @@
-
 import CalculatorFAQ from '@/components/calculator/CalculatorFAQ'
 import CalculatorLanding from '@/components/calculator/calculatorLanding'
 import LenisSmoothScroll from '@/components/LenisSmoothScroll'
@@ -11,11 +10,11 @@ const page = () => {
   return (
     <div>
       <LenisSmoothScroll>
-      <Navbar/>
-      <CalculatorLanding/>
-      <CalculatorFAQ/> 
-       <PreFooter/>
-       <Footer />
+        <Navbar />
+        <CalculatorLanding />
+        <CalculatorFAQ />
+        <PreFooter />
+        <Footer />
       </LenisSmoothScroll>
     </div>
   )

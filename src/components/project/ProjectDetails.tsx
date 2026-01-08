@@ -1,17 +1,17 @@
-"use client";
-import React from 'react';
-import { ProjectDTO } from '@/types/project';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { BlurFade } from '@/components/ui/blur-fade';
-import { 
-  MapPin, 
-  Calendar, 
-  Building2, 
-  Leaf, 
-  TrendingUp, 
-  Users, 
+'use client'
+import React from 'react'
+import { ProjectDTO } from '@/types/project'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { BlurFade } from '@/components/ui/blur-fade'
+import {
+  MapPin,
+  Calendar,
+  Building2,
+  Leaf,
+  TrendingUp,
+  Users,
   Shield,
   ExternalLink,
   Globe,
@@ -20,28 +20,28 @@ import {
   TreePine,
   Factory,
   ChevronRight,
-  DollarSign
-} from 'lucide-react';
+  DollarSign,
+} from 'lucide-react'
 
 interface ProjectDetailsProps {
-  project: ProjectDTO;
+  project: ProjectDTO
 }
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
   const formatDate = (dateString?: string) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString();
-  };
+    if (!dateString) return 'N/A'
+    return new Date(dateString).toLocaleDateString()
+  }
 
   const formatCurrency = (amount?: number) => {
-    if (!amount) return 'N/A';
+    if (!amount) return 'N/A'
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(amount);
-  };
+    }).format(amount)
+  }
 
   return (
     <div className="space-y-6">
@@ -60,13 +60,17 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                   </Badge>
                 </div>
                 <p className="text-lg text-gray-600 mb-4">{project.developer}</p>
-                
+
                 <div className="flex flex-wrap gap-2 mb-4">
                   <Badge variant="secondary">
                     <Leaf className="h-3 w-3 mr-1" />
                     {project.project_type || 'Carbon Project'}
                   </Badge>
-                  <Badge variant={project.project_status === 'Crediting' ? 'default' : 'outline'}>
+                  <Badge
+                    variant={
+                      project.project_status === 'Crediting' ? 'default' : 'outline'
+                    }
+                  >
                     {project.project_status}
                   </Badge>
                   {project.standard && (
@@ -96,7 +100,11 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                 </Button>
                 {project.project_website && (
                   <Button variant="outline" asChild>
-                    <a href={project.project_website} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={project.project_website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <ExternalLink className="h-4 w-4 mr-2" />
                       Project Website
                     </a>
@@ -121,7 +129,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
@@ -132,7 +140,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
@@ -143,12 +151,14 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
                 <p className="text-2xl font-bold text-green-700">
-                  {project.price_per_credit_usd ? `$${project.price_per_credit_usd.toFixed(2)}` : 'N/A'}
+                  {project.price_per_credit_usd
+                    ? `$${project.price_per_credit_usd.toFixed(2)}`
+                    : 'N/A'}
                 </p>
                 <p className="text-sm text-gray-600">Price per Credit</p>
               </div>
@@ -192,7 +202,9 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Last Verification</p>
-                    <p className="font-medium">{formatDate(project.last_verification_date)}</p>
+                    <p className="font-medium">
+                      {formatDate(project.last_verification_date)}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600 mb-1">Monitoring Frequency</p>
@@ -228,7 +240,9 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                   )}
                   {project.total_estimated_reductions && (
                     <div>
-                      <p className="text-sm text-gray-600 mb-1">Total Estimated Reductions</p>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Total Estimated Reductions
+                      </p>
                       <p className="font-medium text-green-600">
                         {project.total_estimated_reductions.toLocaleString()} tCO2e
                       </p>
@@ -279,7 +293,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {project.sdg_contributions.map(sdg => (
+                    {project.sdg_contributions.map((sdg) => (
                       <Badge key={sdg} variant="outline" className="text-sm">
                         SDG {sdg}
                       </Badge>
@@ -329,7 +343,8 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
                 <div>
                   <p className="text-sm text-gray-600">Crediting Period</p>
                   <p className="font-medium">
-                    {formatDate(project.crediting_period_start)} - {formatDate(project.crediting_period_end)}
+                    {formatDate(project.crediting_period_start)} -{' '}
+                    {formatDate(project.crediting_period_end)}
                   </p>
                 </div>
               </CardContent>
@@ -368,7 +383,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProjectDetails;
+export default ProjectDetails

@@ -15,7 +15,7 @@ const page = () => {
       <LenisSmoothScroll>
         <HeroOilGas />
         <WhyItMatters />
-        <Lubricant/>
+        <Lubricant />
         <WhatWeDo />
         <CoreCapabilities />
         <FAQGas />

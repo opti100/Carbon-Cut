@@ -10,7 +10,7 @@ import {
   StepperTitle,
   StepperTrigger,
 } from '@/components/ui/stepper'
-import { Check, LoaderCircleIcon } from 'lucide-react';
+import { Check, LoaderCircleIcon } from 'lucide-react'
 
 const steps = [
   {
@@ -25,7 +25,7 @@ const steps = [
     title: 'Step 3',
     description: 'Desc for Step 3',
   },
-];
+]
 
 export default function VerticalComponent() {
   return (
@@ -72,5 +72,5 @@ export default function VerticalComponent() {
         </StepperPanel>
       </Stepper>
     </div>
-  );
+  )
 }

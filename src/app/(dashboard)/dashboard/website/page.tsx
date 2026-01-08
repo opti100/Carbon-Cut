@@ -1,13 +1,24 @@
-"use client"
+'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Monitor, Users, Globe, Zap, TrendingUp, Globe2, Smartphone, Calendar, FileDown, Award } from "lucide-react"
-import { useQuery } from "@tanstack/react-query"
-import { ApiKeyService } from "@/services/apikey/apikey"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Monitor,
+  Users,
+  Globe,
+  Zap,
+  TrendingUp,
+  Globe2,
+  Smartphone,
+  Calendar,
+  FileDown,
+  Award,
+} from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { ApiKeyService } from '@/services/apikey/apikey'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 import {
   Table,
   TableBody,
@@ -15,10 +26,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { useAuth } from "@/contexts/AuthContext"
-import { useState } from "react"
-import { toast } from "sonner"
+} from '@/components/ui/table'
+import { useAuth } from '@/contexts/AuthContext'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 const formatEmissions = (value: number, unit: 'kg' | 'g' = 'g') => {
   if (!value || value === 0) return `0 ${unit}`
@@ -48,8 +59,12 @@ export default function WebsiteDashboardPage() {
   const { user } = useAuth()
   const [isGeneratingReport, setIsGeneratingReport] = useState(false)
 
-  const { data: analyticsData, isLoading, isError } = useQuery({
-    queryKey: ["websiteAnalytics", 30],
+  const {
+    data: analyticsData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['websiteAnalytics', 30],
     queryFn: () => ApiKeyService.getWebsiteAnalytics(30),
     refetchInterval: 60000,
   })
@@ -68,7 +83,7 @@ export default function WebsiteDashboardPage() {
     }
 
     if (!stats.total_emissions_g || stats.total_emissions_g === 0) {
-      toast.error("No emissions data available to generate report")
+      toast.error('No emissions data available to generate report')
       return
     }
 
@@ -112,10 +127,14 @@ export default function WebsiteDashboardPage() {
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
 
-      toast.success("Certified emissions report downloaded successfully!")
+      toast.success('Certified emissions report downloaded successfully!')
     } catch (error) {
       console.error('Error generating report:', error)
-      toast.error(error instanceof Error ? error.message : "Failed to generate report. Please try again.")
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Failed to generate report. Please try again.'
+      )
     } finally {
       setIsGeneratingReport(false)
     }
@@ -143,7 +162,9 @@ export default function WebsiteDashboardPage() {
       <div className="flex-1 overflow-auto bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <Alert variant="destructive">
-            <AlertDescription>Failed to load website analytics. Please try again.</AlertDescription>
+            <AlertDescription>
+              Failed to load website analytics. Please try again.
+            </AlertDescription>
           </Alert>
         </div>
       </div>
@@ -192,11 +213,13 @@ export default function WebsiteDashboardPage() {
               <CardContent className="space-y-4">
                 <Alert>
                   <AlertDescription>
-                    {analyticsData?.data?.message || "No website API keys found. Create one to start tracking."}
+                    {analyticsData?.data?.message ||
+                      'No website API keys found. Create one to start tracking.'}
                   </AlertDescription>
                 </Alert>
                 <p className="text-sm text-muted-foreground">
-                  Install our SDK to start tracking carbon emissions from your website or application.
+                  Install our SDK to start tracking carbon emissions from your website or
+                  application.
                 </p>
                 <ol className="list-decimal list-inside space-y-2 text-sm">
                   <li>Generate a Website API key in your Profile</li>
@@ -229,7 +252,8 @@ export default function WebsiteDashboardPage() {
                         Total carbon emissions from website traffic
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Tracked over {analyticsData?.data?.period_days || 30} days • {stats?.total_sessions || 0} sessions
+                        Tracked over {analyticsData?.data?.period_days || 30} days •{' '}
+                        {stats?.total_sessions || 0} sessions
                       </p>
                     </div>
                     <div className="flex flex-col gap-2">
@@ -238,7 +262,9 @@ export default function WebsiteDashboardPage() {
                         <span className="text-muted-foreground">Scope 3 Emissions</span>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        Average: {formatEmissions(stats?.avg_emissions_per_visit_g || 0, 'g')} per visit
+                        Average:{' '}
+                        {formatEmissions(stats?.avg_emissions_per_visit_g || 0, 'g')} per
+                        visit
                       </p>
                     </div>
                   </div>
@@ -253,7 +279,8 @@ export default function WebsiteDashboardPage() {
                   <CardContent>
                     <div className="text-2xl font-bold">{stats?.total_sessions || 0}</div>
                     <p className="text-xs text-muted-foreground">
-                      {stats?.total_visitors || 0} unique visitors (last {analyticsData?.data?.period_days || 30} days)
+                      {stats?.total_visitors || 0} unique visitors (last{' '}
+                      {analyticsData?.data?.period_days || 30} days)
                     </p>
                   </CardContent>
                 </Card>
@@ -264,7 +291,9 @@ export default function WebsiteDashboardPage() {
                     <Monitor className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{stats?.total_page_views || 0}</div>
+                    <div className="text-2xl font-bold">
+                      {stats?.total_page_views || 0}
+                    </div>
                     <p className="text-xs text-muted-foreground">Total page views</p>
                   </CardContent>
                 </Card>
@@ -278,9 +307,7 @@ export default function WebsiteDashboardPage() {
                     <div className="text-2xl font-bold">
                       {formatEmissions(stats?.total_emissions_g || 0, 'g')}
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      CO₂ tracked
-                    </p>
+                    <p className="text-xs text-muted-foreground">CO₂ tracked</p>
                   </CardContent>
                 </Card>
               </div>
@@ -310,7 +337,7 @@ export default function WebsiteDashboardPage() {
                               {new Date(day.date).toLocaleDateString('en-US', {
                                 month: 'short',
                                 day: 'numeric',
-                                year: 'numeric'
+                                year: 'numeric',
                               })}
                             </TableCell>
                             <TableCell className="text-right">{day.sessions}</TableCell>
@@ -346,9 +373,13 @@ export default function WebsiteDashboardPage() {
                       <TableBody>
                         {countryBreakdown.map((country, idx) => (
                           <TableRow key={idx}>
-                            <TableCell className="font-medium">{country.country}</TableCell>
+                            <TableCell className="font-medium">
+                              {country.country}
+                            </TableCell>
                             <TableCell className="text-right">{country.count}</TableCell>
-                            <TableCell className="text-right">{country.percentage.toFixed(1)}%</TableCell>
+                            <TableCell className="text-right">
+                              {country.percentage.toFixed(1)}%
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -397,7 +428,8 @@ export default function WebsiteDashboardPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground text-center py-8">
-                      No page view data available yet. Page views will appear here once tracked.
+                      No page view data available yet. Page views will appear here once
+                      tracked.
                     </p>
                   </CardContent>
                 </Card>
@@ -409,10 +441,12 @@ export default function WebsiteDashboardPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-blue-900">
-                        {stats?.api_keys_count || 0} Website API Key{stats?.api_keys_count !== 1 ? 's' : ''} Active
+                        {stats?.api_keys_count || 0} Website API Key
+                        {stats?.api_keys_count !== 1 ? 's' : ''} Active
                       </p>
                       <p className="text-xs text-blue-700 mt-1">
-                        Tracking data for the last {analyticsData?.data?.period_days || 30} days
+                        Tracking data for the last{' '}
+                        {analyticsData?.data?.period_days || 30} days
                       </p>
                     </div>
                     <Button asChild variant="outline" size="sm">

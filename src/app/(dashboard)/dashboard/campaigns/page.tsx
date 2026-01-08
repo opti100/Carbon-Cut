@@ -1,26 +1,40 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "next/navigation"
-import { useGoogleAds } from "@/contexts/GoogleAdsContext"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Plus, Trash2, Edit, TrendingUp, AlertCircle, Link2, CheckCircle, ExternalLink, Copy, Info, Search, MoreVertical, ArrowUp } from "lucide-react"
-import { campaignApi } from "@/services/campaign/campaign"
-import { CreateCampaignDialog } from "@/components/dashboard/campaign/CreateCampaignsDialog"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
-import Image from "next/image"
+import type React from 'react'
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { useGoogleAds } from '@/contexts/GoogleAdsContext'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  Plus,
+  Trash2,
+  Edit,
+  TrendingUp,
+  AlertCircle,
+  Link2,
+  CheckCircle,
+  ExternalLink,
+  Copy,
+  Info,
+  Search,
+  MoreVertical,
+  ArrowUp,
+} from 'lucide-react'
+import { campaignApi } from '@/services/campaign/campaign'
+import { CreateCampaignDialog } from '@/components/dashboard/campaign/CreateCampaignsDialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Input } from '@/components/ui/input'
+import Image from 'next/image'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 
 export default function CampaignsPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
@@ -33,14 +47,14 @@ export default function CampaignsPage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["campaigns"],
+    queryKey: ['campaigns'],
     queryFn: campaignApi.list,
   })
 
   const deleteMutation = useMutation({
     mutationFn: campaignApi.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["campaigns"] })
+      queryClient.invalidateQueries({ queryKey: ['campaigns'] })
     },
   })
 
@@ -64,7 +78,9 @@ export default function CampaignsPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="space-y-6">
           <div className="space-y-4">
-            <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">Campaigns</h1>
+            <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
+              Campaigns
+            </h1>
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               {/* Tabs */}
@@ -109,7 +125,10 @@ export default function CampaignsPage() {
                   </div>
                 </div>
 
-                <Button onClick={handleCreateClick} className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button
+                  onClick={handleCreateClick}
+                  className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90"
+                >
                   <Plus className="mr-1 h-4 w-4" /> New Campaign
                 </Button>
               </div>
@@ -118,17 +137,18 @@ export default function CampaignsPage() {
 
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             <Card className="border-border  rounded-sm h-24 bg-white text-card-foreground">
-
               <CardContent>
                 <div className="text-3xl font-bold">{campaigns?.length || 0}</div>
-                <p className="text-xs text-muted-foreground">Active and draft campaigns</p>
+                <p className="text-xs text-muted-foreground">
+                  Active and draft campaigns
+                </p>
               </CardContent>
             </Card>
             <Card className="border-border rounded-sm h-24 bg-white text-card-foreground">
-
               <CardContent>
                 <div className="text-3xl font-bold">
-                  {campaigns?.reduce((sum, c) => sum + (c.utm_params?.length || 0), 0) || 0}
+                  {campaigns?.reduce((sum, c) => sum + (c.utm_params?.length || 0), 0) ||
+                    0}
                 </div>
                 <p className="text-xs text-[#6c5f31]/70">Across all campaigns</p>
               </CardContent>
@@ -154,7 +174,9 @@ export default function CampaignsPage() {
           {error && (
             <Alert variant="destructive" className="border-0 rounded-lg">
               <AlertCircle className="h-4 w-4" />
-              <AlertDescription className="ml-2">Failed to load campaigns: {error.message}</AlertDescription>
+              <AlertDescription className="ml-2">
+                Failed to load campaigns: {error.message}
+              </AlertDescription>
             </Alert>
           )}
 
@@ -184,18 +206,19 @@ export default function CampaignsPage() {
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start gap-3">
                         <div className="flex-1 min-w-0">
-                          <CardTitle className="text-lg line-clamp-1 font-semibold text-foreground">{campaign.name}</CardTitle>
+                          <CardTitle className="text-lg line-clamp-1 font-semibold text-foreground">
+                            {campaign.name}
+                          </CardTitle>
                           <p className="text-sm text-muted-foreground mt-1">
                             {campaign.utm_params?.length || 0} UTM parameters
                           </p>
                         </div>
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-8 w-8 p-0"
-                            >
+                          <DropdownMenuTrigger
+                            asChild
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
                               <MoreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -213,7 +236,11 @@ export default function CampaignsPage() {
                               className="text-destructive focus:text-destructive"
                               onClick={(e) => {
                                 e.stopPropagation()
-                                if (confirm(`Are you sure you want to delete "${campaign.name}"?`)) {
+                                if (
+                                  confirm(
+                                    `Are you sure you want to delete "${campaign.name}"?`
+                                  )
+                                ) {
                                   deleteMutation.mutate(campaign.id)
                                 }
                               }}
@@ -229,7 +256,10 @@ export default function CampaignsPage() {
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-muted-foreground">Campaign ID</span>
-                        <Badge variant="secondary" className="bg-muted text-muted-foreground border-0 font-mono text-xs">
+                        <Badge
+                          variant="secondary"
+                          className="bg-muted text-muted-foreground border-0 font-mono text-xs"
+                        >
                           #{campaign.id}
                         </Badge>
                       </div>
@@ -238,10 +268,18 @@ export default function CampaignsPage() {
                         <div className="grid grid-cols-3 gap-2 text-center">
                           <div>
                             <p className="font-semibold text-sm text-foreground flex items-center justify-center gap-2">
-                              {new Intl.NumberFormat().format(campaign.total_impressions || 0)}
+                              {new Intl.NumberFormat().format(
+                                campaign.total_impressions || 0
+                              )}
                               {campaign.today_impressions > 0 && (
-                                <Badge variant="secondary" className="bg-green-100 text-green-600 font-medium">
-                                  +{new Intl.NumberFormat().format(campaign.today_impressions)}
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-green-100 text-green-600 font-medium"
+                                >
+                                  +
+                                  {new Intl.NumberFormat().format(
+                                    campaign.today_impressions
+                                  )}
                                 </Badge>
                               )}
                             </p>
@@ -251,8 +289,14 @@ export default function CampaignsPage() {
                             <p className="font-semibold text-sm text-foreground flex items-center justify-center gap-2">
                               {campaign.total_clicks}
                               {campaign.last_24h_clicks > 0 && (
-                                <Badge variant="secondary" className="bg-green-100 text-green-600 font-medium">
-                                  +{new Intl.NumberFormat().format(campaign.last_24h_clicks)}
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-green-100 text-green-600 font-medium"
+                                >
+                                  +
+                                  {new Intl.NumberFormat().format(
+                                    campaign.last_24h_clicks
+                                  )}
                                 </Badge>
                               )}
                             </p>
@@ -260,9 +304,13 @@ export default function CampaignsPage() {
                           </div>
                           <div>
                             <p className="font-semibold text-sm text-foreground flex items-center justify-center gap-2">
-                              {parseFloat(campaign.total_emissions_kg || '0').toFixed(2)} kg
+                              {parseFloat(campaign.total_emissions_kg || '0').toFixed(2)}{' '}
+                              kg
                               {campaign.today_emissions_kg > 0 && (
-                                <Badge variant="secondary" className="bg-green-100 text-green-600 font-medium">
+                                <Badge
+                                  variant="secondary"
+                                  className="bg-green-100 text-green-600 font-medium"
+                                >
                                   {/* +{(campaign.today_emissions_kg).toFixed(3)} kg */}
                                 </Badge>
                               )}
@@ -275,10 +323,20 @@ export default function CampaignsPage() {
                       {campaign.google_ads_campaign_id && (
                         <div className="flex items-center justify-between pt-3 border-t border-border">
                           <div className="flex items-center gap-2">
-                            <Image src="/dsp/google-ads.svg" alt="Google Ads" width={20} height={20} />
-                            <span className="text-sm text-muted-foreground">Google Ads</span>
+                            <Image
+                              src="/dsp/google-ads.svg"
+                              alt="Google Ads"
+                              width={20}
+                              height={20}
+                            />
+                            <span className="text-sm text-muted-foreground">
+                              Google Ads
+                            </span>
                           </div>
-                          <Badge variant="outline" className="text-xs font-medium border-border bg-muted/50 text-muted-foreground">
+                          <Badge
+                            variant="outline"
+                            className="text-xs font-medium border-border bg-muted/50 text-muted-foreground"
+                          >
                             Synced
                           </Badge>
                         </div>
@@ -293,11 +351,13 @@ export default function CampaignsPage() {
                   <div className="p-4 bg-muted rounded-full mb-4">
                     <TrendingUp className="h-8 w-8 text-muted-foreground" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">No campaigns yet</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
+                    No campaigns yet
+                  </h3>
                   <p className="text-muted-foreground text-center mb-6 max-w-md">
                     {status?.is_connected
-                      ? "Create your first campaign with UTM parameters to start tracking your advertising performance"
-                      : "Connect your Google Ads account to start creating campaigns"}
+                      ? 'Create your first campaign with UTM parameters to start tracking your advertising performance'
+                      : 'Connect your Google Ads account to start creating campaigns'}
                   </p>
                   {status?.is_connected ? (
                     <Button
@@ -309,7 +369,7 @@ export default function CampaignsPage() {
                     </Button>
                   ) : (
                     <Button
-                      onClick={() => router.push("/dashboard/integrations")}
+                      onClick={() => router.push('/dashboard/integrations')}
                       className="bg-primary text-primary-foreground hover:bg-primary/90"
                     >
                       <Link2 className="mr-2 h-4 w-4" />
@@ -323,7 +383,10 @@ export default function CampaignsPage() {
         </div>
       </div>
 
-      <CreateCampaignDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} />
+      <CreateCampaignDialog
+        open={isCreateDialogOpen}
+        onOpenChange={setIsCreateDialogOpen}
+      />
     </div>
   )
 }

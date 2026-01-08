@@ -1,54 +1,65 @@
-import puppeteer from 'puppeteer';
-import { ActivityData, OrganizationData } from "@/types/types";
+import puppeteer from 'puppeteer'
+import { ActivityData, OrganizationData } from '@/types/types'
 
 export interface PDFFormData {
-  name: string;
-  email: string;
-  companyName: string;
-  phoneNumber: string;
-  disclosureFormat: 'SECR' | 'CSRD' | 'SEC';
+  name: string
+  email: string
+  companyName: string
+  phoneNumber: string
+  disclosureFormat: 'SECR' | 'CSRD' | 'SEC'
 }
 
 export interface PDFGenerationData {
-  organization: OrganizationData;
-  activities: ActivityData[];
-  getDisplayCO2: (activity: ActivityData) => number;
+  organization: OrganizationData
+  activities: ActivityData[]
+  getDisplayCO2: (activity: ActivityData) => number
   totals: {
-    total: number;
-    byChannel: Record<string, number>;
-    byMarket: Record<string, number>;
-    byScope: Record<string, number>;
-  };
-  formData: PDFFormData;
+    total: number
+    byChannel: Record<string, number>
+    byMarket: Record<string, number>
+    byScope: Record<string, number>
+  }
+  formData: PDFFormData
 }
 
 const generateSECHTMLTemplate = (data: PDFGenerationData): string => {
-  const { organization, activities, totals, formData } = data;
-  const totalEmissions = totals.total;
-  const now = new Date();
-  const reportDate = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const { organization, activities, totals, formData } = data
+  const totalEmissions = totals.total
+  const now = new Date()
+  const reportDate = now.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
 
   // Generate emissions table rows
-  const emissionsRows = Object.entries(totals.byScope).map(([scope, emissions]) => `
+  const emissionsRows = Object.entries(totals.byScope)
+    .map(
+      ([scope, emissions]) => `
     <tr>
       <td style="width: 20%;">Scope ${scope}</td>
       <td style="width: 40%;">${scope === '1' ? 'Direct Emissions' : scope === '2' ? 'Indirect Energy' : 'Value Chain Activities'}</td>
       <td style="width: 20%; text-align: right;">${emissions.toFixed(2)}</td>
       <td style="width: 20%; text-align: right;">${((emissions / totalEmissions) * 100).toFixed(1)}%</td>
     </tr>
-  `).join('');
+  `
+    )
+    .join('')
 
   // Generate channel breakdown rows
   const channelRows = Object.entries(totals.byChannel)
-    .sort(([,a], [,b]) => b - a)
-    .map(([channel, emissions]) => `
+    .sort(([, a], [, b]) => b - a)
+    .map(
+      ([channel, emissions]) => `
       <tr>
         <td style="width: 25%;">${channel}</td>
         <td style="width: 20%; text-align: right;">${emissions.toFixed(2)}</td>
         <td style="width: 20%; text-align: right;">${((emissions / totalEmissions) * 100).toFixed(1)}%</td>
         <td style="width: 35%;">Campaign Operations</td>
       </tr>
-    `).join('');
+    `
+    )
+    .join('')
 
   return `
 <!DOCTYPE html>
@@ -473,7 +484,9 @@ const generateSECHTMLTemplate = (data: PDFGenerationData): string => {
     </div>
 
     <!-- Channel Breakdown Page -->
-    ${Object.keys(totals.byChannel).length > 0 ? `
+    ${
+      Object.keys(totals.byChannel).length > 0
+        ? `
     <div class="page">
         <div class="section-header">EMISSIONS BY MARKETING CHANNEL</div>
         
@@ -491,7 +504,9 @@ const generateSECHTMLTemplate = (data: PDFGenerationData): string => {
             </tbody>
         </table>
     </div>
-    ` : ''}
+    `
+        : ''
+    }
 
     <!-- Data Quality Page -->
     <div class="page">
@@ -567,15 +582,15 @@ const generateSECHTMLTemplate = (data: PDFGenerationData): string => {
     </div>
 </body>
 </html>
-  `;
-};
+  `
+}
 
 const generateSECPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array> => {
-  let browser;
-  
+  let browser
+
   try {
-    const htmlContent = generateSECHTMLTemplate(data);
-    
+    const htmlContent = generateSECHTMLTemplate(data)
+
     browser = await puppeteer.launch({
       headless: true,
       args: [
@@ -586,15 +601,15 @@ const generateSECPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Arr
         '--no-first-run',
         '--no-zygote',
         '--single-process',
-        '--disable-gpu'
-      ]
-    });
+        '--disable-gpu',
+      ],
+    })
 
-    const page = await browser.newPage();
-    
+    const page = await browser.newPage()
+
     await page.setContent(htmlContent, {
-      waitUntil: ['networkidle0', 'domcontentloaded']
-    });
+      waitUntil: ['networkidle0', 'domcontentloaded'],
+    })
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
@@ -603,7 +618,7 @@ const generateSECPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Arr
         top: '20mm',
         right: '20mm',
         bottom: '20mm',
-        left: '20mm'
+        left: '20mm',
       },
       displayHeaderFooter: true,
       headerTemplate: `
@@ -617,23 +632,24 @@ const generateSECPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Arr
           <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
         </div>
       `,
-    });
+    })
 
-    return new Uint8Array(pdfBuffer);
-
+    return new Uint8Array(pdfBuffer)
   } catch (error) {
-    console.error('Error generating SEC PDF with Puppeteer:', error);
-    throw new Error(`SEC PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.error('Error generating SEC PDF with Puppeteer:', error)
+    throw new Error(
+      `SEC PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   } finally {
     if (browser) {
-      await browser.close();
+      await browser.close()
     }
   }
-};
+}
 
 export const generateSECReport = async (data: PDFGenerationData): Promise<Uint8Array> => {
-  return await generateSECPDFFromHTML(data);
-};
+  return await generateSECPDFFromHTML(data)
+}
 
-export { generateSECHTMLTemplate, generateSECPDFFromHTML };
-export default generateSECReport;
+export { generateSECHTMLTemplate, generateSECPDFFromHTML }
+export default generateSECReport

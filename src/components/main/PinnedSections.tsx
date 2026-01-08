@@ -1,8 +1,8 @@
-"use client"
-import { useEffect, useRef } from "react"
-import Image from "next/image"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger"
+'use client'
+import { useEffect, useRef } from 'react'
+import Image from 'next/image'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -11,41 +11,39 @@ export default function LocomotivePinnedSections() {
 
   const sections = [
     {
-      title: "Measure",
-      description: "Calculate your carbon footprint with precision",
-      color: "bg-red-600"
+      title: 'Measure',
+      description: 'Calculate your carbon footprint with precision',
+      color: 'bg-red-600',
     },
     {
-      title: "Track",
-      description: "Monitor your emissions in real-time",
-      color: "bg-blue-600"
+      title: 'Track',
+      description: 'Monitor your emissions in real-time',
+      color: 'bg-blue-600',
     },
     {
-      title: "Offset",
-      description: "Neutralize your environmental impact",
-      color: "bg-green-600"
+      title: 'Offset',
+      description: 'Neutralize your environmental impact',
+      color: 'bg-green-600',
     },
     {
-      title: "Impact",
-      description: "Make a lasting difference for the planet",
-      color: "bg-purple-600"
-    }
+      title: 'Impact',
+      description: 'Make a lasting difference for the planet',
+      color: 'bg-purple-600',
+    },
   ]
 
   useEffect(() => {
     if (!containerRef.current) return
 
     const timer = setTimeout(() => {
-      const sectionElements = gsap.utils.toArray<HTMLElement>(
-        '.pin-section'
-      )
+      const sectionElements = gsap.utils.toArray<HTMLElement>('.pin-section')
 
       sectionElements.forEach((section) => {
         ScrollTrigger.create({
           trigger: section,
-          scroller: "[data-scroll-container]", // Use the existing Locomotive container
-          start: "top top",
-          end: "+=100%",
+          scroller: '[data-scroll-container]', // Use the existing Locomotive container
+          start: 'top top',
+          end: '+=100%',
           pin: true,
           pinSpacing: false,
           markers: false,
@@ -59,7 +57,7 @@ export default function LocomotivePinnedSections() {
       clearTimeout(timer)
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
-  }, []);
+  }, [])
 
   return (
     <>
@@ -74,7 +72,7 @@ export default function LocomotivePinnedSections() {
           />
         </a>
       </header>
-  
+
       <div ref={containerRef} className="w-full">
         {sections.map((section, index) => (
           <section

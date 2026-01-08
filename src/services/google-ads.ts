@@ -1,8 +1,8 @@
-import { GoogleAdsConnectionStatus } from "@/types/google-ads";
-import { useQuery } from "@tanstack/react-query";
-import axios from 'axios';
+import { GoogleAdsConnectionStatus } from '@/types/google-ads'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,7 +10,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
+})
 
 export const googleAdsApi = {
   /**
@@ -23,41 +23,41 @@ export const googleAdsApi = {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
     if (!response.ok) {
-      throw new Error('Failed to get authorization URL');
+      throw new Error('Failed to get authorization URL')
     }
 
     // Backend redirects, so we get the URL from the response
-    return response.url;
+    return response.url
   },
 
   /**
    * Check if user has connected Google Ads
    */
   async checkConnection(): Promise<GoogleAdsConnectionStatus> {
-    const response = await api.get('/impressions/google-ads/status/');
-    console.log('✅ Connection status:', response.data);
-    return response.data.data || response.data;
+    const response = await api.get('/impressions/google-ads/status/')
+    console.log('✅ Connection status:', response.data)
+    return response.data.data || response.data
   },
 
   /**
    * Disconnect Google Ads account
    */
   async disconnect() {
-    const response = await api.post('/impressions/google-ads/disconnect/');
-    console.log('✅ Disconnect response:', response.data);
-    return response.data;
+    const response = await api.post('/impressions/google-ads/disconnect/')
+    console.log('✅ Disconnect response:', response.data)
+    return response.data
   },
 
   /**
    * Get all accessible Google Ads accounts
    */
   async getAccounts() {
-    const response = await api.get('/impressions/google-ads/accounts/');
-    console.log('✅ Accounts response:', response.data);
-    return response.data;
+    const response = await api.get('/impressions/google-ads/accounts/')
+    console.log('✅ Accounts response:', response.data)
+    return response.data
   },
 
   /**
@@ -66,11 +66,11 @@ export const googleAdsApi = {
   async switchAccount(customerId: string) {
     const response = await api.post('/impressions/google-ads/switch-account/', {
       customer_id: customerId,
-    });
-    console.log('✅ Switch account response:', response.data);
-    return response.data;
+    })
+    console.log('✅ Switch account response:', response.data)
+    return response.data
   },
-};
+}
 
 // utils/googleAds.ts
 export interface TokenValidationResponse {

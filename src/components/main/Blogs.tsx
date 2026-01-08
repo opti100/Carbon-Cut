@@ -1,64 +1,63 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import UniversalHeading from "../UniversalHeading";
-import { blogTwentyOneData } from "@/constants/blogs/blogTwentyOne-data";
-import { blogTwentyData } from "@/constants/blogs/blogTwenty-data";
-import { blogNineteenData } from "@/constants/blogs/blogNineteen-data";
+import React, { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import UniversalHeading from '../UniversalHeading'
+import { blogTwentyOneData } from '@/constants/blogs/blogTwentyOne-data'
+import { blogTwentyData } from '@/constants/blogs/blogTwenty-data'
+import { blogNineteenData } from '@/constants/blogs/blogNineteen-data'
 
 const blogs = [
   {
-    image: blogTwentyOneData.image || "/blogs/blogThirteen.png",
-    date: new Date(blogTwentyOneData.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    image: blogTwentyOneData.image || '/blogs/blogThirteen.png',
+    date: new Date(blogTwentyOneData.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     }),
     readTime: blogTwentyOneData.readTime,
     title: blogTwentyOneData.title,
     slug: blogTwentyOneData.slug,
   },
   {
-    image: blogTwentyData.image || "/blogs/blogTwelve.png",
-    date: new Date(blogTwentyData.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    image: blogTwentyData.image || '/blogs/blogTwelve.png',
+    date: new Date(blogTwentyData.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     }),
     readTime: blogTwentyData.readTime,
     title: blogTwentyData.title,
     slug: blogTwentyData.slug,
   },
   {
-    image: blogNineteenData.image || "/blogs/blogFourteen.png",
-    date: new Date(blogNineteenData.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
+    image: blogNineteenData.image || '/blogs/blogFourteen.png',
+    date: new Date(blogNineteenData.date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
     }),
     readTime: blogNineteenData.readTime,
     title: blogNineteenData.title,
     slug: blogNineteenData.slug,
   },
-];
+]
 
 const Blogs = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
     <div className="bg-[#fcfdf6] w-full ">
       {/* TOP BORDER */}
       <div className="w-full border-t border-dashed border-[#6c5f31]/30 mb-12"></div>
       <UniversalHeading title=" Get Latest Insights" description="Blogs" align="right" />
-    
 
       {/* ---------- BLOG CARDS (FULL WIDTH) ---------- */}
       <div className="w-full ">
         <div className="flex flex-col md:flex-row w-full ">
           {blogs.map((blog, index) => {
-            const isActive = hoveredIndex === index;
+            const isActive = hoveredIndex === index
 
             return (
               <Link
@@ -71,10 +70,10 @@ const Blogs = () => {
                   md:flex-shrink-0
                   ${
                     hoveredIndex === null
-                      ? "md:basis-1/3"
+                      ? 'md:basis-1/3'
                       : isActive
-                      ? "md:basis-[40%]"
-                      : "md:basis-[30%]"
+                        ? 'md:basis-[40%]'
+                        : 'md:basis-[30%]'
                   }
                 `}
               >
@@ -99,7 +98,7 @@ const Blogs = () => {
                   <h3
                     className={`
                       font-medium text-[#080c04] leading-tight transition-all duration-700
-                      ${isActive ? "text-lg sm:text-xl lg:text-2xl" : "text-base sm:text-lg"}
+                      ${isActive ? 'text-lg sm:text-xl lg:text-2xl' : 'text-base sm:text-lg'}
                     `}
                   >
                     {blog.title}
@@ -109,7 +108,7 @@ const Blogs = () => {
                   <div
                     className={`
                       overflow-hidden transition-all duration-700 ease-out
-                      ${isActive ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}
+                      ${isActive ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}
                     `}
                   >
                     <p className="text-sm text-[#6c5f31]/70 leading-relaxed">
@@ -118,12 +117,12 @@ const Blogs = () => {
                   </div>
                 </div>
               </Link>
-            );
+            )
           })}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blogs;
+export default Blogs

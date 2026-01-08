@@ -1,16 +1,22 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import React from 'react'
+import { motion } from 'framer-motion'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface DetailsStepProps {
-  emissionScope: string;
-  setEmissionScope: (value: string) => void;
-  campaignName: string;
-  setCampaignName: (value: string) => void;
-  note: string;
-  setNote: (value: string) => void;
+  emissionScope: string
+  setEmissionScope: (value: string) => void
+  campaignName: string
+  setCampaignName: (value: string) => void
+  note: string
+  setNote: (value: string) => void
 }
 
 export default function DetailsStep({
@@ -30,10 +36,19 @@ export default function DetailsStep({
       transition={{ duration: 0.3 }}
       className="space-y-4 sm:space-y-6 flex-1"
     >
-      <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8" style={{ color: '#080c04' }}>Additional Details</h2>
+      <h2
+        className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8"
+        style={{ color: '#080c04' }}
+      >
+        Additional Details
+      </h2>
 
       <div className="space-y-2">
-        <Label htmlFor="scope" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
+        <Label
+          htmlFor="scope"
+          className="text-base sm:text-lg font-semibold"
+          style={{ color: '#6c5f31' }}
+        >
           Emission Scope
         </Label>
         <Select value={emissionScope} onValueChange={setEmissionScope}>
@@ -46,11 +61,14 @@ export default function DetailsStep({
             <SelectItem value="3">Scope 3 - Value chain</SelectItem>
           </SelectContent>
         </Select>
-       
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="campaignName" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
+        <Label
+          htmlFor="campaignName"
+          className="text-base sm:text-lg font-semibold"
+          style={{ color: '#6c5f31' }}
+        >
           Campaign Name
         </Label>
         <Input
@@ -61,11 +79,14 @@ export default function DetailsStep({
           onChange={(e) => setCampaignName(e.target.value)}
           className="text-base sm:text-lg p-4 sm:p-6 border-2 hover:border-[#F0db18] focus:border-[#b0ea1d] focus:ring-[#b0ea1d]/20 bg-[#fcfdf6]"
         />
-        
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="note" className="text-base sm:text-lg font-semibold" style={{ color: '#6c5f31' }}>
+        <Label
+          htmlFor="note"
+          className="text-base sm:text-lg font-semibold"
+          style={{ color: '#6c5f31' }}
+        >
           Notes
         </Label>
         <textarea
@@ -78,5 +99,5 @@ export default function DetailsStep({
         />
       </div>
     </motion.div>
-  );
+  )
 }

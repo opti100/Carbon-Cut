@@ -1,9 +1,20 @@
-"use client"
+'use client'
 
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Shield, Mail, MapPin, Calendar, Clock, Users, Database, Lock, Globe, FileText } from 'lucide-react'
+import {
+  Shield,
+  Mail,
+  MapPin,
+  Calendar,
+  Clock,
+  Users,
+  Database,
+  Lock,
+  Globe,
+  FileText,
+} from 'lucide-react'
 
 const page = () => {
   const sections = [
@@ -11,7 +22,8 @@ const page = () => {
       id: 'introduction',
       title: 'Introduction',
       icon: <FileText className="w-5 h-5" />,
-      content: 'This Privacy Policy explains how CarbonCut collects, uses, shares, and protects personal and organizational data when you access our platform, including the CarbonCalculator, CarbonOffset marketplace, CarbonCut Certified (C3) Seal, APIs, dashboards, and related services.'
+      content:
+        'This Privacy Policy explains how CarbonCut collects, uses, shares, and protects personal and organizational data when you access our platform, including the CarbonCalculator, CarbonOffset marketplace, CarbonCut Certified (C3) Seal, APIs, dashboards, and related services.',
     },
     {
       id: 'data-collection',
@@ -20,25 +32,43 @@ const page = () => {
       subsections: [
         {
           title: 'Account & Contact Data',
-          items: ['Name, organization, role, email, phone number, billing details', 'Login credentials and user preferences']
+          items: [
+            'Name, organization, role, email, phone number, billing details',
+            'Login credentials and user preferences',
+          ],
         },
         {
           title: 'Campaign & Usage Data',
-          items: ['Campaign details: creatives, impressions, spend, targeting, placements', 'Platform usage metrics (features used, reports generated, integrations)', 'Aggregated, de-identified analytics across campaigns']
+          items: [
+            'Campaign details: creatives, impressions, spend, targeting, placements',
+            'Platform usage metrics (features used, reports generated, integrations)',
+            'Aggregated, de-identified analytics across campaigns',
+          ],
         },
         {
           title: 'Offset & Transaction Data',
-          items: ['Credits purchased/retired via CarbonOffset', 'Registry identifiers (serial numbers, vintages, project references)', 'Smart contract entries (CarbonCut wallet only)', 'Tokenisation records (CarbonCut Tokens, if applicable)']
+          items: [
+            'Credits purchased/retired via CarbonOffset',
+            'Registry identifiers (serial numbers, vintages, project references)',
+            'Smart contract entries (CarbonCut wallet only)',
+            'Tokenisation records (CarbonCut Tokens, if applicable)',
+          ],
         },
         {
           title: 'Technical Data',
-          items: ['Device and browser information, IP address, log files, cookies, in-app events', 'Security and fraud-prevention logs']
+          items: [
+            'Device and browser information, IP address, log files, cookies, in-app events',
+            'Security and fraud-prevention logs',
+          ],
         },
         {
           title: 'Marketing Preferences',
-          items: ['Channels you opt into (email, SMS, WhatsApp, in-app)', 'Partner-sharing preferences, personalization flags, and double opt-in records']
-        }
-      ]
+          items: [
+            'Channels you opt into (email, SMS, WhatsApp, in-app)',
+            'Partner-sharing preferences, personalization flags, and double opt-in records',
+          ],
+        },
+      ],
     },
     {
       id: 'data-usage',
@@ -51,8 +81,8 @@ const page = () => {
         'Improve methodologies, emission factors, and user experience',
         'Maintain transparency (e.g., smart contract logs, claims register)',
         'Conduct marketing and communications with your consent',
-        'Comply with legal and regulatory obligations'
-      ]
+        'Comply with legal and regulatory obligations',
+      ],
     },
     {
       id: 'legal-bases',
@@ -62,8 +92,8 @@ const page = () => {
         'Consent: for marketing communications and personalization',
         'Contractual necessity: to deliver the Service you signed up for',
         'Legitimate interests: to improve our platform, ensure security, and conduct analytics',
-        'Legal obligations: to comply with climate disclosure, sanctions, export, and financial reporting laws'
-      ]
+        'Legal obligations: to comply with climate disclosure, sanctions, export, and financial reporting laws',
+      ],
     },
     {
       id: 'data-sharing',
@@ -72,10 +102,10 @@ const page = () => {
       items: [
         'Registries & project developers: Verra, Gold Standard, ACR, CAR, for credit verification and retirement',
         'Technology partners: hosting, analytics, and blockchain infrastructure providers',
-        'Organisations under the same account: if multiple authorised users are linked to a single organisation\'s account',
+        "Organisations under the same account: if multiple authorised users are linked to a single organisation's account",
         'Marketplace partners: only where you opt in to receive project updates',
-        'Regulators & auditors: where disclosure is legally required'
-      ]
+        'Regulators & auditors: where disclosure is legally required',
+      ],
     },
     {
       id: 'retention',
@@ -85,15 +115,16 @@ const page = () => {
         'Account and campaign data: retained while your account is active + 24 months',
         'Offset/retirement records: retained permanently for transparency and audit',
         'Consent logs: retained while valid + 24 months',
-        'Aggregated/anonymized analytics: retained indefinitely'
-      ]
+        'Aggregated/anonymized analytics: retained indefinitely',
+      ],
     },
     {
       id: 'your-rights',
       title: 'Your Rights',
       icon: <Users className="w-5 h-5" />,
-      content: 'Depending on your jurisdiction (e.g., GDPR, UK GDPR, PDPA, CCPA), you may have rights to access, correct, or delete your data, restrict or object to processing, data portability, withdraw consent, and file a complaint with your local data protection authority.',
-      contact: 'policy_carboncut@optiminastic.com'
+      content:
+        'Depending on your jurisdiction (e.g., GDPR, UK GDPR, PDPA, CCPA), you may have rights to access, correct, or delete your data, restrict or object to processing, data portability, withdraw consent, and file a complaint with your local data protection authority.',
+      contact: 'policy_carboncut@optiminastic.com',
     },
     {
       id: 'security',
@@ -103,9 +134,9 @@ const page = () => {
         'ISO 27001-aligned technical and organizational controls',
         'Encrypted storage of sensitive data',
         'Strict authentication and credential security (multi-factor authentication where available)',
-        'Regular audits, penetration tests, and monitoring'
-      ]
-    }
+        'Regular audits, penetration tests, and monitoring',
+      ],
+    },
   ]
 
   return (
@@ -134,7 +165,8 @@ const page = () => {
             </Badge>
           </div>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            We&apos;re committed to protecting your privacy and being transparent about how we handle your data.
+            We&apos;re committed to protecting your privacy and being transparent about
+            how we handle your data.
           </p>
         </div>
 
@@ -152,7 +184,8 @@ const page = () => {
                   <strong>Legal:</strong> legal@optiminastic.com
                 </p>
                 <p className="text-gray-700">
-                  <strong>Address:</strong> 2 Venture DR, #19-21, Vision Exchange, Singapore 608526
+                  <strong>Address:</strong> 2 Venture DR, #19-21, Vision Exchange,
+                  Singapore 608526
                 </p>
               </div>
             </div>
@@ -162,20 +195,23 @@ const page = () => {
         {/* Privacy Sections */}
         <div className="space-y-8">
           {sections.map((section, index) => (
-            <Card key={section.id} className="border border-gray-200 hover:shadow-lg transition-shadow">
+            <Card
+              key={section.id}
+              className="border border-gray-200 hover:shadow-lg transition-shadow"
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-xl">
-                  <div className="bg-green-100 p-2 rounded-lg">
-                    {section.icon}
-                  </div>
-                  <span>{index + 1}. {section.title}</span>
+                  <div className="bg-green-100 p-2 rounded-lg">{section.icon}</div>
+                  <span>
+                    {index + 1}. {section.title}
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
                 {section.content && (
                   <p className="text-gray-700 mb-4 leading-relaxed">{section.content}</p>
                 )}
-                
+
                 {section.items && (
                   <ul className="space-y-3">
                     {section.items.map((item, itemIndex) => (
@@ -191,7 +227,9 @@ const page = () => {
                   <div className="space-y-6">
                     {section.subsections.map((subsection, subIndex) => (
                       <div key={subIndex}>
-                        <h4 className="font-semibold text-gray-900 mb-3">{subsection.title}</h4>
+                        <h4 className="font-semibold text-gray-900 mb-3">
+                          {subsection.title}
+                        </h4>
                         <ul className="space-y-2">
                           {subsection.items.map((item, itemIndex) => (
                             <li key={itemIndex} className="flex items-start gap-3">
@@ -228,7 +266,10 @@ const page = () => {
             </CardHeader>
             <CardContent>
               <p className="text-blue-800 text-sm">
-                Data may be transferred to Singapore, the UK, the EU, the US, and other jurisdictions where our partners operate. We use Standard Contractual Clauses (SCCs) and other legally approved mechanisms for international transfers.
+                Data may be transferred to Singapore, the UK, the EU, the US, and other
+                jurisdictions where our partners operate. We use Standard Contractual
+                Clauses (SCCs) and other legally approved mechanisms for international
+                transfers.
               </p>
             </CardContent>
           </Card>
@@ -242,7 +283,10 @@ const page = () => {
             </CardHeader>
             <CardContent>
               <p className="text-purple-800 text-sm">
-                Smart contracts record only successful offset retirements via the CarbonCut wallet. Records include transaction completion, credit volume, and project references. CarbonCut Tokens (CCTs) represent retired credits and follow proprietary tokenomics.
+                Smart contracts record only successful offset retirements via the
+                CarbonCut wallet. Records include transaction completion, credit volume,
+                and project references. CarbonCut Tokens (CCTs) represent retired credits
+                and follow proprietary tokenomics.
               </p>
             </CardContent>
           </Card>
@@ -260,7 +304,10 @@ const page = () => {
                 <ul className="text-yellow-800 text-sm space-y-1">
                   <li>• The Service is not directed to individuals under 18</li>
                   <li>• We may update this Privacy Policy from time to time</li>
-                  <li>• Material changes will be communicated via email or in-app notifications</li>
+                  <li>
+                    • Material changes will be communicated via email or in-app
+                    notifications
+                  </li>
                   <li>• Continued use constitutes acceptance of updates</li>
                 </ul>
               </div>

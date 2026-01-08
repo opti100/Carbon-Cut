@@ -1,48 +1,46 @@
-"use client"
+'use client'
 
-import { useKeenSlider } from "keen-slider/react"
-import "keen-slider/keen-slider.min.css"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import Image from "next/image"
-import { useState } from "react"
-import UniversalHeading from "../UniversalHeading"
-
+import { useKeenSlider } from 'keen-slider/react'
+import 'keen-slider/keen-slider.min.css'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Image from 'next/image'
+import { useState } from 'react'
+import UniversalHeading from '../UniversalHeading'
 
 const features = [
   {
-    title: "Reduce carbon taxes by up to 17%",
-    image: "/lubricants/BusinessImpact/Reduce-Carbon.png",
+    title: 'Reduce carbon taxes by up to 17%',
+    image: '/lubricants/BusinessImpact/Reduce-Carbon.png',
   },
   {
-    title: " Low cost, low effort activity ",
-    image: "/lubricants/BusinessImpact/Low-Cost.png",
+    title: ' Low cost, low effort activity ',
+    image: '/lubricants/BusinessImpact/Low-Cost.png',
   },
   {
-    title: "Double your accuracy and quality of CO2e reporting",
-    image: "/lubricants/BusinessImpact/Double-accuracy.png",
+    title: 'Double your accuracy and quality of CO2e reporting',
+    image: '/lubricants/BusinessImpact/Double-accuracy.png',
   },
   {
-    title: "Win ESG-driven tenders",
-    image: "/lubricants/BusinessImpact/ESG-driven-tenders.png",
+    title: 'Win ESG-driven tenders',
+    image: '/lubricants/BusinessImpact/ESG-driven-tenders.png',
   },
   {
-    title: "Increase stakeholder confidence",
-    image: "/lubricants/BusinessImpact/Stakeholder-Confidence.png",
+    title: 'Increase stakeholder confidence',
+    image: '/lubricants/BusinessImpact/Stakeholder-Confidence.png',
   },
   {
-    title: "Improve supply chain transparency",
-    image: "/lubricants/BusinessImpact/Supply-chain.png",
+    title: 'Improve supply chain transparency',
+    image: '/lubricants/BusinessImpact/Supply-chain.png',
   },
   {
-    title: " Eliminate manual carbon reporting",
-    image: "/lubricants/BusinessImpact/Manual-Carbon-Reporting.png",
+    title: ' Eliminate manual carbon reporting',
+    image: '/lubricants/BusinessImpact/Manual-Carbon-Reporting.png',
   },
   {
-    title: "Track progress toward Net-Zero 2030/2050",
-    image: "/lubricants/BusinessImpact/Net-Zero.png",
+    title: 'Track progress toward Net-Zero 2030/2050',
+    image: '/lubricants/BusinessImpact/Net-Zero.png',
   },
 ]
-
 
 export default function BusinessImpact() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -53,10 +51,10 @@ export default function BusinessImpact() {
       spacing: 16,
     },
     breakpoints: {
-      "(max-width: 1024px)": {
+      '(max-width: 1024px)': {
         slides: { perView: 2.2, spacing: 12 },
       },
-      "(max-width: 640px)": {
+      '(max-width: 640px)': {
         slides: { perView: 1.2, spacing: 12 },
       },
     },
@@ -108,7 +106,7 @@ export default function BusinessImpact() {
           <button
             onClick={() => instanceRef.current?.next()}
             className="text-[#6c5f31] disabled:opacity-30"
-              disabled={currentSlide === 4 || currentSlide === features.length - 4}
+            disabled={currentSlide === 4 || currentSlide === features.length - 4}
           >
             <ChevronRight size={40} />
           </button>

@@ -1,15 +1,14 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import React from "react";
-import { motion } from "framer-motion";
+import Link from 'next/link'
+import React from 'react'
+import { motion } from 'framer-motion'
 
 export default function PreFooter() {
   return (
     <>
       <div className="w-full border-t border-dashed border-text/10 my-8"></div>
       <section className="relative w-full h-screen bg-[#fcfdf6] overflow-hidden">
-
         {/* Decorative Circles — visible only on large screens */}
         <div className="hidden lg:block">
           <AnimatedCircles />
@@ -17,9 +16,7 @@ export default function PreFooter() {
 
         {/* Content */}
         <div className="relative z-10 mx-auto max-w-7xl px-6 sm:px-10 lg:px-16 pb-16 pt-28 sm:pt-40 lg:pt-60">
-
           <div className="flex flex-col lg:flex-row justify-between gap-10 lg:gap-4 items-start lg:items-center">
-
             {/* Text Block */}
             <div className="max-w-3xl">
               <p className="mb-4 text-[10px] sm:text-xs tracking-widest text-black/80 uppercase">
@@ -32,7 +29,8 @@ export default function PreFooter() {
               </h2>
 
               <p className="mt-6 max-w-xl font-mono text-[10px] sm:text-xs tracking-wider text-black/80">
-                Every request consumes energy. We help you measure the emissions behind it.
+                Every request consumes energy. We help you measure the emissions behind
+                it.
               </p>
             </div>
 
@@ -42,18 +40,17 @@ export default function PreFooter() {
                 <button
                   type="button"
                   className="card-nav-cta-button px-5 py-3 rounded-xl text-sm sm:text-base"
-                  style={{ backgroundColor: "#b0ea1d", color: "#080c04" }}
+                  style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                   Contact CarbonCut
                 </button>
               </Link>
             </div>
-
           </div>
         </div>
       </section>
     </>
-  );
+  )
 }
 
 export function AnimatedCircles() {
@@ -72,12 +69,12 @@ export function AnimatedCircles() {
           rotate: {
             duration: 40,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           },
           y: {
             duration: 6,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: 'easeInOut',
           },
         }}
       >
@@ -86,6 +83,5 @@ export function AnimatedCircles() {
         <circle cx="56" cy="64" r="36" stroke="#111" />
       </motion.svg>
     </div>
-  );
+  )
 }
-

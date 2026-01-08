@@ -1,40 +1,33 @@
-"use client";
+'use client'
 
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import UniversalHeading from "../UniversalHeading";
+import React, { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import UniversalHeading from '../UniversalHeading'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
-const steps = [
-  "Base Oil",
-  "Additives",
-  "Blending",
-  "Packaging",
-  "Logistics",
-  "End-Use",
-];
+const steps = ['Base Oil', 'Additives', 'Blending', 'Packaging', 'Logistics', 'End-Use']
 
 const ContactSection = () => {
-  const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<(HTMLDivElement | null)[]>([])
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 85%",
-          end: "bottom 30%",
+          start: 'top 85%',
+          end: 'bottom 30%',
           scrub: 0.6,
         },
         defaults: {
-          ease: "power2.out",
+          ease: 'power2.out',
         },
-      });
+      })
 
-      const stepElements = stepsRef.current.filter(Boolean);
+      const stepElements = stepsRef.current.filter(Boolean)
 
       if (stepElements.length) {
         tl.fromTo(
@@ -43,34 +36,31 @@ const ContactSection = () => {
             opacity: 0,
             y: 24,
             scale: 0.96,
-            filter: "blur(6px)",
+            filter: 'blur(6px)',
           },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            filter: "blur(0px)",
+            filter: 'blur(0px)',
             duration: 0.6,
             stagger: {
               each: 0.12,
             },
           }
-        );
+        )
       }
-    }, containerRef);
+    }, containerRef)
 
-    return () => ctx.revert();
-  }, []);
+    return () => ctx.revert()
+  }, [])
 
   return (
     <>
       {/* Top Divider */}
       <div className="w-full border-t border-dashed border-black/10 py-10" />
 
-      <section
-        ref={containerRef}
-        className="w-full bg-[#fcfdf6] px-4 sm:px-6 lg:px-8"
-      >
+      <section ref={containerRef} className="w-full bg-[#fcfdf6] px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {/* Heading */}
           <UniversalHeading
@@ -88,7 +78,7 @@ const ContactSection = () => {
                   <div
                     key={index}
                     ref={(el) => {
-                      stepsRef.current[index] = el;
+                      stepsRef.current[index] = el
                     }}
                     className="relative flex items-center space-x-4 rounded-2xl border border-[#d1cebb] bg-white/60 p-6 backdrop-blur-sm transition-all duration-300 hover:border-[#b0ea1d] will-change-transform will-change-opacity"
                   >
@@ -116,7 +106,7 @@ const ContactSection = () => {
                   <div
                     key={index}
                     ref={(el) => {
-                      stepsRef.current[index] = el;
+                      stepsRef.current[index] = el
                     }}
                     className="relative flex flex-1 flex-col items-center text-center will-change-transform will-change-opacity"
                   >
@@ -145,7 +135,7 @@ const ContactSection = () => {
       {/* Bottom Divider */}
       <div className="w-full border-t border-dashed border-black/10" />
     </>
-  );
-};
+  )
+}
 
-export default ContactSection;
+export default ContactSection

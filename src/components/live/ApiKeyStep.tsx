@@ -1,16 +1,29 @@
-"use client"
+'use client'
 
-import React, { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Copy, CheckCircle, Loader2, AlertCircle, ExternalLink, RefreshCw, ChevronDown, ChevronUp } from "lucide-react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ApiKeyService } from "@/services/apikey/apikey"
-import { CreateApiKeyDialog } from "@/components/dashboard/api-key/CreateAPIKeyDialog"
-import { Skeleton } from "@/components/ui/skeleton"
-import { toast } from "sonner"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import React, { useState, useEffect } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  Copy,
+  CheckCircle,
+  Loader2,
+  AlertCircle,
+  ExternalLink,
+  RefreshCw,
+  ChevronDown,
+  ChevronUp,
+} from 'lucide-react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { ApiKeyService } from '@/services/apikey/apikey'
+import { CreateApiKeyDialog } from '@/components/dashboard/api-key/CreateAPIKeyDialog'
+import { Skeleton } from '@/components/ui/skeleton'
+import { toast } from 'sonner'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 
 interface ApiKeyStepProps {
   onComplete: () => void
@@ -20,7 +33,7 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [copiedScript, setCopiedScript] = useState(false)
   const [copiedKey, setCopiedKey] = useState(false)
-  const [verificationUrl, setVerificationUrl] = useState("")
+  const [verificationUrl, setVerificationUrl] = useState('')
   const [isVerifying, setIsVerifying] = useState(false)
   const [verificationResult, setVerificationResult] = useState<any>(null)
   const [installationGuide, setInstallationGuide] = useState<any>(null)
@@ -28,8 +41,12 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
   const [showVerification, setShowVerification] = useState(false)
   const queryClient = useQueryClient()
 
-  const { data: apiKeysData, isLoading, refetch } = useQuery({
-    queryKey: ["apiKeys"],
+  const {
+    data: apiKeysData,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['apiKeys'],
     queryFn: async () => {
       const result = await ApiKeyService.getApiKeys()
       return result
@@ -49,8 +66,8 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
           const response = await ApiKeyService.getInstallationGuide(latestApiKey.id)
           setInstallationGuide(response.data.installation)
         } catch (error) {
-          console.error("Error fetching installation guide:", error)
-          toast.error("Failed to load installation guide")
+          console.error('Error fetching installation guide:', error)
+          toast.error('Failed to load installation guide')
         } finally {
           setLoadingGuide(false)
         }
@@ -71,7 +88,7 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
     if (!installationGuide?.script_tag) return
     await navigator.clipboard.writeText(installationGuide.script_tag)
     setCopiedScript(true)
-    toast.success("Script copied to clipboard!")
+    toast.success('Script copied to clipboard!')
     setTimeout(() => setCopiedScript(false), 2000)
   }
 
@@ -80,7 +97,7 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
     // Copy the prefix (this is just for display, the full key was shown during creation)
     await navigator.clipboard.writeText(latestApiKey.prefix)
     setCopiedKey(true)
-    toast.info("API key prefix copied")
+    toast.info('API key prefix copied')
     setTimeout(() => setCopiedKey(false), 2000)
   }
 
@@ -91,23 +108,26 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
     setVerificationResult(null)
 
     try {
-      const result = await ApiKeyService.verifyInstallation(latestApiKey.id, verificationUrl)
+      const result = await ApiKeyService.verifyInstallation(
+        latestApiKey.id,
+        verificationUrl
+      )
       setVerificationResult(result)
 
-      if (result.data.status === "verified") {
-        queryClient.invalidateQueries({ queryKey: ["apiKeys"] })
-        toast.success("Installation verified successfully!")
+      if (result.data.status === 'verified') {
+        queryClient.invalidateQueries({ queryKey: ['apiKeys'] })
+        toast.success('Installation verified successfully!')
       } else {
-        toast.warning("Verification completed with warnings")
+        toast.warning('Verification completed with warnings')
       }
     } catch (error) {
-      console.error("Verification error:", error)
-      toast.error("Failed to verify installation")
+      console.error('Verification error:', error)
+      toast.error('Failed to verify installation')
       setVerificationResult({
         success: false,
         data: {
-          status: "error",
-          message: "Failed to verify installation",
+          status: 'error',
+          message: 'Failed to verify installation',
         },
       })
     } finally {
@@ -121,17 +141,17 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
     try {
       const response = await ApiKeyService.getInstallationGuide(latestApiKey.id)
       setInstallationGuide(response.data.installation)
-      toast.success("Installation guide loaded")
+      toast.success('Installation guide loaded')
     } catch (error) {
-      console.error("Error fetching installation guide:", error)
-      toast.error("Failed to load installation guide")
+      console.error('Error fetching installation guide:', error)
+      toast.error('Failed to load installation guide')
     } finally {
       setLoadingGuide(false)
     }
   }
 
   const handleSkipVerification = () => {
-    toast.info("You can verify installation later from your profile")
+    toast.info('You can verify installation later from your profile')
     onComplete()
   }
 
@@ -156,11 +176,13 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
   return (
     <>
       <p className="text-xs text-tertiary font-semibold mb-3">STEP 2 OF 3</p>
-      <h2 className="text-3xl font-bold text-gray-900 mb-4">API Key & Script Installation</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        API Key & Script Installation
+      </h2>
       <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-        {!latestApiKey 
+        {!latestApiKey
           ? "Create an API key by providing your website domain. You'll receive the SDK script to install on your site."
-          : "Your API key has been created. Install the SDK script on your website to start tracking campaigns."}
+          : 'Your API key has been created. Install the SDK script on your website to start tracking campaigns.'}
       </p>
 
       <div className="space-y-6 mb-8">
@@ -168,10 +190,14 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
           <>
             <Alert className="bg-blue-50 border-blue-200">
               <AlertDescription className="text-blue-800">
-                <strong>Step 1:</strong> Enter your website domain to generate an API key and get your installation script.
+                <strong>Step 1:</strong> Enter your website domain to generate an API key
+                and get your installation script.
               </AlertDescription>
             </Alert>
-            <Button onClick={() => setShowCreateDialog(true)} className="w-full bg-tertiary hover:bg-tertiary/90">
+            <Button
+              onClick={() => setShowCreateDialog(true)}
+              className="w-full bg-tertiary hover:bg-tertiary/90"
+            >
               Create API Key
             </Button>
           </>
@@ -180,12 +206,15 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
             <Alert className="bg-green-50 border-green-200">
               <CheckCircle className="h-4 w-4 text-green-600" />
               <AlertDescription className="text-green-800">
-                <strong>API Key Created!</strong> Your key has been generated for <strong>{latestApiKey.domain || 'your domain'}</strong>
+                <strong>API Key Created!</strong> Your key has been generated for{' '}
+                <strong>{latestApiKey.domain || 'your domain'}</strong>
               </AlertDescription>
             </Alert>
 
             <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">Your API Key</label>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Your API Key
+              </label>
               <div className="flex gap-2">
                 <Input
                   type="text"
@@ -193,9 +222,9 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                   readOnly
                   className="flex-1 bg-gray-50 font-mono"
                 />
-                <Button 
-                  variant="outline" 
-                  size="default" 
+                <Button
+                  variant="outline"
+                  size="default"
                   onClick={handleCopyKey}
                   title="Copy key prefix"
                 >
@@ -207,14 +236,18 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                 </Button>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                Key name: {latestApiKey.name} • Domain: {latestApiKey.domain || 'All domains'} • Created: {new Date(latestApiKey.created_at).toLocaleDateString()}
+                Key name: {latestApiKey.name} • Domain:{' '}
+                {latestApiKey.domain || 'All domains'} • Created:{' '}
+                {new Date(latestApiKey.created_at).toLocaleDateString()}
               </p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
                 SDK Script Tag
-                <span className="ml-2 text-xs font-normal text-gray-500">(Install this on your website)</span>
+                <span className="ml-2 text-xs font-normal text-gray-500">
+                  (Install this on your website)
+                </span>
               </label>
               {loadingGuide ? (
                 <Skeleton className="h-32 w-full rounded-lg" />
@@ -244,16 +277,21 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                       </AlertDescription>
                     </Alert>
                   )}
-                  {installationGuide.next_steps && installationGuide.next_steps.length > 0 && (
-                    <div className="mt-3">
-                      <p className="text-xs font-medium text-gray-700 mb-2">Next Steps:</p>
-                      <ol className="list-decimal list-inside space-y-1 text-xs text-gray-600">
-                        {installationGuide.next_steps.map((step: string, idx: number) => (
-                          <li key={idx}>{step}</li>
-                        ))}
-                      </ol>
-                    </div>
-                  )}
+                  {installationGuide.next_steps &&
+                    installationGuide.next_steps.length > 0 && (
+                      <div className="mt-3">
+                        <p className="text-xs font-medium text-gray-700 mb-2">
+                          Next Steps:
+                        </p>
+                        <ol className="list-decimal list-inside space-y-1 text-xs text-gray-600">
+                          {installationGuide.next_steps.map(
+                            (step: string, idx: number) => (
+                              <li key={idx}>{step}</li>
+                            )
+                          )}
+                        </ol>
+                      </div>
+                    )}
                 </>
               ) : (
                 <Alert variant="destructive">
@@ -283,14 +321,17 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 mt-2">
-                  <p className="text-sm font-medium text-gray-900 mb-3">Verify Installation (Optional)</p>
+                  <p className="text-sm font-medium text-gray-900 mb-3">
+                    Verify Installation (Optional)
+                  </p>
                   <p className="text-xs text-gray-600 mb-4">
-                    Enter your website URL to verify the SDK is properly installed. You can skip this step and verify later.
+                    Enter your website URL to verify the SDK is properly installed. You
+                    can skip this step and verify later.
                   </p>
 
                   {verificationResult && (
                     <div className="mb-4">
-                      {verificationResult.data.status === "verified" ? (
+                      {verificationResult.data.status === 'verified' ? (
                         <Alert className="bg-green-50 border-green-200">
                           <CheckCircle className="h-4 w-4 text-green-600" />
                           <AlertDescription className="text-green-800">
@@ -301,13 +342,16 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                         <Alert className="bg-yellow-50 border-yellow-200">
                           <AlertCircle className="h-4 w-4 text-yellow-600" />
                           <AlertDescription className="text-yellow-800">
-                            {verificationResult.data.message || "Verification completed with warnings."}
+                            {verificationResult.data.message ||
+                              'Verification completed with warnings.'}
                             {verificationResult.data.warnings &&
                               verificationResult.data.warnings.length > 0 && (
                                 <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-                                  {verificationResult.data.warnings.map((warning: string, idx: number) => (
-                                    <li key={idx}>{warning}</li>
-                                  ))}
+                                  {verificationResult.data.warnings.map(
+                                    (warning: string, idx: number) => (
+                                      <li key={idx}>{warning}</li>
+                                    )
+                                  )}
                                 </ul>
                               )}
                           </AlertDescription>
@@ -318,43 +362,57 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                         <div className="flex flex-wrap items-center gap-3 mt-3">
                           <div
                             className={`flex items-center gap-1.5 text-xs ${
-                              verificationResult.data.details.sdk_script_found ? "text-green-600" : "text-red-600"
+                              verificationResult.data.details.sdk_script_found
+                                ? 'text-green-600'
+                                : 'text-red-600'
                             }`}
                           >
                             <span
                               className={`w-5 h-5 rounded-full ${
-                                verificationResult.data.details.sdk_script_found ? "bg-green-100" : "bg-red-100"
+                                verificationResult.data.details.sdk_script_found
+                                  ? 'bg-green-100'
+                                  : 'bg-red-100'
                               } flex items-center justify-center text-xs`}
                             >
-                              {verificationResult.data.details.sdk_script_found ? "✓" : "✕"}
+                              {verificationResult.data.details.sdk_script_found
+                                ? '✓'
+                                : '✕'}
                             </span>
                             SDK Script
                           </div>
                           <div
                             className={`flex items-center gap-1.5 text-xs ${
-                              verificationResult.data.details.token_found ? "text-green-600" : "text-red-600"
+                              verificationResult.data.details.token_found
+                                ? 'text-green-600'
+                                : 'text-red-600'
                             }`}
                           >
                             <span
                               className={`w-5 h-5 rounded-full ${
-                                verificationResult.data.details.token_found ? "bg-green-100" : "bg-red-100"
+                                verificationResult.data.details.token_found
+                                  ? 'bg-green-100'
+                                  : 'bg-red-100'
                               } flex items-center justify-center text-xs`}
                             >
-                              {verificationResult.data.details.token_found ? "✓" : "✕"}
+                              {verificationResult.data.details.token_found ? '✓' : '✕'}
                             </span>
                             API Token
                           </div>
                           <div
                             className={`flex items-center gap-1.5 text-xs ${
-                              verificationResult.data.details.correct_token ? "text-green-600" : "text-red-600"
+                              verificationResult.data.details.correct_token
+                                ? 'text-green-600'
+                                : 'text-red-600'
                             }`}
                           >
                             <span
                               className={`w-5 h-5 rounded-full ${
-                                verificationResult.data.details.correct_token ? "bg-green-100" : "bg-red-100"
+                                verificationResult.data.details.correct_token
+                                  ? 'bg-green-100'
+                                  : 'bg-red-100'
                               } flex items-center justify-center text-xs`}
                             >
-                              {verificationResult.data.details.correct_token ? "✓" : "✕"}
+                              {verificationResult.data.details.correct_token ? '✓' : '✕'}
                             </span>
                             Correct Token
                           </div>
@@ -370,7 +428,7 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                       value={verificationUrl}
                       onChange={(e) => setVerificationUrl(e.target.value)}
                       className="flex-1"
-                      onKeyPress={(e) => e.key === "Enter" && handleVerify()}
+                      onKeyPress={(e) => e.key === 'Enter' && handleVerify()}
                     />
                     <Button
                       onClick={handleVerify}
@@ -383,7 +441,7 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                           Verifying...
                         </>
                       ) : (
-                        "Verify"
+                        'Verify'
                       )}
                     </Button>
                   </div>
@@ -401,15 +459,15 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
             </Collapsible>
 
             <div className="flex gap-3">
-              <Button 
-                onClick={handleSkipVerification} 
+              <Button
+                onClick={handleSkipVerification}
                 variant="outline"
                 className="flex-1"
               >
                 Skip Verification
               </Button>
-              <Button 
-                onClick={onComplete} 
+              <Button
+                onClick={onComplete}
                 className="flex-1 bg-tertiary hover:bg-tertiary/90"
                 disabled={!installationGuide}
               >
@@ -420,7 +478,9 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
         )}
       </div>
 
-      {!latestApiKey && <CreateApiKeyDialog open={showCreateDialog} onOpenChange={handleDialogChange} />}
+      {!latestApiKey && (
+        <CreateApiKeyDialog open={showCreateDialog} onOpenChange={handleDialogChange} />
+      )}
     </>
   )
 }

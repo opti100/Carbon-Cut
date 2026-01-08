@@ -1,65 +1,64 @@
-"use client";
-import { useEffect, useRef } from "react";
-import Image from "next/image";
-import { ArrowRight } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Link from "next/link";
-import UniversalHeading from "../UniversalHeading";
+'use client'
+import { useEffect, useRef } from 'react'
+import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Link from 'next/link'
+import UniversalHeading from '../UniversalHeading'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 const Standards = () => {
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const scrollTriggersRef = useRef<ScrollTrigger[]>([]);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const scrollTriggersRef = useRef<ScrollTrigger[]>([])
 
   const standards = [
     {
-      name: "Verified Carbon Standard",
-      logo: "/CarbonCut-fe/Standards/VCS.png",
-      description: "The world's leading voluntary carbon market program with verified carbon standards",
-      tags: ["Verified"],
-      color: "bg-gradient-to-br from-primary/30 to-primary/10",
-      sv: "/CarbonCut-fe/resize/SV1.jpg",
-      link: "https://verra.org/",
+      name: 'Verified Carbon Standard',
+      logo: '/CarbonCut-fe/Standards/VCS.png',
+      description:
+        "The world's leading voluntary carbon market program with verified carbon standards",
+      tags: ['Verified'],
+      color: 'bg-gradient-to-br from-primary/30 to-primary/10',
+      sv: '/CarbonCut-fe/resize/SV1.jpg',
+      link: 'https://verra.org/',
     },
     {
-      name: "American Carbon Registry",
-      logo: "/CarbonCut-fe/Standards/ACR.svg",
-      description: "American Carbon Registry - Leading carbon offset program in North America",
-      tags: ["Pending"],
-      color: "bg-gradient-to-br from-secondary/30 to-secondary/10",
-      sv: "/CarbonCut-fe/resize/SV2.jpg",
-      link: "https://www.americancarbonregistry.org/",
-     
+      name: 'American Carbon Registry',
+      logo: '/CarbonCut-fe/Standards/ACR.svg',
+      description:
+        'American Carbon Registry - Leading carbon offset program in North America',
+      tags: ['Pending'],
+      color: 'bg-gradient-to-br from-secondary/30 to-secondary/10',
+      sv: '/CarbonCut-fe/resize/SV2.jpg',
+      link: 'https://www.americancarbonregistry.org/',
     },
     {
-      name: "Climate Action Reserve",
-      logo: "/CarbonCut-fe/Standards/CAR.png",
-      description: "Climate Action Reserve - High-quality carbon offset projects and protocols",
-       tags: ["Pending"],
-      color: "bg-gradient-to-br from-primary/20 to-accent/20",
-      sv: "/CarbonCut-fe/resize/SV3.jpg",
-      link: "https://www.climateactionreserve.org/",
-      
+      name: 'Climate Action Reserve',
+      logo: '/CarbonCut-fe/Standards/CAR.png',
+      description:
+        'Climate Action Reserve - High-quality carbon offset projects and protocols',
+      tags: ['Pending'],
+      color: 'bg-gradient-to-br from-primary/20 to-accent/20',
+      sv: '/CarbonCut-fe/resize/SV3.jpg',
+      link: 'https://www.climateactionreserve.org/',
     },
     {
-      name: "Gold Standard",
-      logo: "/CarbonCut-fe/Standards/GS.svg",
-      description: "Trusted standard for climate and sustainable development impact",
-       tags: ["Pending"],
-      color: "bg-gradient-to-br from-accent/30 to-accent/10",
-      sv: "/CarbonCut-fe/resize/SV4.jpg",
-      link: "https://www.goldstandard.org/",
-      
+      name: 'Gold Standard',
+      logo: '/CarbonCut-fe/Standards/GS.svg',
+      description: 'Trusted standard for climate and sustainable development impact',
+      tags: ['Pending'],
+      color: 'bg-gradient-to-br from-accent/30 to-accent/10',
+      sv: '/CarbonCut-fe/resize/SV4.jpg',
+      link: 'https://www.goldstandard.org/',
     },
-  ];
-
+  ]
 
   useEffect(() => {
-    const cards = cardsRef.current.filter(Boolean);
-    if (cards.length === 0) return;
+    const cards = cardsRef.current.filter(Boolean)
+    if (cards.length === 0) return
 
     // ====================================
     // WHY THIS DELAY?
@@ -89,12 +88,12 @@ const Standards = () => {
           y: 0,
           scale: 1,
           duration: 1,
-          ease: "power3.out",
+          ease: 'power3.out',
           scrollTrigger: {
             // ====================================
             // CRITICAL: Use Locomotive's scroller
             // ====================================
-            scroller: "[data-scroll-container]",
+            scroller: '[data-scroll-container]',
             trigger: card,
 
             // ====================================
@@ -105,20 +104,20 @@ const Standards = () => {
             //   - When card's TOP edge
             //   - Reaches 85% down the viewport
             //   - Start the animation
-            start: "top 85%",
+            start: 'top 85%',
 
             // end: "top 50%" means:
             //   - When card's TOP edge
             //   - Reaches 50% down the viewport
             //   - Complete the animation
-            end: "top 50%",
+            end: 'top 50%',
 
             // ====================================
             // SCRUB vs TOGGLE
             // ====================================
             // scrub: true → Animation follows scroll position (smooth but slower)
             // toggleActions → Animation triggers once
-            toggleActions: "play none none reverse",
+            toggleActions: 'play none none reverse',
             // Format: "onEnter onLeave onEnterBack onLeaveBack"
             // "play none none reverse" means:
             //   - Play when entering viewport
@@ -133,57 +132,58 @@ const Standards = () => {
             // id: `standard-card-${index}`,
             markers: false,
           },
-        });
+        })
 
         // Store reference for cleanup
         if (animation.scrollTrigger) {
-          scrollTriggersRef.current.push(animation.scrollTrigger);
+          scrollTriggersRef.current.push(animation.scrollTrigger)
         }
-      });
+      })
 
       // ====================================
       // FORCE REFRESH
       // ====================================
       // After creating all ScrollTriggers, recalculate positions
-      ScrollTrigger.refresh();
-    }, 1000); // Increased delay to ensure Locomotive is ready
+      ScrollTrigger.refresh()
+    }, 1000) // Increased delay to ensure Locomotive is ready
 
     // ====================================
     // CLEANUP (ESSENTIAL)
     // ====================================
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer)
 
       // Kill only this component's ScrollTriggers
-      scrollTriggersRef.current.forEach(trigger => trigger.kill());
-      scrollTriggersRef.current = [];
+      scrollTriggersRef.current.forEach((trigger) => trigger.kill())
+      scrollTriggersRef.current = []
 
       // Reset to initial state
-      gsap.set(cards, { clearProps: "all" });
-    };
-  }, []); // Empty dependency array = run once on mount
+      gsap.set(cards, { clearProps: 'all' })
+    }
+  }, []) // Empty dependency array = run once on mount
 
   return (
     <div
-      // ref={sectionRef} 
+      // ref={sectionRef}
       className="relative pt-14  bg-background border-r border-l border-dashed border-opacity-10"
-    // data-scroll-section
+      // data-scroll-section
     >
       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
 
       <div className="mx-auto max-w-7xl px-6">
-        
-
-        
-
-               <UniversalHeading title="Carbon Standards" description="Registered and Verified" align="right" /> 
-
+        <UniversalHeading
+          title="Carbon Standards"
+          description="Registered and Verified"
+          align="right"
+        />
 
         <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory scroll-smooth ">
           {standards.map((standard, index) => (
             <div
               key={standard.name}
-              ref={(el) => { cardsRef.current[index] = el; }}
+              ref={(el) => {
+                cardsRef.current[index] = el
+              }}
               className="flex-shrink-0 h-[600px] w-[340px] bg-accent rounded-4xl border border-text/10 overflow-hidden group hover:shadow-sm snap-center"
             >
               <div className="w-full flex justify-between h-16">
@@ -198,7 +198,6 @@ const Standards = () => {
                   ))}
                 </div>
 
-              
                 <div>
                   <Image
                     src={standard.logo}
@@ -242,14 +241,13 @@ const Standards = () => {
                     <ArrowRight className="text-accent-foreground" />
                   </div>
                 </Link>
-
               </div>
             </div>
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Standards;
+export default Standards

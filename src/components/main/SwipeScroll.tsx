@@ -1,57 +1,61 @@
-"use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+'use client'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger)
 
 const SwipeSection = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const panelsRef = useRef<HTMLElement[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const panelsRef = useRef<HTMLElement[]>([])
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return
 
-    const panels = containerRef.current.querySelectorAll(".panel");
-    panelsRef.current = Array.from(panels) as HTMLElement[];
+    const panels = containerRef.current.querySelectorAll('.panel')
+    panelsRef.current = Array.from(panels) as HTMLElement[]
 
     // Set initial state for entrance animation
     gsap.set(containerRef.current, {
       opacity: 0,
       y: 60,
-    });
+    })
 
     gsap.set(panels, {
       yPercent: (i) => (i === 0 ? 0 : 100),
       opacity: 0,
-    });
+    })
 
     // Entrance animation triggered by Standards section
     const entranceTl = gsap.timeline({
       scrollTrigger: {
-        trigger: "#standards-section",
-        start: "bottom center",
-        toggleActions: "play none none reverse",
-      }
-    });
+        trigger: '#standards-section',
+        start: 'bottom center',
+        toggleActions: 'play none none reverse',
+      },
+    })
 
     entranceTl
       .to(containerRef.current, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: "power3.out",
+        ease: 'power3.out',
       })
-      .to(panels, {
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-      }, "-=0.4");
+      .to(
+        panels,
+        {
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+        },
+        '-=0.4'
+      )
 
     // Create scroll trigger for each panel slide-up
     panels.forEach((panel, index) => {
-      if (index === 0) return;
+      if (index === 0) return
 
       ScrollTrigger.create({
         trigger: containerRef.current,
@@ -62,23 +66,23 @@ const SwipeSection = () => {
           gsap.to(panel, {
             yPercent: 0,
             duration: 1,
-            ease: "power2.inOut",
-          });
+            ease: 'power2.inOut',
+          })
         },
         onLeaveBack: () => {
           gsap.to(panel, {
             yPercent: 100,
             duration: 1,
-            ease: "power2.inOut",
-          });
+            ease: 'power2.inOut',
+          })
         },
-      });
-    });
+      })
+    })
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, []);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+    }
+  }, [])
 
   return (
     <>
@@ -109,7 +113,15 @@ const SwipeSection = () => {
         </section>
       </div>
 
-      <div style={{ height: "100vh", background: "#eee", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div
+        style={{
+          height: '100vh',
+          background: '#eee',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <h2 className="text-4xl font-semibold text-gray-800">Rest of the page</h2>
       </div>
 
@@ -162,7 +174,7 @@ const SwipeSection = () => {
         }
       `}</style>
     </>
-  );
-};
+  )
+}
 
-export default SwipeSection;
+export default SwipeSection

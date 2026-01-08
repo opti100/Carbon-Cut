@@ -2,7 +2,7 @@ import Methodologies1 from '@/components/methodologies/methodologies1'
 const page = () => {
   return (
     <div>
-      <Methodologies1/>
+      <Methodologies1 />
     </div>
   )
 }

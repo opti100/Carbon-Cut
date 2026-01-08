@@ -65,15 +65,15 @@
 
 //   return (
 //     <div className="container mx-auto px-4 py-8">
-//       <Button 
-//         variant="ghost" 
+//       <Button
+//         variant="ghost"
 //         onClick={() => router.push('/projects')}
 //         className="mb-6"
 //       >
 //         <ArrowLeft className="h-4 w-4 mr-2" />
 //         Back to Projects
 //       </Button>
-      
+
 //       <ProjectDetails project={project} />
 //     </div>
 //   );
@@ -81,11 +81,7 @@
 
 // export default ProjectPage;
 const page = () => {
-  return (
-    <div>
-      project
-    </div>
-  )
+  return <div>project</div>
 }
 
 export default page

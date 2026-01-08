@@ -1,63 +1,69 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, Loader2, AlertCircle } from "lucide-react";
-import { useGoogleAds } from "@/contexts/GoogleAdsContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { GoogleAdsConnectDialog } from "@/components/dashboard/google-ads/GoogleAdsConnectDialog";
-import { useRouter, usePathname } from "next/navigation";
-import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import React, { useState } from 'react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { CheckCircle, Loader2, AlertCircle } from 'lucide-react'
+import { useGoogleAds } from '@/contexts/GoogleAdsContext'
+import { useAuth } from '@/contexts/AuthContext'
+import { GoogleAdsConnectDialog } from '@/components/dashboard/google-ads/GoogleAdsConnectDialog'
+import { useRouter, usePathname } from 'next/navigation'
+import { useAuthRedirect } from '@/hooks/useAuthRedirect'
 
 interface GoogleAdsStepProps {
-  onComplete: () => void;
+  onComplete: () => void
 }
 
 export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
-  const { status, isLoading, accounts, accountsLoading, switchAccount } = useGoogleAds();
-  const {  user, isLoading: authLoading } = useAuth();
-  console.log("Auth User in GoogleAdsStep:", user);
-  const { isAuthenticated, redirectToLogin, redirectToSignup } = useAuthRedirect();
-  console.log("isAuthenticated in GoogleAdsStep:", isAuthenticated);
-  const router = useRouter();
-  const pathname = usePathname();
+  const { status, isLoading, accounts, accountsLoading, switchAccount } = useGoogleAds()
+  const { user, isLoading: authLoading } = useAuth()
+  console.log('Auth User in GoogleAdsStep:', user)
+  const { isAuthenticated, redirectToLogin, redirectToSignup } = useAuthRedirect()
+  console.log('isAuthenticated in GoogleAdsStep:', isAuthenticated)
+  const router = useRouter()
+  const pathname = usePathname()
 
-  const [connectDialogOpen, setConnectDialogOpen] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState(status?.customer_id || "");
-  const [isSwitching, setIsSwitching] = useState(false);
+  const [connectDialogOpen, setConnectDialogOpen] = useState(false)
+  const [selectedAccount, setSelectedAccount] = useState(status?.customer_id || '')
+  const [isSwitching, setIsSwitching] = useState(false)
 
-  const isConnected = status?.is_connected === true;
+  const isConnected = status?.is_connected === true
 
   const handleAccountChange = async (customerId: string) => {
-    if (!customerId || customerId === status?.customer_id) return;
+    if (!customerId || customerId === status?.customer_id) return
 
     try {
-      setIsSwitching(true);
-      setSelectedAccount(customerId);
-      await switchAccount(customerId);
+      setIsSwitching(true)
+      setSelectedAccount(customerId)
+      await switchAccount(customerId)
     } catch (error) {
-      console.error("Failed to switch account:", error);
+      console.error('Failed to switch account:', error)
     } finally {
-      setIsSwitching(false);
+      setIsSwitching(false)
     }
-  };
+  }
 
   const handleConnectionSuccess = () => {
-    setConnectDialogOpen(false);
+    setConnectDialogOpen(false)
     if (status?.customer_id) {
-      setTimeout(() => onComplete(), 500);
+      setTimeout(() => onComplete(), 500)
     }
-  };
+  }
 
   React.useEffect(() => {
     if (isConnected && status?.customer_id && !isSwitching) {
-      setSelectedAccount(status.customer_id);
+      setSelectedAccount(status.customer_id)
     }
-  }, [isConnected, status?.customer_id, isSwitching]);
+  }, [isConnected, status?.customer_id, isSwitching])
 
   if (authLoading) {
     return (
@@ -72,7 +78,7 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
           <Loader2 className="h-8 w-8 animate-spin text-tertiary" />
         </div>
       </div>
-    );
+    )
   }
 
   // if (!isAuthenticated) {
@@ -113,7 +119,8 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
         </div>
         <h2 className="text-3xl font-bold text-gray-900">Connect Google Ads Account</h2>
         <p className="text-gray-600 text-sm leading-relaxed">
-          Connect your Google Ads account to start tracking campaigns. After connection, select one of your customer accounts to proceed with campaign setup.
+          Connect your Google Ads account to start tracking campaigns. After connection,
+          select one of your customer accounts to proceed with campaign setup.
         </p>
       </div>
 
@@ -124,7 +131,8 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                You&apos;ll be redirected to Google to authorize CarbonCut to access your Google Ads data. We only request read-only permissions.
+                You&apos;ll be redirected to Google to authorize CarbonCut to access your
+                Google Ads data. We only request read-only permissions.
               </AlertDescription>
             </Alert>
 
@@ -241,5 +249,5 @@ export default function GoogleAdsStep({ onComplete }: GoogleAdsStepProps) {
         onSuccess={handleConnectionSuccess}
       />
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-"use client";
-import RotatingText from "../RotatingText";
+'use client'
+import RotatingText from '../RotatingText'
 
 const AnimatedHeroText = () => {
   return (
@@ -8,14 +8,14 @@ const AnimatedHeroText = () => {
       <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-4">
         <span className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
           <RotatingText
-            texts={["Track", "Decarbon", "Report"]}
-            staggerFrom={"last"}
-            initial={{ y: "100%" }}
+            texts={['Track', 'Decarbon', 'Report']}
+            staggerFrom={'last'}
+            initial={{ y: '100%' }}
             animate={{ y: 0 }}
-            exit={{ y: "-120%" }}
+            exit={{ y: '-120%' }}
             staggerDuration={0.025}
             splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-            transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            transition={{ type: 'spring', damping: 30, stiffness: 400 }}
             rotationInterval={2000}
           />
           <span className="inline-block ml-2">
@@ -24,7 +24,7 @@ const AnimatedHeroText = () => {
         </span>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AnimatedHeroText;
+export default AnimatedHeroText

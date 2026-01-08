@@ -1,45 +1,53 @@
-"use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+'use client'
+import { useEffect, useRef } from 'react'
+import gsap from 'gsap'
 
-const words = ["Reduce", "Measure", "Offset"];
+const words = ['Reduce', 'Measure', 'Offset']
 
 const ActionWordCarousel = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return
 
     const ctx = gsap.context(() => {
-      const spans = gsap.utils.toArray<HTMLSpanElement>("[data-word]");
+      const spans = gsap.utils.toArray<HTMLSpanElement>('[data-word]')
 
       // Initial state - start with first word visible
-      gsap.set(spans, { y: 0, opacity: 0 });
-      gsap.set(spans[0], { y: 0, opacity: 1 });
+      gsap.set(spans, { y: 0, opacity: 0 })
+      gsap.set(spans[0], { y: 0, opacity: 1 })
 
-      const tl = gsap.timeline({ 
-        repeat: -1, 
-        defaults: { ease: "power2.inOut" },
-        delay: 1 // Initial delay to show first word
-      });
+      const tl = gsap.timeline({
+        repeat: -1,
+        defaults: { ease: 'power2.inOut' },
+        delay: 1, // Initial delay to show first word
+      })
 
       spans.forEach((span, index) => {
-        tl.to(span, {
-          y: -50,
-          opacity: 0,
-          duration: 0.6,
-        }, index === 0 ? 2 : "+=2") // First word stays longer
-          .set(span, { y: 50 })
-          .to(spans[(index + 1) % spans.length], {
-            y: 0,
-            opacity: 1,
+        tl.to(
+          span,
+          {
+            y: -50,
+            opacity: 0,
             duration: 0.6,
-          }, "-=0.3");
-      });
-    }, containerRef);
+          },
+          index === 0 ? 2 : '+=2'
+        ) // First word stays longer
+          .set(span, { y: 50 })
+          .to(
+            spans[(index + 1) % spans.length],
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+            },
+            '-=0.3'
+          )
+      })
+    }, containerRef)
 
-    return () => ctx.revert();
-  }, []);
+    return () => ctx.revert()
+  }, [])
 
   return (
     <div
@@ -56,7 +64,7 @@ const ActionWordCarousel = () => {
         </span>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default ActionWordCarousel;
+export default ActionWordCarousel

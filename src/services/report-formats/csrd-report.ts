@@ -1,40 +1,40 @@
-import puppeteer from 'puppeteer';
-import { PDFFormData, PDFGenerationData } from './secr-report';
+import puppeteer from 'puppeteer'
+import { PDFFormData, PDFGenerationData } from './secr-report'
 
 const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
-  const { organization, activities, getDisplayCO2, totals, formData } = data;
-  const totalEmissions = totals.total;
-  const now = new Date();
-  const reportDate = now.toLocaleDateString('en-GB', { 
-    day: '2-digit', 
-    month: 'long', 
-    year: 'numeric' 
-  });
+  const { organization, activities, getDisplayCO2, totals, formData } = data
+  const totalEmissions = totals.total
+  const now = new Date()
+  const reportDate = now.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  })
 
   const scopeData = [
     {
       scope: '1',
       description: 'Direct GHG emissions',
       emissions: totals.byScope['1'] || 0,
-      category: 'Own operations'
+      category: 'Own operations',
     },
     {
-      scope: '2', 
+      scope: '2',
       description: 'Indirect GHG emissions from energy consumption',
       emissions: totals.byScope['2'] || 0,
-      category: 'Energy consumption'
+      category: 'Energy consumption',
     },
     {
       scope: '3',
       description: 'Other indirect GHG emissions',
       emissions: totals.byScope['3'] || 0,
-      category: 'Value chain'
-    }
-  ];
+      category: 'Value chain',
+    },
+  ]
 
   const topChannels = Object.entries(totals.byChannel)
-    .sort(([,a], [,b]) => b - a)
-    .slice(0, 10);
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 10)
 
   return `
 <!DOCTYPE html>
@@ -413,14 +413,18 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
                 </tr>
             </thead>
             <tbody>
-                ${scopeData.map(scope => `
+                ${scopeData
+                  .map(
+                    (scope) => `
                 <tr>
                     <td><strong>Scope ${scope.scope}</strong></td>
                     <td>${scope.description}</td>
                     <td>${scope.emissions.toFixed(2)}</td>
                     <td>${scope.category}</td>
                 </tr>
-                `).join('')}
+                `
+                  )
+                  .join('')}
                 <tr style="background: var(--light-green); font-weight: bold;">
                     <td><strong>TOTAL</strong></td>
                     <td><strong>All Marketing Emissions</strong></td>
@@ -437,7 +441,9 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
             As required by ESRS E1-6, we assess the impact of our marketing activities across the value chain:
         </div>
 
-        ${topChannels.length > 0 ? `
+        ${
+          topChannels.length > 0
+            ? `
         <table class="csrd-table">
             <thead>
                 <tr>
@@ -448,17 +454,23 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
                 </tr>
             </thead>
             <tbody>
-                ${topChannels.map(([channel, emissions]) => `
+                ${topChannels
+                  .map(
+                    ([channel, emissions]) => `
                 <tr>
                     <td>${channel}</td>
                     <td>${emissions.toFixed(3)}</td>
                     <td>Downstream</td>
                     <td>Consumer engagement and behavioral influence</td>
                 </tr>
-                `).join('')}
+                `
+                  )
+                  .join('')}
             </tbody>
         </table>
-        ` : ''}
+        `
+            : ''
+        }
 
         <!-- GOVERNANCE -->
         <div class="section-header">SUSTAINABILITY GOVERNANCE</div>
@@ -579,15 +591,15 @@ const generateCSRDHTMLTemplate = (data: PDFGenerationData): string => {
     </div>
 </body>
 </html>`
-};
+}
 
 // CSRD PDF generation function using Puppeteer
 const generateCSRDPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Array> => {
-  let browser;
-  
+  let browser
+
   try {
-    const htmlContent = generateCSRDHTMLTemplate(data);
-    
+    const htmlContent = generateCSRDHTMLTemplate(data)
+
     browser = await puppeteer.launch({
       headless: true,
       args: [
@@ -598,15 +610,15 @@ const generateCSRDPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Ar
         '--no-first-run',
         '--no-zygote',
         '--single-process',
-        '--disable-gpu'
-      ]
-    });
+        '--disable-gpu',
+      ],
+    })
 
-    const page = await browser.newPage();
-    
+    const page = await browser.newPage()
+
     await page.setContent(htmlContent, {
-      waitUntil: ['networkidle0', 'domcontentloaded']
-    });
+      waitUntil: ['networkidle0', 'domcontentloaded'],
+    })
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
@@ -615,7 +627,7 @@ const generateCSRDPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Ar
         top: '20mm',
         right: '20mm',
         bottom: '20mm',
-        left: '20mm'
+        left: '20mm',
       },
       displayHeaderFooter: true,
       headerTemplate: `
@@ -629,23 +641,26 @@ const generateCSRDPDFFromHTML = async (data: PDFGenerationData): Promise<Uint8Ar
           <span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span>
         </div>
       `,
-    });
+    })
 
-    return new Uint8Array(pdfBuffer);
-
+    return new Uint8Array(pdfBuffer)
   } catch (error) {
-    console.error('Error generating CSRD PDF with Puppeteer:', error);
-    throw new Error(`CSRD PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    console.error('Error generating CSRD PDF with Puppeteer:', error)
+    throw new Error(
+      `CSRD PDF generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
   } finally {
     if (browser) {
-      await browser.close();
+      await browser.close()
     }
   }
-};
+}
 
-export const generateCSRDReport = async (data: PDFGenerationData): Promise<Uint8Array> => {
-  return await generateCSRDPDFFromHTML(data);
-};
+export const generateCSRDReport = async (
+  data: PDFGenerationData
+): Promise<Uint8Array> => {
+  return await generateCSRDPDFFromHTML(data)
+}
 
-export { generateCSRDHTMLTemplate, generateCSRDPDFFromHTML };
-export default generateCSRDReport;
+export { generateCSRDHTMLTemplate, generateCSRDPDFFromHTML }
+export default generateCSRDReport

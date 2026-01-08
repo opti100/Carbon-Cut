@@ -1,25 +1,36 @@
-"use client";
+'use client'
 
-import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ApiKeyService } from '@/services/apikey/apikey';
-import { Plus, Trash2, ToggleLeft, ToggleRight } from 'lucide-react';
-import { ConversionRuleType, MatchType } from '@/types/api-key';
+import React, { useState } from 'react'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { ApiKeyService } from '@/services/apikey/apikey'
+import { Plus, Trash2, ToggleLeft, ToggleRight } from 'lucide-react'
+import { ConversionRuleType, MatchType } from '@/types/api-key'
 
 interface ConversionRulesDialogProps {
-  apiKeyId: string;
-  apiKeyName: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  apiKeyId: string
+  apiKeyName: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
-export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange }: ConversionRulesDialogProps) {
-  const [showCreateForm, setShowCreateForm] = useState(false);
+export function ConversionRulesDialog({
+  apiKeyId,
+  apiKeyName,
+  open,
+  onOpenChange,
+}: ConversionRulesDialogProps) {
+  const [showCreateForm, setShowCreateForm] = useState(false)
   const [newRule, setNewRule] = useState({
     name: '',
     rule_type: 'url' as ConversionRuleType,
@@ -27,23 +38,23 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
     match_type: 'contains' as MatchType,
     css_selector: '',
     element_text: '',
-  });
+  })
 
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   // Fetch rules
   const { data: rulesData, isLoading } = useQuery({
     queryKey: ['conversionRules', apiKeyId],
     queryFn: () => ApiKeyService.getConversionRules(apiKeyId),
     enabled: open,
-  });
+  })
 
   // Create rule
   const createRuleMutation = useMutation({
     mutationFn: () => ApiKeyService.createConversionRule(apiKeyId, newRule),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversionRules', apiKeyId] });
-      setShowCreateForm(false);
+      queryClient.invalidateQueries({ queryKey: ['conversionRules', apiKeyId] })
+      setShowCreateForm(false)
       setNewRule({
         name: '',
         rule_type: 'url',
@@ -51,28 +62,28 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
         match_type: 'contains',
         css_selector: '',
         element_text: '',
-      });
+      })
     },
-  });
+  })
 
   // Delete rule
   const deleteRuleMutation = useMutation({
     mutationFn: (ruleId: string) => ApiKeyService.deleteConversionRule(apiKeyId, ruleId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversionRules', apiKeyId] });
+      queryClient.invalidateQueries({ queryKey: ['conversionRules', apiKeyId] })
     },
-  });
+  })
 
   // Toggle rule
   const toggleRuleMutation = useMutation({
     mutationFn: ({ ruleId, isActive }: { ruleId: string; isActive: boolean }) =>
       ApiKeyService.toggleConversionRule(apiKeyId, ruleId, !isActive),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['conversionRules', apiKeyId] });
+      queryClient.invalidateQueries({ queryKey: ['conversionRules', apiKeyId] })
     },
-  });
+  })
 
-  const rules = rulesData?.data?.rules || [];
+  const rules = rulesData?.data?.rules || []
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -114,7 +125,8 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
                         )}
                       </div>
                       <p className="text-sm text-gray-600 mt-1">
-                        {rule.rule_type === 'url' && `URL: ${rule.url_pattern} (${rule.match_type})`}
+                        {rule.rule_type === 'url' &&
+                          `URL: ${rule.url_pattern} (${rule.match_type})`}
                         {rule.rule_type === 'click' && `Selector: ${rule.css_selector}`}
                         {rule.rule_type === 'form_submit' && `Form: ${rule.form_id}`}
                       </p>
@@ -126,7 +138,12 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => toggleRuleMutation.mutate({ ruleId: rule.id, isActive: rule.is_active })}
+                        onClick={() =>
+                          toggleRuleMutation.mutate({
+                            ruleId: rule.id,
+                            isActive: rule.is_active,
+                          })
+                        }
                       >
                         {rule.is_active ? (
                           <ToggleRight className="h-5 w-5 text-green-600" />
@@ -196,7 +213,9 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
                       <Input
                         placeholder="/thank-you"
                         value={newRule.url_pattern}
-                        onChange={(e) => setNewRule({ ...newRule, url_pattern: e.target.value })}
+                        onChange={(e) =>
+                          setNewRule({ ...newRule, url_pattern: e.target.value })
+                        }
                       />
                     </div>
                     <div>
@@ -228,7 +247,9 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
                       <Input
                         placeholder="#buy-now-button"
                         value={newRule.css_selector}
-                        onChange={(e) => setNewRule({ ...newRule, css_selector: e.target.value })}
+                        onChange={(e) =>
+                          setNewRule({ ...newRule, css_selector: e.target.value })
+                        }
                       />
                     </div>
                     <div>
@@ -236,7 +257,9 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
                       <Input
                         placeholder="Buy Now"
                         value={newRule.element_text}
-                        onChange={(e) => setNewRule({ ...newRule, element_text: e.target.value })}
+                        onChange={(e) =>
+                          setNewRule({ ...newRule, element_text: e.target.value })
+                        }
                       />
                     </div>
                   </>
@@ -259,5 +282,5 @@ export function ConversionRulesDialog({ apiKeyId, apiKeyName, open, onOpenChange
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

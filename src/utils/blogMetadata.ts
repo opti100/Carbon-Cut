@@ -1,5 +1,5 @@
-import { Metadata } from 'next';
-import { BlogPost } from '@/constants/blogData';
+import { Metadata } from 'next'
+import { BlogPost } from '@/constants/blogData'
 
 export function generateBlogMetadata(post: BlogPost): Metadata {
   return {
@@ -26,5 +26,5 @@ export function generateBlogMetadata(post: BlogPost): Metadata {
       description: post.metaDescription || post.excerpt,
       images: [post.image || '/blogs/default-blog-image.png'],
     },
-  };
+  }
 }

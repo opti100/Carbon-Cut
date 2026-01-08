@@ -1,14 +1,20 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import * as React from 'react'
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from '@/components/ui/chart'
 
 interface TimeSeriesData {
   date: string
@@ -23,12 +29,16 @@ interface EmissionsTrendChartProps {
 
 const chartConfig = {
   emissions: {
-    label: "Emissions",
-    color: "hsl(var(--chart-1))",
+    label: 'Emissions',
+    color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig
 
-export function EmissionsTrendChart({ data, totalEmissions, dateRange }: EmissionsTrendChartProps) {
+export function EmissionsTrendChart({
+  data,
+  totalEmissions,
+  dateRange,
+}: EmissionsTrendChartProps) {
   return (
     <Card className="border bg-white rounded-sm">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b pb-5 sm:flex-row">
@@ -38,10 +48,7 @@ export function EmissionsTrendChart({ data, totalEmissions, dateRange }: Emissio
         </div>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
           <AreaChart data={data}>
             <defs>
               <linearGradient id="fillEmissions" x1="0" y1="0" x2="0" y2="1">
@@ -63,7 +70,7 @@ export function EmissionsTrendChart({ data, totalEmissions, dateRange }: Emissio
               content={
                 <ChartTooltipContent
                   indicator="dot"
-                  formatter={(value) => [`${Number(value).toFixed(4)} kg`, "Emissions"]}
+                  formatter={(value) => [`${Number(value).toFixed(4)} kg`, 'Emissions']}
                   labelFormatter={(value) => value}
                 />
               }

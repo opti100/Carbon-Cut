@@ -1,55 +1,55 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import OnboardingGoogleAds from "@/components/live/onBoardingGoogleAds";
-import ApiKeyStep from "@/components/live/onboardingSdk";
-import CampaignCreationStep from "@/components/live/CampaignCreationStep";
-import { VerticalTimeline, TimelineStep } from "@/components/VerticleTimeline";
+import { useState } from 'react'
+import { useAuth } from '@/contexts/AuthContext'
+import OnboardingGoogleAds from '@/components/live/onBoardingGoogleAds'
+import ApiKeyStep from '@/components/live/onboardingSdk'
+import CampaignCreationStep from '@/components/live/CampaignCreationStep'
+import { VerticalTimeline, TimelineStep } from '@/components/VerticleTimeline'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Lock, LogIn, UserPlus } from "lucide-react";
-import Link from "next/link";
-import CardNav from "@/components/CardNav";
-import { navData } from "@/components/NavData";
+} from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Lock, LogIn, UserPlus } from 'lucide-react'
+import Link from 'next/link'
+import CardNav from '@/components/CardNav'
+import { navData } from '@/components/NavData'
 
 export default function InternetAds() {
-  const { user, isAuthenticated, isLoading } = useAuth();
-  const [currentStep, setCurrentStep] = useState(0);
+  const { user, isAuthenticated, isLoading } = useAuth()
+  const [currentStep, setCurrentStep] = useState(0)
 
-  const next = () => setCurrentStep((s) => s + 1);
+  const next = () => setCurrentStep((s) => s + 1)
 
   const steps: TimelineStep[] = [
     {
-      number: "01",
-      title: "Connect Google Ads",
-      description: "Securely connect your Google Ads account",
-      side: "left",
+      number: '01',
+      title: 'Connect Google Ads',
+      description: 'Securely connect your Google Ads account',
+      side: 'left',
       render: () => <OnboardingGoogleAds onNext={next} />,
     },
     {
-      number: "02",
-      title: "Install CarbonCut SDK",
-      description: "Enable real-time ad emission tracking",
-      side: "right",
+      number: '02',
+      title: 'Install CarbonCut SDK',
+      description: 'Enable real-time ad emission tracking',
+      side: 'right',
       render: () => <ApiKeyStep onNext={next} sourceType="ads" />,
     },
     {
-      number: "03",
-      title: "Create Campaign",
-      description: "Start tracking carbon emissions per campaign",
-      side: "left",
+      number: '03',
+      title: 'Create Campaign',
+      description: 'Start tracking carbon emissions per campaign',
+      side: 'left',
       render: () => <CampaignCreationStep onComplete={next} />,
     },
-  ];
+  ]
 
-  if (isLoading) return null;
+  if (isLoading) return null
 
   return (
     <>
@@ -82,9 +82,7 @@ export default function InternetAds() {
                 <Lock className="h-6 w-6 text-[#6c5f31]" />
               </div>
               <CardTitle>Authentication Required</CardTitle>
-              <CardDescription>
-                Log in or sign up to continue onboarding
-              </CardDescription>
+              <CardDescription>Log in or sign up to continue onboarding</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button asChild className="w-full bg-[#b0ea1d] text-black">
@@ -104,8 +102,5 @@ export default function InternetAds() {
         </div>
       )}
     </>
-  );
+  )
 }
-
-
-

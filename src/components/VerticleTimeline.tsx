@@ -1,46 +1,39 @@
-"use client";
+'use client'
 
-import React, { useRef, useEffect } from "react";
-import { BlurFade } from "./ui/blur-fade";
-import UniversalHeading from "./UniversalHeading";
-
+import React, { useRef, useEffect } from 'react'
+import { BlurFade } from './ui/blur-fade'
+import UniversalHeading from './UniversalHeading'
 
 export type TimelineStep = {
-  number: string;
-  title: string;
-  description?: string;
-  side: "left" | "right";
-  render?: () => React.ReactNode;
-};
+  number: string
+  title: string
+  description?: string
+  side: 'left' | 'right'
+  render?: () => React.ReactNode
+}
 
 type Props = {
-  title: string;
-  subtitle?: string;
-  steps: TimelineStep[];
-  activeStep: number;
-};
+  title: string
+  subtitle?: string
+  steps: TimelineStep[]
+  activeStep: number
+}
 
-export function VerticalTimeline({
-  title,
-  subtitle,
-  steps,
-  activeStep,
-}: Props) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const stepsRef = useRef<(HTMLDivElement | null)[]>([]);
+export function VerticalTimeline({ title, subtitle, steps, activeStep }: Props) {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const stepsRef = useRef<(HTMLDivElement | null)[]>([])
 
   useEffect(() => {
-    const el = stepsRef.current[activeStep];
+    const el = stepsRef.current[activeStep]
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
-  }, [activeStep]);
+  }, [activeStep])
 
   return (
     <section className="bg-[#fcfdf6] text-[#080c04] min-h-screen py-20 px-6 max-w-7xl mx-auto">
       {/* Title */}
       <UniversalHeading title={title} description={subtitle} />
-    
 
       {/* Timeline */}
       <div ref={sectionRef} className="relative max-w-6xl mx-auto">
@@ -59,23 +52,21 @@ export function VerticalTimeline({
           {steps.map((step, i) => (
             <div
               key={i}
-              ref={(el) => { (stepsRef.current[i] = el)}}
+              ref={(el) => {
+                stepsRef.current[i] = el
+              }}
               className={`relative transition-all duration-500 ${
-                i === activeStep
-                  ? "opacity-100 scale-100"
-                  : "opacity-40 scale-95"
+                i === activeStep ? 'opacity-100 scale-100' : 'opacity-40 scale-95'
               }`}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* LEFT */}
                 <div
                   className={
-                    step.side === "left"
-                      ? "md:pr-16 text-right"
-                      : "md:col-start-1"
+                    step.side === 'left' ? 'md:pr-16 text-right' : 'md:col-start-1'
                   }
                 >
-                  {step.side === "left" && (
+                  {step.side === 'left' && (
                     <>
                       <span className="text-sm font-semibold text-[#6c5f31]">
                         Step {step.number}
@@ -84,9 +75,7 @@ export function VerticalTimeline({
                         {step.title}
                       </h2>
                       {step.description && (
-                        <p className="text-gray-700 mb-6">
-                          {step.description}
-                        </p>
+                        <p className="text-gray-700 mb-6">{step.description}</p>
                       )}
                       {i === activeStep && step.render?.()}
                     </>
@@ -96,12 +85,10 @@ export function VerticalTimeline({
                 {/* RIGHT */}
                 <div
                   className={
-                    step.side === "right"
-                      ? "md:pl-16 text-left"
-                      : "md:col-start-2"
+                    step.side === 'right' ? 'md:pl-16 text-left' : 'md:col-start-2'
                   }
                 >
-                  {step.side === "right" && (
+                  {step.side === 'right' && (
                     <>
                       <span className="text-sm font-semibold text-[#6c5f31]">
                         Step {step.number}
@@ -110,9 +97,7 @@ export function VerticalTimeline({
                         {step.title}
                       </h2>
                       {step.description && (
-                        <p className="text-gray-700 mb-6">
-                          {step.description}
-                        </p>
+                        <p className="text-gray-700 mb-6">{step.description}</p>
                       )}
                       {i === activeStep && step.render?.()}
                     </>
@@ -125,8 +110,8 @@ export function VerticalTimeline({
                 <div
                   className={`w-4 h-4 rounded-full border-2 ${
                     i <= activeStep
-                      ? "bg-[#b0ea1d] border-[#b0ea1d]"
-                      : "bg-white border-gray-400"
+                      ? 'bg-[#b0ea1d] border-[#b0ea1d]'
+                      : 'bg-white border-gray-400'
                   }`}
                 />
               </div>
@@ -135,5 +120,5 @@ export function VerticalTimeline({
         </div>
       </div>
     </section>
-  );
+  )
 }

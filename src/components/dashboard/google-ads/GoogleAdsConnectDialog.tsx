@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import React, { useState, useEffect, useCallback } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Dialog,
   DialogContent,
@@ -9,48 +9,48 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  CheckCircle, 
-  AlertCircle, 
-  Loader2, 
-  RefreshCw, 
-  CheckCircle2, 
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  RefreshCw,
+  CheckCircle2,
   ExternalLink,
   LogOut,
-  Info 
-} from "lucide-react";
+  Info,
+} from 'lucide-react'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { useGoogleAds } from '@/contexts/GoogleAdsContext';
+} from '@/components/ui/select'
+import { Badge } from '@/components/ui/badge'
+import { useGoogleAds } from '@/contexts/GoogleAdsContext'
 
 interface GoogleAdsConnectDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  isConnected?: boolean;
-  onSuccess?: () => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  isConnected?: boolean
+  onSuccess?: () => void
 }
 
 // Constants
-const DIALOG_WIDTH = 500;
-const POPUP_WIDTH = 600;
-const POPUP_HEIGHT = 700;
-const REFRESH_DELAY = 500;
-const STATUS_REFRESH_DELAY = 1000;
+const DIALOG_WIDTH = 500
+const POPUP_WIDTH = 600
+const POPUP_HEIGHT = 700
+const REFRESH_DELAY = 500
+const STATUS_REFRESH_DELAY = 1000
 
 export function GoogleAdsConnectDialog({
   open,
   onOpenChange,
   isConnected,
-  onSuccess
+  onSuccess,
 }: GoogleAdsConnectDialogProps) {
   const {
     status,
@@ -61,162 +61,166 @@ export function GoogleAdsConnectDialog({
     switchAccount,
     fetchAccounts,
     checkConnection,
-  } = useGoogleAds();
-  
-  const queryClient = useQueryClient();
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isDisconnecting, setIsDisconnecting] = useState(false);
-  const [isSwitching, setIsSwitching] = useState(false);
-  const [selectedAccountId, setSelectedAccountId] = useState(
-    status?.customer_id || ''
-  );
+  } = useGoogleAds()
 
-  const isConnectedState = status?.is_connected === true;
+  const queryClient = useQueryClient()
+  const [isConnecting, setIsConnecting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const [isSwitching, setIsSwitching] = useState(false)
+  const [selectedAccountId, setSelectedAccountId] = useState(status?.customer_id || '')
+
+  const isConnectedState = status?.is_connected === true
   useEffect(() => {
     if (status?.customer_id) {
-      setSelectedAccountId(status.customer_id);
+      setSelectedAccountId(status.customer_id)
     }
-  }, [status?.customer_id]);
+  }, [status?.customer_id])
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) return
 
-    console.log('Dialog opened, checking connection...');
+    console.log('Dialog opened, checking connection...')
     const timer = setTimeout(() => {
-      checkConnection();
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, [open, checkConnection]);
+      checkConnection()
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [open, checkConnection])
 
   const handleConnect = useCallback(async () => {
     try {
-      setIsConnecting(true);
-      setError(null);
+      setIsConnecting(true)
+      setError(null)
 
-      const authUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/impressions/google/redirect-url/`;
-      const left = window.screen.width / 2 - POPUP_WIDTH / 2;
-      const top = window.screen.height / 2 - POPUP_HEIGHT / 2;
+      const authUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/impressions/google/redirect-url/`
+      const left = window.screen.width / 2 - POPUP_WIDTH / 2
+      const top = window.screen.height / 2 - POPUP_HEIGHT / 2
 
       const popup = window.open(
         authUrl,
         'Google Ads Authorization',
         `width=${POPUP_WIDTH},height=${POPUP_HEIGHT},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes,resizable=yes`
-      );
+      )
 
       if (!popup) {
-        throw new Error('Popup blocked. Please allow popups for this site.');
+        throw new Error('Popup blocked. Please allow popups for this site.')
       }
 
       const checkPopup = setInterval(() => {
         if (!popup || popup.closed) {
-          clearInterval(checkPopup);
-          setIsConnecting(false);
-          console.log('Popup closed, refreshing connection status...');
-          
-          setTimeout(() => {
-            queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] });
-            queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] });
-            queryClient.invalidateQueries({ queryKey: ['credentials'] });
-            checkConnection();
-          }, REFRESH_DELAY);
-        }
-      }, 500);
+          clearInterval(checkPopup)
+          setIsConnecting(false)
+          console.log('Popup closed, refreshing connection status...')
 
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] })
+            queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] })
+            queryClient.invalidateQueries({ queryKey: ['credentials'] })
+            checkConnection()
+          }, REFRESH_DELAY)
+        }
+      }, 500)
     } catch (err) {
-      console.error('OAuth error:', err);
-      setError(err instanceof Error ? err.message : 'Connection failed');
-      setIsConnecting(false);
+      console.error('OAuth error:', err)
+      setError(err instanceof Error ? err.message : 'Connection failed')
+      setIsConnecting(false)
     }
-  }, [checkConnection, queryClient]);
+  }, [checkConnection, queryClient])
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      if (event.origin !== window.location.origin) return
 
-      console.log('Received message:', event.data);
+      console.log('Received message:', event.data)
 
       if (event.data.type === 'GOOGLE_ADS_AUTH_SUCCESS') {
-        console.log('Auth success message received');
-        setIsConnecting(false);
+        console.log('Auth success message received')
+        setIsConnecting(false)
         setTimeout(() => {
-          queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] });
-          queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] });
-          checkConnection();
-          onSuccess?.();
-        }, STATUS_REFRESH_DELAY);
+          queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] })
+          queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] })
+          checkConnection()
+          onSuccess?.()
+        }, STATUS_REFRESH_DELAY)
       } else if (event.data.type === 'GOOGLE_ADS_AUTH_ERROR') {
-        console.error('Auth error message received:', event.data.error);
-        setError(event.data.error || 'Authentication failed');
-        setIsConnecting(false);
+        console.error('Auth error message received:', event.data.error)
+        setError(event.data.error || 'Authentication failed')
+        setIsConnecting(false)
       }
-    };
+    }
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [onSuccess, checkConnection, queryClient]);
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [onSuccess, checkConnection, queryClient])
 
   const handleDisconnect = useCallback(async () => {
     if (!confirm('Are you sure you want to disconnect your Google Ads account?')) {
-      return;
+      return
     }
 
-    setIsDisconnecting(true);
-    setError(null);
-    
+    setIsDisconnecting(true)
+    setError(null)
+
     try {
-      console.log('Disconnecting...');
-      await disconnect();
-      console.log('Disconnect successful');
-      
+      console.log('Disconnecting...')
+      await disconnect()
+      console.log('Disconnect successful')
+
       setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] });
-        queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] });
-        queryClient.invalidateQueries({ queryKey: ['googleAdsAccounts'] });
-        queryClient.invalidateQueries({ queryKey: ['credentials'] });
-        checkConnection();
-        onOpenChange(false);
-      }, REFRESH_DELAY);
+        queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] })
+        queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] })
+        queryClient.invalidateQueries({ queryKey: ['googleAdsAccounts'] })
+        queryClient.invalidateQueries({ queryKey: ['credentials'] })
+        checkConnection()
+        onOpenChange(false)
+      }, REFRESH_DELAY)
     } catch (error) {
-      console.error('Disconnect failed:', error);
-      setError(error instanceof Error ? error.message : 'Failed to disconnect');
+      console.error('Disconnect failed:', error)
+      setError(error instanceof Error ? error.message : 'Failed to disconnect')
     } finally {
-      setIsDisconnecting(false);
+      setIsDisconnecting(false)
     }
-  }, [disconnect, queryClient, checkConnection, onOpenChange]);
+  }, [disconnect, queryClient, checkConnection, onOpenChange])
 
   const handleSwitchAccount = useCallback(async () => {
     if (!selectedAccountId || selectedAccountId === status?.customer_id) {
-      return;
+      return
     }
 
-    setIsSwitching(true);
-    setError(null);
-    
+    setIsSwitching(true)
+    setError(null)
+
     try {
-      console.log('Switching to account:', selectedAccountId);
-      await switchAccount(selectedAccountId);
-      console.log('Switch successful');
-      
+      console.log('Switching to account:', selectedAccountId)
+      await switchAccount(selectedAccountId)
+      console.log('Switch successful')
+
       setTimeout(() => {
-        queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] });
-        queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] });
-        checkConnection();
-        onOpenChange(false);
-      }, REFRESH_DELAY);
+        queryClient.invalidateQueries({ queryKey: ['googleAdsStatus'] })
+        queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] })
+        checkConnection()
+        onOpenChange(false)
+      }, REFRESH_DELAY)
     } catch (error) {
-      console.error('❌ Switch failed:', error);
-      setError(error instanceof Error ? error.message : 'Failed to switch account');
+      console.error('❌ Switch failed:', error)
+      setError(error instanceof Error ? error.message : 'Failed to switch account')
     } finally {
-      setIsSwitching(false);
+      setIsSwitching(false)
     }
-  }, [selectedAccountId, status?.customer_id, switchAccount, queryClient, checkConnection, onOpenChange]);
+  }, [
+    selectedAccountId,
+    status?.customer_id,
+    switchAccount,
+    queryClient,
+    checkConnection,
+    onOpenChange,
+  ])
 
   const handleRefresh = useCallback(async () => {
-    console.log('Refreshing accounts...');
-    await fetchAccounts();
-  }, [fetchAccounts]);
+    console.log('Refreshing accounts...')
+    await fetchAccounts()
+  }, [fetchAccounts])
 
   if (statusLoading) {
     return (
@@ -230,7 +234,7 @@ export function GoogleAdsConnectDialog({
           </div>
         </DialogContent>
       </Dialog>
-    );
+    )
   }
 
   return (
@@ -292,19 +296,19 @@ export function GoogleAdsConnectDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
 interface ConnectedStateProps {
-  status: any;
-  accounts: any[];
-  accountsLoading: boolean;
-  selectedAccountId: string;
-  onAccountChange: (id: string) => void;
-  onRefresh: () => void;
-  onSwitchAccount: () => void;
-  isSwitching: boolean;
-  error: string | null;
+  status: any
+  accounts: any[]
+  accountsLoading: boolean
+  selectedAccountId: string
+  onAccountChange: (id: string) => void
+  onRefresh: () => void
+  onSwitchAccount: () => void
+  isSwitching: boolean
+  error: string | null
 }
 
 function ConnectedState({
@@ -316,7 +320,7 @@ function ConnectedState({
   onRefresh,
   onSwitchAccount,
   isSwitching,
-  error
+  error,
 }: ConnectedStateProps) {
   return (
     <div className="space-y-4">
@@ -331,12 +335,8 @@ function ConnectedState({
           <p className="font-medium text-green-900">
             {status?.customer_name || 'Google Ads Account'}
           </p>
-          <p className="text-green-700">
-            ID: {status?.customer_id}
-          </p>
-          <p className="text-green-700">
-            {status?.email}
-          </p>
+          <p className="text-green-700">ID: {status?.customer_id}</p>
+          <p className="text-green-700">{status?.email}</p>
           {status?.connected_at && (
             <p className="text-xs text-green-600 mt-2">
               Connected on {new Date(status.connected_at).toLocaleDateString()}
@@ -382,11 +382,7 @@ function ConnectedState({
           </Select>
 
           {selectedAccountId && selectedAccountId !== status?.customer_id && (
-            <Button
-              onClick={onSwitchAccount}
-              disabled={isSwitching}
-              className="w-full"
-            >
+            <Button onClick={onSwitchAccount} disabled={isSwitching} className="w-full">
               {isSwitching ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -407,17 +403,17 @@ function ConnectedState({
         </Alert>
       )}
     </div>
-  );
+  )
 }
 
 function DisconnectedState({ error }: { error: string | null }) {
   return (
-    <div className="space-y-4"> 
+    <div className="space-y-4">
       <Alert>
         <Info className="h-4 w-4" />
         <AlertDescription>
-          You&apos;ll be redirected to Google to authorize access to your Google Ads accounts.
-          We only request read-only access to your campaign data.
+          You&apos;ll be redirected to Google to authorize access to your Google Ads
+          accounts. We only request read-only access to your campaign data.
         </AlertDescription>
       </Alert>
 
@@ -438,23 +434,23 @@ function DisconnectedState({ error }: { error: string | null }) {
         </Alert>
       )}
     </div>
-  );
+  )
 }
 
 interface ConnectedFooterProps {
-  onClose: () => void;
-  onDisconnect: () => void;
-  isDisconnecting: boolean;
+  onClose: () => void
+  onDisconnect: () => void
+  isDisconnecting: boolean
 }
 
-function ConnectedFooter({ onClose, onDisconnect, isDisconnecting }: ConnectedFooterProps) {
+function ConnectedFooter({
+  onClose,
+  onDisconnect,
+  isDisconnecting,
+}: ConnectedFooterProps) {
   return (
     <>
-      <Button
-        variant="outline"
-        onClick={onClose}
-        className="w-full sm:w-auto"
-      >
+      <Button variant="outline" onClick={onClose} className="w-full sm:w-auto">
         Close
       </Button>
       <Button
@@ -476,30 +472,26 @@ function ConnectedFooter({ onClose, onDisconnect, isDisconnecting }: ConnectedFo
         )}
       </Button>
     </>
-  );
+  )
 }
 
 interface DisconnectedFooterProps {
-  onClose: () => void;
-  onConnect: () => void;
-  isConnecting: boolean;
+  onClose: () => void
+  onConnect: () => void
+  isConnecting: boolean
 }
 
-function DisconnectedFooter({ onClose, onConnect, isConnecting }: DisconnectedFooterProps) {
+function DisconnectedFooter({
+  onClose,
+  onConnect,
+  isConnecting,
+}: DisconnectedFooterProps) {
   return (
     <>
-      <Button
-        variant="outline"
-        onClick={onClose}
-        className="w-full sm:w-auto"
-      >
+      <Button variant="outline" onClick={onClose} className="w-full sm:w-auto">
         Cancel
       </Button>
-      <Button
-        onClick={onConnect}
-        disabled={isConnecting}
-        className="w-full sm:w-auto "
-      >
+      <Button onClick={onConnect} disabled={isConnecting} className="w-full sm:w-auto ">
         {isConnecting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -513,5 +505,5 @@ function DisconnectedFooter({ onClose, onConnect, isConnecting }: DisconnectedFo
         )}
       </Button>
     </>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 interface StepperProgressProps {
-  currentStep: number;
+  currentStep: number
 }
 
 const steps = [
@@ -9,7 +9,7 @@ const steps = [
   { id: 2, title: 'Campaign' },
   { id: 3, title: 'Activities' },
   { id: 4, title: 'Details' },
-];
+]
 
 export default function StepperProgress({ currentStep }: StepperProgressProps) {
   return (
@@ -25,7 +25,7 @@ export default function StepperProgress({ currentStep }: StepperProgressProps) {
                 style={{
                   backgroundColor: currentStep >= step.id ? '#b0ea1d' : '#d1cebb',
                   color: currentStep >= step.id ? '#080c04' : '#fffff',
-                  border: currentStep >= step.id ? 'none' : '1px solid #d1cebb'
+                  border: currentStep >= step.id ? 'none' : '1px solid #d1cebb',
                 }}
               >
                 {step.id}
@@ -48,5 +48,5 @@ export default function StepperProgress({ currentStep }: StepperProgressProps) {
         ))}
       </div>
     </div>
-  );
+  )
 }

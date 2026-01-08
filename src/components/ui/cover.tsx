@@ -1,12 +1,12 @@
-"use client";
-import { cn } from "@/lib/utils";
+'use client'
+import { cn } from '@/lib/utils'
 
 export const CircleIcon = ({
   className,
   delay,
 }: {
-  className?: string;
-  delay?: number;
+  className?: string
+  delay?: number
 }) => {
   return (
     <div
@@ -15,5 +15,5 @@ export const CircleIcon = ({
         className
       )}
     ></div>
-  );
-};
+  )
+}

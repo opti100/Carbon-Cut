@@ -1,8 +1,6 @@
-
-
 import LenisSmoothScroll from '@/components/LenisSmoothScroll'
 import BusinessImpact from '@/components/lubricants/BusinessImpact'
-import {CarbonCutFix} from '@/components/lubricants/CarbonCutFix'
+import { CarbonCutFix } from '@/components/lubricants/CarbonCutFix'
 import Comparision from '@/components/lubricants/Comparision'
 import ContactSection from '@/components/lubricants/Contact'
 import ContactUs from '@/components/lubricants/ContactUs'
@@ -17,21 +15,19 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-       <LenisSmoothScroll>
-      <Hero />
-      <Problem />
-      <CarbonCutFix />
-      <LubricantHowWorks />
-      <WhoUses />
-      <BusinessImpact />
-      <Comparision />
-      <TechnicalEngine />
-      <ContactSection />
-      <ContactUs />
-      <Footer />
-       </LenisSmoothScroll>
-
-
+      <LenisSmoothScroll>
+        <Hero />
+        <Problem />
+        <CarbonCutFix />
+        <LubricantHowWorks />
+        <WhoUses />
+        <BusinessImpact />
+        <Comparision />
+        <TechnicalEngine />
+        <ContactSection />
+        <ContactUs />
+        <Footer />
+      </LenisSmoothScroll>
     </div>
   )
 }

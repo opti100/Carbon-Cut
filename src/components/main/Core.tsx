@@ -1,9 +1,9 @@
-"use client"
-import { useEffect, useRef } from "react"
-import Image from "next/image"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger"
-import UniversalHeading from "../UniversalHeading"
+'use client'
+import { useEffect, useRef } from 'react'
+import Image from 'next/image'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import UniversalHeading from '../UniversalHeading'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -14,19 +14,19 @@ const Core = () => {
 
   const achievements = [
     {
-      image: "/CarbonCut-fe/core/C1.jpg",
-      title: "Security",
-      description: "Enterprise-grade security for carbon credit transactions",
+      image: '/CarbonCut-fe/core/C1.jpg',
+      title: 'Security',
+      description: 'Enterprise-grade security for carbon credit transactions',
     },
     {
-      image: "/CarbonCut-fe/core/C2.jpg",
-      title: "Reliability",
-      description: "Trusted by leading organizations worldwide",
+      image: '/CarbonCut-fe/core/C2.jpg',
+      title: 'Reliability',
+      description: 'Trusted by leading organizations worldwide',
     },
     {
-      image: "/CarbonCut-fe/core/C3.jpg",
-      title: "Simplicity",
-      description: "Streamlined carbon offsetting process",
+      image: '/CarbonCut-fe/core/C3.jpg',
+      title: 'Simplicity',
+      description: 'Streamlined carbon offsetting process',
     },
   ]
 
@@ -38,7 +38,7 @@ const Core = () => {
 
     const timer = setTimeout(() => {
       // Check if locomotive scroll is active
-      const scrollContainer = document.querySelector("[data-scroll-container]")
+      const scrollContainer = document.querySelector('[data-scroll-container]')
       const useLocomotiveScroll = scrollContainer !== null
 
       // Initial state - all cards hidden below
@@ -55,18 +55,18 @@ const Core = () => {
       cards.forEach((card, index) => {
         // Calculate staggered start positions
         const startOffset = index * 30 // Each card starts 30% later than previous
-        
+
         gsap.to(card, {
           opacity: 1,
           yPercent: 0,
-          ease: "power2.out",
+          ease: 'power2.out',
           scrollTrigger: {
             trigger: sectionRef.current,
-            scroller: useLocomotiveScroll ? "[data-scroll-container]" : undefined,
+            scroller: useLocomotiveScroll ? '[data-scroll-container]' : undefined,
             start: `top ${80 - startOffset}%`, // Staggered start
-            end: `top ${20 - startOffset}%`,   // Staggered end
+            end: `top ${20 - startOffset}%`, // Staggered end
             scrub: 1,
-            toggleActions: "play none none reverse",
+            toggleActions: 'play none none reverse',
           },
         })
 
@@ -74,12 +74,12 @@ const Core = () => {
         if (images[index]) {
           gsap.to(images[index], {
             scale: 1,
-            ease: "none",
+            ease: 'none',
             scrollTrigger: {
               trigger: card,
-              scroller: useLocomotiveScroll ? "[data-scroll-container]" : undefined,
-              start: "top bottom",
-              end: "bottom top",
+              scroller: useLocomotiveScroll ? '[data-scroll-container]' : undefined,
+              start: 'top bottom',
+              end: 'bottom top',
               scrub: 1,
             },
           })
@@ -96,18 +96,19 @@ const Core = () => {
   }, [])
 
   return (
-    <section 
-      ref={sectionRef} 
-      className="relative pt-20  bg-[#fcfdf6] " 
+    <section
+      ref={sectionRef}
+      className="relative pt-20  bg-[#fcfdf6] "
       data-scroll-section
     >
       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mb-8"></div>
 
       <div className="w-full px-0">
-
-       
-
-                <UniversalHeading title=" Delivering Results" description="Core Values" align="right" />
+        <UniversalHeading
+          title=" Delivering Results"
+          description="Core Values"
+          align="right"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-0">
           {achievements.map((achievement, index) => (
@@ -128,7 +129,7 @@ const Core = () => {
                 <Image
                   src={achievement.image}
                   alt={achievement.title}
-                  fill  
+                  fill
                   className="object-cover"
                   priority={index === 0}
                   sizes="(max-width: 1024px) 100vw, 33vw"
@@ -153,10 +154,6 @@ const Core = () => {
           ))}
         </div>
       </div>
-
-     
-
-     
     </section>
   )
 }

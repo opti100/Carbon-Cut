@@ -1,93 +1,143 @@
-import { PDFFormData } from "@/services/report-formats/secr-report";
-import { ActivityData, OrganizationData } from '@/types/types';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle, Leaf, Building2, Download, Loader2, Award, CreditCard, Mail, Shield, X, Cloud, Database, Component } from "lucide-react";
-import PhoneInputDemo, { PhoneInput } from '../comp-46';
+import { PDFFormData } from '@/services/report-formats/secr-report'
+import { ActivityData, OrganizationData } from '@/types/types'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Checkbox } from '@/components/ui/checkbox'
+import {
+  CheckCircle,
+  Leaf,
+  Building2,
+  Download,
+  Loader2,
+  Award,
+  CreditCard,
+  Mail,
+  Shield,
+  X,
+  Cloud,
+  Database,
+  Component,
+} from 'lucide-react'
+import PhoneInputDemo, { PhoneInput } from '../comp-46'
 
-export const StepIndicator = ({ otpStep }: { otpStep: 'form' | 'verify' | 'verified' }) => (
+export const StepIndicator = ({
+  otpStep,
+}: {
+  otpStep: 'form' | 'verify' | 'verified'
+}) => (
   <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
     <div className="space-y-4">
       {/* Step 1 */}
       <div className="flex items-start gap-3">
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${
-          otpStep === 'form' ? 'bg-green-500 text-white' :
-          otpStep === 'verify' || otpStep === 'verified' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600'
-        }`}>
+        <div
+          className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${
+            otpStep === 'form'
+              ? 'bg-green-500 text-white'
+              : otpStep === 'verify' || otpStep === 'verified'
+                ? 'bg-green-500 text-white'
+                : 'bg-gray-300 text-gray-600'
+          }`}
+        >
           {otpStep !== 'form' ? <CheckCircle className="h-4 w-4" /> : '1'}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className={`font-medium text-sm sm:text-base ${otpStep === 'form' ? 'text-green-600' : 'text-gray-900'}`}>
+          <h3
+            className={`font-medium text-sm sm:text-base ${otpStep === 'form' ? 'text-green-600' : 'text-gray-900'}`}
+          >
             Details
           </h3>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Enter your information
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">Enter your information</p>
         </div>
       </div>
 
       {/* Connector Line */}
       <div className="flex">
         <div className="w-8 flex justify-center">
-          <div className={`w-0.5 h-6 transition-colors ${
-            otpStep === 'verify' || otpStep === 'verified' ? 'bg-green-500' : 'bg-gray-300'
-          }`}></div>
+          <div
+            className={`w-0.5 h-6 transition-colors ${
+              otpStep === 'verify' || otpStep === 'verified'
+                ? 'bg-green-500'
+                : 'bg-gray-300'
+            }`}
+          ></div>
         </div>
       </div>
 
       {/* Step 2 */}
       <div className="flex items-start gap-3">
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${
-          otpStep === 'verify' ? 'bg-green-500 text-white' :
-          otpStep === 'verified' ? 'bg-green-500 text-white' :
-          'bg-gray-300 text-gray-600'
-        }`}>
+        <div
+          className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${
+            otpStep === 'verify'
+              ? 'bg-green-500 text-white'
+              : otpStep === 'verified'
+                ? 'bg-green-500 text-white'
+                : 'bg-gray-300 text-gray-600'
+          }`}
+        >
           {otpStep === 'verified' ? <CheckCircle className="h-4 w-4" /> : '2'}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className={`font-medium text-sm sm:text-base ${otpStep === 'verify' ? 'text-green-600' : 'text-gray-900'}`}>
+          <h3
+            className={`font-medium text-sm sm:text-base ${otpStep === 'verify' ? 'text-green-600' : 'text-gray-900'}`}
+          >
             Verification
           </h3>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Verify your email
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">Verify your email</p>
         </div>
       </div>
 
       {/* Connector Line */}
       <div className="flex">
         <div className="w-8 flex justify-center">
-          <div className={`w-0.5 h-6 transition-colors ${
-            otpStep === 'verified' ? 'bg-green-500' : 'bg-gray-300'
-          }`}></div>
+          <div
+            className={`w-0.5 h-6 transition-colors ${
+              otpStep === 'verified' ? 'bg-green-500' : 'bg-gray-300'
+            }`}
+          ></div>
         </div>
       </div>
 
       {/* Step 3 */}
       <div className="flex items-start gap-3">
-        <div className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${
-          otpStep === 'verified' ? 'bg-green-500 text-white' : 'bg-gray-300 text-gray-600'
-        }`}>
+        <div
+          className={`flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 transition-colors ${
+            otpStep === 'verified'
+              ? 'bg-green-500 text-white'
+              : 'bg-gray-300 text-gray-600'
+          }`}
+        >
           3
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className={`font-medium text-sm sm:text-base ${otpStep === 'verified' ? 'text-green-600' : 'text-gray-900'}`}>
+          <h3
+            className={`font-medium text-sm sm:text-base ${otpStep === 'verified' ? 'text-green-600' : 'text-gray-900'}`}
+          >
             Download PDF
           </h3>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Get your report
-          </p>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">Get your report</p>
         </div>
       </div>
     </div>
   </div>
-);
+)
 
 // Form Step Component
 export const FormStep = ({
@@ -96,14 +146,14 @@ export const FormStep = ({
   otpStep,
   wantsCertification,
   setWantsCertification,
-  CERTIFICATION_PRICE
+  CERTIFICATION_PRICE,
 }: {
-  pdfFormData: PDFFormData;
-  handlePdfFormChange: (field: keyof PDFFormData, value: string) => void;
-  otpStep: 'form' | 'verify' | 'verified';
-  wantsCertification: boolean;
-  setWantsCertification: (value: boolean) => void;
-  CERTIFICATION_PRICE: number;
+  pdfFormData: PDFFormData
+  handlePdfFormChange: (field: keyof PDFFormData, value: string) => void
+  otpStep: 'form' | 'verify' | 'verified'
+  wantsCertification: boolean
+  setWantsCertification: (value: boolean) => void
+  CERTIFICATION_PRICE: number
 }) => (
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <div className="space-y-4">
@@ -165,12 +215,12 @@ export const FormStep = ({
         {/* <PhoneInputDemo
           inpValue={pdfFormData.phoneNumber}
           onChange={(value) => handlePdfFormChange('phoneNumber', value)} */}
-          <Input
-           id="pdf-phone"
-           type="tel"
-           value={pdfFormData.phoneNumber}
-           onChange={(e) => handlePdfFormChange('phoneNumber', e.target.value)}
-           placeholder="Enter phone number"
+        <Input
+          id="pdf-phone"
+          type="tel"
+          value={pdfFormData.phoneNumber}
+          onChange={(e) => handlePdfFormChange('phoneNumber', e.target.value)}
+          placeholder="Enter phone number"
           className="border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-blue-500"
         />
       </div>
@@ -183,7 +233,9 @@ export const FormStep = ({
         </Label>
         <Select
           value={pdfFormData.disclosureFormat}
-          onValueChange={(value: 'SECR' | 'CSRD' | 'SEC') => handlePdfFormChange('disclosureFormat', value)}
+          onValueChange={(value: 'SECR' | 'CSRD' | 'SEC') =>
+            handlePdfFormChange('disclosureFormat', value)
+          }
         >
           <SelectTrigger className="border-gray-300 text-gray-900 focus:border-blue-500">
             <SelectValue placeholder="Select Format" />
@@ -215,7 +267,10 @@ export const FormStep = ({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1 flex-wrap">
                 <Award className="h-4 w-4 text-amber-600 flex-shrink-0" />
-                <Label htmlFor="certification" className="text-sm font-medium text-gray-900 cursor-pointer">
+                <Label
+                  htmlFor="certification"
+                  className="text-sm font-medium text-gray-900 cursor-pointer"
+                >
                   Get Certified by Optiminastic
                 </Label>
                 <Badge className="bg-amber-100 text-amber-800 border-amber-300 text-xs">
@@ -224,7 +279,8 @@ export const FormStep = ({
               </div>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Receive an official carbon footprint certification from Optiminastic.
-                Includes third-party verification and audit trail for compliance reporting.
+                Includes third-party verification and audit trail for compliance
+                reporting.
               </p>
             </div>
           </div>
@@ -244,7 +300,7 @@ export const FormStep = ({
       )}
     </div>
   </div>
-);
+)
 
 // Verification Step Component
 export const VerificationStep = ({
@@ -257,31 +313,35 @@ export const VerificationStep = ({
   handleVerifyOTP,
   verifyingOTP,
   handleResendOTP,
-  sendingOTP
+  sendingOTP,
 }: {
-  pdfFormData: PDFFormData;
-  otpCode: string;
-  handleOtpChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleOtpKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  otpMessage: string;
-  setOtpStep: (step: 'form' | 'verify' | 'verified') => void;
-  handleVerifyOTP: () => void;
-  verifyingOTP: boolean;
-  handleResendOTP: () => void;
-  sendingOTP: boolean;
+  pdfFormData: PDFFormData
+  otpCode: string
+  handleOtpChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  handleOtpKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void
+  otpMessage: string
+  setOtpStep: (step: 'form' | 'verify' | 'verified') => void
+  handleVerifyOTP: () => void
+  verifyingOTP: boolean
+  handleResendOTP: () => void
+  sendingOTP: boolean
 }) => (
   <div className="w-full max-w-md mx-auto text-center">
     <div className="p-4 sm:p-6 rounded-lg mb-6">
       <Mail className="h-12 w-12 text-green-600 mx-auto mb-3" />
       <h3 className="text-lg font-semibold text-gray-900 mb-2">Check Your Email</h3>
       <p className="text-sm text-gray-600 mb-4">
-        We&apos;ve sent a 6-digit verification code to:<br />
+        We&apos;ve sent a 6-digit verification code to:
+        <br />
         <strong className="break-words">{pdfFormData.email}</strong>
       </p>
 
       <div className="space-y-4">
         <div>
-          <Label htmlFor="otp-input" className="text-sm font-medium text-gray-900 block mb-2">
+          <Label
+            htmlFor="otp-input"
+            className="text-sm font-medium text-gray-900 block mb-2"
+          >
             Enter Verification Code
           </Label>
           <Input
@@ -301,11 +361,13 @@ export const VerificationStep = ({
         </div>
 
         {otpMessage && (
-          <div className={`text-sm p-3 rounded ${
-            otpMessage.includes('successfully') || otpMessage.includes('sent')
-              ? 'bg-green-50 text-green-700'
-              : 'bg-red-50 text-red-700'
-          }`}>
+          <div
+            className={`text-sm p-3 rounded ${
+              otpMessage.includes('successfully') || otpMessage.includes('sent')
+                ? 'bg-green-50 text-green-700'
+                : 'bg-red-50 text-red-700'
+            }`}
+          >
             {otpMessage}
           </div>
         )}
@@ -352,5 +414,4 @@ export const VerificationStep = ({
       </div>
     </div>
   </div>
-);
-
+)
