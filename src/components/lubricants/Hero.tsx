@@ -1,13 +1,8 @@
 "use client";
 import Image from 'next/image';
 import React, { useState, useEffect, useRef } from 'react';
-import AnimatedHeroText from '../NewLanding/AnimatedHeroText';
-import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
-import { LinkPreview } from '../ui/link-preview';
-import Link from 'next/link';
 import CardNav from '../CardNav';
 import { navData } from '../NavData';
-
 
 function LandingPageVideo({ onLoad }: { onLoad: () => void }) {
     return (
@@ -92,55 +87,53 @@ const Hero = () => {
 
     return (
         <>
-       
-        <section className="relative h-screen w-full" data-scroll-section>
-              {/* Navbar */}
-                  <div className="absolute top-0 left-0 right-0 z-20">
+
+            <section className="relative h-screen w-full" data-scroll-section>
+                {/* Navbar */}
+                <div className="absolute top-0 left-0 right-0 z-20">
                     <CardNav
-                      logo="/CarbonCut-fe/CC.svg"
-                      logoAlt="CarbonCut Logo"
-                      items={navData}
+                        logo="/CarbonCut-fe/CC.svg"
+                        logoAlt="CarbonCut Logo"
+                        items={navData}
 
-                      baseColor="rgba(255, 255, 255, 0.1)"
-                      menuColor="#080c04"
-                      buttonBgColor="#b0ea1d"
-                      buttonTextColor="#080c04"
+                        baseColor="rgba(255, 255, 255, 0.1)"
+                        menuColor="#080c04"
+                        buttonBgColor="#b0ea1d"
+                        buttonTextColor="#080c04"
                     />
-                  </div>
-            {/* Loading Screen */}
-            {!isVideoLoaded && (
-                <div className="w-full h-full overflow-hidden   ">
-                    <Image
-                        src="/CarbonCut-fe/Lubricant.png"
-                        alt="Carbon Cut Logo"
-                        fill
-                        className="object-cover"
-                    />
-                    {/* <div className="text-white text-xl">Loading...</div> */}
                 </div>
-            )}
+                {/* Loading Screen */}
+                {!isVideoLoaded && (
+                    <div className="w-full h-full overflow-hidden   ">
+                        <Image
+                            src="/CarbonCut-fe/Lubricant.png"
+                            alt="Carbon Cut Logo"
+                            fill
+                            className="object-cover"
+                        />
+                        {/* <div className="text-white text-xl">Loading...</div> */}
+                    </div>
+                )}
 
-            <div className="absolute inset-0 -z-10">
-                <LandingPageVideo onLoad={handleVideoLoad} />
-            </div>
+                <div className="absolute inset-0 -z-10">
+                    <LandingPageVideo onLoad={handleVideoLoad} />
+                </div>
 
-            <div
-                className={`flex flex-col items-start justify-center h-full px-6 max-w-7xl mx-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'
-                    }`}
-                data-scroll
-                data-scroll-speed="0.5"
-            >
-                
-                <h1 className="text-5xl font-bold font-mono text-white  mb-12 leading-tight">Lubricants CO₂e Intelligence,<br />  accurately in Real Time</h1>
-               
-            </div>
+                <div
+                    className={`flex flex-col items-start justify-center h-full px-6 max-w-7xl mx-auto transition-opacity duration-1000 ${showContent ? 'opacity-100' : 'opacity-0'
+                        }`}
+                    data-scroll
+                    data-scroll-speed="0.5"
+                >
+                    <h1 className="font-bold font-mono text-white leading-tight mb-12 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+                        Lubricants CO₂e Intelligence,<br /> accurately in Real Time
+                    </h1>
+                </div>
+            </section>
 
-            
-        </section>
-        
-        {/* Bottom Divider */}
-        <div className="w-full border-t border-dashed border-text/10 mt-4 sm:mt-6 md:mt-8"></div>
-         </>
+            {/* Bottom Divider */}
+            <div className="w-full border-t border-dashed border-text/10 mt-4 sm:mt-6 md:mt-8"></div>
+        </>
     );
 };
 

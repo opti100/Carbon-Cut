@@ -27,7 +27,7 @@ const ContactSection = () => {
           trigger: containerRef.current,
           start: "top 85%",
           end: "bottom 30%",
-          scrub: 0.6, // ⭐ smooth scroll-linked animation
+          scrub: 0.6,
         },
         defaults: {
           ease: "power2.out",

@@ -126,18 +126,7 @@ const BlogDashboard = () => {
             Explore the latest trends, metrics, and technologies to accurately calculate and minimize your marketing emissions.
           </p>
 
-          <div className="mt-8 flex justify-center">
-            <div className="relative w-full max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#b0ea1d] focus:border-transparent"
-              />
-            </div>
-          </div>
+         
         </div>
 
         {/* ----------------------------- SECTION 2: POPULAR ARTICLES ----------------------------- */}
@@ -246,6 +235,19 @@ const BlogDashboard = () => {
             </div>
           </div>
         </div>
+
+         <div className="mt-8 flex justify-center">
+            <div className="relative w-full max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#b0ea1d] focus:border-transparent"
+              />
+            </div>
+          </div>
 
         {/* ----------------------------- SECTION 3: LATEST ARTICLES ----------------------------- */}
         <div className="mb-16">

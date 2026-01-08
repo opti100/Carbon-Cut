@@ -1,16 +1,27 @@
 "use client";
 
 import React from "react";
-import Navbar from "../NewLanding/Navbar";
 import FormSection from "./form";
 import { PixelatedCanvas } from "../ui/pixelated-canvas";
 import { BlurFade } from "../ui/blur-fade";
+import CardNav from "../CardNav";
+import { navData } from "../NavData";
 
 export default function HeroSectionOne() {
   return (
     <div className="min-h-screen bg-[#fcfdf6] flex flex-col">
       {/* Navbar */}
-      <Navbar />
+      <div className="absolute top-0 left-0 right-0 z-20">
+        <CardNav
+          logo="/CarbonCut-fe/CC.svg"
+          logoAlt="CarbonCut Logo"
+          items={navData}
+          baseColor="rgba(255, 255, 255, 0.1)"
+          menuColor="#080c04"
+          buttonBgColor="#b0ea1d"
+          buttonTextColor="#080c04"
+        />
+      </div>
 
       {/* Main Section */}
       <div className="flex-1 flex items-center">
@@ -56,7 +67,7 @@ export default function HeroSectionOne() {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="flex items-center justify-center h-full mt-5">
+          <div className="flex mt-10 lg:mt-20">
             <div className="w-full ">
               <FormSection />
             </div>

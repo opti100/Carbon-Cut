@@ -1,10 +1,7 @@
 "use client";
 import CardNav from "@/components/CardNav";
-import { description } from "@/components/dashboard/Chart-Area-Interactive";
 import { navData } from "@/components/NavData";
 import { CardContent } from "@/components/ui/card";
-import { HoverEffect } from "@/components/ui/card-hover-effect";
-import UniversalHeading from "@/components/UniversalHeading";
 import { motion } from "motion/react";
 
 export function HeroSectionWebApps() {
@@ -24,7 +21,7 @@ export function HeroSectionWebApps() {
             </div>
 
             <div className="px-4 py-10 md:py-20">
-                <h1 className="relative z-10 mx-auto max-w-4xl text-center text-2xl font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
+                <h1 className="relative z-10 mx-auto max-w-6xl text-center text-2xl font-mono font-bold text-[#6c5f31] md:text-4xl lg:text-7xl ">
                     {"Track Your Digital Product"
                         .split(" ")
                         .map((word, index) => (
@@ -56,19 +53,34 @@ export function HeroSectionWebApps() {
                         duration: 0.3,
                         delay: 0.8,
                     }}
-                    className="relative z-10 mx-auto max-w-xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
+                    className="relative z-10 mx-auto max-w-6xl py-4 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
                 >
                     Install our SDK to start tracking carbon emissions from your website or application
                 </motion.p>
-               
+
 
             </div>
 
-            <div className="max-w-5xl mx-auto px-8">
-                <HoverEffect items={projects} />
+            <div className="max-w-5xl mx-auto px-8 my-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projects.map((item, index) => (
+                        <div
+                            key={index}
+                            className="rounded-2xl  bg-[#d1cebb] p-6 shadow-sm hover:shadow-md transition"
+                        >
+                            <h3 className=" font-semibold mb-2">
+                                {item.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm">
+                                {item.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
 
-          <CardContent className="w-full mx-auto max-w-5xl ">
+
+            <CardContent className="w-full mx-auto max-w-5xl ">
 
                 {/* Instructions */}
                 <div className="rounded-xl bg-[#d1cebb] p-6">
@@ -108,5 +120,5 @@ const projects = [
         description:
             "View detailed analytics and insights about your digital carbon footprint",
     },
-   
+
 ];

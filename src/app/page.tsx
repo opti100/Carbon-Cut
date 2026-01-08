@@ -1,19 +1,19 @@
 "use client"
-import { MarqueeDemo } from "@/components/marqueeDemo";
-import Blogs from "@/components/NewLanding/Blogs";
-import Core from "@/components/NewLanding/Core";
-import FeatureSection from "@/components/NewLanding/FeaturSection";
-import Footer from "@/components/NewLanding/Footer";
-import Hero from "@/components/NewLanding/Hero";
-import HowItWorks from "@/components/NewLanding/HowItWorks";
+
 import CardNav from "@/components/CardNav";
-import PreFooter from "@/components/NewLanding/PreFooter";
-import Standards from "@/components/NewLanding/Standards";
-import TrustedBySection from "@/components/NewLanding/TrustedBySection";
-import { CardNavItem } from "@/components/CardNav";
 import LenisSmoothScroll from "@/components/LenisSmoothScroll";
+import Blogs from "@/components/main/Blogs";
+import Core from "@/components/main/Core";
+import FeatureSection from "@/components/main/FeaturSection";
+import Footer from "@/components/main/Footer";
+import Hero from "@/components/main/Hero";
+import HowItWorks from "@/components/main/HowItWorks";
+import { ImpactSection } from "@/components/main/Impact";
+import PreFooter from "@/components/main/PreFooter";
+import Standards from "@/components/main/Standards";
+import TrustedBySection from "@/components/main/TrustedBySection";
 import { navData } from "@/components/NavData";
-import { ImpactSection } from "@/components/NewLanding/Impact";
+
 
 
 export default function Home() {
@@ -33,6 +33,7 @@ export default function Home() {
 
                     <div data-scroll-section>
                         <Hero />
+                     
                     </div>
 
                     <div data-scroll-section>
@@ -64,6 +65,7 @@ export default function Home() {
                     </div>
 
                     <div data-scroll-section>
+                        
                         <PreFooter />
                     </div>
 

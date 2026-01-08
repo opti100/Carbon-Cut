@@ -1,7 +1,7 @@
 import React from 'react'
 import CalculatorForm from './calculator-form'
 import CalculatorLanding from './calculatorLanding'
-import PreFooter from '../NewLanding/PreFooter'
+import PreFooter from '../main/PreFooter'
 
 const Calculator = () => {
   return (

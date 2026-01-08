@@ -43,22 +43,14 @@ const WebAndApps = () => {
         )}
       >
         {/* Step 2 – SDK Installation */}
-        <div className="w-full max-w-5xl mx-auto border bg-[#d1cebb] rounded-lg p-8 mt-8  shadow-md">
-          <CardHeader>
-            <CardTitle>
-              Install SDK for Web & Apps
-            </CardTitle>
-            <CardDescription>
-              Follow these steps to integrate our tracking SDK into your Web & Apps
-            </CardDescription>
-          </CardHeader>
+        <div className="max-w-5xl mx-auto px-8  bg-[#d1cebb] rounded-lg p-8   shadow-md">
+         
 
-          <CardContent className=" space-y-8 flex justify-center">
-           
+         
             <div>
               <ApiKeyStep onNext={handleWebsiteComplete} sourceType="web" />
             </div>
-          </CardContent>
+         
         </div>
       </main>
 

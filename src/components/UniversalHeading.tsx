@@ -70,15 +70,10 @@ const UniversalHeading = ({
         className={`
           ${alignmentClass}
           font-bold font-mono text-[#6c5f31]
-          leading-[1.15]
-          break-words
-          hyphens-auto
-
           text-xl
           sm:text-3xl
           md:text-4xl
-          lg:text-5xl
-          xl:text-6xl
+          lg:text-4xl
         `}
       >
         {typeof title === "string"

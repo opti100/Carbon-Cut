@@ -18,8 +18,9 @@ import CampaignStep from './steps/CampaignStep';
 import ActivitiesStep from './steps/ActivitiesStep';
 import DetailsStep from './steps/DetailsStep';
 import { useEmissionsCalculator } from './hooks/useEmissionsCalculator';
-import PreFooter from '../NewLanding/PreFooter';
-import Footer from '../NewLanding/Footer';
+import Footer from '../main/Footer';
+import PreFooter from '../main/PreFooter';
+
 
 export default function CalculatorLanding() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -391,22 +392,11 @@ export default function CalculatorLanding() {
             </div>
 
           </div>
-          <CalculatorFAQ />
-          <PreFooter />
-          <Footer />
-
+       
         </>
       )}
 
-      {activities.length === 0 && (
-        <>
-          <CalculatorFAQ />
-          <PreFooter />
-          <Footer />
-        </>
-      )}
-
-
+    
     </div>
   );
 }

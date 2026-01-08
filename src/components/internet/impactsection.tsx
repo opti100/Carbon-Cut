@@ -22,7 +22,7 @@ export default function ImpactSection() {
       <UniversalHeading
         title="How We Calculate Your Emissions"
         description="We've built the most comprehensive digital emission tracking methodology that actually reflects reality:"
-        align="left"
+        align="right"
       />
 
       {/* ---------- DESKTOP UI ---------- */}
@@ -36,7 +36,7 @@ export default function ImpactSection() {
                 key={tab.id}
                 onMouseEnter={() => setActive(tab.id)}
                 className={`cursor-pointer p-6 rounded-2xl transition
-                  ${isActive ? "bg-[#f8fceb] shadow-sm" : "hover:bg-[#fafdf0]"}
+                 "bg-[#f8fceb] shadow-sm" "}
                 `}
               >
                 <div className="flex items-start justify-between gap-4">
@@ -60,7 +60,7 @@ export default function ImpactSection() {
         </div>
 
         {/* RIGHT panel */}
-        <div className="bg-[#f8fceb] p-8 rounded-2xl min-h-[430px] border border-[#e7e6d8]">
+        <div className=" p-8 rounded-2xl min-h-[430px]">
           {activeTab.panel}
         </div>
       </div>

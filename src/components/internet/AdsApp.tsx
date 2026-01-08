@@ -4,7 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { BlurFade } from "../ui/blur-fade";
 import Link from "next/link";
-import { PinContainer } from "../ui/3d-pin";
+import { PinContainer } from "../ui/pin-3d";
 import UniversalHeading from "../UniversalHeading";
 
 export function InternetAdsWebApp() {

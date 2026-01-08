@@ -80,17 +80,16 @@ export const StickyScroll = ({
       ref={containerRef}
       className="bg-[#fcfdf6] py-24 px-4 md:px-8 lg:px-16"
     >
-      <div className="max-w-7xl mx-auto space-y-28">
+      <div className="max-w-8xl mx-auto space-y-28">
         {content.map((item, index) => (
           <div
             key={index}
-            className={`content-section-${index} grid grid-cols-1 lg:grid-cols-2 gap-12 items-start`}
+            className={`content-section-${index} grid grid-cols-1 lg:grid-cols-2 gap-12 items-start `}
           >
             {/* Left: Title */}
             <h2
               ref={(el) => { titleRefs.current[index] = el; }}
               className="text-4xl md:text-4xl lg:text-4xl font-bold text-[#080c04] font-mono leading-tight"
-
             >
               {item.title}
             </h2>
@@ -98,7 +97,7 @@ export const StickyScroll = ({
             {/* Right: Description */}
             <p
               ref={(el) => { descriptionRefs.current[index] = el; }}
-              className=" text-[#6c5f31] leading-relaxed font-mono max-w-xl"
+              className=" text-[#6c5f31] leading-relaxed font-mono "
             >
               {item.description}
             </p>

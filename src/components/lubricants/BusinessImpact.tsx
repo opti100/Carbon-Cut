@@ -11,35 +11,35 @@ import UniversalHeading from "../UniversalHeading"
 const features = [
   {
     title: "Reduce carbon taxes by up to 17%",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Reduce-Carbon.png",
   },
   {
     title: " Low cost, low effort activity ",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Low-Cost.png",
   },
   {
     title: "Double your accuracy and quality of CO2e reporting",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Double-accuracy.png",
   },
   {
     title: "Win ESG-driven tenders",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/ESG-driven-tenders.png",
   },
   {
     title: "Increase stakeholder confidence",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Stakeholder-Confidence.png",
   },
   {
     title: "Improve supply chain transparency",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Supply-chain.png",
   },
   {
     title: " Eliminate manual carbon reporting",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Manual-Carbon-Reporting.png",
   },
   {
     title: "Track progress toward Net-Zero 2030/2050",
-    image: "/auth-hero.jpg",
+    image: "/lubricants/BusinessImpact/Net-Zero.png",
   },
 ]
 
