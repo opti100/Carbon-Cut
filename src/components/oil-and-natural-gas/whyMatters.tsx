@@ -43,14 +43,11 @@ export default function AIOptimizationSection() {
                 </p>
                
               </div>
-
-              
             </div>
           </div>
 
           {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-6">
-
             {/* Image / Glow Card */}
             <div className="relative bg-[#d1cebb] rounded-2xl overflow-hidden min-h-[260px]">
               <div className="absolute inset-0 bg-gradient-to-br from-[#d1cebb] via-[#b6a157] to-transparent blur-2xl" />
