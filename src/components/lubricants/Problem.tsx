@@ -42,7 +42,7 @@ export default function StackedCards() {
   }, [])
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6lg:px-8">
       <UniversalHeading
         title="The Lubricants Industry’s Hidden Problem"
         description="Your CO₂e data is outdated, averaged, and full of blind spots."

@@ -76,8 +76,8 @@ export const StickyScroll = ({
   }, [content])
 
   return (
-    <section ref={containerRef} className="bg-[#fcfdf6] py-24 px-4 md:px-8 lg:px-16">
-      <div className="max-w-8xl mx-auto space-y-28">
+    <section ref={containerRef} className="bg-[#fcfdf6] py-24 ">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-28">
         {content.map((item, index) => (
           <div
             key={index}

@@ -23,6 +23,7 @@ export default function Lubricant() {
             <UniversalHeading
               title="Tracking & Reporting"
               className="whitespace-nowrap text-left sm:text-left"
+              align='left'
             />
 
             <p className="text-sm sm:text-base md:text-base leading-relaxed opacity-90">

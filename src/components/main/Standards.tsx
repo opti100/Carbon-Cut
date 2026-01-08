@@ -169,22 +169,24 @@ const Standards = () => {
       // data-scroll-section
     >
       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
+       
 
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-8 ">
         <UniversalHeading
           title="Carbon Standards"
           description="Registered and Verified"
           align="right"
         />
+       
 
-        <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory scroll-smooth ">
+        <div className="flex gap-6 mx-auto  overflow-x-auto pb-8 scrollbar-hide snap-x snap-mandatory scroll-smooth ">
           {standards.map((standard, index) => (
             <div
               key={standard.name}
               ref={(el) => {
                 cardsRef.current[index] = el
               }}
-              className="flex-shrink-0 h-[600px] w-[340px] bg-accent rounded-4xl border border-text/10 overflow-hidden group hover:shadow-sm snap-center"
+              className="flex-shrink-0 h-[650px] w-[400px] bg-accent rounded-4xl border border-text/10 overflow-hidden group hover:shadow-sm snap-center"
             >
               <div className="w-full flex justify-between h-16">
                 <div>

@@ -84,7 +84,7 @@ const WhoUses = () => {
       <div className="w-full border-t border-dashed border-text/10" />
 
       <div className="py-10">
-        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-[1400px] px-4 sm:6 lg:px-8 w-full ">
           {/* HEADER */}
           <UniversalHeading
             title="Who Uses this?"

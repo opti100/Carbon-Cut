@@ -87,14 +87,15 @@ const content = [
 export function DigitalEcosystemTwo() {
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <UniversalHeading
+   
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 ">
+         <UniversalHeading
           title="Built for the Entire Digital Ecosystem"
           description="Whether you're disrupting finance or revolutionising entertainment, we understand your business:"
           align="right"
         />
 
-        <div className="w-full bg-[#fcfdf6]">
+        <div className=" bg-[#fcfdf6]">
           <StickyScroll content={content} />
         </div>
       </div>

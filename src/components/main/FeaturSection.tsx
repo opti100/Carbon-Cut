@@ -223,16 +223,19 @@ export default function FeatureSection() {
   return (
     <>
       <div className="w-full border-t border-dashed border-text/10  "></div>
+      <div className='px-4 sm:px-6 lg:px-8'>
+
       <UniversalHeading
         title="Carbon Reduction"
         description="Powerful Features for"
         align="right"
-      />
+        />
+        </div>
       {isHovering && <SmoothCursor />}
 
       <div
         ref={containerRef}
-        className="w-full h-screen lg:h-screen flex flex-col overflow-hidden relative"
+        className="w-full  flex flex-col overflow-hidden relative"
         onMouseDown={handleMouseDown}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}

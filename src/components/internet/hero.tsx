@@ -5,10 +5,11 @@ import CardNav from '../CardNav'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { navData } from '../NavData'
+import AnimatedHeroText from '../main/AnimatedHeroText'
 
 export function InternetHero() {
   return (
-    <section className="relative w-full min-h-[90vh] overflow-hidden">
+    <section className="relative px-4 sm:px-6 lg:px-8  w-full min-h-[90vh] overflow-hidden">
       {/* Navbar */}
       <div className="absolute top-0 left-0 right-0 z-20">
         <CardNav
@@ -35,9 +36,10 @@ export function InternetHero() {
       </div>
 
       {/* Hero Content (single column, centered) */}
-      <div className="relative z-10 flex min-h-screen items-center justify-start">
-        <div className="max-w-5xl px-6 md:px-12 text-left">
-          <h1 className="text-white text-4xl md:text-5xl font-semibold leading-tight text-left mx-auto max-w-7xl">
+      <div className="relative z-10 flex items-center min-h-screen ">
+        <div className="w-full max-w-[1400px] mx-auto">
+       
+          <h1 className="text-white text-4xl md:text-5xl font-semibold leading-tight text-left ">
             The easiest way to become a net-zero Internet Company.
           </h1>
 

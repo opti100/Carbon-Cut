@@ -48,10 +48,12 @@ const Blogs = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <div className="bg-[#fcfdf6] w-full ">
+    <div className="bg-[#fcfdf6]  w-full ">
       {/* TOP BORDER */}
       <div className="w-full border-t border-dashed border-[#6c5f31]/30 mb-12"></div>
-      <UniversalHeading title=" Get Latest Insights" description="Blogs" align="right" />
+      <div className='px-4 sm:px-6 lg:px-8'>
+      <UniversalHeading title=" Get Latest Insights" description="Blogs" align="right"  />
+      </div>
 
       {/* ---------- BLOG CARDS (FULL WIDTH) ---------- */}
       <div className="w-full ">

@@ -57,7 +57,7 @@ export default function CarbonCutHowItWorks() {
   }, [])
 
   return (
-    <div className="bg-[#fcfdf6] text-[#080c04] min-h-screen py-20 px-6 max-w-7xl mx-auto">
+    <div className="bg-[#fcfdf6] text-[#080c04] min-h-screen py-20  max-w-[1400px] px-4 sm:px-6 lg:px-8 mx-auto">
       <UniversalHeading
         title="How CarbonCut Works"
         align="right"

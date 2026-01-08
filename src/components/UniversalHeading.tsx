@@ -48,7 +48,7 @@ const UniversalHeading = ({
     align === 'left' ? 'text-left' : align === 'center' ? 'text-center' : 'text-right'
 
   return (
-    <div className="mt-4 sm:mt-6 md:mt-8  mx-auto px-4 sm:px-6 lg:px-8 mb-4 sm:mb-6 md:mb-8">
+    <div className="max-w-[1400px] mt-4 sm:mt-6 md:mt-8  mx-auto   mb-4 sm:mb-6 md:mb-8">
       {/* DESCRIPTION */}
       {description && (
         <p

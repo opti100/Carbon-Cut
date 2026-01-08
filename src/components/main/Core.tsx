@@ -103,7 +103,7 @@ const Core = () => {
     >
       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mb-8"></div>
 
-      <div className="w-full px-0">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <UniversalHeading
           title=" Delivering Results"
           description="Core Values"

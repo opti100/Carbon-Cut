@@ -61,7 +61,7 @@ const ContactSection = () => {
       <div className="w-full border-t border-dashed border-black/10 py-10" />
 
       <section ref={containerRef} className="w-full bg-[#fcfdf6] px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-[1400px] py-10">
           {/* Heading */}
           <UniversalHeading
             title="Ready to Calculate Your Lubricants CO₂e?"

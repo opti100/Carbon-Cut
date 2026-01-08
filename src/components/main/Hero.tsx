@@ -69,7 +69,7 @@ const Hero = () => {
   }, [])
 
   return (
-    <section className="relative h-screen w-full" data-scroll-section>
+    <section className="relative h-screen w-full px-4 sm:px-6 lg:px-8" data-scroll-section>
       {!isVideoLoaded && (
         <div className="w-full h-full overflow-hidden rounded-xl">
           <Image
@@ -86,11 +86,11 @@ const Hero = () => {
       </div>
 
       <div
-        className={`flex items-center h-full transition-opacity duration-1000 ${
+        className={`flex items-center justify-start h-full transition-opacity duration-1000  ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+        <div className="w-full max-w-[1400px] mx-auto ">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <AnimatedHeroText />

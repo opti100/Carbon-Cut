@@ -118,7 +118,7 @@ const Hero = () => {
         </div>
 
         <div
-          className={`flex flex-col items-start justify-center h-full px-6 max-w-7xl mx-auto transition-opacity duration-1000 ${
+          className={`flex flex-col justify-center h-full px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto transition-opacity duration-1000 ${
             showContent ? 'opacity-100' : 'opacity-0'
           }`}
           data-scroll

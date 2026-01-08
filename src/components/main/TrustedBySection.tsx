@@ -13,16 +13,18 @@ const TrustedBySection = () => {
       ref={sectionRef}
       style={{
         opacity: opacity,
-        transition: 'opacity 0.3s ease-out',
+        transition: 'opacity 0.3s ease-out ',
       }}
     >
       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
 
+<div className='px-4 sm:px-6 lg:px-8'>
       <UniversalHeading
         title="Leading Companies"
         description="Trusted By"
         align="right"
       />
+      </div>
 
       <div className="relative flex h-[400px] md:h-[600px] lg:h-[850px] w-full items-center justify-center overflow-hidden bg-[#fcfdf6]">
         {/* Gradient overlay to hide bottom of semi-circles */}

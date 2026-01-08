@@ -104,12 +104,15 @@ const WhatWeDo = () => {
     >
       <div className="w-full border-t border-dashed border-[#6c5f31]/20 mb-8"></div>
 
-      <div className="w-full px-0">
+      <div className="w-full  ">
+        <div className='px-4 sm:px-6 lg:px-8'>
+
         <UniversalHeading
           title="What We Do"
           description="End-to-End Emission Monitoring for Oil & Gas"
           align="right"
-        />
+          />
+          </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-0">
           {achievements.map((achievement, index) => (

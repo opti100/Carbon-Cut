@@ -19,7 +19,7 @@ export default function ProblemWeareSolving() {
         <div className="absolute left-0 top-32 w-[900px] h-[900px] rounded-full border-[1px] border-[#e3dacd]" />
       </div>
 
-      <div className="relative max-w-6xl mx-auto px-6">
+      <div className="relative max-w-[1400px]  mx-auto px-4 sm:px-6 lg:px-8">
         {/* subtitle */}
         <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-4">
           The Problem We're Solving

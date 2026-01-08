@@ -64,14 +64,14 @@ export default function BusinessImpact() {
   })
 
   return (
-    <section className="w-full py-20 bg-[#fcfdf6]">
+    <section className="w-full py-20  bg-[#fcfdf6]">
       {/* Header */}
-      <div className="max-w-7xl mx-auto px-6 mb-12">
+      <div className="max-w-[1400px] mx-auto px-6 mb-12">
         <UniversalHeading title="Business Impact" />
       </div>
 
       {/* Slider */}
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-[1400px] mx-auto ">
         <div ref={sliderRef} className="keen-slider">
           {features.map((feature, index) => (
             <div key={index} className="keen-slider__slide">

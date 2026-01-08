@@ -37,7 +37,7 @@ export default function OtherFactor() {
   return (
     <>
       <section className="w-full bg-[#fcfdf6] py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <UniversalHeading description="Additional Value" align="right" />
 
           {/* ---------- LARGE SCREEN GRID ---------- */}

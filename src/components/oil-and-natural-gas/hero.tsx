@@ -35,9 +35,10 @@ export function HeroOilGas() {
       </div>
 
       {/* Hero Content (single column, centered) */}
-      <div className="relative z-10 flex min-h-screen items-center justify-start">
-        <div className="max-w-5xl px-6 md:px-12 text-left">
-          <h1 className="text-white text-2xl md:text-3xl font-semibold leading-tight text-left mx-auto max-w-7xl">
+      <div className="relative z-10 flex min-h-screen  items-center ">
+         <div className="w-full max-w-[1400px] px-4 sm:px-6 lg:px-8 mx-auto">
+          
+          <h1 className="text-white text-4xl md:text-5xl font-semibold leading-tight text-left ">
             Track oil and gas emissions across upstream, midstream, and downstream
             operations.
           </h1>
@@ -47,7 +48,7 @@ export function HeroOilGas() {
               <Link href="/oil-and-natural-gas/lubricant" className="desktop-cta-link">
                 <button
                   type="button"
-                  className="card-nav-cta-button"
+                  className="card-nav-cta-button "
                   style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                   Lubricant

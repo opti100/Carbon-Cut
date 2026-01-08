@@ -45,8 +45,9 @@ const content = [
 export function ImpactSection() {
   return (
     <>
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <UniversalHeading
+    <div className='pt-20 px-4 sm:px-6 lg:px-8'>
+     <div className="w-full border-t border-dashed border-text/10 mb-20"></div>
+     <UniversalHeading
           title="Our Impact & Expertise at a Glance"
           description={
             <>
@@ -58,11 +59,13 @@ export function ImpactSection() {
             </>
           }
           align="right"
+          
         />
-
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <div className="w-full bg-[#fcfdf6]">
           <StickyScroll content={content} />
         </div>
+      </div>
       </div>
     </>
   )

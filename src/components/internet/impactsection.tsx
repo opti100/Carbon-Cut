@@ -11,8 +11,10 @@ export default function ImpactSection() {
   const activeTab = TABS.find((t) => t.id === active) || TABS[0] // fallback for desktop hover
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-      <UniversalHeading
+    <>
+     
+    <section className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+     <UniversalHeading
         title="How We Calculate Your Emissions"
         description="We've built the most comprehensive digital emission tracking methodology that actually reflects reality:"
         align="right"
@@ -86,6 +88,7 @@ export default function ImpactSection() {
         })}
       </div>
     </section>
+    </>
   )
 }
 

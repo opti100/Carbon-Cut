@@ -74,7 +74,7 @@ export default function InternetAds() {
       />
 
       {/* AUTH OVERLAY */}
-      {!isAuthenticated && (
+      {/* {!isAuthenticated && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
           <Card className="max-w-8xl w-full shadow-2xl">
             <CardHeader className="text-center">
@@ -100,7 +100,7 @@ export default function InternetAds() {
             </CardContent>
           </Card>
         </div>
-      )}
+      )} */}
     </>
   )
 }

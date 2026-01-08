@@ -28,11 +28,11 @@ export default function CarbonCutComparison() {
 
       <div className="bg-[#fcfdf6] text-[#080c04] font-mono p-6 md:p-10">
         {/* ======================== DESKTOP UI ======================== */}
-        <div className="hidden md:block max-w-7xl mx-auto">
+        <div className="hidden md:block max-w-[1400px] mx-auto">
           {/* same existing desktop grid retained */}
           <div className="min-h-screen bg-[#fcfdf6] text-[#080c04] font-mono p-8">
             {/* Header */}
-            <div className="max-w-7xl mx-auto mb-8">
+            <div className="max-w-[1400px] mx-auto mb-8">
               <div className="flex items-center justify-between border-b border-[#d1cebb] pb-4">
                 <div className="flex items-center gap-8 text-xs">
                   <div>
@@ -49,7 +49,7 @@ export default function CarbonCutComparison() {
             </div>
 
             {/* Main Content */}
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-[1400px] mx-auto">
               {/* Title Section */}
               <div className="  text-[#6c5f31] mx-auto mb-10 ">
                 <div className="text-xs ">01 // Advancement</div>
@@ -210,7 +210,7 @@ export default function CarbonCutComparison() {
         {/* ======================== MOBILE UI ======================== */}
         <div className="md:hidden space-y-6">
           {/* ---------- TITLE ---------- */}
-          <div className="max-w-7xl mx-auto mb-6">
+          <div className="max-w-[1400px] mx-auto mb-6">
             <div className="text-xs text-[#6c5f31] mb-2">01 // Advancement</div>
 
             <BlurFade delay={0.1} inView>

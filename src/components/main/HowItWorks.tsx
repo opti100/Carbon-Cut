@@ -436,12 +436,15 @@ export default function HowItWorks() {
       <div className="w-full border-t border-dashed border-[#6c5f31]/10 mb-8"></div>
 
       {/* Desktop Layout - Original Parallax */}
-      <div className="hidden lg:block">
+          
+      <div className="hidden lg:block px-4 sm:px-6 lg:px-8 ">
+        
         <UniversalHeading
           title="Track.Decarbon.Report"
           description="How It Works"
           align="right"
-        />
+          />
+          
 
         <div className="prllx-wrapper relative flex h-[700lvh] flex-row overflow-clip">
           {/* Left Side - Sticky Fields */}

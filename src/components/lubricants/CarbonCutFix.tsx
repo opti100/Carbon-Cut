@@ -36,7 +36,7 @@ const DATA = [
 export function CarbonCutFix() {
   return (
     <>
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-[1400px] px-4 sm:px-6 lg:px-8 mx-auto py-20">
         <UniversalHeading
           title="Built for the Entire Digital Ecosystem"
           description="Whether you're disrupting finance or revolutionising entertainment, we understand your business:"

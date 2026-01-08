@@ -73,7 +73,7 @@ export default function TechnicalEngine() {
     <>
       <div className="w-full border-t border-dashed border-text/10 mb-4 sm:mb-6 md:mb-8"></div>
 
-      <div className="min-h-screen bg-[#fcfdf6] text-[#080c04] py-10 px-6">
+      <div className="min-h-screen  bg-[#fcfdf6] text-[#080c04] py-10 px-6">
         <UniversalHeading
           title="Technical Engine"
           align="right"
@@ -86,7 +86,7 @@ export default function TechnicalEngine() {
           className="relative pb-[60vh] hidden md:block"
           style={{ height: '400vh' }}
         >
-          <div className="mx-auto max-w-7xl px-4 flex gap-10">
+          <div className="mx-auto max-w-[1400px] px-4 flex gap-10">
             {/* LEFT TEXT BLOCK */}
             <div className="w-1/2 sticky top-8 h-[600px] flex items-center">
               <div>
@@ -140,7 +140,7 @@ export default function TechnicalEngine() {
             </div>
           </div>
         </div>
-        <div className="h-screen" />
+        {/* <div className="h-screen" /> */}
 
         {/* ===================== MOBILE VERSION ===================== */}
         <div className="md:hidden mt-10 space-y-4">

@@ -58,7 +58,7 @@ export default function CalculatorFAQ() {
       className="px-4 sm:px-6 md:px-12 lg:px-24 py-12 sm:py-16 md:py-20 lg:py-28"
       style={{ background: '#fcfdf6' }}
     >
-      <div className="max-w-[1700px] mx-auto space-y-12 sm:space-y-16 md:space-y-24">
+      <div className="max-w-[1400px] mx-auto space-y-12 sm:space-y-16 md:space-y-24">
         {/* SECTION 1 */}
         <div className="space-y-8 sm:space-y-12 md:space-y-16">
           {/* CLEAN FULL-WIDTH DIVIDER */}

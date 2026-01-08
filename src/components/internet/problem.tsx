@@ -5,7 +5,7 @@ const Problem = () => {
   return (
     <div className="bg-[#fcfdf6]">
       {/* Section 1 */}
-      <div className="min-h-[70vh] lg:min-h-screen max-w-7xl mt-16 lg:mt-28 mx-auto px-4 sm:px-6 lg:px-12 flex flex-col items-start justify-center text-left">
+      <div className="min-h-[70vh] lg:min-h-screen max-w-[1400px] mt-16 lg:mt-28 mx-auto px-4 sm:px-6 lg:px-12 flex flex-col items-start justify-center text-left">
         <AnimatedHeading
           text="Your Internet Business Has a Carbon Footprint. We Help You Track, Reduce, and Report It.."
           className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight"
@@ -21,7 +21,7 @@ const Problem = () => {
       </div>
 
       {/* Section 2 */}
-      <div className="min-h-[70vh] lg:min-h-screen max-w-7xl mx-auto flex flex-col px-4 sm:px-6 lg:px-12 items-start justify-center text-left">
+      <div className="min-h-[70vh] lg:min-h-screen max-w-[1400px] mx-auto flex flex-col px-4 sm:px-6 lg:px-12 items-start justify-center text-left">
         <AnimatedHeading
           text="The problem?"
           className="text-3xl sm:text-4xl lg:text-5xl font-semibold"

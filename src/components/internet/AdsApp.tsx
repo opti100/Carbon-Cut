@@ -10,14 +10,16 @@ import UniversalHeading from '../UniversalHeading'
 export function InternetAdsWebApp() {
   return (
     <>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+     
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 ">
         <UniversalHeading
           title="Choose Your Emission Category"
           description="Understanding your digital footprint starts here. Select what matters most to your business."
           align="right"
         />
+       
 
-        <div className="py-20 flex flex-col lg:flex-row items-center justify-evenly bg-[#fcfdf6] dark:bg-black max-w-7xl  mx-auto px-8">
+        <div className="py-20 flex flex-col lg:flex-row items-center justify-evenly bg-[#fcfdf6] dark:bg-black max-width: 1400px  mx-auto px-8">
           <PinContainer title="Internet Ads" href="/internet/internet-ads">
             <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
               <div className="text-base !m-0 !p-0 font-normal">

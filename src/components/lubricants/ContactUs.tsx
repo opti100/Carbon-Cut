@@ -50,7 +50,7 @@ export default function LubricantCO2Form() {
     <>
       <div className="w-full border-t border-dashed border-text/10 mb-8"></div>
       <section className="py-20 bg-[#fcfdf6]">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-[1400px] mx-auto  grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* ------------------------- LEFT CONTENT ------------------------- */}
           <div className="space-y-8 text-[#6c5f31] font-mono">
             <UniversalHeading

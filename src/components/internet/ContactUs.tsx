@@ -7,7 +7,7 @@ import Link from 'next/link'
 export default function PricingHero() {
   return (
     <section className="min-h-screen bg-[#fcfdf6] text-[#080c04] font-mono relative overflow-hidden py-10">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* ---------- Desktop: 2 columns ---------- */}
         <div className="hidden lg:grid grid-cols-2 border border-[#d1cebb] shadow-[0_0_0_1px_rgba(209,206,187,0.4)]">
           {/* LEFT SIDE */}
