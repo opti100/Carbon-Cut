@@ -16,7 +16,7 @@ import { format } from 'date-fns'
 import { DateRange } from 'react-day-picker'
 import { CountryData } from '@/types/types'
 
-interface CampaignStepProps {
+export interface CampaignStepProps {
   campaignPeriod: DateRange | undefined
   setCampaignPeriod: (value: DateRange | undefined) => void
   market: string

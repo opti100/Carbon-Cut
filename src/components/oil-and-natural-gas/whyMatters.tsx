@@ -8,24 +8,18 @@ export default function AIOptimizationSection() {
   return (
     <section className="relative w-full bg-[#fcfdf6] text-lack py-24">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        
-        {/* Heading */}
-       
-        <UniversalHeading title='Why it matters' align='right' />
 
+        {/* Heading */}
+        <UniversalHeading title='Why it matters' align='right' />
         {/* Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
           {/* LEFT CARD — Visualization */}
           <div className="bg-[#d1cebb] rounded-2xl p-8 flex items-center justify-center min-h-[420px]">
             <MatrixVisual />
           </div>
-
           {/* CENTER CARD — Text */}
           <div className="bg-[#d1cebb] rounded-2xl p-10 flex flex-col justify-between min-h-[420px]">
             <div>
-             
-
               <h3 className="text-2xl lg:text-3xl font-medium mb-6">
                 Oil and gas operations generate complex and widespread carbon emissions
               </h3>
@@ -39,9 +33,8 @@ export default function AIOptimizationSection() {
             <div className="flex items-center gap-6 mt-12">
               <div>
                 <p className="text-xs text-black uppercase mb-1">
-                 Built on industry-accepted methodologies
+                  Built on industry-accepted methodologies
                 </p>
-               
               </div>
             </div>
           </div>
@@ -52,9 +45,8 @@ export default function AIOptimizationSection() {
             <div className="relative bg-[#d1cebb] rounded-2xl overflow-hidden min-h-[260px]">
               <div className="absolute inset-0 bg-gradient-to-br from-[#d1cebb] via-[#b6a157] to-transparent blur-2xl" />
               <div className="relative p-8 h-full flex flex-col justify-end">
-               
                 <h4 className="text-xl font-medium">
-                 Traditional methods miss key sources like methane leaks and flaring, leading to gaps in compliance and decarbonization
+                  Traditional methods miss key sources like methane leaks and flaring, leading to gaps in compliance and decarbonization
                 </h4>
               </div>
             </div>
@@ -67,7 +59,7 @@ export default function AIOptimizationSection() {
                   Oil and Natural Gas
                 </p>
                 <h4 className="text-lg font-medium">
-                 Provide real-time emissions monitoring across operations for accurate reporting 
+                  Provide real-time emissions monitoring across operations for accurate reporting
                 </h4>
               </div>
             </div>
@@ -88,13 +80,12 @@ function MatrixVisual() {
       {Array.from({ length: 16 }).map((_, i) => (
         <div
           key={i}
-          className={`w-12 h-12 rounded-md border ${
-            [1, 6, 12].includes(i)
+          className={`w-12 h-12 rounded-md border ${[1, 6, 12].includes(i)
               ? 'border-[#6c5f31]'
               : i === 2 || i === 9
-              ? 'border-black'
-              : 'border-gray-400/30'
-          }`}
+                ? 'border-black'
+                : 'border-gray-400/30'
+            }`}
         />
       ))}
     </div>
