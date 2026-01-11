@@ -15,6 +15,7 @@ interface DropdownProps {
   label?: string;
   value?: string;
   onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export default function Dropdown({
@@ -24,6 +25,7 @@ export default function Dropdown({
   label,
   value,
   onChange,
+  disabled = false,
 }: DropdownProps) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Option | null>(null);
@@ -49,7 +51,7 @@ export default function Dropdown({
   };
 
   return (
-    <div className="relative w-full max-w-sm">
+    <div className="relative w-full">
       {/* Label */}
       {label && (
         <span className="mb-1 block text-sm font-medium text-neutral-700">
@@ -60,10 +62,12 @@ export default function Dropdown({
       {/* Trigger */}
       <button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => !disabled && setOpen((prev) => !prev)}
+        disabled={disabled}
         className={clsx(
           "flex w-full items-center justify-between rounded-md border border-[#d1cebb] bg-[#fcfdf6] outline-none transition-all focus:border-black",
-          sizeStyles[size]
+          sizeStyles[size],
+          disabled && "opacity-50 cursor-not-allowed"
         )}
       >
         <span className={clsx(selected ? "text-black" : "text-neutral-500")}>

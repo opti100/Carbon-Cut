@@ -4,18 +4,37 @@ import { useState } from "react";
 import clsx from "clsx";
 
 interface FloatingInputProps {
-  placeholder: string;
+  placeholder?: string;
   size?: "small" | "medium" | "big";
+  value?: string;
+  onChange?: (value: string) => void;
+  type?: string;
 }
 
 export default function FloatingInput({
   placeholder,
   size = "medium",
+  value: controlledValue,
+  onChange,
+  type = "text",
 }: FloatingInputProps) {
   const [focused, setFocused] = useState(false);
-  const [value, setValue] = useState("");
+  const [internalValue, setInternalValue] = useState("");
+
+  // Use controlled value if provided, otherwise use internal state
+  const isControlled = controlledValue !== undefined;
+  const value = isControlled ? controlledValue : internalValue;
 
   const isActive = focused || value.length > 0;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    if (isControlled) {
+      onChange?.(newValue);
+    } else {
+      setInternalValue(newValue);
+    }
+  };
 
   const sizeStyles = {
     small: "h-9 px-3 text-sm",
@@ -24,10 +43,11 @@ export default function FloatingInput({
   };
 
   return (
-    <div className="relative w-full max-w-sm">
+    <div className="relative w-full">
       <input
+        type={type}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={handleChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         className={clsx(
