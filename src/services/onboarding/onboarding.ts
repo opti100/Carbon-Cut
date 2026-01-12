@@ -4,30 +4,30 @@ import {
   WorkforceEmissionsData,
   OnPremData,
   TravelData,
-  OnboardingData,
 } from '@/types/onboarding'
+import { AnalyticsResponse } from '@/types/web-analytics'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v2'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
-async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`
-    const parts = value.split(`; ${name}=`)
-    if (parts.length === 2) return parts.pop()?.split(';').shift()
-    return null
-  }
+const getAuthToken = (): string | null => {
+  if (typeof document === 'undefined') return null
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; auth-token=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null
+  return null
+}
 
-  const token = getCookie('auth-token')
 
-  const headers = {
-    'Content-Type': 'application/json',
-    ...(token && { Authorization: `Bearer ${token}` }),
-    ...options.headers,
-  }
+async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+  const token = getAuthToken()
 
-  const response = await fetch(url, {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
-    headers,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options.headers,
+    },
     credentials: 'include',
   })
 
@@ -39,49 +39,35 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
   return response.json()
 }
 
+// Get current month and year
+const getCurrentPeriod = () => ({
+  month: new Date().getMonth() + 1,
+  year: new Date().getFullYear(),
+})
+
 export const onboardingApi = {
-  // Submit complete onboarding data
-  submit: async (data: OnboardingData): Promise<{ success: boolean; message?: string }> => {
-    const response = await fetchWithAuth(`${API_BASE_URL}/onboarding/`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-    return response.data || response
+  getConfig: async () => {
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/config/')
   },
 
-  // Save onboarding progress (for draft/save as you go)
-  saveProgress: async (step: number, data: Partial<OnboardingData>): Promise<void> => {
-    await fetchWithAuth(`${API_BASE_URL}/onboarding/progress/`, {
+  saveConfig: async (config: Record<string, unknown>) => {
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/configure/', {
       method: 'POST',
-      body: JSON.stringify({ step, data }),
+      body: JSON.stringify(config),
     })
   },
 
-  // Get saved onboarding progress
-  getProgress: async (): Promise<Partial<OnboardingData> | null> => {
-    try {
-      const data = await fetchWithAuth(`${API_BASE_URL}/onboarding/progress/`)
-      return data.data || null
-    } catch (error) {
-      return null
-    }
-  },
+  uploadCloudCSV: async (file: File, provider: string) => {
+    const token = getAuthToken()
+    const { month, year } = getCurrentPeriod()
 
-  // Upload cloud provider file
-  uploadCloudProviderFile: async (file: File): Promise<{ url: string; filename: string }> => {
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('provider', provider)
+    formData.append('month', String(month))
+    formData.append('year', String(year))
 
-    const getCookie = (name: string) => {
-      const value = `; ${document.cookie}`
-      const parts = value.split(`; ${name}=`)
-      if (parts.length === 2) return parts.pop()?.split(';').shift()
-      return null
-    }
-
-    const token = getCookie('auth-token')
-
-    const response = await fetch(`${API_BASE_URL}/onboarding/upload/cloud-provider/`, {
+    const response = await fetch(`${API_BASE_URL}/web/cloud/upload-csv/`, {
       method: 'POST',
       headers: {
         ...(token && { Authorization: `Bearer ${token}` }),
@@ -95,7 +81,167 @@ export const onboardingApi = {
       throw error
     }
 
-    const data = await response.json()
-    return data.data || data
+    return response.json()
   },
+
+
+  submitCloudManual: async (data: CloudProviderData, provider = 'aws') => {
+    const { month, year } = getCurrentPeriod()
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/cloud/manual/', {
+      method: 'POST',
+      body: JSON.stringify({
+        cloud_providers: [
+          {
+            provider,
+            connection_method: 'cost_estimate',
+            regions: [data.region],
+            monthly_cost_usd: parseFloat(data.monthlyCost) || 0,
+            monthly_hours_usage: parseFloat(data.monthlyHoursUsage) || 0,
+          },
+        ],
+        month,
+        year,
+      }),
+    })
+  },
+
+  // CDN Emissions
+  submitCDN: async (data: CdnData) => {
+    const { month, year } = getCurrentPeriod()
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/cdn/', {
+      method: 'POST',
+      body: JSON.stringify({
+        monthly_gb_transferred: parseFloat(data.monthlyGBTransferred) || 0,
+        provider: data.cdnProvider.toLowerCase(),
+        regions: data.regions.split(',').map((r) => r.trim()),
+        month,
+        year,
+      }),
+    })
+  },
+
+  // Workforce Emissions
+  submitWorkforce: async (data: WorkforceEmissionsData) => {
+    const { month, year } = getCurrentPeriod()
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/workforce/', {
+      method: 'POST',
+      body: JSON.stringify({
+        total_employees: 1, // Default, adjust as needed
+        remote_percentage: parseInt(data.workArrangementRemote) || 0,
+        office_locations: [
+          {
+            name: data.city,
+            sqm: parseFloat(data.squareMeters) || 0,
+            country_code: data.country,
+          },
+        ],
+        calculation_period: 'monthly',
+        month,
+        year,
+      }),
+    })
+  },
+
+  // On-Prem Server Emissions
+  submitOnPrem: async (data: OnPremData) => {
+    const { month, year } = getCurrentPeriod()
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/onprem/', {
+      method: 'POST',
+      body: JSON.stringify({
+        servers: [
+          {
+            name: data.name,
+            cpu_cores: parseInt(data.cpuCores) || 0,
+            ram_gb: parseInt(data.ramGB) || 0,
+            storage_tb: parseFloat(data.storageTB) || 0,
+            storage_type: 'ssd',
+            avg_cpu_utilization: parseFloat(data.avgCpuUtilization) / 100 || 0.35,
+            hours_per_day: parseInt(data.hoursPerDay) || 24,
+            days_per_month: 30,
+          },
+        ],
+        location_country_code: 'US',
+        pue: 1.6,
+        calculation_period: 'monthly',
+        month,
+        year,
+      }),
+    })
+  },
+
+  // Travel Emissions
+  submitTravel: async (data: TravelData) => {
+    const { month, year } = getCurrentPeriod()
+
+    const trips = data.travels.map((t) => ({
+      travel_type: t.travel_type,
+      distance_km: parseFloat(t.distance_km || '0'),
+      flight_class: t.flight_class || 'economy',
+      is_domestic: t.is_domestic === 'true',
+      passenger_count: parseInt(t.passenger_count || '1'),
+    }))
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/travel/', {
+      method: 'POST',
+      body: JSON.stringify({ trips, month, year }),
+    })
+  },
+
+  // Summary & Reports
+  getSummary: async (month?: number, year?: number) => {
+    const period = getCurrentPeriod()
+    const m = month || period.month
+    const y = year || period.year
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>(
+      `/web/summary/?month=${m}&year=${y}`
+    )
+  },
+
+  getEmissionsBySource: async (month?: number, year?: number) => {
+    const period = getCurrentPeriod()
+    const m = month || period.month
+    const y = year || period.year
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>(
+      `/web/emissions/by-source/?month=${m}&year=${y}`
+    )
+  },
+
+  exportCSRD: async (year?: number, format: 'json' | 'csv' | 'pdf' = 'json') => {
+    const y = year || getCurrentPeriod().year
+
+    return fetchWithAuth<{ success: boolean; data: unknown }>(
+      `/web/export/csrd/?year=${y}&format=${format}`
+    )
+  },
+}
+export async function fetchAnalytics(year?: number, month?: number): Promise<AnalyticsResponse> {
+  const token = getAuthToken()
+  const currentYear = new Date().getFullYear()
+  const y = year || currentYear
+  
+  let url = `${API_BASE_URL}/web/analytics/?year=${y}`
+  if (month) {
+    url += `&month=${month}`
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
+    credentials: 'include',
+  })
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Request failed' }))
+    throw error
+  }
+
+  return response.json()
 }
