@@ -11,7 +11,7 @@ export default function PreFooter() {
       <div className="w-full border-t border-dashed border-text/10 my-8" />
 
       <section className="relative w-full min-h-screen bg-[#fcfdf6] flex items-center">
-        <div className="w-full max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16">
+        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Card */}
           <div
@@ -21,7 +21,7 @@ export default function PreFooter() {
               rounded-2xl
               max-w-[1400px]
               min-h-[520px]
-              px-6 sm:px-10 lg:px-16
+             px-4 sm:px-6 lg:px-8
               py-6 sm:py-8 lg:py-10
               flex flex-col justify-between
               overflow-hidden
