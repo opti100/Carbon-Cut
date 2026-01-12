@@ -1,11 +1,19 @@
 "use client";
 
 import React from "react";
-import Dropdown, { Option } from "../ui/dropdown";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import FloatingInput from "../ui/FloatingInput";
 import { Country, State, City } from "country-state-city";
 import { WorkforceEmissionsData } from "@/types/onboarding";
 import clsx from "clsx";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 interface Props {
   data: WorkforceEmissionsData;
@@ -15,109 +23,171 @@ interface Props {
   canProceed: boolean;
 }
 
-export default function WorkforceEmissions({ data, onDataChange, onBack, onNext, canProceed }: Props) {
-  /* Country options */
-  const countryOptions: Option[] = Country.getAllCountries().map((c) => ({
-    label: c.name,
-    value: c.isoCode,
-  }));
-
-  /* State options (depends on country) */
-  const stateOptions: Option[] = data.country
-    ? State.getStatesOfCountry(data.country).map((s) => ({
-        label: s.name,
-        value: s.isoCode,
-      }))
+export default function WorkforceEmissions({
+  data,
+  onDataChange,
+  onBack,
+  onNext,
+  canProceed,
+}: Props) {
+  const countryOptions = Country.getAllCountries();
+  const stateOptions = data.country
+    ? State.getStatesOfCountry(data.country)
     : [];
-
-  /* City options (depends on country + state) */
-  const cityOptions: Option[] =
+  const cityOptions =
     data.country && data.state
-      ? City.getCitiesOfState(data.country, data.state).map((c) => ({
-          label: c.name,
-          value: c.name,
-        }))
+      ? City.getCitiesOfState(data.country, data.state)
       : [];
 
   return (
-    <div className="w-full">
-      <h1 className="text-3xl sm:text-4xl font-semibold text-neutral-900 mb-6 sm:mb-8">
-        Workforce emissions
-      </h1>
+    <div className="w-full space-y-8">
+      {/* Row 1 */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Workforce Type</label>
+          <Select
+            value={data.workforceType}
+            onValueChange={(value) =>
+              onDataChange({ ...data, workforceType: value })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select workforce type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0-25">0%-25%</SelectItem>
+              <SelectItem value="25-50">25%-50%</SelectItem>
+              <SelectItem value="50-75">50%-75%</SelectItem>
+              <SelectItem value="75-100">75%-100%</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      {/* Row 1: Workforce Type & Work Arrangement */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-        <Dropdown
-          label="Workforce Type"
-          placeholder="Select workforce type"
-          options={[
-            { label: "0%-25%", value: "0-25" },
-            { label: "25%-50%", value: "25-50" },
-            { label: "50%-75%", value: "50-75" },
-            { label: "75%-100%", value: "75-100" },
-          ]}
-          value={data.workforceType}
-          onChange={(value) => onDataChange({ ...data, workforceType: value })}
-        />
-
-        <Dropdown
-          label="Work arrangement remote"
-          placeholder="Select work arrangement"
-          options={[
-            { label: "0%", value: "0" },
-            { label: "0-50%", value: "50" },
-            { label: "50%-100%", value: "100" },
-          ]}
-          value={data.workArrangementRemote}
-          onChange={(value) => onDataChange({ ...data, workArrangementRemote: value })}
-        />
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Work arrangement remote</label>
+          <Select
+            value={data.workArrangementRemote}
+            onValueChange={(value) =>
+              onDataChange({ ...data, workArrangementRemote: value })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select work arrangement" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0">0%</SelectItem>
+              <SelectItem value="50">0–50%</SelectItem>
+              <SelectItem value="100">50–100%</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Row 2: Country, State, City */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-4 sm:mt-6">
-        <Dropdown
-          label="Country"
-          placeholder="Select country"
-          options={countryOptions}
-          value={data.country}
-          onChange={(value) => onDataChange({ ...data, country: value, state: "", city: "" })}
-        />
+      {/* Row 2 */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Country</label>
+          <Select
+            value={data.country}
+            onValueChange={(value) =>
+              onDataChange({ ...data, country: value, state: "", city: "" })
+            }
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select country" />
+            </SelectTrigger>
+            <SelectContent>
+              {countryOptions.map((c) => (
+                <SelectItem key={c.isoCode} value={c.isoCode}>
+                  {c.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Dropdown
-          label="State"
-          placeholder={data.country ? "Select state" : "Select country first"}
-          options={stateOptions}
-          value={data.state}
-          onChange={(value) => onDataChange({ ...data, state: value, city: "" })}
-          disabled={!data.country}
-        />
+        <div className="space-y-2">
+          <label className="text-sm font-medium">State</label>
+          <Select
+            value={data.state}
+            onValueChange={(value) =>
+              onDataChange({ ...data, state: value, city: "" })
+            }
+            disabled={!data.country}
+          >
+            <SelectTrigger>
+              <SelectValue
+                placeholder={
+                  data.country ? "Select state" : "Select country first"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {stateOptions.map((s) => (
+                <SelectItem key={s.isoCode} value={s.isoCode}>
+                  {s.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Dropdown
-          label="City"
-          placeholder={data.state ? "Select city" : "Select state first"}
-          options={cityOptions}
-          value={data.city}
-          onChange={(value) => onDataChange({ ...data, city: value })}
-          disabled={!data.state}
-        />
+        <div className="space-y-2">
+          <label className="text-sm font-medium">City</label>
+          <Select
+            value={data.city}
+            onValueChange={(value) =>
+              onDataChange({ ...data, city: value })
+            }
+            disabled={!data.state}
+          >
+            <SelectTrigger>
+              <SelectValue
+                placeholder={
+                  data.state ? "Select city" : "Select state first"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {cityOptions.map((c) => (
+                <SelectItem key={c.name} value={c.name}>
+                  {c.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Row 3: Square meters (full width) */}
-      <div className="mt-4 sm:mt-6">
-        <FloatingInput
+      {/* Row 3 */}
+      <FloatingInput
         type="number"
-          placeholder="Square meters"
-          size="medium"
-          value={data.squareMeters}
-          onChange={(value) => onDataChange({ ...data, squareMeters: value })}
-        />
-      </div>
+        placeholder="Square meters"
+        size="big"
+        value={data.squareMeters}
+        onChange={(value) =>
+          onDataChange({ ...data, squareMeters: value })
+        }
+      />
+        <Alert >
+        <AlertCircleIcon />
+        <AlertTitle>Workforce Emissions</AlertTitle>
+        < AlertDescription>
+          <p>Emissions from employee digital and work-related activities</p>
+          <ul className="list-inside list-disc text-sm">
+            <li>Includes energy use from laptops, monitors, and home office equipment</li>
+            <li>Covers emissions from internet usage, video calls, and cloud tools</li>
+            <li>Influenced by remote, hybrid, or office-based work models</li>
+            <li>May include commuting-related digital enablement impacts</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
 
-      {/* ACTIONS */}
-      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+      {/* Actions */}
+      <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
         <button
           onClick={onBack}
-          className="w-full sm:w-auto min-w-[120px] rounded-md border border-neutral-300 px-6 py-2.5 text-sm sm:text-base font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+          className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
         >
           Back
         </button>
@@ -126,10 +196,10 @@ export default function WorkforceEmissions({ data, onDataChange, onBack, onNext,
           onClick={onNext}
           disabled={!canProceed}
           className={clsx(
-            "w-full sm:w-auto min-w-[120px] rounded-md px-6 py-2.5 text-sm sm:text-base font-medium text-white transition-colors",
-            canProceed 
-              ? "bg-black hover:bg-neutral-800 cursor-pointer" 
-              : "bg-neutral-400 cursor-not-allowed"
+            "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
+            canProceed
+              ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow"
+              : "bg-neutral-300 cursor-not-allowed"
           )}
         >
           Continue

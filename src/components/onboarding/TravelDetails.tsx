@@ -2,9 +2,10 @@
 
 import FloatingInput from "../ui/FloatingInput";
 import Dropdown from "../ui/dropdown";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { AlertCircleIcon, ChevronDown, Trash2 } from "lucide-react";
 import { TravelData, TravelItem } from "@/types/onboarding";
 import clsx from "clsx";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
 interface Props {
   data: TravelData;
@@ -69,41 +70,37 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
   };
 
   return (
-    <div className="w-full">
-      <h1 className="text-3xl sm:text-4xl font-semibold text-neutral-900 mb-6 sm:mb-8">
-        Travel details
-      </h1>
-
+    <div className="w-full space-y-6">
       <div className="space-y-4">
         {travels.map((travel, index) => (
           <div
             key={index}
-            className="rounded-xl border bg-white shadow-sm"
+            className="rounded-lg  overflow-hidden"
           >
             {/* Accordion Header */}
             <div
-              className="flex items-center justify-between px-4 py-3 cursor-pointer"
+              className="flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-[#d1cebb] transition-colors"
               onClick={() => toggleAccordion(index)}
             >
-              <p className="font-medium text-sm sm:text-base">
+              <p className="font-semibold text-base text-neutral-900">
                 Travel {index + 1}
               </p>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 {travels.length > 1 && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       removeTravel(index);
                     }}
-                    className="text-red-500 hover:text-red-600 transition-colors"
+                    className="text-red-500 hover:text-red-600 transition-colors p-1"
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={18} />
                   </button>
                 )}
                 <ChevronDown
-                  size={18}
-                  className={`transition-transform ${
+                  size={20}
+                  className={`transition-transform text-neutral-400 ${
                     travel.isOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -112,13 +109,13 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
 
             {/* Accordion Content */}
             {travel.isOpen && (
-              <div className="px-4 pb-4 space-y-4">
+              <div className="px-6 pb-6 pt-2 space-y-5">
                 {/* Travel Type */}
                 <Dropdown
                   label="Travel type"
-                  placeholder="eg) Train"
+                  placeholder="Select travel type"
                   options={travelTypeOptions}
-                  size="medium"
+                  size="big"
                   value={travel.travel_type}
                   onChange={(val) =>
                     updateTravel(index, "travel_type", val)
@@ -128,7 +125,7 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
                 {/* Distance */}
                 <FloatingInput
                   placeholder="Distance (km)"
-                  size="medium"
+                  size="big"
                   type="number"
                   value={travel.distance_km || ""}
                   onChange={(value) =>
@@ -139,7 +136,7 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
                 {/* Passenger Count */}
                 <FloatingInput
                   placeholder="Passenger Count"
-                  size="medium"
+                  size="big"
                   type="number"
                   value={travel.passenger_count || ""}
                   onChange={(value) =>
@@ -149,7 +146,8 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
 
                 {/* Travel Date */}
                 <FloatingInput
-                  size="medium"
+                  placeholder="Travel Date"
+                  size="big"
                   type="date"
                   value={travel.travel_date || ""}
                   onChange={(value) =>
@@ -159,11 +157,11 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
 
                 {/* Flight-only fields */}
                 {travel.travel_type === "flight" && (
-                  <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <Dropdown
                       placeholder="Flight Class"
                       options={flightClassOptions}
-                      size="medium"
+                      size="big"
                       value={travel.flight_class || ""}
                       onChange={(val) =>
                         updateTravel(index, "flight_class", val)
@@ -173,13 +171,13 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
                     <Dropdown
                       placeholder="Travel Type"
                       options={domesticOptions}
-                      size="medium"
+                      size="big"
                       value={travel.is_domestic || ""}
                       onChange={(val) =>
                         updateTravel(index, "is_domestic", val)
                       }
                     />
-                  </>
+                  </div>
                 )}
               </div>
             )}
@@ -189,17 +187,30 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
         {/* Add More */}
         <button
           onClick={addTravel}
-          className="w-full rounded-lg border border-dashed border-neutral-300 py-3 text-sm sm:text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
+          className="w-full rounded-lg border-2 border-dashed border-neutral-300 py-4 text-base font-medium text-neutral-600 hover:border-neutral-400 hover:bg-neutral-50 transition-colors"
         >
           + Add another travel segment
         </button>
       </div>
 
+        <Alert >
+        <AlertCircleIcon />
+        <AlertTitle> Travel-Related Emissions</AlertTitle>
+        <AlertDescription>
+          <p>Emissions from business travel and workforce mobility</p>
+          <ul className="list-inside list-disc text-sm">
+            <li>Includes flights, trains, taxis, rental cars, and hotels</li>
+            <li>One of the highest-impact emission sources per activity</li>
+            <li>Strongly influenced by travel frequency and distance</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
+
       {/* ACTIONS */}
-      <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
+      <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
         <button
           onClick={onBack}
-          className="w-full sm:w-auto min-w-[120px] rounded-md border border-neutral-300 px-6 py-2.5 text-sm sm:text-base font-medium text-neutral-700 hover:bg-neutral-100 transition-colors"
+          className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
         >
           Back
         </button>
@@ -208,10 +219,10 @@ export default function TravellingDetails({ data, onDataChange, onBack, onNext, 
           onClick={onNext}
           disabled={!canProceed}
           className={clsx(
-            "w-full sm:w-auto min-w-[120px] rounded-md px-6 py-2.5 text-sm sm:text-base font-medium text-white transition-colors",
+            "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
             canProceed 
-              ? "bg-black hover:bg-neutral-800 cursor-pointer" 
-              : "bg-neutral-400 cursor-not-allowed"
+              ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow" 
+              : "bg-neutral-300 cursor-not-allowed"
           )}
         >
           Continue

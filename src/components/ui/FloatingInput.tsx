@@ -42,6 +42,9 @@ export default function FloatingInput({
     big: "h-14 px-4 text-base",
   };
 
+  const isDateType = type === "date";
+  const showLabel = !isDateType && placeholder;
+
   return (
     <div className="relative w-full">
       <input
@@ -50,23 +53,27 @@ export default function FloatingInput({
         onChange={handleChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        placeholder={isDateType ? placeholder : undefined}
         className={clsx(
-          "w-full rounded-md border border-[#d1cebb] bg-transparent outline-none transition-all focus:border-black",
-          sizeStyles[size]
+          "w-full rounded-lg border border-[#d1cebb] bg-[#fcfdf6] outline-none transition-all focus:border-black focus:ring-1 focus:ring-black",
+          sizeStyles[size],
+          isDateType && !value && "text-neutral-400"
         )}
       />
 
-      {/* Floating label */}
-      <label
-        className={clsx(
-          "pointer-events-none absolute left-3 transition-all duration-200 ease-out",
-          isActive
-            ? "-top-2 text-xs bg-[#fcfdf6] px-1 text-black"
-            : "top-1/2 -translate-y-1/2 text-neutral-500"
-        )}
-      >
-        {placeholder}
-      </label>
+      {/* Floating label - only for non-date inputs */}
+      {showLabel && (
+        <label
+          className={clsx(
+            "pointer-events-none absolute left-4 transition-all duration-200 ease-out",
+            isActive
+              ? "-top-2 text-xs bg-[#fcfdf6] px-1 text-neutral-600 font-medium"
+              : "top-1/2 -translate-y-1/2 text-neutral-500"
+          )}
+        >
+          {placeholder}
+        </label>
+      )}
     </div>
   );
 }

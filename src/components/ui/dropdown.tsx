@@ -44,6 +44,12 @@ export default function Dropdown({
     big: "h-14 px-4 text-base",
   };
 
+  const labelSizeStyles = {
+    small: "text-xs",
+    medium: "text-sm",
+    big: "text-sm",
+  };
+
   const handleSelect = (option: Option) => {
     setSelected(option);
     onChange?.(option.value);
@@ -54,7 +60,7 @@ export default function Dropdown({
     <div className="relative w-full">
       {/* Label */}
       {label && (
-        <span className="mb-1 block text-sm font-medium text-neutral-700">
+        <span className={clsx("mb-2 block font-medium text-neutral-700", labelSizeStyles[size])}>
           {label}
         </span>
       )}
@@ -65,9 +71,9 @@ export default function Dropdown({
         onClick={() => !disabled && setOpen((prev) => !prev)}
         disabled={disabled}
         className={clsx(
-          "flex w-full items-center justify-between rounded-md border border-[#d1cebb] bg-[#fcfdf6] outline-none transition-all focus:border-black",
+          "flex w-full items-center justify-between rounded-lg border border-[#d1cebb] bg-[#fcfdf6] outline-none transition-all focus:border-black focus:ring-1 focus:ring-black",
           sizeStyles[size],
-          disabled && "opacity-50 cursor-not-allowed"
+          disabled && "opacity-50 cursor-not-allowed bg-[#fcfdf6]"
         )}
       >
         <span className={clsx(selected ? "text-black" : "text-neutral-500")}>
@@ -91,13 +97,13 @@ export default function Dropdown({
 
       {/* Menu */}
       {open && (
-        <div className="absolute z-10 mt-1 w-full max-h-60 overflow-auto rounded-md border border-[#d1cebb] bg-[#fcfdf6] shadow-sm">
+        <div className="absolute z-10 mt-2 w-full max-h-60 overflow-auto rounded-lg border border-[#d1cebb] bg-[#fcfdf6] shadow-lg">
           {options.map((option) => (
             <button
               key={option.value}
               type="button"
               onClick={() => handleSelect(option)}
-              className="block w-full px-3 py-2 text-left text-md hover:bg-[#f5fbe6]"
+              className="block w-full px-4 py-3 text-left text-base hover:bg-[#6c5f31] hover:text-white transition-colors first:rounded-t-lg last:rounded-b-lg"
             >
               {option.label}
             </button>
