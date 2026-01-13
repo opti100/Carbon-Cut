@@ -20,7 +20,7 @@ export function StepProgress({ total, current, onChange }: ProgressProps) {
             onClick={() => onChange?.(step)}
             className={`
               h-1 rounded-full transition-all duration-200
-              ${isActive ? "w-47 bg-[#6c5f31]" : "w-47 bg-neutral-300 hover:bg-neutral-400"}
+              ${isActive ? "w-37 bg-[#6c5f31]" : "w-37 bg-neutral-300 hover:bg-[#d1cebb]"}
             `}
             aria-label={`Step ${step}`}
           />

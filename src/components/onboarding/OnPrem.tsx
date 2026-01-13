@@ -1,123 +1,162 @@
 "use client";
 
-import React from 'react'
-import FloatingInput from '../ui/FloatingInput'
-import { OnPremData } from '@/types/onboarding'
-import clsx from 'clsx'
-import Dropdown from '../ui/dropdown';
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
-import { AlertCircleIcon } from 'lucide-react';
+import React from "react";
+import FloatingInput from "../ui/FloatingInput";
+import { OnPremData } from "@/types/onboarding";
+import clsx from "clsx";
+import Dropdown from "../ui/dropdown";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { AlertCircleIcon } from "lucide-react";
+import { on } from "events";
 
 interface Props {
   data: OnPremData;
   onDataChange: (data: OnPremData) => void;
   onBack: () => void;
   onNext: () => void;
+  onSkip: () => void;
   canProceed: boolean;
 }
 
-const OnPrem = ({ data, onDataChange, onBack, onNext, canProceed }: Props) => {
-    
+const OnPrem = ({
+  data,
+  onDataChange,
+  onBack,
+  onNext,
+  onSkip,
+  canProceed,
+}: Props) => {
   return (
     <div className="w-full space-y-8">
+      {/* FORM */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <FloatingInput 
-          placeholder="Name" 
+        <FloatingInput
+          placeholder="Name"
           size="big"
           value={data.name}
           onChange={(value) => onDataChange({ ...data, name: value })}
         />
-        <Dropdown 
+
+        <Dropdown
           placeholder="CPU Cores"
-          options={ [
-           {label:"2" , value:"2"},
-            {label:"4" , value:"4"},
-            {label:"8" , value:"8"},
-            {label:"16" , value:"16"},
-            {label:"32" , value:"32"},
-            {label:"64" , value:"64"},
-            {label:"128" , value:"128"},
-          ]  }
           size="big"
           value={data.cpuCores}
-          onChange={(value) => onDataChange({ ...data, cpuCores: value })}
+          options={[
+            { label: "2", value: "2" },
+            { label: "4", value: "4" },
+            { label: "8", value: "8" },
+            { label: "16", value: "16" },
+            { label: "32", value: "32" },
+            { label: "64", value: "64" },
+            { label: "128", value: "128" },
+          ]}
+          onChange={(value) =>
+            onDataChange({ ...data, cpuCores: value })
+          }
         />
-        <Dropdown 
-         options={[
-          {label:"4" , value:"4"},
-          {label:"8", value:"8" },
-          {label:"16", value:"16" },
-          {label:"32", value:"32" },
-          {label:"64", value:"64" },
-          {label:"128", value:"128" },
-         ]}
-          placeholder="RAM (GB)" 
+
+        <Dropdown
+          placeholder="RAM (GB)"
           size="big"
           value={data.ramGB}
-          onChange={(value) => onDataChange({ ...data, ramGB: value })}
+          options={[
+            { label: "4", value: "4" },
+            { label: "8", value: "8" },
+            { label: "16", value: "16" },
+            { label: "32", value: "32" },
+            { label: "64", value: "64" },
+            { label: "128", value: "128" },
+          ]}
+          onChange={(value) =>
+            onDataChange({ ...data, ramGB: value })
+          }
         />
-        <FloatingInput 
-          type='number'
-          placeholder="Storage (TB)" 
+
+        <FloatingInput
+          type="number"
+          placeholder="Storage (TB)"
           size="big"
           value={data.storageTB}
-          onChange={(value) => onDataChange({ ...data, storageTB: value })}
+          onChange={(value) =>
+            onDataChange({ ...data, storageTB: value })
+          }
         />
-        <FloatingInput 
-          type='number'
-          placeholder="AVG CPU Utilization" 
+
+        <FloatingInput
+          type="number"
+          placeholder="AVG CPU Utilization (%)"
           size="big"
           value={data.avgCpuUtilization}
-          onChange={(value) => onDataChange({ ...data, avgCpuUtilization: value })}
+          onChange={(value) =>
+            onDataChange({ ...data, avgCpuUtilization: value })
+          }
         />
-        <FloatingInput 
-          type='number'
-          placeholder="Hours/Day" 
+
+        <FloatingInput
+          type="number"
+          placeholder="Hours / Day"
           size="big"
           value={data.hoursPerDay}
-          onChange={(value) => onDataChange({ ...data, hoursPerDay: value })}
+          onChange={(value) =>
+            onDataChange({ ...data, hoursPerDay: value })
+          }
         />
       </div>
 
-  <Alert >
+      {/* INFO ALERT */}
+      <Alert>
         <AlertCircleIcon />
-        <AlertTitle> On-Premise Infrastructure Emissions</AlertTitle>
+        <AlertTitle>On-Premise Infrastructure Emissions</AlertTitle>
         <AlertDescription>
           <p>Emissions from self-managed IT and data center operations</p>
           <ul className="list-inside list-disc text-sm">
-            <li>Generated by servers, storage, and networking equipment on-site</li>
+            <li>Generated by servers, storage, and networking equipment</li>
             <li>Includes cooling, power distribution, and backup systems</li>
-            <li>Highly dependent on hardware efficiency and utilization rates</li>
-            <li>Often less energy-efficient than modern hyperscale cloud data centers</li>
-            <li>Requires direct tracking of electricity consumption</li>
+            <li>Depends heavily on hardware efficiency and utilization</li>
+            <li>Often less efficient than hyperscale cloud data centers</li>
+            <li>Requires direct electricity consumption tracking</li>
           </ul>
         </AlertDescription>
       </Alert>
 
       {/* ACTIONS */}
       <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
-        <button
-          onClick={onBack}
-          className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
-        >
-          Back
-        </button>
+        <div>
 
-        <button
-          onClick={onNext}
-          disabled={!canProceed}
-          className={clsx(
-            "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
-            canProceed 
-              ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow" 
-              : "bg-neutral-300 cursor-not-allowed"
-          )}
-        >
-          Continue
-        </button>
+          <button
+            onClick={onBack}
+            className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
+          >
+            Back
+          </button>
+        </div>
+
+        <div className="flex items-center gap-4">
+          {/* Skip — always enabled, ignores validation */}
+          <button
+            onClick={onSkip}
+            className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
+          >
+            Skip
+          </button>
+
+          {/* Continue — requires canProceed */}
+          <button
+            onClick={onNext}
+            disabled={!canProceed}
+            className={clsx(
+              "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
+              canProceed
+                ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow"
+                : "bg-neutral-300 cursor-not-allowed"
+            )}
+          >
+            Continue
+          </button>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OnPrem
+export default OnPrem;

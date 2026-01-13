@@ -52,13 +52,13 @@ export default function WorkforceEmissions({
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select workforce type" />
+              <SelectValue placeholder="Select workforce " />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0-25">0%-25%</SelectItem>
-              <SelectItem value="25-50">25%-50%</SelectItem>
-              <SelectItem value="50-75">50%-75%</SelectItem>
-              <SelectItem value="75-100">75%-100%</SelectItem>
+              <SelectItem value="0-50">0-50</SelectItem>
+              <SelectItem value="50-100">50-100</SelectItem>
+              <SelectItem value="100-500">100-500</SelectItem>
+              <SelectItem value="500-1000">500-1000</SelectItem>
             </SelectContent>
           </Select>
         </div>

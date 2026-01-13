@@ -5,6 +5,7 @@ interface StepsSidebarProps {
 }
 
 const STEPS = [
+  "SDK Integration",
   "Cloud Provider",
   "CDN Configuration",
   "Workforce Emissions",

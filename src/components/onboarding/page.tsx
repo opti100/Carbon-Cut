@@ -18,32 +18,30 @@ import TravellingDetails from "./TravelDetails";
 import { StepsSidebar } from "./StepSidebar";
 import CardNav from "../CardNav";
 import { navData } from "../NavData";
+import Sdk from "./Sdk";
 
 
-const TOTAL_STEPS = 5;
 
-const STEP_FOOTERS: Record<number, string> = {
-  1: "We'll use this to estimate the emissions from your cloud providers.",
-  2: "Traffic and regions help us understand your delivery footprint.",
-  3: "Employee count and workspace size shape your workforce emissions profile.",
-  4: "Servers and utilisation levels drive on‑prem energy consumption.",
-  5: "Business trips and commutes contribute to your overall footprint.",
-};
+
+
+const TOTAL_STEPS = 6;
 
 const STEP_TITLES: Record<number, string> = {
-  1: "Tell us about your cloud usage",
-  2: "Configure your CDN traffic",
-  3: "How many employees do you have?",
-  4: "Describe your on‑prem infrastructure",
-  5: "Add your company travel details",
+  1: "SDK Integration",
+  2: "Tell us about your cloud usage",
+  3: "Configure your CDN traffic",
+  4: "How many employees do you have?",
+  5: "Describe your on‑prem infrastructure",
+  6: "Add your company travel details",
 };
 
 const STEP_SUBTITLES: Record<number, string> = {
-  1: "We'll use this to estimate the emissions from your cloud providers.",
-  2: "Traffic and regions help us understand your delivery footprint.",
-  3: "Employee count and workspace size shape your workforce emissions profile.",
-  4: "Servers and utilisation levels drive on‑prem energy consumption.",
-  5: "Business trips and commutes contribute to your overall footprint.",
+  1: "Integrate our SDK into your applications to start tracking emissions data.",
+  2: "We'll use this to estimate the emissions from your cloud providers.",
+  3: "Traffic and regions help us understand your delivery footprint.",
+  4: "Employee count and workspace size shape your workforce emissions profile.",
+  5: "Servers and utilisation levels drive on‑prem energy consumption.",
+  6: "Business trips and commutes contribute to your overall footprint.",
 };
 
 export default function VTwoFlow() {
@@ -162,15 +160,15 @@ export default function VTwoFlow() {
 
   const canProceed = () => {
     switch (step) {
-      case 1:
-        return isStep1Valid();
       case 2:
-        return isStep2Valid();
+        return isStep1Valid();
       case 3:
-        return isStep3Valid();
+        return isStep2Valid();
       case 4:
-        return isStep4Valid();
+        return isStep3Valid();
       case 5:
+        return isStep4Valid();
+      case 6:
         return isStep5Valid();
       default:
         return true;
@@ -181,6 +179,10 @@ export default function VTwoFlow() {
     if (canProceed()) {
       setStep(step + 1);
     }
+  };
+
+  const handleSkip = () => {
+    setStep(step + 1);
   };
 
   const handleStepChange = (newStep: number) => {
@@ -201,10 +203,9 @@ export default function VTwoFlow() {
 
   const title = STEP_TITLES[step];
   const subtitle = STEP_SUBTITLES[step];
-  const footer = STEP_FOOTERS[step];
 
   return (
-    <>   
+    <>
       <div className="absolute top-0 left-0 right-0 z-20">
         <CardNav
           logo="/CarbonCut-fe/CC.svg"
@@ -222,22 +223,22 @@ export default function VTwoFlow() {
           <div className="hidden lg:block w-56 shrink-0">
             <StepsSidebar currentStep={step} />
           </div>
-           
+
 
           {/* Main content */}
           <div className="flex-1 min-w-0">
             <div className="flex  items-center gap-5">
-                <StepProgress
-                  total={TOTAL_STEPS}
-                  current={step}
-                  onChange={handleStepChange}
-                />
-                <span className="text-sm font-semibold text-neutral-700 whitespace-nowrap">
-                  {step}/{TOTAL_STEPS}
-                </span>
-              </div>
+              <StepProgress
+                total={TOTAL_STEPS}
+                current={step}
+                onChange={handleStepChange}
+              />
+              <span className="text-sm font-semibold text-neutral-700 whitespace-nowrap">
+                {step}/{TOTAL_STEPS}
+              </span>
+            </div>
             {/* Top header & progress */}
-            <div className="mb-5 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
+            <div className="my-10 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
               <div className="flex-1 space-y-2">
                 <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 leading-tight tracking-tight">
                   {title}
@@ -247,56 +248,64 @@ export default function VTwoFlow() {
                 </p>
               </div>
 
-             
+
             </div>
 
             {/* Primary card */}
             <section className="">
+
+              
               {/* Step content */}
               {step === 1 && (
+                <Sdk
+                  onNext={handleNext} canProceed={true} />
+              )}
+              {step === 2 && (
                 <CloudProvider
                   data={cloudProviderData}
                   onDataChange={setCloudProviderData}
                   onNext={handleNext}
+                  onBack={() => setStep(1)}
                   canProceed={isStep1Valid()}
                 />
               )}
 
-              {step === 2 && (
+              {step === 3 && (
                 <Cdn
                   data={cdnData}
                   onDataChange={setCdnData}
-                  onBack={() => setStep(1)}
+                  onBack={() => setStep(2)}
                   onNext={handleNext}
                   canProceed={isStep2Valid()}
                 />
               )}
 
-              {step === 3 && (
+              {step === 4 && (
                 <WorkforceEmissions
                   data={workforceEmissionsData}
                   onDataChange={setWorkforceEmissionsData}
-                  onBack={() => setStep(2)}
+                  onBack={() => setStep(3)}
                   onNext={handleNext}
                   canProceed={isStep3Valid()}
                 />
               )}
 
-              {step === 4 && (
+              {step === 5 && (
                 <OnPrem
                   data={onPremData}
                   onDataChange={setOnPremData}
-                  onBack={() => setStep(3)}
+                  onBack={() => setStep(4)}
                   onNext={handleNext}
+                  onSkip={handleSkip}
                   canProceed={isStep4Valid()}
                 />
               )}
 
-              {step === 5 && (
+              {step === 6 && (
                 <TravellingDetails
                   data={travelData}
                   onDataChange={setTravelData}
-                  onBack={() => setStep(4)}
+                  onBack={() => setStep(5)}
                   onNext={handleNext}
                   canProceed={isStep5Valid()}
                 />
@@ -305,7 +314,7 @@ export default function VTwoFlow() {
           </div>
         </div>
       </main>
-    
+
     </>
   );
 }

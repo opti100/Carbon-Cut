@@ -11,11 +11,12 @@ import clsx from "clsx";
 interface Props {
   data: CloudProviderData;
   onDataChange: (data: CloudProviderData) => void;
+  onBack: () => void;
   onNext: () => void;
   canProceed: boolean;
 }
 
-export default function CloudProvider({ data, onDataChange, onNext, canProceed }: Props) {
+export default function CloudProvider({ data, onDataChange, onBack , onNext, canProceed }: Props) {
   const handleTabChange = (value: string) => {
     onDataChange({
       ...data,
@@ -163,21 +164,27 @@ export default function CloudProvider({ data, onDataChange, onNext, canProceed }
     
 
       
-      <div className="flex items-center justify-end pt-6 border-t border-neutral-200">
-        
-        <button
-          onClick={onNext}
-          disabled={!canProceed}
-          className={clsx(
-            "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
-            canProceed 
-              ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow" 
-              : "bg-neutral-300 cursor-not-allowed"
-          )}
-        >
-          Continue
-        </button>
-      </div>
+   <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
+          <button
+            onClick={onBack}
+            className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
+          >
+            Back
+          </button>
+  
+          <button
+            onClick={onNext}
+            disabled={!canProceed}
+            className={clsx(
+              "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
+              canProceed 
+                ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow" 
+                : "bg-neutral-300 cursor-not-allowed"
+            )}
+          >
+            Continue
+          </button>
+        </div>
      
     </div>
   );
