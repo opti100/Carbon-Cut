@@ -49,6 +49,8 @@ export default function VTwoFlow() {
       region: "",
       uploadedFile: null,
       cloud: "",
+      isManualOpen:false,
+      isUploadOpen:false,
     });
 
   const [cdnData, setCdnData] = useState<CdnData>({
@@ -208,12 +210,9 @@ export default function VTwoFlow() {
       </div>
       <main className="flex min-h-screen justify-center bg-[#fcfdf6] px-4 pt-24 pb-16 sm:px-6 lg:px-12 lg:pt-28 lg:pb-20">
         <div className="flex w-full max-w-7xl gap-12 lg:gap-20">
-          {/* Desktop sidebar */}
           <div className="hidden lg:block w-56 shrink-0">
             <StepsSidebar currentStep={step} />
           </div>
-
-          {/* Main content */}
           <div className="flex-1 min-w-0">
             <div className="flex  items-center gap-5">
               <StepProgress
@@ -225,7 +224,6 @@ export default function VTwoFlow() {
                 {step}/{TOTAL_STEPS}
               </span>
             </div>
-            {/* Top header & progress */}
             <div className="my-10 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
               <div className="flex-1 space-y-2">
                 <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 leading-tight tracking-tight">
@@ -236,10 +234,7 @@ export default function VTwoFlow() {
                 </p>
               </div>
             </div>
-
-            {/* Primary card */}
             <section className="">
-              {/* Step content */}
 
               {step === 1 && (
                 <CloudProvider

@@ -7,6 +7,8 @@ export interface CloudProviderData {
   monthlyHoursUsage: string;
   region: string;
   uploadedFile: File | null;
+  isManualOpen?:boolean;
+  isUploadOpen?:boolean;
   
 }
 

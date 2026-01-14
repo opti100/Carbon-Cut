@@ -93,7 +93,6 @@ export default function TravellingDetails({
       <div className="space-y-4">
         {travels.map((travel, index) => (
           <div key={index} className="rounded-lg overflow-auto">
-            {/* Accordion Header */}
             <div
               className="flex items-center justify-between px-6 py-4 cursor-pointer bg-[#d1cebb] transition-colors"
               onClick={() => toggleAccordion(index)}
@@ -116,79 +115,77 @@ export default function TravellingDetails({
                 )}
                 <ChevronDown
                   size={20}
-                  className={`transition-transform text-neutral-400 ${
-                    travel.isOpen ? "rotate-180" : ""
-                  }`}
+                  className={`transition-transform text-black ${travel.isOpen ? "rotate-180" : ""
+                    }`}
                 />
               </div>
             </div>
-
-            {/* Accordion Content */}
             {travel.isOpen && (
               <div className="px-6 pb-6 pt-2 space-y-5">
-                {/* Travel Type */}
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Travel type</label>
-                  <Select
-                    value={travel.travel_type}
-                    onValueChange={(val) =>
-                      updateTravel(index, "travel_type", val)
-                    }
-                  >
-                    <SelectTrigger className="h-14">
-                      <SelectValue placeholder="Select travel type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {travelTypeOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
-                          {opt.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Travel type</label>
+                    <Select
+                      value={travel.travel_type}
+                      onValueChange={(val) =>
+                        updateTravel(index, "travel_type", val)
+                      }
+                    >
+                      <SelectTrigger className="h-14">
+                        <SelectValue placeholder="Select travel type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {travelTypeOptions.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <FloatingInput
+                      placeholder="Distance (km)"
+                      size="big"
+                      type="number"
+                      value={travel.distance_km || ""}
+                      onChange={(value) =>
+                        updateTravel(index, "distance_km", value)
+                      }
+                    />
+                  </div>
                 </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <FloatingInput
+                      placeholder="Passenger Count"
+                      size="big"
+                      type="number"
+                      value={travel.passenger_count || ""}
+                      onChange={(value) =>
+                        updateTravel(index, "passenger_count", value)
+                      }
+                    />
+                  </div>
 
-                {/* Distance */}
-                <FloatingInput
-                  placeholder="Distance (km)"
-                  size="big"
-                  type="number"
-                  value={travel.distance_km || ""}
-                  onChange={(value) =>
-                    updateTravel(index, "distance_km", value)
-                  }
-                />
-
-                {/* Passenger Count */}
-                <FloatingInput
-                  placeholder="Passenger Count"
-                  size="big"
-                  type="number"
-                  value={travel.passenger_count || ""}
-                  onChange={(value) =>
-                    updateTravel(index, "passenger_count", value)
-                  }
-                />
-
-                {/* Travel Date */}
-                <FloatingInput
-                  placeholder="Travel Date"
-                  size="big"
-                  type="date"
-                  value={travel.travel_date || ""}
-                  onChange={(value) =>
-                    updateTravel(index, "travel_date", value)
-                  }
-                />
-
-                {/* Flight-only fields */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Travel Date</label>
+                    <FloatingInput
+                      placeholder="Travel Date"
+                      size="big"
+                      type="date"
+                      value={travel.travel_date || ""}
+                      onChange={(value) =>
+                        updateTravel(index, "travel_date", value)
+                      }
+                    />
+                  </div>
+                </div>
                 {travel.travel_type === "flight" && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {/* Flight Class */}
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">
-                        Flight Class
-                      </label>
+                      <label className="text-sm font-medium">Flight Class</label>
                       <Select
                         value={travel.flight_class || ""}
                         onValueChange={(val) =>
@@ -200,10 +197,7 @@ export default function TravellingDetails({
                         </SelectTrigger>
                         <SelectContent>
                           {flightClassOptions.map((opt) => (
-                            <SelectItem
-                              key={opt.value}
-                              value={opt.value}
-                            >
+                            <SelectItem key={opt.value} value={opt.value}>
                               {opt.label}
                             </SelectItem>
                           ))}
@@ -211,11 +205,8 @@ export default function TravellingDetails({
                       </Select>
                     </div>
 
-                    {/* Domestic / International */}
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">
-                        Travel Type
-                      </label>
+                      <label className="text-sm font-medium">Travel Type</label>
                       <Select
                         value={travel.is_domestic || ""}
                         onValueChange={(val) =>
@@ -227,10 +218,7 @@ export default function TravellingDetails({
                         </SelectTrigger>
                         <SelectContent>
                           {domesticOptions.map((opt) => (
-                            <SelectItem
-                              key={opt.value}
-                              value={opt.value}
-                            >
+                            <SelectItem key={opt.value} value={opt.value}>
                               {opt.label}
                             </SelectItem>
                           ))}
@@ -244,28 +232,16 @@ export default function TravellingDetails({
           </div>
         ))}
 
-        {/* Add More */}
+
+      </div>
+      <div className="flex justify-center">
         <button
           onClick={addTravel}
-          className="w-full rounded-lg border-2 border-dashed border-neutral-300 py-4 text-base font-medium text-neutral-600 hover:text-black  transition-colors"
+          className="rounded-lg bg-[#d1cebb] p-4 flex justify-center text-center items-center text-base font-medium text-black transition-colors"
         >
-          + Add another travel segment
+          <span>+ Add another travel segment</span>
         </button>
       </div>
-
-      <Alert>
-        <AlertCircleIcon />
-        <AlertTitle>Travel-Related Emissions</AlertTitle>
-        <AlertDescription>
-          <ul className="list-inside list-disc text-sm">
-            <li>Includes flights, trains, taxis, rental cars, and hotels</li>
-            <li>One of the highest-impact emission sources per activity</li>
-            <li>Strongly influenced by travel frequency and distance</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      {/* ACTIONS */}
       <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
         <button
           onClick={onBack}
@@ -287,6 +263,20 @@ export default function TravellingDetails({
           Continue
         </button>
       </div>
+
+      <Alert>
+        <AlertCircleIcon />
+        <AlertTitle>Travel-Related Emissions</AlertTitle>
+        <AlertDescription>
+          <ul className="list-inside list-disc text-sm">
+            <li>Includes flights, trains, taxis, rental cars, and hotels</li>
+            <li>One of the highest-impact emission sources per activity</li>
+            <li>Strongly influenced by travel frequency and distance</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
+
+
     </div>
   );
 }

@@ -51,7 +51,6 @@ export default function WorkforceEmissions({
   const countryOptions = Country.getAllCountries();
   const workforceLocations = data.workforceLocations || [];
 
-  // Initialize with default workforce location if empty
   useEffect(() => {
     if (workforceLocations.length === 0) {
       onDataChange({
@@ -118,7 +117,6 @@ export default function WorkforceEmissions({
       <div className="space-y-4">
         {workforceLocations.map((workforce, index) => (
           <div key={index} className="rounded-lg  overflow-auto">
-            {/* Accordion Header */}
             <div
               className=" flex items-center justify-between px-6 py-4 bg-[#d1cebb] cursor-pointer hover:bg-[#d1cebb] transition-colors"
               onClick={() => toggleAccordion(index)}
@@ -141,18 +139,15 @@ export default function WorkforceEmissions({
                 )}
                 <ChevronDown
                   size={20}
-                  className={`transition-transform text-neutral-400 ${
+                  className={`transition-transform text-black ${
                     workforce.isOpen ? "rotate-180" : ""
                   }`}
                 />
               </div>
             </div>
-
-            {/* Accordion Content */}
             {workforce.isOpen && (
-              <div className="px-6 pb-6 pt-2 space-y-5 ">
-                {/* Row 1 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="px-6 pb-6 pt-2 space-y-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-end">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Workforce Range</label>
                     <Select
@@ -162,7 +157,7 @@ export default function WorkforceEmissions({
                       }
                     >
                       <SelectTrigger className="h-14">
-                        <SelectValue placeholder="Select workforce range" />
+                        <SelectValue placeholder="100-500" />
                       </SelectTrigger>
                       <SelectContent>
                         {workforceRangeOptions.map((opt) => (
@@ -183,7 +178,7 @@ export default function WorkforceEmissions({
                       }
                     >
                       <SelectTrigger className="h-14">
-                        <SelectValue placeholder="Select remote work %" />
+                        <SelectValue placeholder="25%-50%" />
                       </SelectTrigger>
                       <SelectContent>
                         {workArrangementOptions.map((opt) => (
@@ -194,10 +189,7 @@ export default function WorkforceEmissions({
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
 
-                {/* Row 2 */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-end">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Country</label>
                     <Select
@@ -222,7 +214,7 @@ export default function WorkforceEmissions({
                   <div className="space-y-2">
                     <FloatingInput
                       type="number"
-                      placeholder="Office size in Square meters"
+                      placeholder="Square meters"
                       size="big"
                       value={workforce.squareMeters || ""}
                       onChange={(value) =>
@@ -235,31 +227,15 @@ export default function WorkforceEmissions({
             )}
           </div>
         ))}
-
-        {/* Add More */}
+ <div className="flex justify-end">
         <button
           onClick={addWorkforce}
-          className="w-full rounded-lg border-2 border-dashed border-neutral-300 py-4 text-base font-medium text-neutral-600 hover:text-black  transition-colors"
+          className="rounded-lg bg-[#d1cebb] p-4 flex text-base font-medium text-black transition-colors"
         >
-          + Add another workforce location
+          <span>+ Add another workforce location</span>
         </button>
       </div>
-
-      <Alert>
-        <AlertCircleIcon />
-        <AlertTitle>Workforce Emissions</AlertTitle>
-        <AlertDescription>
-          <p>Emissions from employee digital and work-related activities</p>
-          <ul className="list-inside list-disc text-sm">
-            <li>Includes energy use from laptops, monitors, and home office equipment</li>
-            <li>Covers emissions from internet usage, video calls, and cloud tools</li>
-            <li>Influenced by remote, hybrid, or office-based work models</li>
-            <li>May include commuting-related digital enablement impacts</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
-
-      {/* Actions */}
+      </div>
       <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
         <button
           onClick={onBack}
@@ -290,6 +266,22 @@ export default function WorkforceEmissions({
           </button>
         </div>
       </div>
+
+      <Alert>
+        <AlertCircleIcon />
+        <AlertTitle>Workforce Emissions</AlertTitle>
+        <AlertDescription>
+          <p>Emissions from employee digital and work-related activities</p>
+          <ul className="list-inside list-disc text-sm">
+            <li>Includes energy use from laptops, monitors, and home office equipment</li>
+            <li>Covers emissions from internet usage, video calls, and cloud tools</li>
+            <li>Influenced by remote, hybrid, or office-based work models</li>
+            <li>May include commuting-related digital enablement impacts</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
+
+     
     </div>
   );
 }

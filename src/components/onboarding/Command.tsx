@@ -47,78 +47,95 @@ export function CommandHelper() {
                 <Button variant="secondary"><MonitorCog size={24} />Guidance</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-4xl w-full p-6">
-                <DialogHeader className="space-y-4">
+                <DialogHeader className="space-y-2">
                     <DialogTitle className="text-2xl flex items-center gap-2">
-
+                        <MonitorCog size={22} />
                         Guidance
                     </DialogTitle>
-                    <DialogDescription>
-                        <div className="flex justify-between items-center">
-                            <p className="text-lg text-black">Copy the command below according to your operating system to check your CPU cores, RAM, and storage </p>
-
-                            <Select value={os} onValueChange={(value) => setOs(value as OS)}>
-                                <SelectTrigger className="h-14 w-48">
-                                    <SelectValue placeholder="Select OS" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="linux">
-                                        
-                                         <div className="flex items-center gap-2">
-                                            <Image src="/companies/Linux.svg" alt="Linux" width={16} height={16} />
-                                            <span className="text-black">Linux</span>
-                                        </div>
-                                        </SelectItem>
-
-                                    <SelectItem value="mac">
-                                        <div className="flex items-center gap-2">
-                                            <Image src="/companies/Apple.svg" alt="macOS" width={16} height={16} />
-                                            <span className="text-black">macOS</span>
-                                        </div>
-                                    </SelectItem>
-                                    <SelectItem value="windows">
-                                        <div className="flex items-center gap-2">
-                                            <Image src="/companies/Windows.svg" alt="Windows" width={16} height={16} />
-                                            <span className="text-black">Windows</span>
-                                        </div>
-                                        </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-
+                    <DialogDescription className="text-black text-base">
+                        Follow the steps below to check your system specifications.
                     </DialogDescription>
                 </DialogHeader>
 
+                <div className="space-y-8 mt-6">
 
+                    {/* Step 1 */}
+                    <div className="rounded border p-4 space-y-3">
+                        <h3 className="text-lg font-semibold">Step 1 — Select your operating system</h3>
 
-                {/* OS Selection and Command */}
-                <div className="flex flex-col md:flex-row md:items-start md:gap-4 mt-4">
+                        <Select value={os} onValueChange={(value) => setOs(value as OS)}>
+                            <SelectTrigger className="h-12 w-56">
+                                <SelectValue placeholder="Select OS" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="linux">
+                                    <div className="flex items-center gap-2">
+                                        <Image src="/companies/Linux.svg" alt="Linux" width={16} height={16} />
+                                        Linux
+                                    </div>
+                                </SelectItem>
 
+                                <SelectItem value="mac">
+                                    <div className="flex items-center gap-2">
+                                        <Image src="/companies/Apple.svg" alt="macOS" width={16} height={16} />
+                                        macOS
+                                    </div>
+                                </SelectItem>
 
-                    <div className="flex-1 grid grid-cols-12 gap-4 items-start mt-4 md:mt-0">
-                        <div className="col-span-10 mr-2">
-                            <pre className="text-white bg-black p-4 text-sm overflow-x-auto rounded-lg h-full">
-                                {command}
-                            </pre>
-                        </div>
-                        <div className="col-span-2 flex justify-end">
-                            <button
-                                onClick={copyToClipboard}
-                                className="flex items-center gap-2  h-full
-                                min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all
-                                bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow
-                                "
-                            >
-                                <Copy size={16} className="mr-2" />
-                                {copied ? "Copied" : "Copy"}
-                            </button>
+                                <SelectItem value="windows">
+                                    <div className="flex items-center gap-2">
+                                        <Image src="/companies/Windows.svg" alt="Windows" width={16} height={16} />
+                                        Windows
+                                    </div>
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    {/* Step 2 */}
+                    <div className="rounded border p-4 space-y-3">
+                        <h3 className="text-lg font-semibold">Step 2 — Copy the command</h3>
+
+                        <div className="grid grid-cols-12 gap-4 items-start">
+                            <div className="col-span-10">
+                                <pre className="text-white bg-black p-4 text-sm overflow-x-auto rounded-lg">
+                                    {command}
+                                </pre>
+                            </div>
+
+                            <div className="col-span-2 flex justify-end">
+                                <button
+                                    onClick={copyToClipboard}
+                                    className="flex items-center gap-2 min-w-[120px] h-12 rounded-lg px-4
+              text-white bg-black hover:bg-neutral-800 transition"
+                                >
+                                    <Copy size={16} />
+                                    {copied ? "Copied" : "Copy"}
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+                    {/* Step 3 */}
+                    <div className="rounded border p-4 space-y-3">
+                        <h3 className="text-lg font-semibold">Step 3 — Open your terminal</h3>
+                        <p className="text-black mt-1">
+                            Search for <strong>Terminal</strong> on your device and open it.
+                        </p>
+                    </div>
+
+                    {/* Step 4 */}
+                    <div className="rounded border p-4 space-y-3">
+                        <h3 className="text-lg font-semibold">Step 4 — Paste & run</h3>
+                        <p className="text-black mt-1">
+                            Paste the command into the terminal and press <strong>Enter</strong>.
+                            You’ll see your <strong>CPU cores</strong>, <strong>RAM</strong>, and <strong>storage</strong>.
+                        </p>
+                    </div>
+
                 </div>
-
-
-
-
             </DialogContent>
+
         </Dialog>
     );
 }
