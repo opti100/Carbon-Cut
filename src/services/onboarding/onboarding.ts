@@ -96,7 +96,6 @@ export const onboardingApi = {
             provider,
             connection_method: 'cost_estimate',
             regions: [data.region],
-            monthly_cost_usd: parseFloat(data.monthlyCost) || 0,
             monthly_hours_usage: parseFloat(data.monthlyHoursUsage) || 0,
           },
         ],
