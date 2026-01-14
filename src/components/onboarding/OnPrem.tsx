@@ -1,20 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import FloatingInput from "../ui/FloatingInput";
 import { OnPremData } from "@/types/onboarding";
 import clsx from "clsx";
-import Dropdown from "../ui/dropdown";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { AlertCircleIcon } from "lucide-react";
-import { on } from "events";
+import { AlertCircleIcon, Copy, MonitorCog } from "lucide-react";
+import { Card, CardContent } from "../ui/card";
+import { Button } from "../ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { Dialog, DialogHeader } from "../ui/dialog";
+import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog";
+import { CommandHelper } from "./Command";
 
 interface Props {
   data: OnPremData;
   onDataChange: (data: OnPremData) => void;
   onBack: () => void;
   onNext: () => void;
-  onSkip: () => void;
+  onSkip?: () => void;
   canProceed: boolean;
 }
 
@@ -26,54 +37,86 @@ const OnPrem = ({
   onSkip,
   canProceed,
 }: Props) => {
+
+  type OS = "linux" | "mac" | "windows";
+  const commands: Record<OS, string> = {
+    linux:
+      'echo "CPU: $(nproc) cores | RAM: $(awk \'/MemTotal/ {printf \\"%.0f\\", $2/1024/1024}\') GB | Storage: $(df -B1 --total | awk \'/total/ {printf \\"%.2f\\", $2/1024/1024/1024/1024}\') TB"',
+    mac:
+      'echo "CPU: $(sysctl -n hw.logicalcpu) cores | RAM: $(($(sysctl -n hw.memsize)/1024/1024/1024)) GB | Storage: $(df -k / | awk \'NR==2 {printf \\"%.2f\\", $2/1000/1000}\') TB"',
+    windows:
+      `Write-Output ("CPU: {0} cores | RAM: {1} GB | Storage: {2} TB" -f `
+      + `(Get-CimInstance Win32_Processor | Measure-Object NumberOfLogicalProcessors -Sum).Sum, `
+      + `[math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB), `
+      + `[math]::Round((Get-CimInstance Win32_LogicalDisk | Where-Object DriveType -eq 3 | Measure-Object Size -Sum).Sum / 1TB, 2))`,
+  };
+
+
+  const [os, setOs] = useState<OS>("linux");
+  const command = commands[os];
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = async () => {
+    await navigator.clipboard.writeText(command);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1000); // reset after 2s
+  };
+
   return (
     <div className="w-full space-y-8">
       {/* FORM */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <FloatingInput
-          placeholder="Name"
-          size="big"
-          value={data.name}
-          onChange={(value) => onDataChange({ ...data, name: value })}
-        />
 
-        <Dropdown
-          placeholder="CPU Cores"
-          size="big"
-          value={data.cpuCores}
-          options={[
-            { label: "2", value: "2" },
-            { label: "4", value: "4" },
-            { label: "8", value: "8" },
-            { label: "16", value: "16" },
-            { label: "32", value: "32" },
-            { label: "64", value: "64" },
-            { label: "128", value: "128" },
-          ]}
-          onChange={(value) =>
-            onDataChange({ ...data, cpuCores: value })
-          }
-        />
 
-        <Dropdown
-          placeholder="RAM (GB)"
-          size="big"
-          value={data.ramGB}
-          options={[
-            { label: "4", value: "4" },
-            { label: "8", value: "8" },
-            { label: "16", value: "16" },
-            { label: "32", value: "32" },
-            { label: "64", value: "64" },
-            { label: "128", value: "128" },
-          ]}
-          onChange={(value) =>
-            onDataChange({ ...data, ramGB: value })
-          }
-        />
+        {/* CPU Cores */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium">CPU Cores</label>
+          <Select
+            value={data.cpuCores}
+            onValueChange={(value) =>
+              onDataChange({ ...data, cpuCores: value })
+            }
+          >
+            <SelectTrigger className="h-14">
+              <SelectValue placeholder="Select CPU cores" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="2">2</SelectItem>
+              <SelectItem value="4">4</SelectItem>
+              <SelectItem value="8">8</SelectItem>
+              <SelectItem value="16">16</SelectItem>
+              <SelectItem value="32">32</SelectItem>
+              <SelectItem value="64">64</SelectItem>
+              <SelectItem value="128">128</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-        <FloatingInput
-          type="number"
+        {/* RAM */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium">RAM (GB)</label>
+          <Select
+            value={data.ramGB}
+            onValueChange={(value) =>
+              onDataChange({ ...data, ramGB: value })
+            }
+          >
+            <SelectTrigger className="h-14">
+              <SelectValue placeholder="Select RAM" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="4">4</SelectItem>
+              <SelectItem value="8">8</SelectItem>
+              <SelectItem value="16">16</SelectItem>
+              <SelectItem value="32">32</SelectItem>
+              <SelectItem value="64">64</SelectItem>
+              <SelectItem value="128">128</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Storage */}
+        <FloatingInput type="number"
           placeholder="Storage (TB)"
           size="big"
           value={data.storageTB}
@@ -81,27 +124,9 @@ const OnPrem = ({
             onDataChange({ ...data, storageTB: value })
           }
         />
-
-        <FloatingInput
-          type="number"
-          placeholder="AVG CPU Utilization (%)"
-          size="big"
-          value={data.avgCpuUtilization}
-          onChange={(value) =>
-            onDataChange({ ...data, avgCpuUtilization: value })
-          }
-        />
-
-        <FloatingInput
-          type="number"
-          placeholder="Hours / Day"
-          size="big"
-          value={data.hoursPerDay}
-          onChange={(value) =>
-            onDataChange({ ...data, hoursPerDay: value })
-          }
-        />
       </div>
+
+<CommandHelper />
 
       {/* INFO ALERT */}
       <Alert>
@@ -121,26 +146,16 @@ const OnPrem = ({
 
       {/* ACTIONS */}
       <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
-        <div>
-
-          <button
-            onClick={onBack}
-            className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
-          >
-            Back
-          </button>
-        </div>
+        <button
+          onClick={onBack}
+          className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-[#d1cebb] transition-colors"
+        >
+          Back
+        </button>
 
         <div className="flex items-center gap-4">
-          {/* Skip — always enabled, ignores validation */}
-          <button
-            onClick={onSkip}
-            className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
-          >
-            Skip
-          </button>
+        
 
-          {/* Continue — requires canProceed */}
           <button
             onClick={onNext}
             disabled={!canProceed}

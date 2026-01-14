@@ -5,12 +5,11 @@ interface StepsSidebarProps {
 }
 
 const STEPS = [
-  "SDK Integration",
-  "Cloud Provider",
-  "CDN Configuration",
-  "Workforce Emissions",
-  "On-Prem Infrastructure",
-  "Travel Details",
+  "Cloud",
+  "CDN",
+  "On-Prem",
+  "Workforce",
+  "Travel",
 ];
 
 export function StepsSidebar({ currentStep }: StepsSidebarProps) {
@@ -33,7 +32,7 @@ export function StepsSidebar({ currentStep }: StepsSidebarProps) {
                   isActive && "pl-2 border-l-2 border-neutral-900"
                 )}
               >
-                <span className="text-base leading-relaxed tracking-tight">{label}</span>
+                <span className="text-base leading-relaxed ">{label}</span>
               </button>
               {index < STEPS.length - 1 && (
                 <div className="h-px bg-neutral-200/60 ml-2" />

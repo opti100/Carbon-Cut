@@ -20,42 +20,35 @@ import CardNav from "../CardNav";
 import { navData } from "../NavData";
 import Sdk from "./Sdk";
 
-
-
-
-
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 5;
 
 const STEP_TITLES: Record<number, string> = {
-  1: "SDK Integration",
-  2: "Tell us about your cloud usage",
-  3: "Configure your CDN traffic",
+  1: "Tell us about your cloud usage",
+  2: "Configure your CDN traffic",
+  3: "Describe your on‑prem infrastructure",
   4: "How many employees do you have?",
-  5: "Describe your on‑prem infrastructure",
-  6: "Add your company travel details",
+  5: "Add your company travel details",
 };
 
 const STEP_SUBTITLES: Record<number, string> = {
-  1: "Integrate our SDK into your applications to start tracking emissions data.",
-  2: "We'll use this to estimate the emissions from your cloud providers.",
-  3: "Traffic and regions help us understand your delivery footprint.",
+  1: "We'll use this to estimate the emissions from your cloud providers.",
+  2: "Traffic and regions help us understand your delivery footprint.",
+  3: "Servers and utilisation levels drive on‑prem energy consumption.",
   4: "Employee count and workspace size shape your workforce emissions profile.",
-  5: "Servers and utilisation levels drive on‑prem energy consumption.",
-  6: "Business trips and commutes contribute to your overall footprint.",
+  5: "Business trips and commutes contribute to your overall footprint.",
 };
 
 export default function VTwoFlow() {
   const [step, setStep] = useState(1);
 
-  // Form state for all steps
   const [cloudProviderData, setCloudProviderData] =
     useState<CloudProviderData>({
       tabType: "Manual",
-      monthlyCost: "",
       actualCost: "",
       monthlyHoursUsage: "",
       region: "",
       uploadedFile: null,
+      cloud: "",
     });
 
   const [cdnData, setCdnData] = useState<CdnData>({
@@ -66,6 +59,7 @@ export default function VTwoFlow() {
 
   const [workforceEmissionsData, setWorkforceEmissionsData] =
     useState<WorkforceEmissionsData>({
+      workforceLocations: [],
       workforceType: "",
       workArrangementRemote: "",
       country: "",
@@ -87,18 +81,21 @@ export default function VTwoFlow() {
     travels: [{ travel_type: "", isOpen: true }],
   });
 
-  // Validation functions
   const isStep1Valid = () => {
     if (cloudProviderData.tabType === "Manual") {
       return (
-        cloudProviderData.monthlyCost !== "" &&
+        cloudProviderData.cloud !== "" &&
+        cloudProviderData.region !== "" &&
         cloudProviderData.actualCost !== "" &&
-        cloudProviderData.monthlyHoursUsage !== "" &&
-        cloudProviderData.region !== ""
+        cloudProviderData.monthlyHoursUsage !== ""
       );
-    } else {
-      return cloudProviderData.uploadedFile !== null;
+    } else if (cloudProviderData.tabType === "Upload") {
+      return (
+        cloudProviderData.cloud !== "" &&
+        cloudProviderData.uploadedFile !== null
+      );
     }
+    return false;
   };
 
   const isStep2Valid = () => {
@@ -111,29 +108,25 @@ export default function VTwoFlow() {
 
   const isStep3Valid = () => {
     return (
-      workforceEmissionsData.workforceType !== "" &&
-      workforceEmissionsData.workArrangementRemote !== "" &&
-      workforceEmissionsData.country !== "" &&
-      workforceEmissionsData.state !== "" &&
-      workforceEmissionsData.city !== "" &&
-      workforceEmissionsData.squareMeters !== ""
+      onPremData.cpuCores !== "" &&
+      onPremData.ramGB !== "" &&
+      onPremData.storageTB !== ""
     );
   };
 
   const isStep4Valid = () => {
-    return (
-      onPremData.name !== "" &&
-      onPremData.cpuCores !== "" &&
-      onPremData.ramGB !== "" &&
-      onPremData.storageTB !== "" &&
-      onPremData.avgCpuUtilization !== "" &&
-      onPremData.hoursPerDay !== ""
+    if (!workforceEmissionsData.workforceLocations || workforceEmissionsData.workforceLocations.length === 0) {
+      return false;
+    }
+    return workforceEmissionsData.workforceLocations.every((location) => 
+      location.workforceType !== "" &&
+      location.workArrangementRemote !== "" &&
+      location.country !== "" &&
+      location.squareMeters !== ""
     );
   };
 
   const isStep5Valid = () => {
-    // Each travel item must have at least travel_type, distance_km, and passenger_count
-    // If it's a flight, flight_class and is_domestic are also required
     if (travelData.travels.length === 0) return false;
 
     return travelData.travels.every((travel: TravelItem) => {
@@ -160,15 +153,15 @@ export default function VTwoFlow() {
 
   const canProceed = () => {
     switch (step) {
-      case 2:
+      case 1:
         return isStep1Valid();
-      case 3:
+      case 2:
         return isStep2Valid();
-      case 4:
+      case 3:
         return isStep3Valid();
-      case 5:
+      case 4:
         return isStep4Valid();
-      case 6:
+      case 5:
         return isStep5Valid();
       default:
         return true;
@@ -186,19 +179,15 @@ export default function VTwoFlow() {
   };
 
   const handleStepChange = (newStep: number) => {
-    // Allow going back anytime
     if (newStep < step) {
       setStep(newStep);
       return;
     }
-
-    // Allow going forward only to the next step if current step is valid
+    
     if (newStep === step + 1 && canProceed()) {
       setStep(newStep);
       return;
     }
-
-    // Don't allow skipping steps or going forward if current step is invalid
   };
 
   const title = STEP_TITLES[step];
@@ -224,7 +213,6 @@ export default function VTwoFlow() {
             <StepsSidebar currentStep={step} />
           </div>
 
-
           {/* Main content */}
           <div className="flex-1 min-w-0">
             <div className="flex  items-center gap-5">
@@ -247,36 +235,41 @@ export default function VTwoFlow() {
                   {subtitle}
                 </p>
               </div>
-
-
             </div>
 
             {/* Primary card */}
             <section className="">
-
-              
               {/* Step content */}
+
               {step === 1 && (
-                <Sdk
-                  onNext={handleNext} canProceed={true} />
-              )}
-              {step === 2 && (
                 <CloudProvider
                   data={cloudProviderData}
                   onDataChange={setCloudProviderData}
                   onNext={handleNext}
-                  onBack={() => setStep(1)}
+                  onBack={() => setStep(0)} 
                   canProceed={isStep1Valid()}
+                  
+                />
+              )}
+
+              {step === 2 && (
+                <Cdn
+                  data={cdnData}
+                  onSkip={handleSkip} 
+                  onDataChange={setCdnData}
+                  onBack={() => setStep(1)}
+                  onNext={handleNext}
+                  canProceed={isStep2Valid()}
                 />
               )}
 
               {step === 3 && (
-                <Cdn
-                  data={cdnData}
-                  onDataChange={setCdnData}
-                  onBack={() => setStep(2)}
+                <OnPrem
+                  data={onPremData}
+                  onDataChange={setOnPremData}
+                  onBack={() => setStep(2)} 
                   onNext={handleNext}
-                  canProceed={isStep2Valid()}
+                  canProceed={isStep3Valid()} 
                 />
               )}
 
@@ -284,37 +277,27 @@ export default function VTwoFlow() {
                 <WorkforceEmissions
                   data={workforceEmissionsData}
                   onDataChange={setWorkforceEmissionsData}
-                  onBack={() => setStep(3)}
+                  onBack={() => setStep(3)} 
                   onNext={handleNext}
-                  canProceed={isStep3Valid()}
+                  onSkip={handleSkip}
+                  canProceed={isStep4Valid()} 
                 />
               )}
 
               {step === 5 && (
-                <OnPrem
-                  data={onPremData}
-                  onDataChange={setOnPremData}
-                  onBack={() => setStep(4)}
-                  onNext={handleNext}
-                  onSkip={handleSkip}
-                  canProceed={isStep4Valid()}
-                />
-              )}
-
-              {step === 6 && (
                 <TravellingDetails
                   data={travelData}
                   onDataChange={setTravelData}
-                  onBack={() => setStep(5)}
+                  onBack={() => setStep(4)}
                   onNext={handleNext}
-                  canProceed={isStep5Valid()}
+                  canProceed={isStep5Valid()} 
+                  onSkip={handleSkip} 
                 />
               )}
             </section>
           </div>
         </div>
       </main>
-
     </>
   );
 }

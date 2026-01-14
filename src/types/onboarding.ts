@@ -1,12 +1,13 @@
 // Onboarding form data types
 
 export interface CloudProviderData {
+  cloud?: string;
   tabType: "Manual" | "Upload";
-  monthlyCost: string;
   actualCost: string;
   monthlyHoursUsage: string;
   region: string;
   uploadedFile: File | null;
+  
 }
 
 export interface CdnData {
@@ -15,7 +16,16 @@ export interface CdnData {
   regions: string;
 }
 
+export interface WorkforceItem {
+  workforceType?: string;
+  workArrangementRemote?: string;
+  country?: string;
+  squareMeters?: string;
+  isOpen?: boolean;
+}
+
 export interface WorkforceEmissionsData {
+  workforceLocations: WorkforceItem[];
   workforceType: string;
   workArrangementRemote: string;
   country: string;
