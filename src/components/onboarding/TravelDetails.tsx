@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AlertCircleIcon, ChevronDown, Trash2 } from "lucide-react";
+import { AlertCircleIcon, CalendarIcon, ChevronDown, Trash2 } from "lucide-react";
 import { TravelData, TravelItem } from "@/types/onboarding";
 import clsx from "clsx";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
@@ -63,6 +63,8 @@ export default function TravellingDetails({
       ),
     });
   };
+
+   const [date, setDate] = React.useState<Date>()
 
   const addTravel = () => {
     onDataChange({
@@ -144,17 +146,24 @@ export default function TravellingDetails({
                     </Select>
                   </div>
 
+
+
                   <div className="space-y-2">
+                    <label className="text-sm font-medium">Travel Date</label>
                     <FloatingInput
-                      placeholder="Distance (km)"
+                      placeholder="Travel Date"
                       size="big"
-                      type="number"
-                      value={travel.distance_km || ""}
+                      type="date"
+                      value={travel.travel_date || ""}
                       onChange={(value) =>
-                        updateTravel(index, "distance_km", value)
+                        updateTravel(index, "travel_date", value)
                       }
                     />
                   </div>
+
+
+                   
+                
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
@@ -169,15 +178,15 @@ export default function TravellingDetails({
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Travel Date</label>
+
+                    <div className="space-y-2">
                     <FloatingInput
-                      placeholder="Travel Date"
+                      placeholder="Distance (km)"
                       size="big"
-                      type="date"
-                      value={travel.travel_date || ""}
+                      type="number"
+                      value={travel.distance_km || ""}
                       onChange={(value) =>
-                        updateTravel(index, "travel_date", value)
+                        updateTravel(index, "distance_km", value)
                       }
                     />
                   </div>
@@ -234,7 +243,7 @@ export default function TravellingDetails({
 
 
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-end">
         <button
           onClick={addTravel}
           className="rounded-lg bg-[#d1cebb] p-4 flex justify-center text-center items-center text-base font-medium text-black transition-colors"

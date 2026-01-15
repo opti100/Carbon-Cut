@@ -197,7 +197,7 @@ export default function VTwoFlow() {
 
   return (
     <>
-      <div className="absolute top-0 left-0 right-0 z-20">
+      <div className="fixed top-0 left-0 right-0 z-20 w-full">
         <CardNav
           logo="/CarbonCut-fe/CC.svg"
           logoAlt="CarbonCut Logo"
@@ -208,33 +208,35 @@ export default function VTwoFlow() {
           buttonTextColor="#080c04"
         />
       </div>
-      <main className="flex min-h-screen justify-center bg-[#fcfdf6] px-4 pt-24 pb-16 sm:px-6 lg:px-12 lg:pt-28 lg:pb-20">
-        <div className="flex w-full max-w-7xl gap-12 lg:gap-20">
-          <div className="hidden lg:block w-56 shrink-0">
+      <main className="flex min-h-screen justify-center bg-[#fcfdf6] px-2 sm:px-4 lg:px-6 xl:px-12 pt-20 sm:pt-24 lg:pt-28 pb-8 sm:pb-16 lg:pb-20">
+        <div className="flex w-full max-w-7xl gap-4 sm:gap-6 lg:gap-12 xl:gap-20">
+          <div className="hidden xl:block w-48 2xl:w-56 shrink-0">
             <StepsSidebar currentStep={step} />
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex  items-center gap-5">
-              <StepProgress
-                total={TOTAL_STEPS}
-                current={step}
-                onChange={handleStepChange}
-              />
-              <span className="text-sm font-semibold text-neutral-700 whitespace-nowrap">
+          <div className="flex-1 min-w-0 max-w-full overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+              <div className="flex-1 min-w-0">
+                <StepProgress
+                  total={TOTAL_STEPS}
+                  current={step}
+                  onChange={handleStepChange}
+                />
+              </div>
+              <span className="text-xs sm:text-sm font-semibold text-neutral-700 whitespace-nowrap">
                 {step}/{TOTAL_STEPS}
               </span>
             </div>
-            <div className="my-10 flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-              <div className="flex-1 space-y-2">
-                <h1 className="text-4xl sm:text-5xl font-bold text-neutral-900 leading-tight tracking-tight">
+            <div className="my-6 sm:my-8 lg:my-10 flex flex-col gap-4 sm:gap-6 lg:gap-8 md:flex-row md:items-start md:justify-between">
+              <div className="flex-1 space-y-2 sm:space-y-3">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-neutral-900 leading-tight tracking-tight">
                   {title}
                 </h1>
-                <p className="text-lg text-neutral-600 leading-relaxed max-w-2xl">
+                <p className="text-base sm:text-lg text-neutral-600 leading-relaxed max-w-full sm:max-w-2xl">
                   {subtitle}
                 </p>
               </div>
             </div>
-            <section className="">
+            <section className="w-full">
 
               {step === 1 && (
                 <CloudProvider
