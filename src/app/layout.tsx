@@ -3,6 +3,7 @@ import './globals.css'
 import { Geist, Geist_Mono } from 'next/font/google'
 import Providers from '@/providers/providers'
 import Script from 'next/script'
+import { Toaster } from 'sonner'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <link rel="preload" href="/LandingPage.mp4" as="video" type="video/mp4" />
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Toaster richColors/>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-Y388SH4Y4G"

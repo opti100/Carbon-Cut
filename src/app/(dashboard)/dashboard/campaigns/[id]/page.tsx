@@ -48,11 +48,16 @@ interface CampaignAnalyticsPageProps {
 }
 
 const toNumber = (value: any): number => {
-  if (typeof value === 'number') return value
-  if (typeof value === 'string') return Number.parseFloat(value) || 0
+  if (value === null || value === undefined || value === '') return 0
+  if (typeof value === 'number') {
+    return isNaN(value) ? 0 : value
+  }
+  if (typeof value === 'string') {
+    const parsed = Number.parseFloat(value)
+    return isNaN(parsed) ? 0 : parsed
+  }
   return 0
 }
-
 // --- Date Range Picker Component ---
 function DateRangePicker({
   className,
@@ -266,6 +271,10 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
   const router = useRouter()
   const queryClient = useQueryClient()
 
+  // Validate ID early - check it's a non-empty string (UUID)
+  const campaignId = id ? String(id).trim() : ''
+  const isValidId = campaignId.length > 0
+
   const [date, setDate] = useState<DateRange | undefined>({
     from: subDays(new Date(), 30),
     to: new Date(),
@@ -281,8 +290,9 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
   }
 
   const { data: campaign, isLoading: campaignLoading } = useQuery({
-    queryKey: ['campaign', id],
-    queryFn: () => campaignApi.get(Number(id)),
+    queryKey: ['campaign', campaignId],
+    queryFn: () => campaignApi.get(campaignId),  // Don't convert to Number
+    enabled: isValidId,
   })
 
   const {
@@ -290,20 +300,20 @@ export default function CampaignAnalyticsPage({ params }: CampaignAnalyticsPageP
     isLoading: analyticsLoading,
     isError: analyticsError,
   } = useQuery({
-    queryKey: ['campaign-analytics', id, apiDateRange],
+    queryKey: ['campaign-analytics', campaignId, apiDateRange],
     queryFn: () =>
-      campaignApi.getAnalytics(id, {
+      campaignApi.getAnalytics(campaignId, {
         ...apiDateRange,
         group_by: 'day',
       }),
-    enabled: !!campaign,
+    enabled: isValidId && !!campaign,
   })
 
   const syncMutation = useMutation({
     mutationFn: (data: { start_date: string; end_date: string }) =>
-      campaignApi.syncImpressions(id, data),
+      campaignApi.syncImpressions(campaignId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['campaign-analytics', id] })
+      queryClient.invalidateQueries({ queryKey: ['campaign-analytics', campaignId] })
       toast.success('Data synced successfully!')
     },
     onError: () => {

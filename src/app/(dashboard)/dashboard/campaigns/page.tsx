@@ -74,8 +74,8 @@ export default function CampaignsPage() {
   }
 
   return (
-    <div className="flex-1 overflow-auto bg-background">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="flex-1 overflow-auto ">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 ">
         <div className="space-y-6">
           <div className="space-y-4">
             <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground">
@@ -83,7 +83,6 @@ export default function CampaignsPage() {
             </h1>
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              {/* Tabs */}
               <Tabs defaultValue="google" className="w-full sm:w-auto">
                 <TabsList className="bg-muted/50 rounded-lg p-1">
                   <TabsTrigger
@@ -201,7 +200,7 @@ export default function CampaignsPage() {
                   <Card
                     key={campaign.id}
                     className="hover:shadow-lg bg-white rounded-md hover:border-[#ff8904]/20 transition-all duration-200 cursor-pointer border"
-                    onClick={() => router.push(`/dashboard/campaigns/${campaign.id}`)}
+                    onClick={() => router.push(`/dashboard/campaigns/${campaign?.external_id}`)}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start gap-3">

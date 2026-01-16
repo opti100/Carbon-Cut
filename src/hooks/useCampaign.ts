@@ -10,7 +10,7 @@ export const useCampaigns = () => {
   })
 }
 
-export const useCampaign = (id: number) => {
+export const useCampaign = (id: string) => {
   return useQuery({
     queryKey: ['campaign', id],
     queryFn: () => campaignApi.get(id),

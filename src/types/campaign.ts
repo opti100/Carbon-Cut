@@ -38,6 +38,7 @@ export interface UTMParameter {
 }
 
 export interface Campaign {
+  external_id: string 
   id: number
   name: string
   user_id: number
