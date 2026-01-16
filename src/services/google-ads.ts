@@ -55,7 +55,7 @@ export const googleAdsApi = {
    * Get all accessible Google Ads accounts
    */
   async getAccounts() {
-    const response = await api.get('/google-ads/accounts/')
+    const response = await api.get('/auth/google-ads/accounts/')
     console.log('✅ Accounts response:', response.data)
     return response.data
   },
