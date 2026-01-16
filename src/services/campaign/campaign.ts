@@ -1,3 +1,4 @@
+import { useGoogleAds } from '@/contexts/GoogleAdsContext'
 import {
   Campaign,
   CreateCampaignData,
@@ -44,10 +45,10 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 export const campaignApi = {
   list: async (): Promise<Campaign[]> => {
     const data = await fetchWithAuth(`${API_BASE_URL}/campaign/`)
-    return data.data || []
+    return data.data.campaigns || []
   },
 
-  get: async (id: number): Promise<Campaign> => {
+  get: async (id: string): Promise<Campaign> => {
     const data = await fetchWithAuth(`${API_BASE_URL}/campaign/${id}/`)
     return data.data
   },
@@ -107,7 +108,7 @@ export const campaignApi = {
     })
 
     const data = await fetchWithAuth(
-      `${API_BASE_URL}/campaign/analytics/${campaignId}/?${queryParams}`
+      `${API_BASE_URL}/campaign/${campaignId}/analytics/?${queryParams}`
     )
     return data.data
   },

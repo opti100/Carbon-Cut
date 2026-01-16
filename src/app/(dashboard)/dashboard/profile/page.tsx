@@ -26,6 +26,12 @@ import {
   Link2,
   LogOut,
   AlertTriangle,
+  Settings,
+  Cloud,
+  Globe,
+  Users,
+  Server,
+  Plane,
 } from 'lucide-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiKeysList } from '@/components/dashboard/api-key/ApiList'
@@ -36,12 +42,18 @@ import { GoogleAdsConnectDialog } from '@/components/dashboard/google-ads/Google
 import { ApiKeyService } from '@/services/apikey/apikey'
 import { useGoogleAds } from '@/contexts/GoogleAdsContext'
 import { useRouter } from 'next/dist/client/components/navigation'
+import { onboardingApi } from '@/services/onboarding/onboarding'
+import { Badge } from '@/components/ui/badge'
+import { Separator } from '@/components/ui/separator'
+
+type TabType = 'basic-info' | 'integrations' | 'configuration'
 
 export default function ProfilePage() {
   const { user, logout } = useAuth()
   const { status: googleAdsStatus } = useGoogleAds()
   const router = useRouter()
   const queryClient = useQueryClient()
+  const [activeTab, setActiveTab] = useState<TabType>('basic-info')
   const [createKeyDialogOpen, setCreateKeyDialogOpen] = useState(false)
   const [connectGoogleDialogOpen, setConnectGoogleDialogOpen] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -54,6 +66,13 @@ export default function ProfilePage() {
   const { data: apiKeysData } = useQuery({
     queryKey: ['apiKeys'],
     queryFn: () => ApiKeyService.getApiKeys(),
+    retry: 1,
+    staleTime: 30000,
+  })
+
+  const { data: configData, isLoading: configLoading } = useQuery({
+    queryKey: ['userConfig'],
+    queryFn: () => onboardingApi.getConfig(),
     retry: 1,
     staleTime: 30000,
   })
@@ -120,219 +139,109 @@ export default function ProfilePage() {
     setCreateKeyDialogOpen(true)
   }
 
+  const sidebarItems = [
+    {
+      id: 'basic-info' as TabType,
+      label: 'Basic Info',
+      icon: User,
+      description: 'Personal details',
+    },
+    {
+      id: 'integrations' as TabType,
+      label: 'Integrations',
+      icon: Link2,
+      description: 'Connected services',
+    },
+    {
+      id: 'configuration' as TabType,
+      label: 'Configuration',
+      icon: Settings,
+      description: 'Onboarding settings',
+    },
+  ]
+
   return (
     <div className="flex-1 overflow-auto p-4 sm:p-6 md:p-8 bg-background">
-      {/* <DashboardHeader title="Profile & Settings" description="Manage your account and preferences" /> */}
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold tracking-tight">Profile & Settings</h1>
+          <p className="text-muted-foreground">
+            Manage your account, integrations, and configurations
+          </p>
+        </div>
 
-      <div className="mx-auto max-w-4xl grid gap-8 mt-6">
-        <Card className="bg-white rounded-md">
-          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div>
-              <CardTitle>Profile Information</CardTitle>
-              <CardDescription>
-                Your personal details and contact information.
-              </CardDescription>
-            </div>
-            {!isEditing && (
-              <Button
-                variant="outline"
-                onClick={() => setIsEditing(true)}
-                className="w-full sm:w-auto"
-              >
-                <Edit2 className="h-4 w-4 mr-2" />
-                Edit Profile
-              </Button>
-            )}
-          </CardHeader>
-          <CardContent>
-            {updateProfileMutation.isSuccess && (
-              <Alert className="mb-6 bg-green-50 border-green-200">
-                <CheckCircle className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-800">
-                  Profile updated successfully!
-                </AlertDescription>
-              </Alert>
-            )}
-            {updateProfileMutation.error && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertDescription>{updateProfileMutation.error.message}</AlertDescription>
-              </Alert>
-            )}
-            <div className="flex items-center gap-4 mb-6">
-              <Avatar className="h-16 w-16">
-                <AvatarFallback className="bg-muted text-muted-foreground text-2xl font-semibold">
-                  {getInitials(user?.name, user?.email)}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="font-semibold text-lg">{user?.name || 'User'}</p>
-                <p className="text-muted-foreground">{user?.email}</p>
-              </div>
-            </div>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid gap-4 sm:grid-cols-2">
-                {/* Form fields */}
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  {isEditing ? (
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-muted-foreground">{user?.name || 'Not set'}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <p className="text-muted-foreground">{user?.email}</p>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
-                  {isEditing ? (
-                    <Input
-                      id="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phoneNumber: e.target.value })
-                      }
-                    />
-                  ) : (
-                    <p className="text-muted-foreground">
-                      {user?.phoneNumber || 'Not set'}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="companyName">Company Name</Label>
-                  {isEditing ? (
-                    <Input
-                      id="companyName"
-                      value={formData.companyName}
-                      onChange={(e) =>
-                        setFormData({ ...formData, companyName: e.target.value })
-                      }
-                    />
-                  ) : (
-                    <p className="text-muted-foreground">
-                      {user?.companyName || 'Not set'}
-                    </p>
-                  )}
-                </div>
-              </div>
-              {isEditing && (
-                <div className="flex gap-3 pt-4 border-t">
-                  <Button type="submit" disabled={updateProfileMutation.isPending}>
-                    {updateProfileMutation.isPending && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Save Changes
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleCancel}
-                    disabled={updateProfileMutation.isPending}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {/* Sidebar */}
+          <div className="md:col-span-1">
+            <Card className="bg-white rounded-md sticky top-6">
+              <CardContent className="p-4">
+                <nav className="space-y-1">
+                  {sidebarItems.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
+                        activeTab === item.id
+                          ? 'bg-primary text-primary-foreground'
+                          : 'hover:bg-muted text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5 mt-0.5 shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-sm">{item.label}</p>
+                        <p className="text-xs opacity-80 truncate">{item.description}</p>
+                      </div>
+                    </button>
+                  ))}
+                  <Separator className="my-3" />
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-left transition-colors text-destructive hover:bg-destructive/10"
                   >
-                    Cancel
-                  </Button>
-                </div>
-              )}
-            </form>
-          </CardContent>
-        </Card>
+                    <LogOut className="h-5 w-5 mt-0.5 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-sm">Logout</p>
+                      <p className="text-xs opacity-80">Sign out of account</p>
+                    </div>
+                  </button>
+                </nav>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* API Keys Card */}
-        <Card className="bg-white rounded-md">
-          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <Key className="h-5 w-5" /> API Keys
-              </CardTitle>
-              <CardDescription>
-                Manage your API key for programmatic access.
-              </CardDescription>
-            </div>
-            {/* {hasApiKey ? (
-              <Button disabled className="cursor-not-allowed w-full sm:w-auto" title="You can only have one API key">
-                <AlertTriangle className="h-4 w-4 mr-2" /> Limit Reached
-              </Button>
-            ) : (
-              
-            )} */}
-            <Button onClick={handleCreateKeyClick} className="w-full sm:w-auto">
-              <Plus className="h-4 w-4 mr-2" /> Create API Key
-            </Button>
-          </CardHeader>
-          <CardContent>
-            {/* {hasApiKey && (
-              <Alert variant="default" className="mb-4">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  For security, only one active API key is allowed. To generate a new one, please delete the existing key.
-                </AlertDescription>
-              </Alert>
-            )} */}
-            <ApiKeysList />
-          </CardContent>
-        </Card>
+          {/* Main Content */}
+          <div className="md:col-span-3 space-y-6">
+            {activeTab === 'basic-info' && (
+              <BasicInfoTab
+                user={user}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                formData={formData}
+                setFormData={setFormData}
+                handleSubmit={handleSubmit}
+                handleCancel={handleCancel}
+                updateProfileMutation={updateProfileMutation}
+                getInitials={getInitials}
+              />
+            )}
 
-        {/* Integrations Card */}
-        <Card className="bg-white rounded-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Link2 className="h-5 w-5" /> Integrations
-            </CardTitle>
-            <CardDescription>
-              Connect your account with third-party services.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex items-center gap-4">
-                <Image
-                  src="/dsp/google-ads.svg"
-                  alt="Google Ads"
-                  width={40}
-                  height={40}
-                />
-                <div>
-                  <p className="font-semibold">Google Ads</p>
-                  <p className="text-sm text-muted-foreground">
-                    Sync your campaign data automatically.
-                  </p>
-                </div>
-              </div>
-              {googleAdsStatus?.is_connected ? (
-                <div className="flex items-center gap-2 text-green-600">
-                  <CheckCircle className="h-5 w-5" />
-                  <span>Connected</span>
-                </div>
-              ) : (
-                <Button
-                  variant="outline"
-                  onClick={() => setConnectGoogleDialogOpen(true)}
-                >
-                  Connect
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+            {activeTab === 'integrations' && (
+              <IntegrationsTab
+                googleAdsStatus={googleAdsStatus}
+                setConnectGoogleDialogOpen={setConnectGoogleDialogOpen}
+                hasApiKey={hasApiKey}
+                handleCreateKeyClick={handleCreateKeyClick}
+              />
+            )}
 
-        {/* Account Management Card */}
-        <Card className="bg-white rounded-md">
-          <CardHeader>
-            <CardTitle>Account Management</CardTitle>
-            <CardDescription>Logout from your account.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="destructive" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-2" /> Logout
-            </Button>
-          </CardContent>
-        </Card>
+            {activeTab === 'configuration' && (
+              <ConfigurationTab
+                configData={configData}
+                configLoading={configLoading}
+              />
+            )}
+          </div>
+        </div>
       </div>
 
       <CreateApiKeyDialog
@@ -343,6 +252,412 @@ export default function ProfilePage() {
         open={connectGoogleDialogOpen}
         onOpenChange={setConnectGoogleDialogOpen}
       />
+    </div>
+  )
+}
+
+// Basic Info Tab Component
+function BasicInfoTab({
+  user,
+  isEditing,
+  setIsEditing,
+  formData,
+  setFormData,
+  handleSubmit,
+  handleCancel,
+  updateProfileMutation,
+  getInitials,
+}: any) {
+  return (
+    <Card className="bg-white rounded-md">
+      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div>
+          <CardTitle>Profile Information</CardTitle>
+          <CardDescription>
+            Your personal details and contact information.
+          </CardDescription>
+        </div>
+        {!isEditing && (
+          <Button
+            variant="outline"
+            onClick={() => setIsEditing(true)}
+            className="w-full sm:w-auto"
+          >
+            <Edit2 className="h-4 w-4 mr-2" />
+            Edit Profile
+          </Button>
+        )}
+      </CardHeader>
+      <CardContent>
+        {updateProfileMutation.isSuccess && (
+          <Alert className="mb-6 bg-green-50 border-green-200">
+            <CheckCircle className="h-4 w-4 text-green-600" />
+            <AlertDescription className="text-green-800">
+              Profile updated successfully!
+            </AlertDescription>
+          </Alert>
+        )}
+        {updateProfileMutation.error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertDescription>{updateProfileMutation.error.message}</AlertDescription>
+          </Alert>
+        )}
+        <div className="flex items-center gap-4 mb-6">
+          <Avatar className="h-16 w-16">
+            <AvatarFallback className="bg-muted text-muted-foreground text-2xl font-semibold">
+              {getInitials(user?.name, user?.email)}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="font-semibold text-lg">{user?.name || 'User'}</p>
+            <p className="text-muted-foreground">{user?.email}</p>
+          </div>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              {isEditing ? (
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+              ) : (
+                <p className="text-muted-foreground">{user?.name || 'Not set'}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email Address</Label>
+              <p className="text-muted-foreground">{user?.email}</p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">Phone Number</Label>
+              {isEditing ? (
+                <Input
+                  id="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phoneNumber: e.target.value })
+                  }
+                />
+              ) : (
+                <p className="text-muted-foreground">
+                  {user?.phoneNumber || 'Not set'}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="companyName">Company Name</Label>
+              {isEditing ? (
+                <Input
+                  id="companyName"
+                  value={formData.companyName}
+                  onChange={(e) =>
+                    setFormData({ ...formData, companyName: e.target.value })
+                  }
+                />
+              ) : (
+                <p className="text-muted-foreground">
+                  {user?.companyName || 'Not set'}
+                </p>
+              )}
+            </div>
+          </div>
+          {isEditing && (
+            <div className="flex gap-3 pt-4 border-t">
+              <Button type="submit" disabled={updateProfileMutation.isPending}>
+                {updateProfileMutation.isPending && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                Save Changes
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                disabled={updateProfileMutation.isPending}
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
+        </form>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Integrations Tab Component
+function IntegrationsTab({
+  googleAdsStatus,
+  setConnectGoogleDialogOpen,
+  hasApiKey,
+  handleCreateKeyClick,
+}: any) {
+  return (
+    <div className="space-y-6">
+      {/* Google Ads Integration */}
+      <Card className="bg-white rounded-md">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Link2 className="h-5 w-5" /> Google Ads Integration
+          </CardTitle>
+          <CardDescription>
+            Connect and manage your Google Ads account for campaign tracking.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between p-4 border rounded-lg">
+            <div className="flex items-center gap-4">
+              <Image
+                src="/dsp/google-ads.svg"
+                alt="Google Ads"
+                width={40}
+                height={40}
+              />
+              <div>
+                <p className="font-semibold">Google Ads</p>
+                <p className="text-sm text-muted-foreground">
+                  Sync your campaign data automatically.
+                </p>
+              </div>
+            </div>
+            {googleAdsStatus?.is_connected ? (
+              <div className="flex items-center gap-2 text-green-600">
+                <CheckCircle className="h-5 w-5" />
+                <span className="font-medium">Connected</span>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setConnectGoogleDialogOpen(true)}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Connect
+              </Button>
+            )}
+          </div>
+
+          {googleAdsStatus?.is_connected && googleAdsStatus?.customer_id && (
+            <div className="mt-4 p-4 bg-muted rounded-lg">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Customer ID</p>
+                  <p className="font-mono font-medium">{googleAdsStatus.customer_id}</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Status</p>
+                  <Badge variant="default">Active</Badge>
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* API Keys */}
+      <Card className="bg-white rounded-md">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <Key className="h-5 w-5" /> API Keys
+            </CardTitle>
+            <CardDescription>
+              Manage your API keys for programmatic access.
+            </CardDescription>
+          </div>
+          <Button onClick={handleCreateKeyClick} className="w-full sm:w-auto">
+            <Plus className="h-4 w-4 mr-2" /> Create API Key
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <ApiKeysList />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+// Configuration Tab Component
+function ConfigurationTab({ configData, configLoading }: any) {
+  const config = configData?.data || {}
+
+  if (configLoading) {
+    return (
+      <Card className="bg-white rounded-md">
+        <CardContent className="py-12">
+          <div className="flex items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  const configSections = [
+    {
+      title: 'Cloud Infrastructure',
+      icon: Cloud,
+      items: config.cloud_providers || [],
+      emptyMessage: 'No cloud providers configured',
+      renderItem: (item: any) => (
+        <div className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="flex items-center gap-3">
+            <Cloud className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium capitalize">{item.provider || 'Cloud Provider'}</p>
+              <p className="text-sm text-muted-foreground">
+                {item.connection_method === 'cost_estimate' ? 'Manual Entry' : 'CSV Upload'}
+                {item.monthly_cost_usd && ` • $${item.monthly_cost_usd}/mo`}
+              </p>
+            </div>
+          </div>
+          <Badge variant="secondary">{item.regions?.join(', ') || 'N/A'}</Badge>
+        </div>
+      ),
+    },
+    {
+      title: 'CDN Configuration',
+      icon: Globe,
+      items: config.cdn ? [config.cdn] : [],
+      emptyMessage: 'No CDN configured',
+      renderItem: (item: any) => (
+        <div className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="flex items-center gap-3">
+            <Globe className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium capitalize">{item.provider || 'CDN Provider'}</p>
+              <p className="text-sm text-muted-foreground">
+                {item.monthly_gb_transferred && `${item.monthly_gb_transferred} GB/mo`}
+              </p>
+            </div>
+          </div>
+          <Badge variant="secondary">{item.regions || 'Global'}</Badge>
+        </div>
+      ),
+    },
+    {
+      title: 'Workforce Details',
+      icon: Users,
+      items: config.workforce ? [config.workforce] : [],
+      emptyMessage: 'No workforce details configured',
+      renderItem: (item: any) => (
+        <div className="p-4 border rounded-lg space-y-3">
+          <div className="flex items-center gap-3">
+            <Users className="h-5 w-5 text-muted-foreground" />
+            <p className="font-medium">Workforce Configuration</p>
+          </div>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-muted-foreground">Type</p>
+              <p className="font-medium capitalize">{item.workforce_type || 'N/A'}</p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">Arrangement</p>
+              <p className="font-medium capitalize">{item.work_arrangement || 'N/A'}</p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">Location</p>
+              <p className="font-medium">
+                {[item.city, item.state, item.country].filter(Boolean).join(', ') || 'N/A'}
+              </p>
+            </div>
+            <div>
+              <p className="text-muted-foreground">Office Space</p>
+              <p className="font-medium">{item.square_meters ? `${item.square_meters} m²` : 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'On-Premise Infrastructure',
+      icon: Server,
+      items: config.on_prem_servers || [],
+      emptyMessage: 'No on-premise servers configured',
+      renderItem: (item: any) => (
+        <div className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="flex items-center gap-3">
+            <Server className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium">{item.name || 'Server'}</p>
+              <p className="text-sm text-muted-foreground">
+                {item.cpu_cores} cores • {item.ram_gb}GB RAM • {item.storage_tb}TB Storage
+              </p>
+            </div>
+          </div>
+          <Badge variant="secondary">{item.avg_cpu_utilization}% CPU</Badge>
+        </div>
+      ),
+    },
+    {
+      title: 'Travel Details',
+      icon: Plane,
+      items: config.travel_details || [],
+      emptyMessage: 'No travel details configured',
+      renderItem: (item: any) => (
+        <div className="flex items-center justify-between p-4 border rounded-lg">
+          <div className="flex items-center gap-3">
+            <Plane className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="font-medium capitalize">{item.travel_type?.replace('_', ' ') || 'Travel'}</p>
+              <p className="text-sm text-muted-foreground">
+                {item.distance_km && `${item.distance_km} km`}
+                {item.passenger_count && ` • ${item.passenger_count} passengers`}
+              </p>
+            </div>
+          </div>
+          {item.flight_class && <Badge variant="secondary" className="capitalize">{item.flight_class}</Badge>}
+        </div>
+      ),
+    },
+  ]
+
+  return (
+    <div className="space-y-6">
+      {configSections.map((section) => (
+        <Card key={section.title} className="bg-white rounded-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <section.icon className="h-5 w-5" />
+              {section.title}
+            </CardTitle>
+            <CardDescription>
+              Configuration from your onboarding process
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {section.items.length > 0 ? (
+              <div className="space-y-3">
+                {section.items.map((item: any, index: number) => (
+                  <div key={index}>{section.renderItem(item)}</div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <section.icon className="h-12 w-12 mx-auto mb-2 opacity-20" />
+                <p>{section.emptyMessage}</p>
+                <p className="text-sm mt-1">Complete the onboarding to add this information</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+
+      {Object.keys(config).length === 0 && (
+        <Card className="bg-white rounded-md">
+          <CardContent className="py-12">
+            <div className="text-center text-muted-foreground">
+              <Settings className="h-16 w-16 mx-auto mb-4 opacity-20" />
+              <p className="text-lg font-medium">No Configuration Found</p>
+              <p className="text-sm mt-2">
+                Complete the onboarding process to set up your configurations
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }

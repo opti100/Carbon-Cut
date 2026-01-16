@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { GoogleAdsConnectDialog } from '@/components/dashboard/google-ads/GoogleAdsConnectDialog'
 
-// A simple component for the integration icons
 const IntegrationIcon = ({
   platform,
 }: {
@@ -116,15 +115,13 @@ export default function IntegrationsPage() {
                 Make CarbonCut even more powerful by using these tools.
               </p> */}
             </div>
-
-            {/* Integrations Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8">
               {integrations.map((integration) => (
                 <div
                   key={integration.name}
                   className="flex gap-4 items-start bg-white rounded-md border border-border p-4"
                 >
-                  <div className="flex-shrink-0">{integration.icon}</div>
+                  <div className="shrink-0">{integration.icon}</div>
                   <div className="flex-1">
                     <h3 className="font-medium text-foreground">{integration.name}</h3>
                     <p className="text-sm text-muted-foreground mt-1">

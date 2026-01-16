@@ -34,7 +34,7 @@ const content = [
 export function CoreCapabilities() {
   return (
     <>
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-8xl mx-auto  py-20">
         <UniversalHeading title="Core Capabilities" align="right" />
 
         <div className="w-full bg-[#fcfdf6]">

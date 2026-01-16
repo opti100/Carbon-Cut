@@ -226,10 +226,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
-// Export the axios instance for other modules to use
 export { api }
 
-// Helper function for making requests with the configured axios instance
 export const makeRequest = async (
   endpoint: string,
   options: {

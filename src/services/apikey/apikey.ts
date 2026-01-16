@@ -53,7 +53,7 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
 }
 
 export class ApiKeyService {
-  private static baseUrl = `${API_BASE_URL}/keys`
+  private static baseUrl = `${API_BASE_URL}/apikey`
 
   static async getApiKeys(sourceType?: 'web' | 'ads'): Promise<ApiKeysListResponse> {
     const params = sourceType ? `?source_type=${sourceType}` : ''

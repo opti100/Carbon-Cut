@@ -31,7 +31,7 @@ interface ProvidersProps {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <PostHogProvider>
+      {/* <PostHogProvider> */}
         <ReduxProvider>
           <AuthProvider>
             <QueryProvider>
@@ -39,7 +39,7 @@ const Providers = ({ children }: ProvidersProps) => {
             </QueryProvider>
           </AuthProvider>
         </ReduxProvider>
-      </PostHogProvider>
+      {/* </PostHogProvider> */}
     </QueryClientProvider>
   )
 }
