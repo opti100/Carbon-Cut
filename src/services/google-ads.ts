@@ -14,9 +14,6 @@ const api = axios.create({
 })
 
 export const googleAdsApi = {
-  /**
-   * Get Google Ads OAuth authorization URL
-   */
   getAuthUrl: async (): Promise<string> => {
     const response = await fetch(`/auth/google/redirect-url`, {
       method: 'GET',
