@@ -57,13 +57,13 @@ export const onboardingApi = {
     })
   },
 
-  uploadCloudCSV: async (file: File, provider: string) => {
+    uploadCloudCSV: async (file: File, provider: string) => {
     const token = getAuthToken()
     const { month, year } = getCurrentPeriod()
 
     const formData = new FormData()
     formData.append('file', file)
-    formData.append('provider', provider)
+    formData.append('provider', provider.toLowerCase())
     formData.append('month', String(month))
     formData.append('year', String(year))
 
@@ -77,25 +77,42 @@ export const onboardingApi = {
     })
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Upload failed' }))
+      const error = await response.json().catch(() => ({ 
+        success: false,
+        error: 'Upload failed' 
+      }))
       throw error
     }
 
     return response.json()
   },
 
-
-  submitCloudManual: async (data: CloudProviderData, provider = 'aws') => {
+  submitCloudManual: async (data: CloudProviderData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/cloud/manual/', {
+    return fetchWithAuth<{ 
+      success: boolean; 
+      message?: string;
+      data: {
+        total_emissions_kg: number;
+        period: string;
+        providers: Array<{
+          provider: string;
+          emissions_kg: number;
+          emission_id: string;
+          calculation_details: unknown;
+        }>;
+        note: string;
+      } 
+    }>('/web/cloud/manual/', {
       method: 'POST',
       body: JSON.stringify({
         cloud_providers: [
           {
-            provider,
+            provider: data.cloud?.toLowerCase(),
             connection_method: 'cost_estimate',
             regions: [data.region],
+            monthly_cost_usd: parseFloat(data.actualCost) || 0,
             monthly_hours_usage: parseFloat(data.monthlyHoursUsage) || 0,
           },
         ],
@@ -106,37 +123,103 @@ export const onboardingApi = {
   },
 
   // CDN Emissions
+    // CDN Emissions
   submitCDN: async (data: CdnData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/cdn/', {
+    return fetchWithAuth<{ 
+      success: boolean; 
+      message?: string;
+      data: {
+        emission_id: string;
+        total_emissions_kg: number;
+        period: string;
+        calculation_details: {
+          total_emissions_kg: number;
+          breakdown?: Record<string, unknown>;
+          factors?: Record<string, unknown>;
+        };
+      }
+    }>('/web/cdn/', {
       method: 'POST',
       body: JSON.stringify({
         monthly_gb_transferred: parseFloat(data.monthlyGBTransferred) || 0,
         provider: data.cdnProvider.toLowerCase(),
-        regions: data.regions.split(',').map((r) => r.trim()),
+        regions: Array.isArray(data.regions) 
+          ? data.regions 
+          : [data.regions], 
         month,
         year,
       }),
     })
   },
-
   // Workforce Emissions
+    // Workforce Emissions
   submitWorkforce: async (data: WorkforceEmissionsData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/workforce/', {
+    // Calculate total employees from workforce ranges
+    const calculateEmployeesFromRange = (range: string): number => {
+      const ranges: Record<string, number> = {
+        '0-50': 25,
+        '50-100': 75,
+        '100-500': 300,
+        '500-1000': 750,
+        '1000+': 1500,
+      }
+      return ranges[range] || 100
+    }
+
+    // Calculate remote percentage from range
+    const calculateRemotePercentage = (range: string): number => {
+      const ranges: Record<string, number> = {
+        '0': 0,
+        '0-25': 12.5,
+        '25-50': 37.5,
+        '50-75': 62.5,
+        '75-100': 87.5,
+      }
+      return ranges[range] || 0
+    }
+
+    // Convert workforce locations to office locations
+    const office_locations = data.workforceLocations.map((location) => ({
+      name: `Office ${location.country}`,
+      sqm: parseFloat(location.squareMeters || '0'),
+      country_code: location.country || 'US',
+    }))
+
+    // Sum up total employees across all locations
+    const total_employees = data.workforceLocations.reduce((sum, location) => {
+      return sum + calculateEmployeesFromRange(location.workforceType || '0-50')
+    }, 0)
+
+    // Average remote percentage across all locations
+    const avg_remote_percentage = data.workforceLocations.length > 0
+      ? data.workforceLocations.reduce((sum, location) => {
+          return sum + calculateRemotePercentage(location.workArrangementRemote || '0')
+        }, 0) / data.workforceLocations.length
+      : 0
+
+    return fetchWithAuth<{ 
+      success: boolean; 
+      message?: string;
+      data: {
+        emission_id: string;
+        total_emissions_kg: number;
+        period: string;
+        calculation_details: {
+          total_emissions_kg: number;
+          breakdown?: Record<string, unknown>;
+          factors?: Record<string, unknown>;
+        };
+      }
+    }>('/web/workforce/', {
       method: 'POST',
       body: JSON.stringify({
-        total_employees: 1, // Default, adjust as needed
-        remote_percentage: parseInt(data.workArrangementRemote) || 0,
-        office_locations: [
-          {
-            name: data.city,
-            sqm: parseFloat(data.squareMeters) || 0,
-            country_code: data.country,
-          },
-        ],
+        total_employees,
+        remote_percentage: avg_remote_percentage,
+        office_locations,
         calculation_period: 'monthly',
         month,
         year,
@@ -148,23 +231,36 @@ export const onboardingApi = {
   submitOnPrem: async (data: OnPremData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/onprem/', {
+    return fetchWithAuth<{ 
+      success: boolean; 
+      message?: string;
+      data: {
+        emission_id: string;
+        total_emissions_kg: number;
+        period: string;
+        calculation_details: {
+          total_emissions_kg: number;
+          breakdown?: Record<string, unknown>;
+          factors?: Record<string, unknown>;
+        };
+      }
+    }>('/web/onprem/', {
       method: 'POST',
       body: JSON.stringify({
         servers: [
           {
-            name: data.name,
+            name: data.name || 'server-01',
             cpu_cores: parseInt(data.cpuCores) || 0,
             ram_gb: parseInt(data.ramGB) || 0,
             storage_tb: parseFloat(data.storageTB) || 0,
             storage_type: 'ssd',
-            avg_cpu_utilization: parseFloat(data.avgCpuUtilization) / 100 || 0.35,
-            hours_per_day: parseInt(data.hoursPerDay) || 24,
+            avg_cpu_utilization: 0.35, // Default 35% utilization
+            hours_per_day: 24,
             days_per_month: 30,
           },
         ],
-        location_country_code: 'US',
-        pue: 1.6,
+        location_country_code: 'US', // Default to US, could be made configurable
+        pue: 1.6, // Default PUE
         calculation_period: 'monthly',
         month,
         year,
@@ -172,24 +268,53 @@ export const onboardingApi = {
     })
   },
 
-  // Travel Emissions
+    // Travel Emissions
   submitTravel: async (data: TravelData) => {
     const { month, year } = getCurrentPeriod()
 
-    const trips = data.travels.map((t) => ({
-      travel_type: t.travel_type,
-      distance_km: parseFloat(t.distance_km || '0'),
-      flight_class: t.flight_class || 'economy',
-      is_domestic: t.is_domestic === 'true',
-      passenger_count: parseInt(t.passenger_count || '1'),
-    }))
+    const trips = data.travels.map((t) => {
+      const baseTrip: any = {
+        travel_type: t.travel_type,
+        distance_km: parseFloat(t.distance_km || '0'),
+        passenger_count: parseInt(t.passenger_count || '1'),
+      }
 
-    return fetchWithAuth<{ success: boolean; data: unknown }>('/web/travel/', {
+      // Add flight-specific fields
+      if (t.travel_type === 'flight') {
+        baseTrip.flight_class = t.flight_class || 'economy'
+        baseTrip.is_domestic = t.is_domestic === 'domestic' // Convert string to boolean
+      }
+
+      // Add vehicle type for other travel types
+      if (t.travel_type === 'car') {
+        baseTrip.vehicle_type = 'car_petrol' // Default vehicle type
+      } else if (t.travel_type === 'bus') {
+        baseTrip.vehicle_type = 'bus'
+      } else if (t.travel_type === 'train') {
+        baseTrip.vehicle_type = 'train'
+      }
+
+      return baseTrip
+    })
+
+    return fetchWithAuth<{ 
+      success: boolean; 
+      message?: string;
+      data: {
+        emission_id: string;
+        total_emissions_kg: number;
+        period: string;
+        trips: Array<{
+          travel_type: string;
+          emissions_kg: number;
+          details: Record<string, unknown>;
+        }>;
+      }
+    }>('/web/travel/', {
       method: 'POST',
       body: JSON.stringify({ trips, month, year }),
     })
   },
-
   // Summary & Reports
   getSummary: async (month?: number, year?: number) => {
     const period = getCurrentPeriod()

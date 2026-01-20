@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Key, Trash2, Power, Clock, AlertCircle, Loader2, Shield } from 'lucide-react'
+import { Key, Trash2, Power, Clock, AlertCircle, Loader2, Shield, Copy, Eye, EyeOff, Check } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { ApiKeyService } from '@/services/apikey/apikey'
@@ -15,8 +15,8 @@ import { ConversionRulesDialog } from './ConversionRuleDialog'
 export function ApiKeysList() {
   const [deleteKeyId, setDeleteKeyId] = useState<string | null>(null)
   const [verifyKeyId, setVerifyKeyId] = useState<string | null>(null)
-  // hold the apiKey id for which the conversion rules dialog is open
   const [conversionRulesKeyId, setConversionRulesKeyId] = useState<string | null>(null)
+  const [copiedKeyId, setCopiedKeyId] = useState<string | null>(null)
   const queryClient = useQueryClient()
 
   useEffect(() => {
@@ -50,6 +50,18 @@ export function ApiKeysList() {
       queryClient.invalidateQueries({ queryKey: ['apiKeys'] })
     },
   })
+
+  const handleCopyKey = async (apiKey: { id: string; prefix: string; key?: string }) => {
+    const keyToCopy = apiKey.key || `${apiKey.prefix}••••••••••••••••`
+    
+    try {
+      await navigator.clipboard.writeText(keyToCopy)
+      setCopiedKeyId(apiKey.id)
+      setTimeout(() => setCopiedKeyId(null), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
 
   // Handle the response structure from backend
   const apiKeys = data?.data?.api_keys || []
@@ -103,7 +115,6 @@ export function ApiKeysList() {
   }
 
   const selectedApiKey = apiKeys.find((key) => key.id === verifyKeyId)
-  // selected conversion rules apiKey (for Verify dialog it's separate)
   const selectedConversionApiKey = apiKeys.find((k) => k.id === conversionRulesKeyId)
 
   return (
@@ -111,10 +122,10 @@ export function ApiKeysList() {
       <div className="space-y-4">
         {apiKeys.map((apiKey) => (
           <Card key={apiKey.id} className="bg-[#fcfdf6] border-none">
-            <CardContent className="p-6 ">
+            <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3 mb-3">
                     <Key className="h-5 w-5 text-gray-400" />
                     <h3 className="text-lg font-semibold text-gray-900">{apiKey.name}</h3>
                     <Badge
@@ -129,17 +140,34 @@ export function ApiKeysList() {
                     </Badge>
                   </div>
 
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                    <div className="flex items-center gap-1">
-                      <span className="font-mono">{apiKey.prefix}••••••••••••••••</span>
-                    </div>
-                    {apiKey.domain && (
-                      <div className="flex items-center gap-1">
-                        <span className="text-gray-500">Domain:</span>
-                        <span className="font-medium">{apiKey.domain}</span>
-                      </div>
-                    )}
+                  {/* API Key Display with Copy */}
+                  <div className="flex items-center gap-2 mb-3 bg-white/50 rounded-lg p-3 border border-gray-200">
+                    <code className="flex-1 font-mono text-sm text-gray-700">
+                      {apiKey.key}
+                    </code>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleCopyKey(apiKey)}
+                      className="shrink-0"
+                      title="Copy API Key"
+                    >
+                      {copiedKeyId === apiKey.id ? (
+                        <Check className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <Copy className="h-4 w-4 text-gray-500" />
+                      )}
+                    </Button>
                   </div>
+
+                  {apiKey.domain && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                      <span className="text-gray-500">Domain:</span>
+                      <span className="font-medium bg-gray-100 px-2 py-1 rounded">
+                        {apiKey.domain}
+                      </span>
+                    </div>
+                  )}
 
                   <div className="flex items-center gap-4 text-sm text-gray-500">
                     <div className="flex items-center gap-1">
@@ -166,16 +194,6 @@ export function ApiKeysList() {
                     Manage Conversions
                   </Button>
 
-                  <ConversionRulesDialog
-                    apiKeyId={apiKey.id}
-                    apiKeyName={apiKey.name}
-                    open={conversionRulesKeyId === apiKey.id}
-                    onOpenChange={(open) => {
-                      // when dialog is closed, clear the id; when opened via dialog control, ensure id is set
-                      if (open) setConversionRulesKeyId(apiKey.id)
-                      else setConversionRulesKeyId(null)
-                    }}
-                  />
                   <Button
                     className="bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6]"
                     size="sm"
@@ -198,7 +216,7 @@ export function ApiKeysList() {
                     />
                   </Button>
                   <Button
-                    className="bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6]/  "
+                    className="bg-[#fcfdf6] shadow-none hover:bg-[#fcfdf6]"
                     size="sm"
                     onClick={() => setDeleteKeyId(apiKey.id)}
                     disabled={deleteMutation.isPending}

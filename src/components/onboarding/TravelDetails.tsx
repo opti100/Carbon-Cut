@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import FloatingInput from "../ui/FloatingInput";
 import {
   Select,
@@ -9,8 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AlertCircleIcon, CalendarIcon, ChevronDown, Trash2 } from "lucide-react";
+import { AlertCircleIcon, ChevronDown, Trash2, Loader2, CheckCircle2 } from "lucide-react";
 import { TravelData, TravelItem } from "@/types/onboarding";
+import { onboardingApi } from "@/services/onboarding/onboarding";
 import clsx from "clsx";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 
@@ -50,7 +51,49 @@ export default function TravellingDetails({
   onSkip,
   canProceed,
 }: Props) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+
   const travels = data.travels;
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(null);
+
+    try {
+      const response = await onboardingApi.submitTravel(data);
+      
+      if (response.success) {
+        setSubmitSuccess(
+          response.message || 
+          `Successfully calculated ${response.data.total_emissions_kg.toFixed(2)} kg CO₂e for ${response.data.trips.length} trip(s)`
+        );
+        // Proceed to next step after short delay
+        setTimeout(() => {
+          onNext();
+        }, 1500);
+      } else {
+        throw new Error('Failed to submit travel data');
+      }
+    } catch (error: any) {
+      console.error('Error submitting travel data:', error);
+      setSubmitError(
+        error.error || 
+        error.message || 
+        'Failed to submit travel data. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSkipClick = () => {
+    setSubmitError(null);
+    setSubmitSuccess(null);
+    onSkip?.();
+  };
 
   const updateTravel = (
     index: number,
@@ -62,9 +105,9 @@ export default function TravellingDetails({
         i === index ? { ...item, [key]: value } : item
       ),
     });
+    setSubmitError(null);
+    setSubmitSuccess(null);
   };
-
-   const [date, setDate] = React.useState<Date>()
 
   const addTravel = () => {
     onDataChange({
@@ -92,15 +135,38 @@ export default function TravellingDetails({
 
   return (
     <div className="w-full space-y-6">
+      {/* Success Message */}
+      {submitSuccess && (
+        <Alert className="bg-green-50 border-green-200">
+          <CheckCircle2 className="h-4 w-4 text-green-600" />
+          <AlertTitle className="text-green-800">Success</AlertTitle>
+          <AlertDescription className="text-green-700">
+            {submitSuccess}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Error Message */}
+      {submitError && (
+        <Alert className="bg-red-50 border-red-200">
+          <AlertCircleIcon className="h-4 w-4 text-red-600" />
+          <AlertTitle className="text-red-800">Error</AlertTitle>
+          <AlertDescription className="text-red-700">
+            {submitError}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="space-y-4">
         {travels.map((travel, index) => (
           <div key={index} className="rounded-lg overflow-auto">
             <div
-              className="flex items-center justify-between px-6 py-4 cursor-pointer bg-[#d1cebb] transition-colors"
+              className="flex items-center justify-between px-6 py-4 cursor-pointer bg-[#d1cebb] hover:bg-[#c5c2af] transition-colors"
               onClick={() => toggleAccordion(index)}
             >
               <p className="font-semibold text-base text-neutral-900">
                 Travel {index + 1}
+                {travel.travel_type && ` - ${travelTypeOptions.find(t => t.value === travel.travel_type)?.label || travel.travel_type}`}
               </p>
 
               <div className="flex items-center gap-4">
@@ -110,6 +176,7 @@ export default function TravellingDetails({
                       e.stopPropagation();
                       removeTravel(index);
                     }}
+                    disabled={isSubmitting}
                     className="text-red-500 hover:text-red-600 transition-colors p-1"
                   >
                     <Trash2 size={18} />
@@ -117,8 +184,9 @@ export default function TravellingDetails({
                 )}
                 <ChevronDown
                   size={20}
-                  className={`transition-transform text-black ${travel.isOpen ? "rotate-180" : ""
-                    }`}
+                  className={`transition-transform text-black ${
+                    travel.isOpen ? "rotate-180" : ""
+                  }`}
                 />
               </div>
             </div>
@@ -132,6 +200,7 @@ export default function TravellingDetails({
                       onValueChange={(val) =>
                         updateTravel(index, "travel_type", val)
                       }
+                      disabled={isSubmitting}
                     >
                       <SelectTrigger className="h-14">
                         <SelectValue placeholder="Select travel type" />
@@ -146,8 +215,6 @@ export default function TravellingDetails({
                     </Select>
                   </div>
 
-
-
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Travel Date</label>
                     <FloatingInput
@@ -160,11 +227,8 @@ export default function TravellingDetails({
                       }
                     />
                   </div>
-
-
-                   
-                
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <FloatingInput
@@ -178,8 +242,7 @@ export default function TravellingDetails({
                     />
                   </div>
 
-
-                    <div className="space-y-2">
+                  <div className="space-y-2">
                     <FloatingInput
                       placeholder="Distance (km)"
                       size="big"
@@ -191,6 +254,7 @@ export default function TravellingDetails({
                     />
                   </div>
                 </div>
+
                 {travel.travel_type === "flight" && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
@@ -200,6 +264,7 @@ export default function TravellingDetails({
                         onValueChange={(val) =>
                           updateTravel(index, "flight_class", val)
                         }
+                        disabled={isSubmitting}
                       >
                         <SelectTrigger className="h-14">
                           <SelectValue placeholder="Select flight class" />
@@ -215,12 +280,13 @@ export default function TravellingDetails({
                     </div>
 
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">Travel Type</label>
+                      <label className="text-sm font-medium">Travel Scope</label>
                       <Select
                         value={travel.is_domestic || ""}
                         onValueChange={(val) =>
                           updateTravel(index, "is_domestic", val)
                         }
+                        disabled={isSubmitting}
                       >
                         <SelectTrigger className="h-14">
                           <SelectValue placeholder="Select travel scope" />
@@ -240,52 +306,91 @@ export default function TravellingDetails({
             )}
           </div>
         ))}
-
-
       </div>
+
       <div className="flex justify-end">
         <button
           onClick={addTravel}
-          className="rounded-lg bg-[#d1cebb] p-4 flex justify-center text-center items-center text-base font-medium text-black transition-colors"
+          disabled={isSubmitting}
+          className={clsx(
+            "rounded-lg bg-[#d1cebb] p-4 flex justify-center text-center items-center text-base font-medium text-black transition-colors",
+            isSubmitting
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-[#c5c2af]"
+          )}
         >
           <span>+ Add another travel segment</span>
         </button>
       </div>
-      <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
-        <button
-          onClick={onBack}
-          className="min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium text-neutral-700 hover:bg-[#d1cebb] transition-colors"
-        >
-          Back
-        </button>
 
-        <button
-          onClick={onNext}
-          disabled={!canProceed}
-          className={clsx(
-            "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all",
-            canProceed
-              ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow"
-              : "bg-neutral-300 cursor-not-allowed"
-          )}
-        >
-          Continue
-        </button>
-      </div>
-
+      {/* Information Alert */}
       <Alert>
         <AlertCircleIcon />
         <AlertTitle>Travel-Related Emissions</AlertTitle>
         <AlertDescription>
-          <ul className="list-inside list-disc text-sm">
-            <li>Includes flights, trains, taxis, rental cars, and hotels</li>
+          <p className="mb-2">Emissions from business and employee travel activities</p>
+          <ul className="list-inside list-disc text-sm space-y-1">
+            <li>Includes flights, trains, taxis, rental cars, and buses</li>
             <li>One of the highest-impact emission sources per activity</li>
             <li>Strongly influenced by travel frequency and distance</li>
+            <li>Flight class significantly affects per-passenger emissions</li>
+            <li>Typically categorized as Scope 3 emissions</li>
           </ul>
         </AlertDescription>
       </Alert>
 
+      {/* Action Buttons */}
+      <div className="flex items-center justify-between pt-6 border-t border-neutral-200">
+        <button
+          onClick={onBack}
+          disabled={isSubmitting}
+          className={clsx(
+            "min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium transition-colors",
+            isSubmitting
+              ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+              : "text-neutral-700 hover:bg-[#d1cebb]"
+          )}
+        >
+          Back
+        </button>
 
+        <div className="flex items-center gap-4">
+          {onSkip && (
+            <button
+              onClick={handleSkipClick}
+              disabled={isSubmitting}
+              className={clsx(
+                "min-w-[140px] rounded-lg border border-neutral-300 px-8 py-3 text-base font-medium transition-colors",
+                isSubmitting
+                  ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+                  : "text-neutral-700 hover:bg-[#d1cebb]"
+              )}
+            >
+              Skip
+            </button>
+          )}
+
+          <button
+            onClick={handleSubmit}
+            disabled={!canProceed || isSubmitting}
+            className={clsx(
+              "min-w-[140px] rounded-lg px-8 py-3 text-base font-medium text-white transition-all flex items-center justify-center gap-2",
+              canProceed && !isSubmitting
+                ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow"
+                : "bg-neutral-300 cursor-not-allowed"
+            )}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Continue"
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

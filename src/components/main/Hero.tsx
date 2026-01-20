@@ -208,7 +208,7 @@ const Hero = () => {
                     </div>
 
                     {/* OIL MOBILE */}
-                    <div className="block md:hidden">
+                    {/* <div className="block md:hidden">
                       <button
                         onClick={() => {
                           if (openSubMenu === 'oil') router.push('/oil-and-natural-gas')
@@ -234,10 +234,10 @@ const Hero = () => {
                           </Link>
                         </div>
                       )}
-                    </div>
+                    </div> */}
 
                     {/* OIL DESKTOP */}
-                    <div className="hidden md:block relative group">
+                    {/* <div className="hidden md:block relative group">
                       <Link href="/oil-and-natural-gas">
                         <div className="flex items-center justify-between py-2 px-3 cursor-pointer">
                           <span>Oil & Natural Gas</span>
@@ -257,7 +257,7 @@ const Hero = () => {
                           </div>
                         </Link>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 )}
               </div>

@@ -103,7 +103,7 @@ const signupKeys = {
 const SignupPage = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo') || '/internet'
+  const redirectTo = searchParams.get('redirectTo') || '/login'
 
   const [step, setStep] = useState<Step>('form')
   const [formData, setFormData] = useState<SignupData>({

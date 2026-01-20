@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   AlertCircleIcon,
   ChevronDown,
+  Loader2,
+  CheckCircle2,
 } from "lucide-react";
 import FloatingInput from "../ui/FloatingInput";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
@@ -15,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CloudProviderData } from "@/types/onboarding";
+import { onboardingApi } from "@/services/onboarding/onboarding";
 import clsx from "clsx";
 
 interface Props {
@@ -34,6 +37,10 @@ export default function CloudProvider({
   onNext,
   canProceed,
 }: Props) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+
   const handleTabChange = (tabType: "Manual" | "Upload") => {
     onDataChange({
       ...data,
@@ -42,13 +49,16 @@ export default function CloudProvider({
       isUploadOpen: tabType === "Upload",
       uploadedFile: tabType === "Manual" ? null : data.uploadedFile,
     });
+    // Clear messages when switching tabs
+    setSubmitError(null);
+    setSubmitSuccess(null);
   };
 
   const toggleAccordion = (tabType: "Manual" | "Upload") => {
     if (tabType === "Manual") {
       onDataChange({
         ...data,
-        tabType: "Manual", // Set tabType to Manual
+        tabType: "Manual",
         isManualOpen: !data.isManualOpen,
         isUploadOpen: false,
       });
@@ -60,6 +70,8 @@ export default function CloudProvider({
         isManualOpen: false,
       });
     }
+    setSubmitError(null);
+    setSubmitSuccess(null);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +81,62 @@ export default function CloudProvider({
       tabType: "Upload", 
       uploadedFile: file,
     });
+    setSubmitError(null);
+    setSubmitSuccess(null);
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(null);
+
+    try {
+      if (data.tabType === "Manual") {
+        // Submit manual cloud data
+        const response = await onboardingApi.submitCloudManual(data);
+        
+        if (response.success) {
+          setSubmitSuccess(
+            response.message || 
+            `Successfully calculated ${response.data.total_emissions_kg.toFixed(2)} kg CO₂e for ${data.cloud?.toUpperCase()}`
+          );
+          // Proceed to next step after short delay
+          setTimeout(() => {
+            onNext();
+          }, 1500);
+        } else {
+          throw new Error('Failed to submit cloud data');
+        }
+      } else if (data.tabType === "Upload" && data.uploadedFile && data.cloud) {
+        // Upload CSV file
+        const response = await onboardingApi.uploadCloudCSV(
+          data.uploadedFile,
+          data.cloud
+        );
+        
+        if (response.success) {
+          setSubmitSuccess(
+            response.message || 
+            `Successfully uploaded and processed ${data.uploadedFile.name}`
+          );
+          // Proceed to next step after short delay
+          setTimeout(() => {
+            onNext();
+          }, 1500);
+        } else {
+          throw new Error(response.error || 'Failed to upload file');
+        }
+      }
+    } catch (error: any) {
+      console.error('Error submitting cloud data:', error);
+      setSubmitError(
+        error.error || 
+        error.message || 
+        'Failed to submit cloud data. Please try again.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Define regions for each cloud provider
@@ -78,15 +146,9 @@ export default function CloudProvider({
       { value: "us-east-2", label: "AWS US East (Ohio)" },
       { value: "us-west-1", label: "AWS US West (N. California)" },
       { value: "us-west-2", label: "AWS US West (Oregon)" },
-
-      // Canada
       { value: "ca-central-1", label: "AWS Canada (Central)" },
       { value: "ca-west-1", label: "AWS Canada West (Calgary)" },
-
-      // South America
       { value: "sa-east-1", label: "AWS South America (São Paulo)" },
-
-      // Europe
       { value: "eu-west-1", label: "AWS Europe (Ireland)" },
       { value: "eu-west-2", label: "AWS Europe (London)" },
       { value: "eu-west-3", label: "AWS Europe (Paris)" },
@@ -95,15 +157,9 @@ export default function CloudProvider({
       { value: "eu-north-1", label: "AWS Europe (Stockholm)" },
       { value: "eu-south-1", label: "AWS Europe (Milan)" },
       { value: "eu-south-2", label: "AWS Europe (Spain)" },
-
-      // Middle East
       { value: "me-south-1", label: "AWS Middle East (Bahrain)" },
       { value: "me-central-1", label: "AWS Middle East (UAE)" },
-
-      // Africa
       { value: "af-south-1", label: "AWS Africa (Cape Town)" },
-
-      // Asia Pacific
       { value: "ap-south-1", label: "AWS Asia Pacific (Mumbai)" },
       { value: "ap-south-2", label: "AWS Asia Pacific (Hyderabad)" },
       { value: "ap-southeast-1", label: "AWS Asia Pacific (Singapore)" },
@@ -114,17 +170,12 @@ export default function CloudProvider({
       { value: "ap-northeast-2", label: "AWS Asia Pacific (Seoul)" },
       { value: "ap-northeast-3", label: "AWS Asia Pacific (Osaka)" },
       { value: "ap-east-1", label: "AWS Asia Pacific (Hong Kong)" },
-
-      // China
       { value: "cn-north-1", label: "AWS China (Beijing)" },
       { value: "cn-northwest-1", label: "AWS China (Ningxia)" },
-
-      // GovCloud
       { value: "us-gov-east-1", label: "AWS GovCloud (US-East)" },
       { value: "us-gov-west-1", label: "AWS GovCloud (US-West)" },
     ],
     azure: [
-      // United States
       { value: "centralus", label: "Azure Central US" },
       { value: "eastus", label: "Azure East US" },
       { value: "eastus2", label: "Azure East US 2" },
@@ -133,12 +184,8 @@ export default function CloudProvider({
       { value: "westus3", label: "Azure West US 3" },
       { value: "northcentralus", label: "Azure North Central US" },
       { value: "southcentralus", label: "Azure South Central US" },
-
-      // Canada
       { value: "canadacentral", label: "Azure Canada Central" },
       { value: "canadaeast", label: "Azure Canada East" },
-
-      // Europe
       { value: "westeurope", label: "Azure West Europe" },
       { value: "northeurope", label: "Azure North Europe" },
       { value: "uksouth", label: "Azure UK South" },
@@ -148,8 +195,6 @@ export default function CloudProvider({
       { value: "norwayeast", label: "Azure Norway East" },
       { value: "swedencentral", label: "Azure Sweden Central" },
       { value: "switzerlandnorth", label: "Azure Switzerland North" },
-
-      // Asia Pacific
       { value: "southeastasia", label: "Azure Southeast Asia (Singapore)" },
       { value: "eastasia", label: "Azure East Asia (Hong Kong)" },
       { value: "japaneast", label: "Azure Japan East" },
@@ -159,16 +204,11 @@ export default function CloudProvider({
       { value: "australiasoutheast", label: "Azure Australia Southeast" },
       { value: "centralindia", label: "Azure Central India" },
       { value: "southindia", label: "Azure South India" },
-
-      // Middle East & Africa
       { value: "uaenorth", label: "Azure UAE North" },
       { value: "southafricanorth", label: "Azure South Africa North" },
-
-      // South America
       { value: "brazilsouth", label: "Azure Brazil South" },
     ],
     gcp: [
-      // North America
       { value: "us-central1", label: "GCP US Central (Iowa)" },
       { value: "us-east1", label: "GCP US East (South Carolina)" },
       { value: "us-east4", label: "GCP US East (Northern Virginia)" },
@@ -178,11 +218,7 @@ export default function CloudProvider({
       { value: "us-west4", label: "GCP US West (Las Vegas)" },
       { value: "northamerica-northeast1", label: "GCP Canada (Montréal)" },
       { value: "northamerica-northeast2", label: "GCP Canada (Toronto)" },
-
-      // South America
       { value: "southamerica-east1", label: "GCP South America (São Paulo)" },
-
-      // Europe
       { value: "europe-west1", label: "GCP Europe West (Belgium)" },
       { value: "europe-west2", label: "GCP Europe West (London)" },
       { value: "europe-west3", label: "GCP Europe West (Frankfurt)" },
@@ -192,8 +228,6 @@ export default function CloudProvider({
       { value: "europe-west9", label: "GCP Europe West (Paris)" },
       { value: "europe-north1", label: "GCP Europe North (Finland)" },
       { value: "europe-central2", label: "GCP Europe Central (Warsaw)" },
-
-      // Asia Pacific
       { value: "asia-east1", label: "GCP Asia East (Taiwan)" },
       { value: "asia-east2", label: "GCP Asia East (Hong Kong)" },
       { value: "asia-northeast1", label: "GCP Asia Northeast (Tokyo)" },
@@ -203,11 +237,7 @@ export default function CloudProvider({
       { value: "asia-south2", label: "GCP Asia South (Delhi)" },
       { value: "asia-southeast1", label: "GCP Asia Southeast (Singapore)" },
       { value: "asia-southeast2", label: "GCP Asia Southeast (Jakarta)" },
-
-      // Middle East
       { value: "me-west1", label: "GCP Middle East (Tel Aviv)" },
-
-      // Australia
       { value: "australia-southeast1", label: "GCP Australia Southeast (Sydney)" },
       { value: "australia-southeast2", label: "GCP Australia Southeast (Melbourne)" },
     ],
@@ -215,10 +245,31 @@ export default function CloudProvider({
 
   return (
     <div className="w-full min-h-screen max-h-screen overflow-y-auto space-y-4 sm:space-y-6 lg:space-y-8 p-4 sm:p-6 lg:p-8">
+      {/* Success Message */}
+      {submitSuccess && (
+        <Alert className="bg-green-50 border-green-200">
+          <CheckCircle2 className="h-4 w-4 text-green-600" />
+          <AlertTitle className="text-green-800">Success</AlertTitle>
+          <AlertDescription className="text-green-700">
+            {submitSuccess}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Error Message */}
+      {submitError && (
+        <Alert className="bg-red-50 border-red-200">
+          <AlertCircleIcon className="h-4 w-4 text-red-600" />
+          <AlertTitle className="text-red-800">Error</AlertTitle>
+          <AlertDescription className="text-red-700">
+            {submitError}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="space-y-3 sm:space-y-4">
-      
+        {/* Manual Entry Option */}
         <div className="rounded-lg overflow-hidden">
-         
           <div
             className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-[#d1cebb] cursor-pointer hover:bg-[#d1cebb] transition-colors"
             onClick={() => toggleAccordion("Manual")}
@@ -237,7 +288,6 @@ export default function CloudProvider({
           {data.isManualOpen && (
             <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 space-y-4 sm:space-y-6 max-h-[60vh] overflow-y-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-start">
-            
                 <div className="space-y-2">
                   <label className="text-xs sm:text-sm font-medium">Select Cloud</label>
                   <Select
@@ -324,8 +374,8 @@ export default function CloudProvider({
           )}
         </div>
 
+        {/* Upload Option */}
         <div className="rounded-lg overflow-hidden">
-     
           <div
             className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-[#d1cebb] cursor-pointer hover:bg-[#d1cebb] transition-colors"
             onClick={() => toggleAccordion("Upload")}
@@ -343,7 +393,6 @@ export default function CloudProvider({
 
           {data.isUploadOpen && (
             <div className="px-4 sm:px-6 pb-4 sm:pb-6 pt-2 space-y-4 sm:space-y-6 max-h-[60vh] overflow-y-auto">
-          
               <div className="space-y-2">
                 <label className="text-xs sm:text-sm font-medium">Select Cloud</label>
                 <Select
@@ -458,16 +507,23 @@ export default function CloudProvider({
       <div className="flex items-center justify-end pt-4 sm:pt-6 border-t border-neutral-200">
         <div className="flex items-center gap-4">
           <button
-            onClick={onNext}
-            disabled={!canProceed}
+            onClick={handleSubmit}
+            disabled={!canProceed || isSubmitting}
             className={clsx(
-              "min-w-[120px] sm:min-w-[140px] rounded-lg px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-medium text-white transition-all",
-              canProceed
+              "min-w-[120px] sm:min-w-[140px] rounded-lg px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base font-medium text-white transition-all flex items-center justify-center gap-2",
+              canProceed && !isSubmitting
                 ? "bg-black hover:bg-neutral-800 cursor-pointer shadow-sm hover:shadow"
                 : "bg-neutral-300 cursor-not-allowed"
             )}
           >
-            Continue
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Continue"
+            )}
           </button>
         </div>
       </div>

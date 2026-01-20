@@ -479,7 +479,6 @@ function IntegrationsTab({
   )
 }
 
-// Configuration Tab Component
 function ConfigurationTab({ configData, configLoading }: any) {
   const config = configData?.data || {}
 
@@ -506,41 +505,55 @@ function ConfigurationTab({ configData, configLoading }: any) {
           <div className="flex items-center gap-3">
             <Cloud className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="font-medium capitalize">{item.provider || 'Cloud Provider'}</p>
+              <p className="font-medium capitalize">
+                {item.provider || 'Cloud Provider'}
+              </p>
               <p className="text-sm text-muted-foreground">
-                {item.connection_method === 'cost_estimate' ? 'Manual Entry' : 'CSV Upload'}
+                {item.connection_type === 'manual' ? 'Manual Entry' : 'CSV Upload'}
                 {item.monthly_cost_usd && ` • $${item.monthly_cost_usd}/mo`}
               </p>
             </div>
           </div>
-          <Badge variant="secondary">{item.regions?.join(', ') || 'N/A'}</Badge>
+          <Badge variant="secondary">
+            {item.regions && item.regions.length > 0 
+              ? item.regions.join(', ') 
+              : 'N/A'}
+          </Badge>
         </div>
       ),
     },
     {
       title: 'CDN Configuration',
       icon: Globe,
-      items: config.cdn ? [config.cdn] : [],
+      items: config.cdn_configs || [],
       emptyMessage: 'No CDN configured',
       renderItem: (item: any) => (
         <div className="flex items-center justify-between p-4 border rounded-lg">
           <div className="flex items-center gap-3">
             <Globe className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="font-medium capitalize">{item.provider || 'CDN Provider'}</p>
+              <p className="font-medium capitalize">
+                {item.provider || 'CDN Provider'}
+              </p>
               <p className="text-sm text-muted-foreground">
-                {item.monthly_gb_transferred && `${item.monthly_gb_transferred} GB/mo`}
+                {item.monthly_gb_transferred 
+                  ? `${item.monthly_gb_transferred} GB/mo` 
+                  : 'Data transfer not specified'}
               </p>
             </div>
           </div>
-          <Badge variant="secondary">{item.regions || 'Global'}</Badge>
+          <Badge variant="secondary">
+            {item.regions && item.regions.length > 0 
+              ? item.regions.join(', ') 
+              : 'Global'}
+          </Badge>
         </div>
       ),
     },
     {
       title: 'Workforce Details',
       icon: Users,
-      items: config.workforce ? [config.workforce] : [],
+      items: config.workforce_config ? [config.workforce_config] : [],
       emptyMessage: 'No workforce details configured',
       renderItem: (item: any) => (
         <div className="p-4 border rounded-lg space-y-3">
@@ -550,22 +563,44 @@ function ConfigurationTab({ configData, configLoading }: any) {
           </div>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="text-muted-foreground">Type</p>
-              <p className="font-medium capitalize">{item.workforce_type || 'N/A'}</p>
+              <p className="text-muted-foreground">Total Employees</p>
+              <p className="font-medium">{item.total_employees || 'N/A'}</p>
             </div>
             <div>
-              <p className="text-muted-foreground">Arrangement</p>
-              <p className="font-medium capitalize">{item.work_arrangement || 'N/A'}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Location</p>
+              <p className="text-muted-foreground">Remote Percentage</p>
               <p className="font-medium">
-                {[item.city, item.state, item.country].filter(Boolean).join(', ') || 'N/A'}
+                {item.remote_employee_percentage 
+                  ? `${item.remote_employee_percentage}%` 
+                  : 'N/A'}
               </p>
             </div>
-            <div>
-              <p className="text-muted-foreground">Office Space</p>
-              <p className="font-medium">{item.square_meters ? `${item.square_meters} m²` : 'N/A'}</p>
+            <div className="col-span-2">
+              <p className="text-muted-foreground mb-2">Office Locations</p>
+              {item.office_locations && item.office_locations.length > 0 ? (
+                <div className="space-y-2">
+                  {item.office_locations.map((loc: any, idx: number) => (
+                    <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded">
+                      <div>
+                        <p className="font-medium text-sm">
+                          {[loc.city, loc.country].filter(Boolean).join(', ')}
+                        </p>
+                        {loc.employee_count && (
+                          <p className="text-xs text-muted-foreground">
+                            {loc.employee_count} employees
+                          </p>
+                        )}
+                      </div>
+                      {loc.square_meters && (
+                        <Badge variant="outline" className="text-xs">
+                          {loc.square_meters} m²
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="font-medium">No locations specified</p>
+              )}
             </div>
           </div>
         </div>
@@ -574,78 +609,83 @@ function ConfigurationTab({ configData, configLoading }: any) {
     {
       title: 'On-Premise Infrastructure',
       icon: Server,
-      items: config.on_prem_servers || [],
+      items: config.onprem_configs || [],
       emptyMessage: 'No on-premise servers configured',
       renderItem: (item: any) => (
-        <div className="flex items-center justify-between p-4 border rounded-lg">
+        <div className="space-y-3 p-4 border rounded-lg">
           <div className="flex items-center gap-3">
             <Server className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="font-medium">{item.name || 'Server'}</p>
+              <p className="font-medium">
+                {item.location_city || 'Data Center'}
+                {item.location_country_code && ` (${item.location_country_code})`}
+              </p>
               <p className="text-sm text-muted-foreground">
-                {item.cpu_cores} cores • {item.ram_gb}GB RAM • {item.storage_tb}TB Storage
+                PUE: {item.power_usage_effectiveness || '1.6'}
               </p>
             </div>
           </div>
-          <Badge variant="secondary">{item.avg_cpu_utilization}% CPU</Badge>
-        </div>
-      ),
-    },
-    {
-      title: 'Travel Details',
-      icon: Plane,
-      items: config.travel_details || [],
-      emptyMessage: 'No travel details configured',
-      renderItem: (item: any) => (
-        <div className="flex items-center justify-between p-4 border rounded-lg">
-          <div className="flex items-center gap-3">
-            <Plane className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <p className="font-medium capitalize">{item.travel_type?.replace('_', ' ') || 'Travel'}</p>
-              <p className="text-sm text-muted-foreground">
-                {item.distance_km && `${item.distance_km} km`}
-                {item.passenger_count && ` • ${item.passenger_count} passengers`}
-              </p>
+          {item.servers && item.servers.length > 0 && (
+            <div className="space-y-2 mt-3">
+              {item.servers.map((server: any, idx: number) => (
+                <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded">
+                  <div>
+                    <p className="font-medium text-sm">{server.name || `Server ${idx + 1}`}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {server.cpu_cores} cores • {server.ram_gb}GB RAM • {server.storage_tb}TB
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="text-xs">
+                    {Math.round((server.avg_cpu_utilization || 0.35) * 100)}% CPU
+                  </Badge>
+                </div>
+              ))}
             </div>
-          </div>
-          {item.flight_class && <Badge variant="secondary" className="capitalize">{item.flight_class}</Badge>}
+          )}
         </div>
       ),
     },
   ]
 
+  // Check if there's any configuration data
+  const hasAnyConfig = 
+    (config.cloud_providers && config.cloud_providers.length > 0) ||
+    (config.cdn_configs && config.cdn_configs.length > 0) ||
+    config.workforce_config ||
+    (config.onprem_configs && config.onprem_configs.length > 0)
+
   return (
     <div className="space-y-6">
-      {configSections.map((section) => (
-        <Card key={section.title} className="bg-white rounded-md">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <section.icon className="h-5 w-5" />
-              {section.title}
-            </CardTitle>
-            <CardDescription>
-              Configuration from your onboarding process
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {section.items.length > 0 ? (
-              <div className="space-y-3">
-                {section.items.map((item: any, index: number) => (
-                  <div key={index}>{section.renderItem(item)}</div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <section.icon className="h-12 w-12 mx-auto mb-2 opacity-20" />
-                <p>{section.emptyMessage}</p>
-                <p className="text-sm mt-1">Complete the onboarding to add this information</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      ))}
-
-      {Object.keys(config).length === 0 && (
+      {hasAnyConfig ? (
+        configSections.map((section) => (
+          <Card key={section.title} className="bg-white rounded-md">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <section.icon className="h-5 w-5" />
+                {section.title}
+              </CardTitle>
+              <CardDescription>
+                Configuration from your onboarding process
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {section.items.length > 0 ? (
+                <div className="space-y-3">
+                  {section.items.map((item: any, index: number) => (
+                    <div key={item.id || index}>{section.renderItem(item)}</div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-muted-foreground">
+                  <section.icon className="h-12 w-12 mx-auto mb-2 opacity-20" />
+                  <p>{section.emptyMessage}</p>
+                  <p className="text-sm mt-1">Complete the onboarding to add this information</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ))
+      ) : (
         <Card className="bg-white rounded-md">
           <CardContent className="py-12">
             <div className="text-center text-muted-foreground">
@@ -654,6 +694,13 @@ function ConfigurationTab({ configData, configLoading }: any) {
               <p className="text-sm mt-2">
                 Complete the onboarding process to set up your configurations
               </p>
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => window.location.href = '/v2'}
+              >
+                Start Onboarding
+              </Button>
             </div>
           </CardContent>
         </Card>

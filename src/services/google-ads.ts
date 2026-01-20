@@ -35,7 +35,7 @@ export const googleAdsApi = {
    */
   async checkConnection(): Promise<GoogleAdsConnectionStatus> {
     const response = await api.get('/auth/google-ads/status/')
-    console.log('✅ Connection status:', response.data)
+    console.log(' Connection status:', response.data)
     return response.data.data || response.data
   },
 
@@ -44,7 +44,7 @@ export const googleAdsApi = {
    */
   async disconnect() {
     const response = await api.post('/auth/google-ads/disconnect/')
-    console.log('✅ Disconnect response:', response.data)
+    console.log(' Disconnect response:', response.data)
     return response.data
   },
 
@@ -53,7 +53,7 @@ export const googleAdsApi = {
    */
   async getAccounts() {
     const response = await api.get('/auth/google-ads/accounts/')
-    console.log('✅ Accounts response:', response.data)
+    console.log(' Accounts response:', response.data)
     return response.data
   },
 
@@ -64,7 +64,7 @@ export const googleAdsApi = {
     const response = await api.post('/auth/google-ads/switch-account/', {
       customer_id: customerId,
     })
-    console.log('✅ Switch account response:', response.data)
+    console.log(' Switch account response:', response.data)
     return response.data
   },
 }
