@@ -32,6 +32,7 @@ import {
   Users,
   Server,
   Plane,
+  FileText,
 } from 'lucide-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiKeysList } from '@/components/dashboard/api-key/ApiList'
@@ -45,8 +46,9 @@ import { useRouter } from 'next/dist/client/components/navigation'
 import { onboardingApi } from '@/services/onboarding/onboarding'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { ReportsTab } from '@/components/dashboard/profile/MonthlyReports'
 
-type TabType = 'basic-info' | 'integrations' | 'configuration'
+type TabType = 'basic-info' | 'integrations' | 'configuration' | 'reports'
 
 export default function ProfilePage() {
   const { user, logout } = useAuth()
@@ -156,7 +158,13 @@ export default function ProfilePage() {
       id: 'configuration' as TabType,
       label: 'Configuration',
       icon: Settings,
-      description: 'Onboarding settings',
+      description: 'Emission sources',
+    },
+    {
+      id: 'reports' as TabType,
+      label: 'Reports',
+      icon: FileText,
+      description: 'Monthly reports',
     },
   ]
 
@@ -180,11 +188,10 @@ export default function ProfilePage() {
                     <button
                       key={item.id}
                       onClick={() => setActiveTab(item.id)}
-                      className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${
-                        activeTab === item.id
+                      className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${activeTab === item.id
                           ? 'bg-primary text-primary-foreground'
                           : 'hover:bg-muted text-muted-foreground hover:text-foreground'
-                      }`}
+                        }`}
                     >
                       <item.icon className="h-5 w-5 mt-0.5 shrink-0" />
                       <div className="flex-1 min-w-0">
@@ -240,6 +247,8 @@ export default function ProfilePage() {
                 configLoading={configLoading}
               />
             )}
+
+            {activeTab === 'reports' && <ReportsTab />}
           </div>
         </div>
       </div>
@@ -515,8 +524,8 @@ function ConfigurationTab({ configData, configLoading }: any) {
             </div>
           </div>
           <Badge variant="secondary">
-            {item.regions && item.regions.length > 0 
-              ? item.regions.join(', ') 
+            {item.regions && item.regions.length > 0
+              ? item.regions.join(', ')
               : 'N/A'}
           </Badge>
         </div>
@@ -536,15 +545,15 @@ function ConfigurationTab({ configData, configLoading }: any) {
                 {item.provider || 'CDN Provider'}
               </p>
               <p className="text-sm text-muted-foreground">
-                {item.monthly_gb_transferred 
-                  ? `${item.monthly_gb_transferred} GB/mo` 
+                {item.monthly_gb_transferred
+                  ? `${item.monthly_gb_transferred} GB/mo`
                   : 'Data transfer not specified'}
               </p>
             </div>
           </div>
           <Badge variant="secondary">
-            {item.regions && item.regions.length > 0 
-              ? item.regions.join(', ') 
+            {item.regions && item.regions.length > 0
+              ? item.regions.join(', ')
               : 'Global'}
           </Badge>
         </div>
@@ -569,8 +578,8 @@ function ConfigurationTab({ configData, configLoading }: any) {
             <div>
               <p className="text-muted-foreground">Remote Percentage</p>
               <p className="font-medium">
-                {item.remote_employee_percentage 
-                  ? `${item.remote_employee_percentage}%` 
+                {item.remote_employee_percentage
+                  ? `${item.remote_employee_percentage}%`
                   : 'N/A'}
               </p>
             </div>
@@ -648,7 +657,7 @@ function ConfigurationTab({ configData, configLoading }: any) {
   ]
 
   // Check if there's any configuration data
-  const hasAnyConfig = 
+  const hasAnyConfig =
     (config.cloud_providers && config.cloud_providers.length > 0) ||
     (config.cdn_configs && config.cdn_configs.length > 0) ||
     config.workforce_config ||
@@ -694,8 +703,8 @@ function ConfigurationTab({ configData, configLoading }: any) {
               <p className="text-sm mt-2">
                 Complete the onboarding process to set up your configurations
               </p>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="mt-4"
                 onClick={() => window.location.href = '/v2'}
               >

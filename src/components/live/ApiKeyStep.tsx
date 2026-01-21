@@ -101,39 +101,39 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
     setTimeout(() => setCopiedKey(false), 2000)
   }
 
-  const handleVerify = async () => {
-    if (!verificationUrl.trim() || !latestApiKey) return
+  // const handleVerify = async () => {
+  //   if (!verificationUrl.trim() || !latestApiKey) return
 
-    setIsVerifying(true)
-    setVerificationResult(null)
+  //   setIsVerifying(true)
+  //   setVerificationResult(null)
 
-    try {
-      const result = await ApiKeyService.verifyInstallation(
-        latestApiKey.id,
-        verificationUrl
-      )
-      setVerificationResult(result)
+  //   try {
+  //     const result = await ApiKeyService.verifyInstallation(
+  //       latestApiKey.id,
+  //       verificationUrl
+  //     )
+  //     setVerificationResult(result)
 
-      if (result.data.status === 'verified') {
-        queryClient.invalidateQueries({ queryKey: ['apiKeys'] })
-        toast.success('Installation verified successfully!')
-      } else {
-        toast.warning('Verification completed with warnings')
-      }
-    } catch (error) {
-      console.error('Verification error:', error)
-      toast.error('Failed to verify installation')
-      setVerificationResult({
-        success: false,
-        data: {
-          status: 'error',
-          message: 'Failed to verify installation',
-        },
-      })
-    } finally {
-      setIsVerifying(false)
-    }
-  }
+  //     if (result.data.status === 'verified') {
+  //       queryClient.invalidateQueries({ queryKey: ['apiKeys'] })
+  //       toast.success('Installation verified successfully!')
+  //     } else {
+  //       toast.warning('Verification completed with warnings')
+  //     }
+  //   } catch (error) {
+  //     console.error('Verification error:', error)
+  //     toast.error('Failed to verify installation')
+  //     setVerificationResult({
+  //       success: false,
+  //       data: {
+  //         status: 'error',
+  //         message: 'Failed to verify installation',
+  //       },
+  //     })
+  //   } finally {
+  //     setIsVerifying(false)
+  //   }
+  // }
 
   const handleRetryGuide = async () => {
     if (!latestApiKey) return
@@ -421,16 +421,16 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                     </div>
                   )}
 
-                  <div className="flex gap-2">
-                    <Input
+                  {/* <div className="flex gap-2"> */}
+                    {/* <Input
                       type="url"
                       placeholder="https://example.com"
                       value={verificationUrl}
                       onChange={(e) => setVerificationUrl(e.target.value)}
                       className="flex-1"
                       onKeyPress={(e) => e.key === 'Enter' && handleVerify()}
-                    />
-                    <Button
+                    /> */}
+                    {/* <Button
                       onClick={handleVerify}
                       disabled={isVerifying || !verificationUrl.trim()}
                       className="bg-gray-900 hover:bg-gray-800 whitespace-nowrap"
@@ -443,8 +443,8 @@ export default function ApiKeyStep({ onComplete }: ApiKeyStepProps) {
                       ) : (
                         'Verify'
                       )}
-                    </Button>
-                  </div>
+                    </Button> */}
+                  {/* </div> */}
 
                   <a
                     href="/docs/installation"

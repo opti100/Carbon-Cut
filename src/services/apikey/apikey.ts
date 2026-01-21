@@ -11,31 +11,22 @@ import {
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
-// Helper to get auth token from cookies
 const getAuthToken = (): string | null => {
-  if (typeof window === 'undefined') return null
-
-  const cookies = document.cookie.split(';')
-  for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split('=')
-    if (name === 'authtoken' || name === 'auth-token') {
-      return decodeURIComponent(value)
-    }
-  }
+  if (typeof document === 'undefined') return null
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; auth-token=`)
+  if (parts.length === 2) return parts.pop()?.split(';').shift() || null
   return null
 }
 
 // Generic fetch wrapper with error handling
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
+  const token = getAuthToken()
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
-  }
-
-  const token = getAuthToken()
-  if (token) {
-    // @ts-expect-error will fix it later
-    headers['Authorization'] = `Bearer ${token}`
   }
 
   const response = await fetch(url, {
@@ -65,10 +56,11 @@ export class ApiKeyService {
   static async createApiKey(
     name: string,
     domain?: string,
-    sourceType?: 'web' | 'ads',
+    product?: 'web' | 'ads' | 'lubricant',
     extras?: {
       website_url?: string
       description?: string
+      industry_category?: 'internet' | 'oil_and_gas'
     }
   ): Promise<CreateApiKeyResponse> {
     return fetchWithAuth(`${this.baseUrl}/`, {
@@ -76,7 +68,9 @@ export class ApiKeyService {
       body: JSON.stringify({
         name,
         domain: domain || '*',
-        source_type: sourceType || 'web',
+        product: product || 'web',
+        industry_category: extras?.industry_category || 'internet',
+        ...extras,
       }),
     })
   }
@@ -118,6 +112,7 @@ export class ApiKeyService {
       method: 'GET',
     })
   }
+  
   static async getConversionRules(keyId: string): Promise<ConversionRulesResponse> {
     return fetchWithAuth(`${this.baseUrl}/${keyId}/conversion-rules/`, {
       method: 'GET',
@@ -176,6 +171,16 @@ export class ApiKeyService {
 
     return fetchWithAuth(`${this.baseUrl}/website-analytics?days=${days}`, {
       method: 'GET',
+    })
+  }
+
+  /**
+   * Verify if an API key is valid and active
+   */
+  static async verifyApiKey(apiKey: string): Promise<{ valid: boolean }> {
+    return fetchWithAuth(`${this.baseUrl}/verify/`, {
+      method: 'POST',
+      body: JSON.stringify({ api_key: apiKey }),
     })
   }
 }

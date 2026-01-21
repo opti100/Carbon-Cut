@@ -47,8 +47,8 @@ export function CreateApiKeyDialog({ open, onOpenChange }: CreateApiKeyDialogPro
     mutationFn: ({ name, domain }: { name: string; domain: string }) =>
       ApiKeyService.createApiKey(name, domain),
     onSuccess: (response) => {
-      if (response.data?.full_key) {
-        setGeneratedKey(response.data.full_key)
+      if (response.data?.api_key.full_key) {
+        setGeneratedKey(response.data.api_key.full_key)
       }
       queryClient.invalidateQueries({ queryKey: ['apiKeys'] })
     },
