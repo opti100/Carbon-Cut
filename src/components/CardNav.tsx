@@ -128,9 +128,7 @@ const CardNav: React.FC<CardNavProps> = ({
               ))}
             </div>
           </div>
-
-          {/* Right side - Login/Signup Button */}
-          <Link href="/signup">
+          <Link href="/login">
             <button
               className="px-5 py-2.5 rounded-lg text-sm font-semibold transition hover:opacity-90"
               style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}

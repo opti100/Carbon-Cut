@@ -48,7 +48,8 @@ export function InternetHero() {
               <Link href="/internet/internet-ads" className="desktop-cta-link">
                 <button
                   type="button"
-                  className="card-nav-cta-button"
+                  // className="card-nav-cta-button"
+                  className="px-5 py-2.5 rounded-lg text-sm font-semibold transition hover:opacity-90"
                   style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                   Internet Ads
@@ -57,10 +58,11 @@ export function InternetHero() {
             </div>
 
             <div className="nav-right-section">
-              <Link href="/internet/web-&-apps" className="desktop-cta-link">
+              <Link href="/signup" className="desktop-cta-link">
                 <button
                   type="button"
-                  className="card-nav-cta-button"
+                  className="px-5 py-2.5 rounded-lg text-sm font-semibold transition hover:opacity-90"
+                  // className="card-nav-cta-button"
                   style={{ backgroundColor: '#b0ea1d', color: '#080c04' }}
                 >
                   Web & Apps
