@@ -39,8 +39,17 @@ interface SignupOTPRequest extends SignupData {
 }
 
 interface AuthResponse {
+  success: boolean
   message: string
-  data?: any
+  data?: {
+    userId: string
+    email: string
+    name: string
+    companyName: string
+    phoneNumber: string
+    onboarded: boolean
+    auth_token?: string
+  }
 }
 
 type Step = 'form' | 'otp'
@@ -48,10 +57,12 @@ type Step = 'form' | 'otp'
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
 const signupAPI = {
+  // Step 1: Send signup request and get OTP
   sendOTP: async (data: SignupData): Promise<AuthResponse> => {
     const response = await fetch(`${API_BASE_URL}/auth/signup/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(data),
     })
 
@@ -63,10 +74,12 @@ const signupAPI = {
     return response.json()
   },
 
-  verifyOTP: async (data: SignupOTPRequest): Promise<AuthResponse> => {
-    const response = await fetch(`${API_BASE_URL}/auth/verify-otp/`, {
+  // Step 2: Verify OTP and get auth token immediately
+  verifyOTP: async (data: { email: string; otp: string }): Promise<AuthResponse> => {
+    const response = await fetch(`${API_BASE_URL}/auth/signup/verify-otp/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify(data),
     })
 
@@ -103,7 +116,7 @@ const signupKeys = {
 const SignupPage = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo') || '/login'
+  const redirectTo = searchParams.get('redirectTo') || '/dashboard'
 
   const [step, setStep] = useState<Step>('form')
   const [formData, setFormData] = useState<SignupData>({
@@ -131,9 +144,16 @@ const SignupPage = () => {
     mutationKey: signupKeys.verifyOTP(),
     mutationFn: signupAPI.verifyOTP,
     onSuccess: (data: AuthResponse) => {
-      toast.success(data.message || 'Signup successful!')
-      router.push(redirectTo)
-      router.refresh()
+      if (data.success && data.data?.auth_token) {
+        toast.success(data.message || 'Account created successfully! Welcome to CarbonCut.')
+        
+        // Token is automatically set via cookie from backend
+        // Redirect after a short delay to ensure cookie is set
+        setTimeout(() => {
+          router.push(redirectTo)
+          router.refresh()
+        }, 500)
+      }
     },
     onError: (error: Error) => {
       toast.error(error.message)
@@ -165,7 +185,11 @@ const SignupPage = () => {
       return
     }
 
-    verifyOTPMutation.mutate({ ...formData, otp })
+    // Only send email and OTP for verification
+    verifyOTPMutation.mutate({ 
+      email: formData.email, 
+      otp 
+    })
   }
 
   const handleBackToForm = () => {
@@ -403,12 +427,12 @@ const SignupPage = () => {
                         {verifyOTPMutation.isPending ? (
                           <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Creating...
+                            Creating account...
                           </>
                         ) : (
                           <>
-                            <Shield className="mr-2 h-4 w-4" />
-                            Create Account
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            Create Account & Sign In
                           </>
                         )}
                       </Button>

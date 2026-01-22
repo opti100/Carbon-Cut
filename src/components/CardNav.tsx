@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import { GoArrowUpRight } from 'react-icons/go'
 import './CardNav.css'
 import Link from 'next/link'
 
@@ -38,6 +39,7 @@ const CardNav: React.FC<CardNavProps> = ({
   buttonTextColor = '#fff',
 }) => {
   const [showNavbar, setShowNavbar] = useState(true)
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const lastScrollY = useRef(0)
 
   React.useEffect(() => {
@@ -76,22 +78,53 @@ const CardNav: React.FC<CardNavProps> = ({
         }}
       >
         <div className="flex items-center justify-between w-full px-6 py-2">
-          {/* Left side - Logo and Links */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center">
               <img src={logo} alt={logoAlt} className="h-8 w-auto" />
             </Link>
 
-            <div className="hidden lg:flex items-center gap-6">
+            <div className="hidden lg:flex items-center gap-6 relative">
               {items.map((item, idx) => (
-                <Link
+                <div
                   key={idx}
-                  href={item.links[0]?.href || '#'}
-                  className="text-base transition-opacity hover:opacity-70"
-                  style={{ color: menuColor }}
+                  className="nav-item-wrapper"
+                  onMouseEnter={() => setHoveredCard(idx)}
+                  onMouseLeave={() => setHoveredCard(null)}
                 >
-                  {item.label}
-                </Link>
+                  <span
+                    className="text-base transition-opacity hover:opacity-70 cursor-pointer"
+                    style={{ color: menuColor }}
+                  >
+                    {item.label}
+                  </span>
+
+                  {/* Hover Card */}
+                  <div
+                    className="nav-card-dropdown"
+                    style={{
+                      backgroundColor: item.bgColor,
+                      color: item.textColor,
+                      opacity: hoveredCard === idx ? 1 : 0,
+                      visibility: hoveredCard === idx ? 'visible' : 'hidden',
+                      transform: hoveredCard === idx ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.95)',
+                    }}
+                  >
+                    <div className="nav-card-label-dropdown">{item.label}</div>
+                    <div className="nav-card-links-dropdown">
+                      {item.links?.map((lnk, i) => (
+                        <Link
+                          key={`${lnk.label}-${i}`}
+                          className="nav-card-link-dropdown"
+                          href={lnk.href}
+                          aria-label={lnk.ariaLabel}
+                        >
+                          <GoArrowUpRight className="nav-card-link-icon-dropdown" aria-hidden="true" />
+                          {lnk.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
