@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/react-query'
 import { ApiKeyService } from '@/services/apikey/apikey'
 import { toast } from 'sonner'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Copy } from 'lucide-react'
 import { CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { error } from 'console'
 
 interface ApiKeyStepProps {
   onNext?: () => void
@@ -41,28 +42,36 @@ export default function ApiKeyStep({ onNext, sourceType = 'web' }: ApiKeyStepPro
     enabled: !!latestApiKey,
   })
 
-  // Auto-create API key if none exists for this type
-  useEffect(() => {
-    const createKeyIfNeeded = async () => {
-      if (!isLoadingKeys && !latestApiKey && !isCreating && !isKeysError) {
-        try {
-          setIsCreating(true)
-          const keyName =
-            sourceType === 'ads' ? 'Ads Tracking Key' : 'Website Tracking Key'
+  const hasAttemptedCreate = useRef(false)
 
-          await ApiKeyService.createApiKey(keyName, '*', sourceType)
-          toast.success(`${sourceType === 'ads' ? 'Ads' : 'Website'} API key created!`)
-          refetch()
-        } catch (error) {
-          console.error('Failed to create API key:', error)
-          toast.error('Failed to create API key')
-        } finally {
-          setIsCreating(false)
-        }
-      }
+  // Auto-create API key if none exists for this type
+
+useEffect(() => {
+  if (
+    hasAttemptedCreate.current ||
+    isLoadingKeys ||
+    latestApiKey ||
+    isKeysError
+  ) {
+    return
+  }
+
+  hasAttemptedCreate.current = true
+
+  const create = async () => {
+    try {
+      const keyName =
+        sourceType === 'ads' ? 'Ads Tracking Key' : 'Website Tracking Key'
+      await ApiKeyService.createApiKey(keyName, '*', sourceType)
+      toast.success('API key created')
+      refetch()
+    } catch {
+      toast.error('Failed to create API key')
     }
-    createKeyIfNeeded()
-  }, [isLoadingKeys, latestApiKey, isCreating, isKeysError, sourceType, refetch])
+  }
+
+  create()
+}, [isLoadingKeys, latestApiKey, isKeysError, sourceType])
 
   useEffect(() => {
     console.log('--- SDK Step Debug ---')
@@ -80,6 +89,7 @@ export default function ApiKeyStep({ onNext, sourceType = 'web' }: ApiKeyStepPro
         console.log('3. Latest API Key selected:', latestApiKey)
       } else {
         console.warn('2. No API keys found for source type:', sourceType)
+        // console.error(error)
       }
     }
   }, [apiKeysData, isLoadingKeys, isKeysError, latestApiKey, sourceType])
@@ -147,7 +157,7 @@ export default function ApiKeyStep({ onNext, sourceType = 'web' }: ApiKeyStepPro
         </p>  
       </div>
 
-      {/* <div className="">
+      <div className="">
         <Button
           onClick={onNext}
           disabled={isLoading || !scriptTag}
@@ -156,7 +166,7 @@ export default function ApiKeyStep({ onNext, sourceType = 'web' }: ApiKeyStepPro
         >
           Continue
         </Button>
-      </div> */}
+      </div>
     </div>
   )
 }

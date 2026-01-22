@@ -62,6 +62,7 @@ export class ApiKeyService {
     })
   }
 
+
   static async createApiKey(
     name: string,
     domain?: string,
@@ -76,7 +77,7 @@ export class ApiKeyService {
       body: JSON.stringify({
         name,
         domain: domain || '*',
-        source_type: sourceType || 'web',
+        product: sourceType || 'web',
       }),
     })
   }
