@@ -376,7 +376,7 @@ export function TopNavbar() {
         )}
       </Button>
       <h1 className="text-lg font-semibold">{getPageTitle()}</h1>
-      <div className="ml-auto flex items-center gap-4">
+      {/* <div className="ml-auto flex items-center gap-4">
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger className="w-full">
             <div className="flex h-8 w-full flex-row items-center gap-2 rounded-md px-2 py-1.5 transition hover:bg-muted">
@@ -421,7 +421,7 @@ export function TopNavbar() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div>
+      </div> */}
     </div>
   )
 }

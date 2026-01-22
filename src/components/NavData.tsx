@@ -8,19 +8,19 @@ export const navData: CardNavItem[] = [
     links: [
       {
         label: 'Carbon Calculator',
-        href: '/calculator',
+        href: '/signup',
         ariaLabel: 'Go to Carbon Calculator',
       },
       {
         label: 'Carbon Live',
-        href: '/onboarding',
+        href: '/internet',
         ariaLabel: 'Go to Carbon Live',
       },
-      {
-        label: 'Carbon Offset',
-        href: '/offset',
-        ariaLabel: 'Go to Carbon Offset',
-      },
+      // {
+      //   label: 'Carbon Offset',
+      //   href: '/',
+      //   ariaLabel: 'Go to Carbon Offset',
+      // },
     ],
   },
   {
@@ -33,11 +33,11 @@ export const navData: CardNavItem[] = [
         href: '/methodology',
         ariaLabel: 'View our methodology',
       },
-      {
-        label: 'Projects',
-        href: '/projects',
-        ariaLabel: 'View our projects',
-      },
+      // {
+      //   label: 'Projects',
+      //   href: '/projects',
+      //   ariaLabel: 'View our projects',
+      // },
     ],
   },
   {

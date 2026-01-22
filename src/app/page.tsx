@@ -9,6 +9,7 @@ import Footer from '@/components/main/Footer'
 import Hero from '@/components/main/Hero'
 import HowItWorks from '@/components/main/HowItWorks'
 import { ImpactSection } from '@/components/main/Impact'
+import LearnMore from '@/components/main/LearnMore'
 import PreFooter from '@/components/main/PreFooter'
 import Standards from '@/components/main/Standards'
 import TrustedBySection from '@/components/main/TrustedBySection'
@@ -29,10 +30,14 @@ export default function Home() {
             buttonTextColor="#080c04"
           />
 
+
           <div data-scroll-section>
             <Hero />
           </div>
 
+          <div data-scroll-section>
+            <LearnMore />
+          </div>
           <div data-scroll-section>
             <Standards />
           </div>

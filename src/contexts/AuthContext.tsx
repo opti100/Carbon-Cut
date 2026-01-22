@@ -64,22 +64,14 @@ api.interceptors.response.use(
   }
 )
 
-// Fetch current user from /auth/me endpoint
 const fetchCurrentUser = async (): Promise<User | null> => {
   try {
     const response = await api.get('/auth/me/')
 
-    // Handle different response structures
-    // if (response.data?.success && response.data?.user) {
-    //   return response.data.data.user;
-    // }
-    // console.log("Response Data:", response.data.data.user);
-    if (response.data.data.user) {
-      return response.data.data.user
-    }
-
-    if (response.data?.id && response.data?.email) {
-      return response.data
+    // Correctly access the user data from the response
+    if (response.data?.success && response.data?.data) {
+      const { userId, email, name, companyName, phoneNumber } = response.data.data
+      return { id: userId, email, name, companyName, phoneNumber }
     }
 
     return null
