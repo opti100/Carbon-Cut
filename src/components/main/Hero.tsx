@@ -63,7 +63,7 @@ const Hero = () => {
           Co2e emission in real time
         </p>
         <p className="text-base md:text-lg lg:text-xl max-w-4xl px-4">
-          Track and calculate your carbon emissions with precision and take control of your climate impact.
+          We provide real-time emissions intelligence for digital operations
         </p>
         <Link href="/signup" className='mt-16'> 
           <button
