@@ -51,88 +51,88 @@ const Footer = () => {
               </h3>
               <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
                 <Link004
-                  href="/content"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Content
-                </Link004>
-                <Link004
-                  href="/how-it-works"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  How it Works
-                </Link004>
-                <Link004
-                  href="/create"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Create
-                </Link004>
-                <Link004
-                  href="/explore"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Explore
-                </Link004>
-                <Link004
-                  href="/terms"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Terms & Services
-                </Link004>
-              </div>
-            </div>
-
-            <div className="flex flex-col items-start text-left space-y-3">
-              <h3 className="font-semibold text-base md:text-lg text-white">Community</h3>
-              <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
-                <Link004
-                  href="/help-center"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Help Center
-                </Link004>
-                <Link004
-                  href="/partners"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Partners
-                </Link004>
-                <Link004
-                  href="/suggestions"
-                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
-                >
-                  Suggestions
-                </Link004>
-                <Link004
-                  href="/blog"
+                  href="/blogs"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
                   Blog
                 </Link004>
                 <Link004
-                  href="/newsletters"
+                  href="/methodology"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
-                  Newsletters
+                  How it Works
+                </Link004>
+                <Link004
+                  href="/calculator"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Calculator
+                </Link004>
+                <Link004
+                  href="/privacy-policy"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </Link004>
+                <Link004
+                  href="/terms-conditions"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Terms & Conditions
                 </Link004>
               </div>
             </div>
 
             <div className="flex flex-col items-start text-left space-y-3">
-              <h3 className="font-semibold text-base md:text-lg text-white">Partner</h3>
+              <h3 className="font-semibold text-base md:text-lg text-white">Solutions</h3>
               <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
                 <Link004
-                  href="/our-partner"
+                  href="/internet"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
-                  Our Partner
+                  Digital Advertising
                 </Link004>
                 <Link004
-                  href="/become-partner"
+                  href="/oil-and-natural-gas"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
-                  Become a Partner
+                  Oil & Natural Gas
+                </Link004>
+                <Link004
+                  href="/projects"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Carbon Offset Projects
+                </Link004>
+                <Link004
+                  href="/early-adopters"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Early Adopters
+                </Link004>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-start text-left space-y-3">
+              <h3 className="font-semibold text-base md:text-lg text-white">Company</h3>
+              <div className="space-y-1.5 md:space-y-2 flex flex-col items-start">
+                <Link004
+                  href="/#about"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  About Us
+                </Link004>
+                <Link004
+                  href="mailto:contact@carboncut.co"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Contact Us
+                </Link004>
+                <Link004
+                  href="/signup"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Get Started
                 </Link004>
               </div>
             </div>
@@ -154,6 +154,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/80 hover:text-white transition-colors"
+              aria-label="Follow us on Instagram"
             >
               <Instagram className="w-5 h-5 md:w-6 md:h-6" />
             </a>
@@ -162,6 +163,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/80 hover:text-white transition-colors"
+              aria-label="Follow us on Facebook"
             >
               <Facebook className="w-5 h-5 md:w-6 md:h-6" />
             </a>
@@ -170,6 +172,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/80 hover:text-white transition-colors"
+              aria-label="Follow us on Twitter"
             >
               <Twitter className="w-5 h-5 md:w-6 md:h-6" />
             </a>
@@ -178,9 +181,13 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/80 hover:text-white transition-colors"
+              aria-label="Follow us on LinkedIn"
             >
               <Linkedin className="w-5 h-5 md:w-6 md:h-6" />
             </a>
+          </div>
+          <div className="text-sm md:text-base text-white/60">
+            © {new Date().getFullYear()} CarbonCut. All rights reserved.
           </div>
         </div>
 
@@ -200,6 +207,7 @@ const Footer = () => {
             height={400}
             className="w-full h-auto object-contain max-w-full inverted-colors:invert"
             style={{ maxHeight: '400px', filter: 'brightness(0) invert(1)' }}
+            priority={false}
           />
         </div>
       </div>

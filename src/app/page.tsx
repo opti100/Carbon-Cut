@@ -2,6 +2,7 @@
 
 import CardNav from '@/components/CardNav'
 import LenisSmoothScroll from '@/components/LenisSmoothScroll'
+import AboutSection from '@/components/main/AboutSection'
 import Blogs from '@/components/main/Blogs'
 import Core from '@/components/main/Core'
 import FeatureSection from '@/components/main/FeaturSection'
@@ -33,6 +34,10 @@ export default function Home() {
 
           <div data-scroll-section>
             <Hero />
+          </div>
+
+          <div data-scroll-section id="about">
+            <AboutSection />
           </div>
 
           <div data-scroll-section>
