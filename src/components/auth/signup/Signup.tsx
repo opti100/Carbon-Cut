@@ -23,9 +23,16 @@ import {
   User,
   Building,
   Phone,
+  ChevronDownIcon,
+  PhoneIcon,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
+import * as RPNInput from 'react-phone-number-input'
+import flags from 'react-phone-number-input/flags'
+import { cn } from '@/lib/utils'
+import 'react-phone-number-input/style.css'
+import PhoneInput from '@/components/main/ui/PhoneInput'
 
 interface SignupData {
   name: string
@@ -102,8 +109,12 @@ const validateOTP = (otp: string): boolean => {
   return /^\d{6}$/.test(otp)
 }
 
-const validatePhone = (phone: string): boolean => {
-  return phone.length >= 10
+const validatePhone = (phone: string | undefined): boolean => {
+  // Phone number validation using react-phone-number-input
+  // The library returns E.164 format (e.g., +14155552671)
+  if (!phone) return false
+  // Basic check for E.164 format: starts with + and has 7-15 digits
+  return /^\+[1-9]\d{6,14}$/.test(phone)
 }
 
 // TanStack Query keys
@@ -112,6 +123,8 @@ const signupKeys = {
   sendOTP: () => [...signupKeys.all, 'send-otp'] as const,
   verifyOTP: () => [...signupKeys.all, 'verify-otp'] as const,
 }
+
+
 
 const SignupPage = () => {
   const router = useRouter()
@@ -146,7 +159,7 @@ const SignupPage = () => {
     onSuccess: (data: AuthResponse) => {
       if (data.success && data.data?.auth_token) {
         toast.success(data.message || 'Account created successfully! Welcome to CarbonCut.')
-        
+
         // Token is automatically set via cookie from backend
         // Redirect after a short delay to ensure cookie is set
         setTimeout(() => {
@@ -170,7 +183,7 @@ const SignupPage = () => {
     }
 
     if (!validatePhone(formData.phoneNumber)) {
-      toast.error('Please enter a valid phone number')
+      toast.error('Please enter a valid phone number with country code')
       return
     }
 
@@ -186,9 +199,9 @@ const SignupPage = () => {
     }
 
     // Only send email and OTP for verification
-    verifyOTPMutation.mutate({ 
-      email: formData.email, 
-      otp 
+    verifyOTPMutation.mutate({
+      email: formData.email,
+      otp
     })
   }
 
@@ -206,6 +219,10 @@ const SignupPage = () => {
 
   const handleInputChange = (field: keyof SignupData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handlePhoneChange = (value: string | undefined) => {
+    setFormData((prev) => ({ ...prev, phoneNumber: value || '' }))
   }
 
   // Derived state
@@ -253,12 +270,9 @@ const SignupPage = () => {
                     : `We've sent a 6-digit code to ${formData.email}`}
                 </CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-4">
-                {/* Form Step */}
                 {step === 'form' ? (
                   <form onSubmit={handleFormSubmit} className="space-y-4">
-                    {/* Name Field */}
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-sm font-medium">
                         Full Name
@@ -278,8 +292,6 @@ const SignupPage = () => {
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       </div>
                     </div>
-
-                    {/* Email Field */}
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-sm font-medium">
                         Email address
@@ -299,8 +311,6 @@ const SignupPage = () => {
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       </div>
                     </div>
-
-                    {/* Company Name Field */}
                     <div className="space-y-2">
                       <Label htmlFor="companyName" className="text-sm font-medium">
                         Company Name
@@ -322,30 +332,12 @@ const SignupPage = () => {
                         <Building className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       </div>
                     </div>
-
-                    {/* Phone Number Field */}
                     <div className="space-y-2">
                       <Label htmlFor="phoneNumber" className="text-sm font-medium">
                         Phone Number
                       </Label>
-                      <div className="relative">
-                        <Input
-                          type="tel"
-                          id="phoneNumber"
-                          required
-                          value={formData.phoneNumber}
-                          onChange={(e) =>
-                            handleInputChange('phoneNumber', e.target.value)
-                          }
-                          placeholder="+1 (555) 000-0000"
-                          className="w-full pl-9 text-sm sm:text-base"
-                          disabled={isLoading}
-                          autoComplete="tel"
-                        />
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                      </div>
+                      <PhoneInput value={formData.phoneNumber} onChange={handlePhoneChange} disabled={isLoading} />
                     </div>
-
                     <Button
                       type="submit"
                       className="w-full hover:bg-tertiary/ text-sm sm:text-base font-medium"

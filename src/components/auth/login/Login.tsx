@@ -14,15 +14,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Mail, Shield, Loader2, ArrowLeft, CheckCircle } from 'lucide-react'
-import { useAuth } from '@/contexts/AuthContext'
+import { Mail, Shield, Loader2, ArrowLeft, Phone } from 'lucide-react'
 import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
+import PhoneInput from '@/components/main/ui/PhoneInput'
 
 interface SendOTPRequest {
   email: string
   isLogin?: boolean
+}
+
+interface SendOTPByPhoneRequest {
+  phoneNumber: string
 }
 
 interface VerifyOTPRequest {
@@ -55,6 +58,22 @@ const authAPI = {
     return response.json()
   },
 
+  sendOTPByPhone: async ({ phoneNumber }: SendOTPByPhoneRequest): Promise<AuthResponse> => {
+    const response = await fetch(`${API_BASE_URL}/auth/send-otp-by-phone/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ phoneNumber }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to send OTP')
+    }
+
+    return response.json()
+  },
+
   verifyOTP: async ({ email, otp }: VerifyOTPRequest): Promise<AuthResponse> => {
     const response = await fetch(`${API_BASE_URL}/auth/verify-otp/`, {
       method: 'POST',
@@ -72,7 +91,7 @@ const authAPI = {
   },
 }
 
-// Validation functions
+
 const validateEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   return emailRegex.test(email)
@@ -82,10 +101,15 @@ const validateOTP = (otp: string): boolean => {
   return /^\d{6}$/.test(otp)
 }
 
-// TanStack Query keys
+const validatePhone = (phone: string | undefined): boolean => {
+  if (!phone) return false
+  return /^\+[1-9]\d{6,14}$/.test(phone)
+}
+
 const authKeys = {
   all: ['auth'] as const,
   sendOTP: () => [...authKeys.all, 'send-otp'] as const,
+  sendOTPByPhone: () => [...authKeys.all, 'send-otp-by-phone'] as const,
   verifyOTP: () => [...authKeys.all, 'verify-otp'] as const,
 }
 
@@ -97,9 +121,11 @@ function LoginPage() {
     searchParams.get('redirect') ||
     '/dashboard/campaigns'
 
-  const [step, setStep] = useState<'email' | 'otp'>('email')
+  const [step, setStep] = useState<'email' | 'phone' | 'otp'>('email')
   const [email, setEmail] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState<string | undefined>('')
   const [otp, setOtp] = useState('')
+  const [forgotEmail, setForgotEmail] = useState(false)
 
   const sendOTPMutation = useMutation({
     mutationKey: authKeys.sendOTP(),
@@ -113,12 +139,27 @@ function LoginPage() {
     },
   })
 
+  const sendOTPByPhoneMutation = useMutation({
+    mutationKey: authKeys.sendOTPByPhone(),
+    mutationFn: authAPI.sendOTPByPhone,
+    onSuccess: (data: AuthResponse) => {
+      if (data.data?.email) {
+        setEmail(data.data.email)
+      }
+      setStep('otp')
+      toast.success(data.message || 'Verification code sent to your registered email')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+
   const otpLoginMutation = useMutation({
     mutationKey: authKeys.verifyOTP(),
     mutationFn: authAPI.verifyOTP,
     onSuccess: (data: AuthResponse) => {
       toast.success(data.message || 'Login successful!')
-      router.push(redirectUrl) // This will now redirect to /live
+      router.push(redirectUrl)
       router.refresh()
     },
     onError: (error: Error) => {
@@ -135,6 +176,15 @@ function LoginPage() {
     sendOTPMutation.mutate({ email, isLogin: true })
   }
 
+  const handlePhoneSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validatePhone(phoneNumber)) {
+      toast.error('Please enter a valid phone number with country code')
+      return
+    }
+    sendOTPByPhoneMutation.mutate({ phoneNumber: phoneNumber! })
+  }
+
   const handleOTPSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!validateOTP(otp)) {
@@ -147,15 +197,35 @@ function LoginPage() {
   const handleBackToEmail = () => {
     setStep('email')
     setOtp('')
+    setForgotEmail(false)
     sendOTPMutation.reset()
+    sendOTPByPhoneMutation.reset()
+    otpLoginMutation.reset()
+  }
+
+  const handleForgotEmail = () => {
+    setForgotEmail(true)
+    setStep('phone')
+  }
+
+  const handleBackToPhone = () => {
+    setStep('phone')
+    setOtp('')
     otpLoginMutation.reset()
   }
 
   const handleResendOTP = () => {
-    sendOTPMutation.mutate({ email, isLogin: true })
+    if (forgotEmail && phoneNumber) {
+      sendOTPByPhoneMutation.mutate({ phoneNumber })
+    } else if (email) {
+      sendOTPMutation.mutate({ email, isLogin: true })
+    }
   }
 
-  const isLoading = sendOTPMutation.isPending || otpLoginMutation.isPending
+  const isLoading = 
+    sendOTPMutation.isPending || 
+    sendOTPByPhoneMutation.isPending || 
+    otpLoginMutation.isPending
   const isOTPValid = validateOTP(otp)
 
   return (
@@ -184,11 +254,17 @@ function LoginPage() {
             <Card className="border-0 shadow-none bg-transparent">
               <CardHeader className="text-center pb-4 sm:pb-6 lg:pb-8 px-0">
                 <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">
-                  {step === 'email' ? 'Welcome Back' : 'Verify Your Email'}
+                  {step === 'email' 
+                    ? 'Welcome Back' 
+                    : step === 'phone'
+                    ? 'Find Your Account'
+                    : 'Verify Your Email'}
                 </CardTitle>
                 <CardDescription className="text-sm sm:text-base">
                   {step === 'email'
                     ? 'Sign in to your account to continue'
+                    : step === 'phone'
+                    ? 'Enter your phone number to receive a verification code'
                     : `We've sent a 6-digit code to ${email}`}
                 </CardDescription>
               </CardHeader>
@@ -208,7 +284,7 @@ function LoginPage() {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="you@example.com"
-                          className="w-full  pl-9 text-sm sm:text-base"
+                          className="w-full pl-9 text-sm sm:text-base"
                           disabled={isLoading}
                         />
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -217,7 +293,7 @@ function LoginPage() {
 
                     <Button
                       type="submit"
-                      className="w-full  hover:bg-tertiary/ text-sm sm:text-base font-medium"
+                      className="w-full hover:bg-tertiary/ text-sm sm:text-base font-medium"
                       disabled={isLoading || !email}
                     >
                       {sendOTPMutation.isPending ? (
@@ -232,6 +308,66 @@ function LoginPage() {
                         </>
                       )}
                     </Button>
+
+                    {/* Forgot Email Button */}
+                    <div className="text-center pt-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleForgotEmail}
+                        className="text-primary hover:text-primary/ hover:bg-background text-sm font-medium"
+                      >
+                        Forgot your email?
+                      </Button>
+                    </div>
+                  </form>
+                ) : step === 'phone' ? (
+                  <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="phoneNumber" className="text-sm font-medium">
+                        Phone Number
+                      </Label>
+                      <PhoneInput
+                        value={phoneNumber}
+                        onChange={setPhoneNumber}
+                        disabled={isLoading}
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Enter the phone number associated with your account. We'll send a verification code to your registered email.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <Button
+                        type="submit"
+                        className="w-full hover:bg-tertiary/ text-sm sm:text-base font-medium"
+                        disabled={isLoading || !validatePhone(phoneNumber)}
+                      >
+                        {sendOTPByPhoneMutation.isPending ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Sending code...
+                          </>
+                        ) : (
+                          <>
+                            <Phone className="mr-2 h-4 w-4" />
+                            Send Verification Code
+                          </>
+                        )}
+                      </Button>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handleBackToEmail}
+                        className="w-full text-sm font-medium"
+                        disabled={isLoading}
+                      >
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Email Login
+                      </Button>
+                    </div>
                   </form>
                 ) : (
                   <form onSubmit={handleOTPSubmit} className="space-y-6">
@@ -274,11 +410,11 @@ function LoginPage() {
                         </InputOTP>
                       </div>
                     </div>
-                    <div className="flex flex-col-reverse  sm:w-full gap-4">
+                    <div className="flex flex-col-reverse sm:w-full gap-4">
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={handleBackToEmail}
+                        onClick={forgotEmail ? handleBackToPhone : handleBackToEmail}
                         className="w-full sm:w-auto text-sm font-medium border border-border rounded-md hover:bg-muted focus:ring-2 focus:ring-primary focus:outline-none"
                         disabled={isLoading}
                       >
@@ -312,7 +448,9 @@ function LoginPage() {
                         disabled={isLoading}
                         className="text-primary hover:text-primary/80 text-sm font-medium focus:ring-2 focus:ring-primary focus:outline-none"
                       >
-                        {sendOTPMutation.isPending ? 'Sending...' : 'Resend Code'}
+                        {(sendOTPMutation.isPending || sendOTPByPhoneMutation.isPending) 
+                          ? 'Sending...' 
+                          : 'Resend Code'}
                       </Button>
                     </div>
                   </form>
