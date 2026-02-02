@@ -142,6 +142,7 @@ export function GoogleAdsConnectDialog({
           queryClient.invalidateQueries({ queryKey: ['google-ads-connection'] })
           checkConnection()
           onSuccess?.()
+          window.close()
         }, STATUS_REFRESH_DELAY)
       } else if (event.data.type === 'GOOGLE_ADS_AUTH_ERROR') {
         console.error('Auth error message received:', event.data.error)

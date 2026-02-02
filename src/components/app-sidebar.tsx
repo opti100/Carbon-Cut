@@ -79,8 +79,6 @@ export function AppSidebar() {
     checkConnection,
     isSwitchingAccount,
   } = useGoogleAds()
-  const { user, logout } = useAuth()
-  const queryClient = useQueryClient()
   const [error, setError] = useState<string | null>(null)
   const REFRESH_DELAY = 1000
 
@@ -100,14 +98,14 @@ export function AppSidebar() {
     }
   }, [status?.customer_id, selectedAccountId])
 
-  const handleLogout = async () => {
-    try {
-      await logout()
-      router.push('/login')
-    } catch (error) {
-      console.error('Logout failed:', error)
-    }
-  }
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout()
+  //     router.push('/login')
+  //   } catch (error) {
+  //     console.error('Logout failed:', error)
+  //   }
+  // }
 
   const getInitials = (name?: string, email?: string) => {
     if (name) {
