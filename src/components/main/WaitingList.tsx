@@ -22,12 +22,11 @@ export default function WaitingList() {
                 </p>
                 
                 <h1 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl font-extrabold text-[#6c5f31] leading-tight mb-8">
-                  Be Part of the Carbon Revolution
+                  Get 100% aligned with your Carbon Goal.
                 </h1>
 
                 <p className="text-[#6c5f31] text-sm sm:text-base md:text-base mb-4 leading-relaxed">
-                  Sign up to get early access and exclusive updates on our carbon tracking solutions. 
-                  Every request consumes energy — we help you measure the emissions behind it.
+                  Sign up to get early access and exclusive updates on our AI Carbon Expert which can SEE all events, DECIDE considering set climate goals and ACT bespoke manner.
                 </p>
               </BlurFade>
 
