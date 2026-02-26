@@ -7,6 +7,7 @@ import { ReduxProvider } from './ReduxProvider'
 import { QueryProvider } from './QueryProvider'
 import { GoogleAdsProvider } from '@/contexts/GoogleAdsContext'
 import { PostHogProvider } from './PosthogProviders'
+import { SidebarProvider } from '@/components/ui/sidebar'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +36,9 @@ const Providers = ({ children }: ProvidersProps) => {
         <ReduxProvider>
           <AuthProvider>
             <QueryProvider>
-              <GoogleAdsProvider>{children}</GoogleAdsProvider>
+              <GoogleAdsProvider>
+                <SidebarProvider>{children}</SidebarProvider>
+              </GoogleAdsProvider>
             </QueryProvider>
           </AuthProvider>
         </ReduxProvider>

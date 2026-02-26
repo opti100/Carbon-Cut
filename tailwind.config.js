@@ -8,8 +8,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)'],
+      },
       colors: {
-        tertiary: '#00CC33', // Define your custom colors
+        tertiary: '#00CC33', 
       },
       keyframes: {
         wiggle: {
