@@ -4,8 +4,12 @@ import {
   WorkforceEmissionsData,
   OnPremData,
   TravelData,
+  EnergyData,
+  AdsData,
+  MachineryData,
+  OilGasData,
 } from '@/types/onboarding'
-import { AnalyticsResponse } from '@/types/web-analytics'
+import { AnalyticsData } from '@/types/web-analytics'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
 
@@ -16,7 +20,6 @@ const getAuthToken = (): string | null => {
   if (parts.length === 2) return parts.pop()?.split(';').shift() || null
   return null
 }
-
 
 async function fetchWithAuth<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = getAuthToken()
@@ -57,7 +60,7 @@ export const onboardingApi = {
     })
   },
 
-    uploadCloudCSV: async (file: File, provider: string) => {
+  uploadCloudCSV: async (file: File, provider: string) => {
     const token = getAuthToken()
     const { month, year } = getCurrentPeriod()
 
@@ -77,9 +80,9 @@ export const onboardingApi = {
     })
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ 
+      const error = await response.json().catch(() => ({
         success: false,
-        error: 'Upload failed' 
+        error: 'Upload failed',
       }))
       throw error
     }
@@ -90,20 +93,20 @@ export const onboardingApi = {
   submitCloudManual: async (data: CloudProviderData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ 
-      success: boolean; 
-      message?: string;
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
       data: {
-        total_emissions_kg: number;
-        period: string;
+        total_emissions_kg: number
+        period: string
         providers: Array<{
-          provider: string;
-          emissions_kg: number;
-          emission_id: string;
-          calculation_details: unknown;
-        }>;
-        note: string;
-      } 
+          provider: string
+          emissions_kg: number
+          emission_id: string
+          calculation_details: unknown
+        }>
+        note: string
+      }
     }>('/web/cloud/manual/', {
       method: 'POST',
       body: JSON.stringify({
@@ -123,38 +126,36 @@ export const onboardingApi = {
   },
 
   // CDN Emissions
-    // CDN Emissions
+  // CDN Emissions
   submitCDN: async (data: CdnData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ 
-      success: boolean; 
-      message?: string;
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
       data: {
-        emission_id: string;
-        total_emissions_kg: number;
-        period: string;
+        emission_id: string
+        total_emissions_kg: number
+        period: string
         calculation_details: {
-          total_emissions_kg: number;
-          breakdown?: Record<string, unknown>;
-          factors?: Record<string, unknown>;
-        };
+          total_emissions_kg: number
+          breakdown?: Record<string, unknown>
+          factors?: Record<string, unknown>
+        }
       }
     }>('/web/cdn/', {
       method: 'POST',
       body: JSON.stringify({
         monthly_gb_transferred: parseFloat(data.monthlyGBTransferred) || 0,
         provider: data.cdnProvider.toLowerCase(),
-        regions: Array.isArray(data.regions) 
-          ? data.regions 
-          : [data.regions], 
+        regions: Array.isArray(data.regions) ? data.regions : [data.regions],
         month,
         year,
       }),
     })
   },
   // Workforce Emissions
-    // Workforce Emissions
+  // Workforce Emissions
   submitWorkforce: async (data: WorkforceEmissionsData) => {
     const { month, year } = getCurrentPeriod()
 
@@ -195,24 +196,25 @@ export const onboardingApi = {
     }, 0)
 
     // Average remote percentage across all locations
-    const avg_remote_percentage = data.workforceLocations.length > 0
-      ? data.workforceLocations.reduce((sum, location) => {
-          return sum + calculateRemotePercentage(location.workArrangementRemote || '0')
-        }, 0) / data.workforceLocations.length
-      : 0
+    const avg_remote_percentage =
+      data.workforceLocations.length > 0
+        ? data.workforceLocations.reduce((sum, location) => {
+            return sum + calculateRemotePercentage(location.workArrangementRemote || '0')
+          }, 0) / data.workforceLocations.length
+        : 0
 
-    return fetchWithAuth<{ 
-      success: boolean; 
-      message?: string;
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
       data: {
-        emission_id: string;
-        total_emissions_kg: number;
-        period: string;
+        emission_id: string
+        total_emissions_kg: number
+        period: string
         calculation_details: {
-          total_emissions_kg: number;
-          breakdown?: Record<string, unknown>;
-          factors?: Record<string, unknown>;
-        };
+          total_emissions_kg: number
+          breakdown?: Record<string, unknown>
+          factors?: Record<string, unknown>
+        }
       }
     }>('/web/workforce/', {
       method: 'POST',
@@ -231,18 +233,18 @@ export const onboardingApi = {
   submitOnPrem: async (data: OnPremData) => {
     const { month, year } = getCurrentPeriod()
 
-    return fetchWithAuth<{ 
-      success: boolean; 
-      message?: string;
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
       data: {
-        emission_id: string;
-        total_emissions_kg: number;
-        period: string;
+        emission_id: string
+        total_emissions_kg: number
+        period: string
         calculation_details: {
-          total_emissions_kg: number;
-          breakdown?: Record<string, unknown>;
-          factors?: Record<string, unknown>;
-        };
+          total_emissions_kg: number
+          breakdown?: Record<string, unknown>
+          factors?: Record<string, unknown>
+        }
       }
     }>('/web/onprem/', {
       method: 'POST',
@@ -268,15 +270,15 @@ export const onboardingApi = {
     })
   },
 
-    // Travel Emissions
+  // Travel Emissions
   submitTravel: async (data: TravelData) => {
     const { month, year } = getCurrentPeriod()
 
     const trips = data.travels.map((t) => {
       const baseTrip: any = {
         travel_type: t.travel_type,
-        distance_km: parseFloat(t.distance_km || '0'),
-        passenger_count: parseInt(t.passenger_count || '1'),
+        distance_km: parseFloat(String(t.distance_km) || '0'),
+        passenger_count: parseInt(String(t.passenger_count) || '1'),
       }
 
       // Add flight-specific fields
@@ -297,18 +299,18 @@ export const onboardingApi = {
       return baseTrip
     })
 
-    return fetchWithAuth<{ 
-      success: boolean; 
-      message?: string;
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
       data: {
-        emission_id: string;
-        total_emissions_kg: number;
-        period: string;
+        emission_id: string
+        total_emissions_kg: number
+        period: string
         trips: Array<{
-          travel_type: string;
-          emissions_kg: number;
-          details: Record<string, unknown>;
-        }>;
+          travel_type: string
+          emissions_kg: number
+          details: Record<string, unknown>
+        }>
       }
     }>('/web/travel/', {
       method: 'POST',
@@ -343,12 +345,133 @@ export const onboardingApi = {
       `/web/export/csrd/?year=${y}&format=${format}`
     )
   },
+  // In services/onboarding/onboarding.ts
+  submitEnergy: async (data: EnergyData) => {
+    const { month, year } = getCurrentPeriod()
+
+    if (data.energy_sources.length === 0) {
+      return { success: true, data: { message: 'Skipped' } }
+    }
+
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
+      data: {
+        emission_id: string
+        total_emissions_kg: number
+        period: string
+      }
+    }>('/web/energy/', {
+      method: 'POST',
+      body: JSON.stringify({
+        energy_sources: data.energy_sources.map(source => ({
+          source_type: source.source_type,
+          monthly_kwh: parseFloat(source.monthly_kwh) || 0,
+          monthly_liters: parseFloat(source.monthly_liters) || 0,
+          country_code: source.country_code
+        })),
+        month,
+        year,
+      }),
+    })
+  },
+
+  submitAds: async (data: AdsData) => {
+    const { month, year } = getCurrentPeriod()
+
+    if (data.ad_campaigns.length === 0) {
+      return { success: true, data: { message: 'Skipped' } }
+    }
+
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
+      data: {
+        emission_id: string
+        total_emissions_kg: number
+        period: string
+      }
+    }>('/web/ads/', {
+      method: 'POST',
+      body: JSON.stringify({
+        ad_campaigns: data.ad_campaigns.map(campaign => ({
+          platform: campaign.platform,
+          ad_format: campaign.ad_format,
+          monthly_impressions: parseInt(campaign.monthly_impressions) || 0
+        })),
+        month,
+        year,
+      }),
+    })
+  },
+
+  submitMachinery: async (data: MachineryData) => {
+    const { month, year } = getCurrentPeriod()
+
+    if (data.machines.length === 0) {
+      return { success: true, data: { message: 'Skipped' } }
+    }
+
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
+      data: {
+        emission_id: string
+        total_emissions_kg: number
+        period: string
+      }
+    }>('/web/machinery/', {
+      method: 'POST',
+      body: JSON.stringify({
+        machines: data.machines.map(machine => ({
+          machine_type: machine.machine_type,
+          fuel_type: machine.fuel_type,
+          monthly_hours: parseFloat(machine.monthly_hours) || 0,
+          fuel_consumption_rate_l_per_hour: parseFloat(machine.fuel_consumption_rate_l_per_hour) || 0,
+          monthly_kwh: parseFloat(machine.monthly_kwh) || 0
+        })),
+        month,
+        year,
+      }),
+    })
+  },
+
+  submitOilGas: async (data: OilGasData) => {
+    const { month, year } = getCurrentPeriod()
+
+    if (data.consumptions.length === 0) {
+      return { success: true, data: { message: 'Skipped' } }
+    }
+
+    return fetchWithAuth<{
+      success: boolean
+      message?: string
+      data: {
+        emission_id: string
+        total_emissions_kg: number
+        period: string
+      }
+    }>('/web/oil-gas/', {
+      method: 'POST',
+      body: JSON.stringify({
+        consumptions: data.consumptions.map(consumption => ({
+          product_type: consumption.product_type,
+          monthly_liters: parseFloat(consumption.monthly_liters) || 0
+        })),
+        month,
+        year,
+      }),
+    })
+  },
 }
-export async function fetchAnalytics(year?: number, month?: number): Promise<AnalyticsResponse> {
+export async function fetchAnalytics(
+  year?: number,
+  month?: number
+): Promise<AnalyticsData> {
   const token = getAuthToken()
   const currentYear = new Date().getFullYear()
   const y = year || currentYear
-  
+
   let url = `${API_BASE_URL}/web/analytics/?year=${y}`
   if (month) {
     url += `&month=${month}`
