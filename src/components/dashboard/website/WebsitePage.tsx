@@ -63,13 +63,18 @@ export default function AnalyticsDashboard() {
     try {
       const month = selectedMonth !== 'all' ? parseInt(selectedMonth) : undefined
       const response = await fetchAnalytics(parseInt(selectedYear), month)
-      setAnalytics(response)
-    } catch (err: any) {
-      setError(err?.message || 'Failed to load analytics')
+      if (response) {
+        setAnalytics(response.data)
+      } else {
+        setError(response.error || 'Failed to load analytics')
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to load analytics')
     } finally {
       setLoading(false)
     }
   }
+
   const handleExport = () => {
     if (!analytics) return
     const rows = [

@@ -464,10 +464,15 @@ export const onboardingApi = {
     })
   },
 }
+interface AnalyticsResponse{
+  success:boolean,
+  data:AnalyticsData,
+  error:string
+}
 export async function fetchAnalytics(
   year?: number,
   month?: number
-): Promise<AnalyticsData> {
+): Promise<any> {
   const token = getAuthToken()
   const currentYear = new Date().getFullYear()
   const y = year || currentYear
