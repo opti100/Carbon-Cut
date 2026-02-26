@@ -46,12 +46,12 @@ const steps = [
         <div className="relative">
           <pre className="bg-gray-900 text-gray-100 rounded-lg p-4 text-xs overflow-x-auto font-mono">
             {`<script 
-  src="https://cdn.jsdelivr.net/gh/rishi-optiminastic/cc-cdn@main/dist/carboncut.min.js?v=2"
-  data-token="cc_LeAktDLl23TQGdWHVkghUJSNOHYgzVh889dO9fRvYRTwv21Jx85bkrIk2Hu5Bemf"
-  data-api-url="http://127.0.0.1:8000/api/v1/events/"
-  data-debug="false"
-  data-domain="*"
-</script>`}
+            src="https://cdn.jsdelivr.net/gh/rishi-optiminastic/cc-cdn@main/dist/carboncut.min.js?v=2"
+            data-token="cc_LeAktDLl23TQGdWHVkghUJSNOHYgzVh889dO9fRvYRTwv21Jx85bkrIk2Hu5Bemf"
+            data-api-url="http://127.0.0.1:8000/api/v1/events/"
+            data-debug="false"
+            data-domain="*"
+          </script>`}
           </pre>
           <Button
             variant="ghost"

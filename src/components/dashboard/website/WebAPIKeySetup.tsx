@@ -11,10 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiKeyService } from '@/services/apikey/apikey'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'
-const CDN_URL = 'https://cdn.jsdelivr.net/gh/rishi-optiminastic/cc-cdn@main/dist/carboncut.min.js?v=2'
-
+import { API_BASE_URL, CDN_URL } from '@/constants/constants'
 interface WebAPIKeySetupProps {
   onKeyCreated?: (key: string) => void
 }
@@ -31,7 +28,6 @@ export function WebAPIKeySetup({ onKeyCreated }: WebAPIKeySetupProps) {
   } | null>(null)
   const queryClient = useQueryClient()
 
-  // Fetch existing API keys
   const { data: apiKeysData, isLoading } = useQuery({
     queryKey: ['apiKeys', 'web'],
     queryFn: () => ApiKeyService.getApiKeys('web'),
@@ -43,7 +39,6 @@ export function WebAPIKeySetup({ onKeyCreated }: WebAPIKeySetupProps) {
     (key) => key.product === 'web' || key.industry_category === 'internet'
   )
 
-  // Create API key mutation
   const createKeyMutation = useMutation({
     mutationFn: async ({ name, domain }: { name: string; domain: string }) => {
       return ApiKeyService.createApiKey(name, domain, 'web', {

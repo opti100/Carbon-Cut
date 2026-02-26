@@ -69,13 +69,13 @@ const Footer = () => {
                   Calculator
                 </Link004>
                 <Link004
-                  href="/privacy-policy"
+                  href="/policy"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
                   Privacy Policy
                 </Link004>
                 <Link004
-                  href="/terms-conditions"
+                  href="/terms"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
                   Terms & Conditions
