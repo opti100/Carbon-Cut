@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   User,
@@ -20,19 +19,20 @@ import {
   CheckCircle,
   Loader2,
   Edit2,
-  X,
-  Key,
   Plus,
   Link2,
   LogOut,
-  AlertTriangle,
   Settings,
   Cloud,
   Globe,
   Users,
   Server,
-  Plane,
   FileText,
+  ArrowRight,
+  Shield,
+  ExternalLink,
+  Copy,
+  ChevronRight,
 } from 'lucide-react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ApiKeysList } from '@/components/dashboard/api-key/ApiList'
@@ -47,6 +47,7 @@ import { onboardingApi } from '@/services/onboarding/onboarding'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { ReportsTab } from '@/components/dashboard/profile/MonthlyReports'
+import { cn } from '@/lib/utils'
 
 type TabType = 'basic-info' | 'integrations' | 'configuration' | 'reports'
 
@@ -84,16 +85,9 @@ export default function ProfilePage() {
 
   const getInitials = (name?: string, email?: string) => {
     if (name) {
-      return name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
+      return name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     }
-    if (email) {
-      return email.slice(0, 2).toUpperCase()
-    }
+    if (email) return email.slice(0, 2).toUpperCase()
     return 'U'
   }
 
@@ -136,88 +130,74 @@ export default function ProfilePage() {
     }
   }
 
-  const handleCreateKeyClick = () => {
-    if (hasApiKey) return
-    setCreateKeyDialogOpen(true)
-  }
-
-  const sidebarItems = [
-    {
-      id: 'basic-info' as TabType,
-      label: 'Basic Info',
-      icon: User,
-      description: 'Personal details',
-    },
-    {
-      id: 'integrations' as TabType,
-      label: 'Integrations',
-      icon: Link2,
-      description: 'Connected services',
-    },
-    {
-      id: 'configuration' as TabType,
-      label: 'Configuration',
-      icon: Settings,
-      description: 'Emission sources',
-    },
-    {
-      id: 'reports' as TabType,
-      label: 'Reports',
-      icon: FileText,
-      description: 'Monthly reports',
-    },
+  const tabs: { id: TabType; label: string }[] = [
+    { id: 'basic-info', label: 'Profile' },
+    { id: 'integrations', label: 'Integrations' },
+    { id: 'configuration', label: 'Configuration' },
+    { id: 'reports', label: 'Reports' },
   ]
 
   return (
-    <div className="flex-1 overflow-auto p-4 sm:p-6 md:p-8 bg-background">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold tracking-tight">Profile & Settings</h1>
-          <p className="text-muted-foreground">
-            Manage your account, integrations, and configurations
-          </p>
-        </div>
+    <div className="flex-1 bg-background min-h-screen">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-6">
+        <div className="space-y-6">
+          {/* Profile header card */}
+          <Card className="bg-card border-border shadow-sm overflow-hidden">
+            <div className="h-24 bg-gradient-to-r from-primary/8 via-primary/4 to-transparent" />
+            <CardContent className="px-5 pb-5 -mt-10">
+              <div className="flex items-end justify-between">
+                <div className="flex items-end gap-4">
+                  <Avatar className="h-16 w-16 border-4 border-card shadow-sm">
+                    <AvatarFallback className="bg-primary text-primary-foreground text-lg font-semibold">
+                      {getInitials(user?.name, user?.email)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="pb-0.5">
+                    <h2 className="text-lg font-semibold text-foreground">{user?.name || 'User'}</h2>
+                    <p className="text-sm text-muted-foreground">{user?.email}</p>
+                    {user?.companyName && (
+                      <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-1">
+                        <Building2 className="h-3 w-3" />
+                        {user.companyName}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 text-xs gap-1.5 border-border shadow-sm text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-3 w-3" />
+                  Logout
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Sidebar */}
-          <div className="md:col-span-1">
-            <Card className="bg-white rounded-md sticky top-6">
-              <CardContent className="p-4">
-                <nav className="space-y-1">
-                  {sidebarItems.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveTab(item.id)}
-                      className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-left transition-colors ${activeTab === item.id
-                          ? 'bg-primary text-primary-foreground'
-                          : 'hover:bg-muted text-muted-foreground hover:text-foreground'
-                        }`}
-                    >
-                      <item.icon className="h-5 w-5 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm">{item.label}</p>
-                        <p className="text-xs opacity-80 truncate">{item.description}</p>
-                      </div>
-                    </button>
-                  ))}
-                  <Separator className="my-3" />
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-start gap-3 px-3 py-2.5 rounded-md text-left transition-colors text-destructive hover:bg-destructive/10"
-                  >
-                    <LogOut className="h-5 w-5 mt-0.5 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm">Logout</p>
-                      <p className="text-xs opacity-80">Sign out of account</p>
-                    </div>
-                  </button>
-                </nav>
-              </CardContent>
-            </Card>
+          {/* Horizontal tabs */}
+          <div className="border-b border-border">
+            <nav className="flex gap-0 -mb-px">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    'px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
+                    activeTab === tab.id
+                      ? 'border-primary text-foreground'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                  )}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
           </div>
 
-          {/* Main Content */}
-          <div className="md:col-span-3 space-y-6">
+          {/* Tab content */}
+          <div>
             {activeTab === 'basic-info' && (
               <BasicInfoTab
                 user={user}
@@ -228,489 +208,374 @@ export default function ProfilePage() {
                 handleSubmit={handleSubmit}
                 handleCancel={handleCancel}
                 updateProfileMutation={updateProfileMutation}
-                getInitials={getInitials}
               />
             )}
-
             {activeTab === 'integrations' && (
               <IntegrationsTab
                 googleAdsStatus={googleAdsStatus}
                 setConnectGoogleDialogOpen={setConnectGoogleDialogOpen}
                 hasApiKey={hasApiKey}
-                handleCreateKeyClick={handleCreateKeyClick}
+                handleCreateKeyClick={() => { if (!hasApiKey) setCreateKeyDialogOpen(true) }}
               />
             )}
-
             {activeTab === 'configuration' && (
-              <ConfigurationTab
-                configData={configData}
-                configLoading={configLoading}
-              />
+              <ConfigurationTab configData={configData} configLoading={configLoading} />
             )}
-
             {activeTab === 'reports' && <ReportsTab />}
           </div>
         </div>
       </div>
 
-      <CreateApiKeyDialog
-        open={createKeyDialogOpen}
-        onOpenChange={setCreateKeyDialogOpen}
-      />
-      <GoogleAdsConnectDialog
-        open={connectGoogleDialogOpen}
-        onOpenChange={setConnectGoogleDialogOpen}
-      />
+      <CreateApiKeyDialog open={createKeyDialogOpen} onOpenChange={setCreateKeyDialogOpen} />
+      <GoogleAdsConnectDialog open={connectGoogleDialogOpen} onOpenChange={setConnectGoogleDialogOpen} />
     </div>
   )
 }
 
-// Basic Info Tab Component
-function BasicInfoTab({
-  user,
-  isEditing,
-  setIsEditing,
-  formData,
-  setFormData,
-  handleSubmit,
-  handleCancel,
-  updateProfileMutation,
-  getInitials,
-}: any) {
-  return (
-    <Card className="bg-white rounded-md">
-      <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div>
-          <CardTitle>Profile Information</CardTitle>
-          <CardDescription>
-            Your personal details and contact information.
-          </CardDescription>
-        </div>
-        {!isEditing && (
-          <Button
-            variant="outline"
-            onClick={() => setIsEditing(true)}
-            className="w-full sm:w-auto"
-          >
-            <Edit2 className="h-4 w-4 mr-2" />
-            Edit Profile
-          </Button>
-        )}
-      </CardHeader>
-      <CardContent>
-        {updateProfileMutation.isSuccess && (
-          <Alert className="mb-6 bg-green-50 border-green-200">
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertDescription className="text-green-800">
-              Profile updated successfully!
-            </AlertDescription>
-          </Alert>
-        )}
-        {updateProfileMutation.error && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertDescription>{updateProfileMutation.error.message}</AlertDescription>
-          </Alert>
-        )}
-        <div className="flex items-center gap-4 mb-6">
-          <Avatar className="h-16 w-16">
-            <AvatarFallback className="bg-muted text-muted-foreground text-2xl font-semibold">
-              {getInitials(user?.name, user?.email)}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-semibold text-lg">{user?.name || 'User'}</p>
-            <p className="text-muted-foreground">{user?.email}</p>
-          </div>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              {isEditing ? (
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                />
-              ) : (
-                <p className="text-muted-foreground">{user?.name || 'Not set'}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <p className="text-muted-foreground">{user?.email}</p>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
-              {isEditing ? (
-                <Input
-                  id="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phoneNumber: e.target.value })
-                  }
-                />
-              ) : (
-                <p className="text-muted-foreground">
-                  {user?.phoneNumber || 'Not set'}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name</Label>
-              {isEditing ? (
-                <Input
-                  id="companyName"
-                  value={formData.companyName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, companyName: e.target.value })
-                  }
-                />
-              ) : (
-                <p className="text-muted-foreground">
-                  {user?.companyName || 'Not set'}
-                </p>
-              )}
-            </div>
-          </div>
-          {isEditing && (
-            <div className="flex gap-3 pt-4 border-t">
-              <Button type="submit" disabled={updateProfileMutation.isPending}>
-                {updateProfileMutation.isPending && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Save Changes
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={updateProfileMutation.isPending}
-              >
-                Cancel
-              </Button>
-            </div>
-          )}
-        </form>
-      </CardContent>
-    </Card>
-  )
-}
+/* ─── Basic Info ─── */
+function BasicInfoTab({ user, isEditing, setIsEditing, formData, setFormData, handleSubmit, handleCancel, updateProfileMutation }: any) {
+  const fields = [
+    { id: 'name', label: 'Full Name', value: user?.name, formKey: 'name', editable: true, icon: User },
+    { id: 'email', label: 'Email', value: user?.email, formKey: null, editable: false, icon: Mail },
+    { id: 'phoneNumber', label: 'Phone', value: user?.phoneNumber, formKey: 'phoneNumber', editable: true, icon: Phone },
+    { id: 'companyName', label: 'Company', value: user?.companyName, formKey: 'companyName', editable: true, icon: Building2 },
+  ]
 
-// Integrations Tab Component
-function IntegrationsTab({
-  googleAdsStatus,
-  setConnectGoogleDialogOpen,
-  hasApiKey,
-  handleCreateKeyClick,
-}: any) {
   return (
     <div className="space-y-6">
-      {/* Google Ads Integration */}
-      <Card className="bg-white rounded-md">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Link2 className="h-5 w-5" /> Google Ads Integration
-          </CardTitle>
-          <CardDescription>
-            Connect and manage your Google Ads account for campaign tracking.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between p-4 border rounded-lg">
-            <div className="flex items-center gap-4">
-              <Image
-                src="/dsp/google-ads.svg"
-                alt="Google Ads"
-                width={40}
-                height={40}
-              />
-              <div>
-                <p className="font-semibold">Google Ads</p>
-                <p className="text-sm text-muted-foreground">
-                  Sync your campaign data automatically.
-                </p>
-              </div>
-            </div>
-            {googleAdsStatus?.is_connected ? (
-              <div className="flex items-center gap-2 text-green-600">
-                <CheckCircle className="h-5 w-5" />
-                <span className="font-medium">Connected</span>
-              </div>
-            ) : (
-              <Button
-                variant="outline"
-                onClick={() => setConnectGoogleDialogOpen(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Connect
+      {updateProfileMutation.isSuccess && (
+        <Alert className="border-emerald-500/20 bg-emerald-500/5">
+          <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
+          <AlertDescription className="text-xs text-emerald-800">Profile updated successfully!</AlertDescription>
+        </Alert>
+      )}
+      {updateProfileMutation.error && (
+        <Alert variant="destructive">
+          <AlertDescription className="text-xs">{updateProfileMutation.error.message}</AlertDescription>
+        </Alert>
+      )}
+
+      <Card className="bg-card border-border shadow-sm">
+        <CardHeader className="px-5 pb-0">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm font-semibold">Personal Information</CardTitle>
+            {!isEditing ? (
+              <Button variant="ghost" size="sm" className="h-7 text-xs gap-1.5 text-muted-foreground hover:text-foreground" onClick={() => setIsEditing(true)}>
+                <Edit2 className="h-3 w-3" />
+                Edit
               </Button>
+            ) : (
+              <div className="flex gap-1.5">
+                <Button size="sm" className="h-7 text-xs shadow-sm" onClick={handleSubmit} disabled={updateProfileMutation.isPending}>
+                  {updateProfileMutation.isPending && <Loader2 className="mr-1 h-3 w-3 animate-spin" />}
+                  Save
+                </Button>
+                <Button variant="ghost" size="sm" className="h-7 text-xs text-muted-foreground" onClick={handleCancel} disabled={updateProfileMutation.isPending}>
+                  Cancel
+                </Button>
+              </div>
             )}
           </div>
-
-          {googleAdsStatus?.is_connected && googleAdsStatus?.customer_id && (
-            <div className="mt-4 p-4 bg-muted rounded-lg">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-muted-foreground">Customer ID</p>
-                  <p className="font-mono font-medium">{googleAdsStatus.customer_id}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Status</p>
-                  <Badge variant="default">Active</Badge>
-                </div>
-              </div>
+        </CardHeader>
+        <CardContent className="px-5 pb-5 pt-4">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0 divide-y sm:divide-y-0 divide-border">
+              {fields.map((field, i) => {
+                const Icon = field.icon
+                return (
+                  <div key={field.id} className={cn('py-3.5', i < 2 && 'sm:border-b sm:border-border')}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Icon className="h-3.5 w-3.5 text-muted-foreground/60" />
+                      <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">{field.label}</span>
+                    </div>
+                    {isEditing && field.editable && field.formKey ? (
+                      <Input
+                        value={(formData as any)[field.formKey]}
+                        onChange={(e) => setFormData({ ...formData, [field.formKey!]: e.target.value })}
+                        className="h-8 text-sm border-border mt-1"
+                      />
+                    ) : (
+                      <p className={cn('text-sm font-medium mt-0.5', field.value ? 'text-foreground' : 'text-muted-foreground/50')}>
+                        {field.value || '—'}
+                      </p>
+                    )}
+                  </div>
+                )
+              })}
             </div>
-          )}
+          </form>
         </CardContent>
       </Card>
 
-      {/* API Keys */}
-      <Card className="bg-white rounded-md">
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Key className="h-5 w-5" /> API Keys
-            </CardTitle>
-            <CardDescription>
-              Manage your API keys for programmatic access.
-            </CardDescription>
+      <Card className="bg-card border-border shadow-sm">
+        <CardContent className="px-5 py-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/5">
+              <Shield className="h-4 w-4 text-primary" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Security</p>
+              <p className="text-xs text-muted-foreground">Manage your password and authentication settings</p>
+            </div>
+            <Button variant="ghost" size="sm" className="h-8 text-xs text-muted-foreground gap-1">
+              Change Password <ChevronRight className="h-3 w-3" />
+            </Button>
           </div>
-          <Button onClick={handleCreateKeyClick} className="w-full sm:w-auto">
-            <Plus className="h-4 w-4 mr-2" /> Create API Key
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <ApiKeysList />
         </CardContent>
       </Card>
     </div>
   )
 }
 
+/* ─── Integrations ─── */
+function IntegrationsTab({ googleAdsStatus, setConnectGoogleDialogOpen, hasApiKey, handleCreateKeyClick }: any) {
+  const integrations = [
+    {
+      id: 'google-ads',
+      name: 'Google Ads',
+      description: 'Sync campaign emissions data automatically',
+      icon: (
+        <Image src="/dsp/google-ads.svg" alt="Google Ads" width={20} height={20} />
+      ),
+      connected: googleAdsStatus?.is_connected,
+      onConnect: () => setConnectGoogleDialogOpen(true),
+      meta: googleAdsStatus?.customer_id ? `ID: ${googleAdsStatus.customer_id}` : null,
+    },
+  ]
+
+  return (
+    <div className="space-y-6">
+      {/* Connected services */}
+      <div>
+        <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-3">Connected Services</h3>
+        <Card className="bg-card border-border shadow-sm">
+          <CardContent className="p-0">
+            <div className="divide-y divide-border">
+              {integrations.map((integration) => (
+                <div key={integration.id} className="flex items-center gap-4 px-5 py-4">
+                  <div className="h-10 w-10 rounded-lg border border-border bg-background flex items-center justify-center shrink-0">
+                    {integration.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium text-foreground">{integration.name}</p>
+                      {integration.connected && (
+                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {integration.connected ? (integration.meta || 'Connected') : integration.description}
+                    </p>
+                  </div>
+                  {integration.connected ? (
+                    <Badge variant="secondary" className="text-[10px] font-normal gap-1 px-2 h-6 shrink-0">
+                      <CheckCircle className="h-3 w-3 text-emerald-500" />
+                      Connected
+                    </Badge>
+                  ) : (
+                    <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 border-border shadow-sm shrink-0" onClick={integration.onConnect}>
+                      Connect
+                      <ExternalLink className="h-3 w-3" />
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* API Keys */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xs uppercase tracking-wider text-muted-foreground font-medium">API Keys</h3>
+          <Button size="sm" className="h-7 text-xs gap-1.5 shadow-sm" onClick={handleCreateKeyClick} disabled={hasApiKey}>
+            <Plus className="h-3 w-3" />
+            New Key
+          </Button>
+        </div>
+        <Card className="bg-card border-border shadow-sm">
+          <CardContent className="p-5">
+            <ApiKeysList />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Configuration ─── */
 function ConfigurationTab({ configData, configLoading }: any) {
   const config = configData?.data || {}
 
   if (configLoading) {
     return (
-      <Card className="bg-white rounded-md">
-        <CardContent className="py-12">
-          <div className="flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-5 w-5 animate-spin text-muted-foreground mr-2" />
+        <span className="text-sm text-muted-foreground">Loading configuration…</span>
+      </div>
     )
   }
 
-  const configSections = [
+  const sections = [
     {
+      key: 'cloud',
       title: 'Cloud Infrastructure',
       icon: Cloud,
+      color: 'text-blue-600',
+      bg: 'bg-blue-500/10',
       items: config.cloud_providers || [],
-      emptyMessage: 'No cloud providers configured',
-      renderItem: (item: any) => (
-        <div className="flex items-center justify-between p-4 border rounded-lg">
-          <div className="flex items-center gap-3">
-            <Cloud className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <p className="font-medium capitalize">
-                {item.provider || 'Cloud Provider'}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {item.connection_type === 'manual' ? 'Manual Entry' : 'CSV Upload'}
-                {item.monthly_cost_usd && ` • $${item.monthly_cost_usd}/mo`}
-              </p>
-            </div>
-          </div>
-          <Badge variant="secondary">
-            {item.regions && item.regions.length > 0
-              ? item.regions.join(', ')
-              : 'N/A'}
-          </Badge>
-        </div>
-      ),
+      render: (item: any) => ({
+        primary: item.provider || 'Cloud Provider',
+        secondary: [
+          item.connection_type === 'manual' ? 'Manual' : 'CSV',
+          item.monthly_cost_usd ? `$${item.monthly_cost_usd}/mo` : null,
+        ].filter(Boolean).join(' · '),
+        badge: item.regions?.length > 0 ? item.regions.join(', ') : null,
+      }),
     },
     {
-      title: 'CDN Configuration',
+      key: 'cdn',
+      title: 'CDN',
       icon: Globe,
+      color: 'text-purple-600',
+      bg: 'bg-purple-500/10',
       items: config.cdn_configs || [],
-      emptyMessage: 'No CDN configured',
-      renderItem: (item: any) => (
-        <div className="flex items-center justify-between p-4 border rounded-lg">
-          <div className="flex items-center gap-3">
-            <Globe className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <p className="font-medium capitalize">
-                {item.provider || 'CDN Provider'}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                {item.monthly_gb_transferred
-                  ? `${item.monthly_gb_transferred} GB/mo`
-                  : 'Data transfer not specified'}
-              </p>
-            </div>
-          </div>
-          <Badge variant="secondary">
-            {item.regions && item.regions.length > 0
-              ? item.regions.join(', ')
-              : 'Global'}
-          </Badge>
-        </div>
-      ),
+      render: (item: any) => ({
+        primary: item.provider || 'CDN Provider',
+        secondary: item.monthly_gb_transferred ? `${item.monthly_gb_transferred} GB/mo` : 'Not specified',
+        badge: item.regions?.length > 0 ? item.regions.join(', ') : 'Global',
+      }),
     },
     {
-      title: 'Workforce Details',
+      key: 'workforce',
+      title: 'Workforce',
       icon: Users,
+      color: 'text-emerald-600',
+      bg: 'bg-emerald-500/10',
       items: config.workforce_config ? [config.workforce_config] : [],
-      emptyMessage: 'No workforce details configured',
-      renderItem: (item: any) => (
-        <div className="p-4 border rounded-lg space-y-3">
-          <div className="flex items-center gap-3">
-            <Users className="h-5 w-5 text-muted-foreground" />
-            <p className="font-medium">Workforce Configuration</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-muted-foreground">Total Employees</p>
-              <p className="font-medium">{item.total_employees || 'N/A'}</p>
-            </div>
-            <div>
-              <p className="text-muted-foreground">Remote Percentage</p>
-              <p className="font-medium">
-                {item.remote_employee_percentage
-                  ? `${item.remote_employee_percentage}%`
-                  : 'N/A'}
-              </p>
-            </div>
-            <div className="col-span-2">
-              <p className="text-muted-foreground mb-2">Office Locations</p>
-              {item.office_locations && item.office_locations.length > 0 ? (
-                <div className="space-y-2">
-                  {item.office_locations.map((loc: any, idx: number) => (
-                    <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded">
-                      <div>
-                        <p className="font-medium text-sm">
-                          {[loc.city, loc.country].filter(Boolean).join(', ')}
-                        </p>
-                        {loc.employee_count && (
-                          <p className="text-xs text-muted-foreground">
-                            {loc.employee_count} employees
-                          </p>
-                        )}
-                      </div>
-                      {loc.square_meters && (
-                        <Badge variant="outline" className="text-xs">
-                          {loc.square_meters} m²
-                        </Badge>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="font-medium">No locations specified</p>
-              )}
-            </div>
-          </div>
-        </div>
-      ),
+      render: (item: any) => ({
+        primary: `${item.total_employees || '?'} employees`,
+        secondary: [
+          item.remote_employee_percentage ? `${item.remote_employee_percentage}% remote` : null,
+          item.office_locations?.length ? `${item.office_locations.length} office${item.office_locations.length !== 1 ? 's' : ''}` : null,
+        ].filter(Boolean).join(' · '),
+        badge: null,
+      }),
     },
     {
-      title: 'On-Premise Infrastructure',
+      key: 'onprem',
+      title: 'On-Premise',
       icon: Server,
+      color: 'text-orange-600',
+      bg: 'bg-orange-500/10',
       items: config.onprem_configs || [],
-      emptyMessage: 'No on-premise servers configured',
-      renderItem: (item: any) => (
-        <div className="space-y-3 p-4 border rounded-lg">
-          <div className="flex items-center gap-3">
-            <Server className="h-5 w-5 text-muted-foreground" />
-            <div>
-              <p className="font-medium">
-                {item.location_city || 'Data Center'}
-                {item.location_country_code && ` (${item.location_country_code})`}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                PUE: {item.power_usage_effectiveness || '1.6'}
-              </p>
-            </div>
-          </div>
-          {item.servers && item.servers.length > 0 && (
-            <div className="space-y-2 mt-3">
-              {item.servers.map((server: any, idx: number) => (
-                <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded">
-                  <div>
-                    <p className="font-medium text-sm">{server.name || `Server ${idx + 1}`}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {server.cpu_cores} cores • {server.ram_gb}GB RAM • {server.storage_tb}TB
-                    </p>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    {Math.round((server.avg_cpu_utilization || 0.35) * 100)}% CPU
-                  </Badge>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ),
+      render: (item: any) => ({
+        primary: [item.location_city, item.location_country_code].filter(Boolean).join(', ') || 'Data Center',
+        secondary: [
+          `PUE ${item.power_usage_effectiveness || '1.6'}`,
+          item.servers?.length ? `${item.servers.length} server${item.servers.length !== 1 ? 's' : ''}` : null,
+        ].filter(Boolean).join(' · '),
+        badge: null,
+      }),
     },
   ]
 
-  // Check if there's any configuration data
-  const hasAnyConfig =
-    (config.cloud_providers && config.cloud_providers.length > 0) ||
-    (config.cdn_configs && config.cdn_configs.length > 0) ||
-    config.workforce_config ||
-    (config.onprem_configs && config.onprem_configs.length > 0)
+  const configuredCount = sections.filter(s => s.items.length > 0).length
+  const hasAny = configuredCount > 0
 
   return (
     <div className="space-y-6">
-      {hasAnyConfig ? (
-        configSections.map((section) => (
-          <Card key={section.title} className="bg-white rounded-md">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <section.icon className="h-5 w-5" />
-                {section.title}
-              </CardTitle>
-              <CardDescription>
-                Configuration from your onboarding process
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {section.items.length > 0 ? (
-                <div className="space-y-3">
-                  {section.items.map((item: any, index: number) => (
-                    <div key={item.id || index}>{section.renderItem(item)}</div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <section.icon className="h-12 w-12 mx-auto mb-2 opacity-20" />
-                  <p>{section.emptyMessage}</p>
-                  <p className="text-sm mt-1">Complete the onboarding to add this information</p>
-                </div>
+      {/* Status bar */}
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted-foreground">
+          <span className="font-medium text-foreground">{configuredCount}</span> of {sections.length} sources configured
+        </p>
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 text-xs gap-1.5 border-border shadow-sm"
+          onClick={() => (window.location.href = '/v2')}
+        >
+          <Settings className="h-3 w-3" />
+          {hasAny ? 'Update' : 'Configure'}
+        </Button>
+      </div>
+
+      {/* Compact source grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {sections.map((section) => {
+          const Icon = section.icon
+          const hasItems = section.items.length > 0
+
+          return (
+            <Card
+              key={section.key}
+              className={cn(
+                'bg-card border-border shadow-sm transition-colors',
+                !hasItems && 'opacity-50'
               )}
-            </CardContent>
-          </Card>
-        ))
-      ) : (
-        <Card className="bg-white rounded-md">
-          <CardContent className="py-12">
-            <div className="text-center text-muted-foreground">
-              <Settings className="h-16 w-16 mx-auto mb-4 opacity-20" />
-              <p className="text-lg font-medium">No Configuration Found</p>
-              <p className="text-sm mt-2">
-                Complete the onboarding process to set up your configurations
-              </p>
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={() => window.location.href = '/v2'}
-              >
-                Start Onboarding
-              </Button>
+            >
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className={cn('p-2 rounded-lg shrink-0', hasItems ? section.bg : 'bg-muted')}>
+                    <Icon className={cn('h-4 w-4', hasItems ? section.color : 'text-muted-foreground/40')} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-sm font-medium text-foreground">{section.title}</p>
+                      {hasItems ? (
+                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                      ) : (
+                        <span className="text-[10px] text-muted-foreground shrink-0">Not set</span>
+                      )}
+                    </div>
+
+                    {hasItems ? (
+                      <div className="mt-2 space-y-1.5">
+                        {section.items.map((item: any, idx: number) => {
+                          const rendered = section.render(item)
+                          return (
+                            <div key={item.id || idx} className="rounded-md bg-muted/50 px-2.5 py-1.5">
+                              <p className="text-xs font-medium text-foreground capitalize">{rendered.primary}</p>
+                              {rendered.secondary && (
+                                <p className="text-[10px] text-muted-foreground mt-0.5">{rendered.secondary}</p>
+                              )}
+                              {rendered.badge && (
+                                <Badge variant="secondary" className="text-[9px] font-normal px-1 py-0 h-4 mt-1">
+                                  {rendered.badge}
+                                </Badge>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground mt-1">Not configured yet</p>
+                    )}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
+      </div>
+
+      {!hasAny && (
+        <Card className="border-dashed border-border bg-card shadow-sm">
+          <CardContent className="py-12 text-center space-y-3">
+            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center mx-auto">
+              <Settings className="h-5 w-5 text-muted-foreground/40" />
             </div>
+            <div>
+              <p className="text-sm font-semibold text-foreground">No sources configured</p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-xs mx-auto">
+                Complete onboarding to set up your emission sources for accurate tracking
+              </p>
+            </div>
+            <Button size="sm" className="h-8 text-xs shadow-sm gap-1.5" onClick={() => (window.location.href = '/v2')}>
+              Start Setup <ArrowRight className="h-3 w-3" />
+            </Button>
           </CardContent>
         </Card>
       )}

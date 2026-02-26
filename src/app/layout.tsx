@@ -1,18 +1,13 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import Providers from '@/providers/providers'
 import Script from 'next/script'
 import { Toaster } from 'sonner'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
   subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: '--font-sans',
 })
 
 export const metadata: Metadata = {
@@ -27,8 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <link rel="preload" href="/LandingPage.mp4" as="video" type="video/mp4" />
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Toaster richColors/>
+      <body className={`${inter.variable} font-sans`}>
+        <Toaster richColors />
+        
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-Y388SH4Y4G"
@@ -42,14 +38,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             gtag('config', 'G-Y388SH4Y4G');
           `}
         </Script>
-
-        {/* <Script 
-          src="/carboncut.min.js"
-          data-token="cc_mXGFQlyhMJUmhT8kozdJ8GRClOeLAZLUeS1YsLmE9VT41hVPw0KTF54IdFrnWamO"
-          data-api-url="http://127.0.0.1:8000/api/v1/events/"
-          data-debug="true" 
-          data-domain="http://localhost:3000"
-          /> */}
 
         <Script id="plausible-analytics" strategy="afterInteractive">
           {`
