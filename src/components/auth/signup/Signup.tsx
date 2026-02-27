@@ -201,14 +201,14 @@ const SignupPage = () => {
           <div className="max-w-md">
             <blockquote className="space-y-5">
               <p className="text-white/95 text-[22px] xl:text-[26px] font-normal leading-[1.35] tracking-[-0.01em]">
-                &ldquo;Setting up took 10 minutes. Our first report was ready the same afternoon.&rdquo;
+                Setting up took 10 minutes. Our first report was ready the same afternoon.
               </p>
-              <footer className="space-y-1">
+              {/* <footer className="space-y-1">
                 <p className="text-white/80 text-sm font-medium">James Whitfield</p>
                 <p className="text-white/50 text-[13px]">
                   CTO, Greenfield Analytics
                 </p>
-              </footer>
+              </footer> */}
             </blockquote>
           </div>
         </div>
