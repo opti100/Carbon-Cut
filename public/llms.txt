@@ -1,0 +1,42 @@
+# CarbonCut
+
+> CarbonCut is the world's first CliMarTech (Climate Marketing Technology) platform that provides real-time carbon emissions measurement, tracking, and offsetting for digital businesses and marketing operations.
+
+## About
+
+- [Homepage](https://carboncut.co): CarbonCut — Get 100% aligned with your Carbon Goal. AI Carbon Expert that can SEE all events, DECIDE considering climate goals, and ACT in a bespoke manner.
+- [Methodology](https://carboncut.co/methodology): Comprehensive carbon measurement methodology covering GHG Protocol, ISO 14064, and 23 marketing channel-specific CO₂e formulas.
+- [Calculator](https://carboncut.co/calculator): Free carbon footprint calculator for businesses.
+
+## Solutions
+
+- [Internet & Digital Businesses](https://carboncut.co/internet): The easiest way to become a net-zero Internet Company — track, reduce, and report digital emissions.
+- [Internet Ads](https://carboncut.co/internet/internet-ads): Track the carbon cost of every impression, click, and campaign across your advertising ecosystem.
+- [Oil & Natural Gas](https://carboncut.co/oil-and-natural-gas): Carbon tracking and offsetting for the oil and natural gas industry.
+- [Carbon Offset Projects](https://carboncut.co/projects): Access verified carbon credits from Verra (VCS), Gold Standard, ACR, and Climate Action Reserve.
+- [Early Adopters Program](https://carboncut.co/early-adopters): Join the early adopter program for exclusive access and benefits.
+
+## Blog
+
+- [How to Calculate Your Carbon Footprint in Minutes](https://carboncut.co/blogs/how-to-calculate-carbon-footprint-in-minutes): A practical step-by-step guide to quickly and accurately calculate your carbon footprint using modern tools and real-time tracking solutions.
+- [The Massive Carbon Cost Your Company Creates in the Hours You're Not Even Looking](https://carboncut.co/blogs/massive-carbon-cost-unseen-emissions): How unseen emissions accumulate when no one is measuring them and why real-time visibility is essential.
+- [Why Real-Time Visibility Is the Missing Layer in Carbon Accounting](https://carboncut.co/blogs/real-time-visibility-missing-layer-carbon-accounting): Why real-time visibility is the missing layer in carbon accounting and how live emissions data improves accuracy.
+- [Why Real-Time Carbon Tracking Will Replace Annual Carbon Reports](https://carboncut.co/blogs/real-time-carbon-tracking-replace-annual-reports): Why annual carbon reporting is obsolete and how real-time tracking provides continuous, verified climate intelligence.
+- [AI's Hidden Emissions: Why Innovation Needs Carbon Intelligence](https://carboncut.co/blogs/ai-hidden-emissions-why-the-next-era-of-innovation-needs-carbon-intelligence): Exploring the environmental cost of AI and how real-time carbon tracking can make intelligent systems climate-accountable.
+- [The Science Behind Real-Time Carbon Tracking](https://carboncut.co/blogs/the-science-behind-real-time-carbon-tracking): The scientific principles powering real-time carbon tracking at CarbonCut.
+- [Carbon Footprint Calculator 2.0](https://carboncut.co/blogs/carbon-footprint-calculator-2-0): Why real-time data beats annual reports every single time.
+- [Your Carbon Footprint Calculator Is Lying to You](https://carboncut.co/blogs/your-carbon-footprint-calculator-is-lying-to-you): Why most calculators are quietly underreporting your CO₂e.
+- [Introducing CarbonCut](https://carboncut.co/blogs/introducing-carboncut-fast-accurate-authorised-real-time-marketing): Fast, accurate, authorised, real-time marketing carbon emissions and auto-offsetting.
+- [CarbonCut Launches World's First CliMarTech Platform](https://carboncut.co/blogs/carboncut-launches-worlds-first-climartech-platform): Making marketing measurable and net-zero ready.
+
+## Technical Details
+
+- [API Documentation](https://carboncut.gitbook.io/): Technical documentation and API reference for developers.
+
+## Optional
+
+- [Privacy Policy](https://carboncut.co/policy): CarbonCut privacy policy.
+- [Terms & Conditions](https://carboncut.co/terms): CarbonCut terms of service.
+- [LinkedIn](https://www.linkedin.com/company/carboncut-co/): Official LinkedIn company page.
+- [Twitter/X](https://x.com/CarbonCut_co): Official Twitter/X account.
+- [Instagram](https://www.instagram.com/carboncut.co): Official Instagram account.
