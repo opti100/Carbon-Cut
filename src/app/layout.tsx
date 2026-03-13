@@ -136,6 +136,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
+      <meta name="msvalidate.01" content="881B53D8102CA9B957DB399D033888D4" />
       <link rel="preload" href="/LandingPage.mp4" as="video" type="video/mp4" />
       <body className={`${inter.variable} font-sans`}>
         <Toaster richColors />
