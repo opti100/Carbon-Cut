@@ -209,7 +209,7 @@ export default function DecidePage() {
             <TabsTrigger value="dashboard" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none">Dashboard</TabsTrigger>
             <TabsTrigger value="goals" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none">Goals</TabsTrigger>
             <TabsTrigger value="recommendations" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none">Recommendations</TabsTrigger>
-            <TabsTrigger value="history" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none">History</TabsTrigger>
+            {/* <TabsTrigger value="history" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none">History</TabsTrigger> */}
           </TabsList>
 
           {/* ═══════════ DASHBOARD TAB ═══════════ */}
@@ -457,7 +457,7 @@ export default function DecidePage() {
           </TabsContent>
 
           {/* ═══════════ HISTORY TAB ═══════════ */}
-          <TabsContent value="history" className="space-y-4">
+          {/* <TabsContent value="history" className="space-y-4">
             <div className="bg-white border border-[#e5e7eb] rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] flex flex-col overflow-hidden">
               <div className="bg-[#0f5c56] px-5 py-4">
                 <h2 className="text-[14px] font-semibold text-white">Execution Logs</h2>
@@ -485,7 +485,7 @@ export default function DecidePage() {
                 )}
               </div>
             </div>
-          </TabsContent>
+          </TabsContent> */}
 
         </Tabs>
       </div>

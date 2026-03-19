@@ -227,7 +227,7 @@ export default function ActPage() {
               size="sm"
               className="h-[34px] text-[12px] rounded-md bg-[#0f5c56] text-white hover:bg-[#0a3f3b] gap-1.5 shadow-sm shrink-0"
             >
-              {createFromRunMut.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+              {createFromRunMut.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" /> }
               Generate from Latest Run
             </Button>
           )}
@@ -252,9 +252,9 @@ export default function ActPage() {
             <TabsTrigger value="tasks" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none flex items-center gap-2">
               <ListTodo className="h-3.5 w-3.5" /> Tasks
             </TabsTrigger>
-            <TabsTrigger value="generate" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none flex items-center gap-2">
+            {/* <TabsTrigger value="generate" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none flex items-center gap-2">
               <Wand2 className="h-3.5 w-3.5" /> Generate
-            </TabsTrigger>
+            </TabsTrigger> */}
             <TabsTrigger value="stats" className="text-[13px] font-semibold text-gray-600 data-[state=active]:bg-[#0f5c56] data-[state=active]:text-white rounded-md px-5 py-1.5 transition-all shadow-none flex items-center gap-2">
               <BarChart3 className="h-3.5 w-3.5" /> Statistics
             </TabsTrigger>
@@ -316,8 +316,7 @@ export default function ActPage() {
             )}
           </TabsContent>
 
-          {/* ═══════ GENERATE TAB ════════════════════════════════════════════ */}
-          <TabsContent value="generate" className="space-y-6">
+          {/* <TabsContent value="generate" className="space-y-6">
 
             {generateFeedback && (
               <div className={cn(
@@ -331,7 +330,6 @@ export default function ActPage() {
 
             <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
               
-              {/* Individual Recs */}
               <div className="bg-white border border-[#e5e7eb] rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] flex flex-col overflow-hidden">
                 <div className="bg-[#0f5c56] px-5 py-4 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -379,7 +377,6 @@ export default function ActPage() {
                 </div>
               </div>
 
-              {/* Bulk Run Card */}
               <div className="bg-white border border-[#e5e7eb] rounded-xl shadow-[0_1px_2px_rgba(0,0,0,0.02)] h-fit">
                 <div className="p-5 border-b border-[#f0f1f5]">
                   <h2 className="text-[14px] font-semibold text-gray-900 flex items-center gap-2"><Sparkles className="h-4 w-4 text-[#0f5c56]" /> Bulk Generate</h2>
@@ -413,7 +410,7 @@ export default function ActPage() {
               </div>
 
             </div>
-          </TabsContent>
+          </TabsContent> */}
 
           {/* ═══════ STATS TAB ═══════════════════════════════════════════════ */}
           <TabsContent value="stats" className="space-y-6">
