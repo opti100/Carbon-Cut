@@ -11,7 +11,7 @@ import {
   setUser as setUserAction,
 } from '@/store/slices/authSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hook'
-
+import { persistor } from '@/store/store'
 interface User {
   id: string
   email: string
@@ -19,7 +19,11 @@ interface User {
   companyName: string
   phoneNumber: string
 }
-
+const getCookie = (name: string) => {
+  if (typeof document === 'undefined') return null
+  const m = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'))
+  return m ? decodeURIComponent(m[2]) : null
+}
 interface AuthContextType {
   user: User | null
   isLoading: boolean
@@ -173,16 +177,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      try {
-        await api.post('/auth/logout/')
-      } catch (error) {
-        console.error('Logout API call failed:', error)
-      }
+      const csrfToken = getCookie('csrftoken')
+      const res = await api.post(
+        '/auth/logout/',
+        {},
+        csrfToken ? { headers: { 'X-CSRFToken': csrfToken } } : undefined
+      )
+      return res.data
     },
-    onSettled: () => {
+    onSuccess: async () => {
       dispatch(logoutAction())
-      
       queryClient.clear()
+      await persistor.purge()
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error)) {
+        console.error('Logout failed:', error.response?.status, error.response?.data)
+      } else {
+        console.error('Logout failed:', error)
+      }
     },
   })
 
