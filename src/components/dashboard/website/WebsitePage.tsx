@@ -17,10 +17,12 @@ import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import WebsiteOnboarding from './OnboardingContent'
+import WebsiteGoalSetup from './WebsiteGoalSetup'
 import {
   BarChart, Bar, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid,
 } from 'recharts'
 import { api } from '@/contexts/AuthContext'
+import Link from 'next/link'
 
 const MONTHS = [
   { value: 'all', label: 'Full Year' },
@@ -31,6 +33,10 @@ const MONTHS = [
   { value: '9', label: 'September' }, { value: '10', label: 'October' },
   { value: '11', label: 'November' }, { value: '12', label: 'December' },
 ]
+const decideApi = {
+  getGoals: () => api.get('/decide/goals/').then(r => r.data.data),
+};
+
 
 const currentYear = new Date().getFullYear()
 const YEARS = Array.from({ length: 5 }, (_, i) => currentYear - i)
@@ -43,6 +49,8 @@ export default function AnalyticsDashboard() {
   const [selectedYear, setSelectedYear] = useState(currentYear.toString())
   const [selectedMonth, setSelectedMonth] = useState('all')
   const [onboardingComplete, setOnboardingComplete] = useState(false)
+  const [goalComplete, setGoalComplete] = useState(false)
+  const goals = useQuery({ queryKey: ['decide-goals'], queryFn: decideApi.getGoals });
 
   useEffect(() => {
     loadAnalytics()
@@ -56,6 +64,15 @@ export default function AnalyticsDashboard() {
 
   const apiKeys = apiKeysData?.data?.api_keys || []
   const hasApiKey = apiKeys.length > 0
+
+  const { data: goalsData, isLoading: goalsLoading } = useQuery({
+    queryKey: ['decide-goals'],
+    queryFn: () => api.get('/decide/goals/').then(r => r.data.data),
+    enabled: hasApiKey || onboardingComplete,
+    staleTime: 30000,
+  })
+
+  const hasGoal = Array.isArray(goalsData) && goalsData.length > 0
 
   const loadAnalytics = async () => {
     setLoading(true)
@@ -93,7 +110,7 @@ export default function AnalyticsDashboard() {
     URL.revokeObjectURL(url)
   }
 
-  if (apiKeysLoading) {
+  if (apiKeysLoading || (hasApiKey || onboardingComplete ? goalsLoading : false)) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
@@ -105,13 +122,17 @@ export default function AnalyticsDashboard() {
     return <WebsiteOnboarding onComplete={() => setOnboardingComplete(true)} />
   }
 
+  if (!hasGoal && !goalComplete) {
+    return <WebsiteGoalSetup onComplete={() => setGoalComplete(true)} />
+  }
+
   return (
     <div className="min-h-screen bg-[#fafbfc] text-[#111827] font-sans">
       <div className="mx-auto max-w-[1300px] px-6 py-6 space-y-5">
 
         {/* Top Filters */}
         <div className="flex items-center justify-end gap-2">
-          <div className="flex items-center gap-2 bg-white border border-[#e5e7eb] rounded-lg px-3 h-8 shadow-sm">
+          {/* <div className="flex items-center gap-2 bg-white border border-[#e5e7eb] rounded-lg px-3 h-8 shadow-sm">
             <Calendar className="h-3.5 w-3.5 text-gray-500 shrink-0" />
             <span className="text-xs font-medium text-gray-700 whitespace-nowrap">
               {selectedMonth === 'all'
@@ -119,7 +140,7 @@ export default function AnalyticsDashboard() {
                 : `${MONTHS.find(m => m.value === selectedMonth)?.label} ${selectedYear}`
               }
             </span>
-          </div>
+          </div> */}
           <Select value={selectedMonth} onValueChange={(v) => { setSelectedMonth(v); setAnalytics(null) }}>
             <SelectTrigger className="w-[110px] h-8 bg-white text-xs font-medium border-[#e5e7eb] rounded-lg shadow-sm">
               <SelectValue />
@@ -195,12 +216,12 @@ export default function AnalyticsDashboard() {
                   <RefreshCw className="h-3.5 w-3.5 shrink-0" />
                   Sync
                 </Button>
-                <Button
+                {/* <Button
                   size="sm"
                   className="bg-white/10 hover:bg-white/20 text-white border-0 rounded-lg h-8 w-8 p-0 shadow-sm"
                 >
                   <MoreHorizontal className="h-4 w-4 shrink-0" />
-                </Button>
+                </Button> */}
               </div>
             </div>
 
@@ -214,17 +235,17 @@ export default function AnalyticsDashboard() {
                     <h2 className="text-sm font-semibold text-gray-900">Emission Trend</h2>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center bg-[#f4f5f7] rounded-md p-0.5">
+                    {/* <div className="flex items-center bg-[#f4f5f7] rounded-md p-0.5">
                       <button className="px-3 h-7 text-[11px] font-medium rounded bg-white shadow-sm text-gray-900">Weekly</button>
                       <button className="px-3 h-7 text-[11px] font-medium rounded text-gray-500 hover:text-gray-900">Daily</button>
-                    </div>
-                    <Button
+                    </div> */}
+                    {/* <Button
                       variant="outline"
                       size="sm"
                       className="h-7 px-3 text-[11px] font-medium border-[#e5e7eb] shadow-none"
                     >
                       ⚙ Manage
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
                 <div className="h-[220px] w-full mt-2">
@@ -337,7 +358,7 @@ export default function AnalyticsDashboard() {
                       <span className="text-[22px] font-bold text-gray-900 tracking-tight">
                         t {source.emissions_tonnes.toFixed(2)}
                       </span>
-                      <span className={cn(
+                      {/* <span className={cn(
                         "text-[11px] font-semibold flex items-center",
                         source.is_increasing ? "text-red-500" : "text-[#24d18f]"
                       )}>
@@ -345,7 +366,7 @@ export default function AnalyticsDashboard() {
                         {source.is_increasing
                           ? <ArrowUpRight className="h-3 w-3 ml-0.5 shrink-0" />
                           : <ArrowDownRight className="h-3 w-3 ml-0.5 shrink-0" />}
-                      </span>
+                      </span> */}
                     </div>
                     <p className="text-[11px] text-gray-400">
                       vs. {source.previous_emissions_tonnes?.toFixed(2)}t Last Period
@@ -442,26 +463,25 @@ export default function AnalyticsDashboard() {
                       <rect x="3" y="5" width="18" height="14" rx="2" />
                       <line x1="3" y1="10" x2="21" y2="10" />
                     </svg>
-                    <h2 className="text-sm font-semibold text-gray-900">Primary Goal</h2>
+                    <h2 className="text-sm font-semibold text-gray-900">{goals.data?.[0]?.name}</h2>
                   </div>
-                  <button className="text-[11px] font-semibold text-gray-500 hover:text-gray-900 flex items-center gap-1">
+                  <Link href="/dashboard/decide" className="text-[11px] font-semibold text-gray-500 hover:text-gray-900 flex items-center gap-1">
                     See All <ArrowUpRight className="h-3 w-3 shrink-0" />
-                  </button>
+                  </Link>
                 </div>
 
                 <div className="relative flex-1 bg-[#0f5c56] rounded-xl p-5 overflow-hidden flex flex-col justify-between mt-1 shadow-md">
-                  {/* Card inner subtle circles */}
                   <div className="absolute right-[-20%] bottom-[-30%] w-[140px] h-[140px] rounded-full border-[15px] border-white/5" />
                   <div className="absolute right-[-5%] bottom-[-10%] w-[80px] h-[80px] rounded-full border-[10px] border-white/5" />
 
                   <div className="relative z-10 flex items-start justify-between">
-                    <span className="text-white font-bold text-lg tracking-wider">NET ZERO</span>
-                    <span className="text-white/60 text-[10px] tracking-widest">TARGET 2030</span>
+                    <span className="text-white font-bold text-lg tracking-wider">{goals.data?.[0]?.target_year}</span>
+                    <span className="text-white/60 text-[10px] tracking-widest">{goals.data?.[0]?.goal_type.replace('_', ' ')}</span>
                   </div>
 
                   <div className="relative z-10 mt-8">
                     <p className="text-white/70 text-[10px] uppercase tracking-wider mb-1">Remaining Budget</p>
-                    <p className="text-xl font-bold text-white tracking-tight">4.540,20 t</p>
+                      <p className="text-xl font-bold text-white tracking-tight">{goals.data?.[0]?.annual_budget_usd ? `$${goals.data?.[0]?.annual_budget_usd.toLocaleString()}/yr` : 'Not Set'}</p>
                   </div>
                 </div>
               </div>

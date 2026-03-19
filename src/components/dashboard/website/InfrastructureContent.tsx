@@ -112,7 +112,7 @@ export default function InfrastructureContent({ config }: { config: any }) {
                   variant="outline"
                   size="sm"
                   className="h-8 text-xs gap-1.5 border-border shadow-sm"
-                  onClick={() => router.push('/v2')}
+                  onClick={() => router.push('/dashboard/setup')}
                 >
                   <Plus className="h-3.5 w-3.5" />
                   Add Source
@@ -155,7 +155,7 @@ export default function InfrastructureContent({ config }: { config: any }) {
                           <Button
                             variant="ghost" size="sm"
                             className="h-7 text-xs text-muted-foreground hover:text-foreground gap-1"
-                            onClick={() => router.push('/v2')}
+                            onClick={() => router.push('/dashboard/setup')}
                           >
                             Configure <ArrowRight className="h-3 w-3" />
                           </Button>

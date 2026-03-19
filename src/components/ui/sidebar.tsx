@@ -30,6 +30,7 @@ import {
   Cpu,
   MoreHorizontal,
   GitFork,
+  Blocks,
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -113,7 +114,7 @@ const sourceItems: NavItemData[] = [
   { name: 'Energy', href: '/dashboard/energy', icon: Zap },
   { name: 'Online Ads', href: '/dashboard/online-ads', icon: Megaphone },
   { name: 'Machine', href: '/dashboard/machine', icon: Server },
-  { name: 'Others', href: '/dashboard/others', icon: MoreHorizontal },
+  // { name: 'Others', href: '/dashboard/others', icon: MoreHorizontal },
 ]
 
 const othersNav: NavItemData[] = [
@@ -121,6 +122,7 @@ const othersNav: NavItemData[] = [
   { name: 'Setup', href: '/dashboard/setup', icon: Wrench },
   { name: 'Reports', href: '/dashboard/reports', icon: BarChart3 },
   { name: 'Infra', href: '/dashboard/infrastructure', icon: Server },
+  { name: 'Integrations' ,href:'/dashboard/integrations' ,icon :Blocks }
 ]
 
 function SidebarNavItem({ item, isCollapsed, isActive }: { item: NavItemData, isCollapsed: boolean, isActive: boolean }) {
@@ -287,13 +289,18 @@ function SidebarContent({ isCollapsed, setIsCollapsed }: { isCollapsed: boolean,
           <Settings className="h-[15px] w-[15px] shrink-0 text-[#6b7280]" />
           {!isCollapsed && <span>Settings</span>}
         </Link>
+        <Link href="https://carboncut.gitbook.io/" target="_blank" className={cn(
+          'w-full flex items-center gap-2.5 rounded-md text-[13px] font-medium text-[#4b5563] hover:text-gray-900 hover:bg-black/[0.03] transition-all duration-150',
+          isCollapsed ? 'justify-center p-2' : 'px-2.5 py-1.5'
+        )}>
+        <HelpCircle className="h-[15px] w-[15px] shrink-0 text-[#6b7280]" />
+        {!isCollapsed && <span>Help</span>}
+        </Link>
 
         <button className={cn(
           'w-full flex items-center gap-2.5 rounded-md text-[13px] font-medium text-[#4b5563] hover:text-gray-900 hover:bg-black/[0.03] transition-all duration-150',
           isCollapsed ? 'justify-center p-2' : 'px-2.5 py-1.5'
         )}>
-          <HelpCircle className="h-[15px] w-[15px] shrink-0 text-[#6b7280]" />
-          {!isCollapsed && <span>Help</span>}
         </button>
       </div>
 
