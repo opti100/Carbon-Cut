@@ -171,24 +171,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
   })
 
-  // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: async () => {
       try {
         await api.post('/auth/logout/')
       } catch (error) {
-        // Continue with logout even if API call fails
         console.error('Logout API call failed:', error)
       }
     },
     onSettled: () => {
-      // Clear all state
       dispatch(logoutAction())
+      
       queryClient.clear()
     },
   })
 
-  // Public methods
   const login = async (email: string, otp: string) => {
     await loginMutation.mutateAsync({ email, otp })
   }
