@@ -18,6 +18,8 @@ import { toast } from 'sonner'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import 'react-phone-number-input/style.css'
 import PhoneInput from '@/components/main/ui/PhoneInput'
+import { useAppDispatch } from '@/store/hook'
+import { setCredentials } from '@/store/slices/authSlice'
 
 interface SignupData {
   name: string
@@ -89,6 +91,7 @@ const signupKeys = {
 const SignupPage = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const dispatch = useAppDispatch()
   const redirectTo = searchParams.get('redirectTo') || '/dashboard/website/'
 
   const [step, setStep] = useState<Step>('form')
@@ -116,7 +119,20 @@ const SignupPage = () => {
     mutationKey: signupKeys.verifyOTP(),
     mutationFn: signupAPI.verifyOTP,
     onSuccess: (data: AuthResponse) => {
-      if (data.success && data.data?.auth_token) {
+      if (data.success && data.data) {
+        // Store user credentials in Redux store
+        dispatch(
+          setCredentials({
+            user: {
+              id: data.data.userId,
+              email: data.data.email,
+              name: data.data.name,
+              companyName: data.data.companyName,
+              phoneNumber: data.data.phoneNumber,
+            },
+            token: data.data.auth_token,
+          })
+        )
         toast.success(data.message || 'Account created successfully! Welcome to CarbonCut.')
         setTimeout(() => {
           router.push(redirectTo)
