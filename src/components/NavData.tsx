@@ -33,6 +33,11 @@ export const navData: CardNavItem[] = [
         href: '/methodology',
         ariaLabel: 'View our methodology',
       },
+      {
+        label: 'Research',
+        href: '/research/near-real-time-carbon-accounting',
+        ariaLabel: 'Read our research paper on near-real-time carbon accounting',
+      },
       // {
       //   label: 'Projects',
       //   href: '/projects',

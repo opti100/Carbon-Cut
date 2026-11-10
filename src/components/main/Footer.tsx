@@ -63,6 +63,12 @@ const Footer = () => {
                   How it Works
                 </Link004>
                 <Link004
+                  href="/research/near-real-time-carbon-accounting"
+                  className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
+                >
+                  Research
+                </Link004>
+                <Link004
                   href="/calculator"
                   className="text-sm md:text-base text-white/80 hover:text-white transition-colors"
                 >
